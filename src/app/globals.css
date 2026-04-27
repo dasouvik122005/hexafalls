@@ -98,6 +98,12 @@ html, body {
     radial-gradient(ellipse at bottom, rgba(212,175,55,.06), transparent 60%);
 }
 
+/* Shimmer sweep for "coming soon" CTA */
+@keyframes hp-shimmer {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(500%); }
+}
+
 /* Reduce motion respect */
 @media (prefers-reduced-motion: reduce) {
   .hp-stars, .hp-float, .hp-pulse { animation: none !important; }

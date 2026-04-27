@@ -155,12 +155,28 @@ export default function Hero() {
         transition={{ duration: 1, delay: 1.6 }}
         className="mt-10 flex flex-col sm:flex-row items-center gap-4"
       >
-        <a
-          href="#register"
-          className="hp-underline group relative inline-flex items-center justify-center rounded-full border border-cyan-hp/60 bg-cyan-hp/10 px-8 py-3 font-display tracking-[0.3em] text-cyan-hp transition hover:bg-cyan-hp/20 hover:shadow-[0_0_36px_rgba(102,252,241,0.45)]"
+        {/* Register — Coming Soon highlight */}
+        <button
+          type="button"
+          disabled
+          aria-disabled="true"
+          className="relative inline-flex items-center gap-3 rounded-full border border-cyan-hp/50 bg-cyan-hp/10 px-7 py-3 font-display tracking-[0.3em] text-cyan-hp cursor-not-allowed select-none overflow-hidden hp-pulse"
         >
-          REGISTER
-        </a>
+          <span className="relative z-10">REGISTER</span>
+          <span className="relative z-10 text-[10px] tracking-[0.25em] px-2 py-0.5 rounded-full border border-gold-hp/60 bg-gold-hp/10 text-gold-hp hp-glow-gold">
+            COMING SOON
+          </span>
+          {/* shimmer sweep */}
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent, rgba(102,252,241,0.25), transparent)",
+              animation: "hp-shimmer 3.2s linear infinite",
+            }}
+          />
+        </button>
         <a
           href="#about"
           className="inline-flex items-center justify-center rounded-full border border-silver-hp/30 px-8 py-3 font-display tracking-[0.3em] text-silver-hp/80 hover:text-silver-hp hover:border-silver-hp/70 transition"
