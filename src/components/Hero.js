@@ -19,7 +19,6 @@ export default function Hero() {
   });
   const yStars   = useTransform(scrollYProgress, [0, 1], ["0%",  "30%"]);
   const yMid     = useTransform(scrollYProgress, [0, 1], ["0%",  "60%"]);
-  const yMascot  = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
   const yTitle   = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
   const opacity  = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
 
@@ -185,10 +184,7 @@ export default function Hero() {
       </motion.div>
 
       {/* Full-width Map with mascot orb pinned bottom-right */}
-      <motion.div
-        style={{ y: yMascot }}
-        className="relative mt-24 w-full max-w-6xl"
-      >
+      <div className="relative mt-24 w-full max-w-6xl">
         <LocationMap />
 
         {/* Mascot orb */}
@@ -219,16 +215,24 @@ export default function Hero() {
             </div>
           </div>
         </motion.div>
-      </motion.div>
+      </div>
 
-      {/* scroll hint */}
+      {/* footnote — more reveals coming */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.6, y: [0, 8, 0] }}
-        transition={{ delay: 2, duration: 2.4, repeat: Infinity }}
-        className="mt-16 text-xs uppercase tracking-[0.4em] text-silver-hp/50 font-display"
+        initial={{ opacity: 0, y: 8 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.9 }}
+        className="mt-24 flex flex-col items-center gap-2 text-center"
       >
-        ↓ unfurl the parchment
+        <span className="inline-flex items-center gap-3 font-display text-[11px] uppercase tracking-[0.5em] text-cyan-hp/70">
+          <span className="h-px w-8 bg-cyan-hp/40" />
+          more scrolls unfurling soon
+          <span className="h-px w-8 bg-cyan-hp/40" />
+        </span>
+        <span className="font-wizard text-[12px] italic text-silver-hp/45">
+          tracks · prizes · sponsors · the keeper's lore — revealing in due time
+        </span>
       </motion.div>
     </section>
   );

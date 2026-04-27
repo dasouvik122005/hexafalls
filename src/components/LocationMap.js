@@ -16,7 +16,7 @@ export default function LocationMap() {
   // Scroll-driven unfurl — wide range so the reveal feels lucid, not snappy.
   const { scrollYProgress } = useScroll({
     target: wrapRef,
-    offset: ["start end", "center 55%"],
+    offset: ["start end", "end 40%"],
   });
   const clipBottom = useTransform(scrollYProgress, [0, 1], [98, 0]);
   const blurPx     = useTransform(scrollYProgress, [0, 1], [16, 0]);
