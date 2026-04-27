@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
 import Sparkles from "./Sparkles";
-import RoughFrame from "./RoughFrame";
 import LocationMap from "./LocationMap";
 
 export default function Hero() {
@@ -185,46 +184,40 @@ export default function Hero() {
         </a>
       </motion.div>
 
-      {/* Mascot + Map row */}
+      {/* Full-width Map with mascot orb pinned bottom-right */}
       <motion.div
         style={{ y: yMascot }}
-        className="mt-20 grid w-full max-w-6xl grid-cols-1 md:grid-cols-2 gap-10 items-center"
+        className="relative mt-24 w-full max-w-6xl"
       >
-        {/* MASCOT */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.85 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, delay: 1.0 }}
-          className="flex justify-center"
-        >
-          <RoughFrame
-            seed={3}
-            stroke="#66FCF1"
-            strokeWidth={1.4}
-            roughness={2}
-            bowing={2}
-            padding={26}
-            className="bg-slate-hp/40 backdrop-blur-sm"
-          >
-            <div className="relative h-56 w-56 sm:h-64 sm:w-64 hp-float flex items-center justify-center">
-              {/* TODO: <Image src="/mascot.png" .../> */}
-              <span className="font-wizard text-cyan-hp/70 text-xs uppercase tracking-[0.4em]">
-                mascot · placeholder
-              </span>
-            </div>
-            <div className="mt-3 text-center font-wizard text-[11px] text-silver-hp/50 italic">
-              the keeper of Hexafalls
-            </div>
-          </RoughFrame>
-        </motion.div>
+        <LocationMap />
 
-        {/* LOCATION MAP */}
+        {/* Mascot orb */}
         <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1.2, delay: 1.2 }}
+          initial={{ opacity: 0, scale: 0.6, rotate: -8 }}
+          whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 1.1, ease: "easeOut", delay: 0.2 }}
+          className="absolute -bottom-10 -right-6 sm:-bottom-14 sm:-right-10 z-20"
         >
-          <LocationMap />
+          <div className="relative hp-float" style={{ animationDuration: "7s" }}>
+            {/* outer rough ring */}
+            <div className="absolute inset-0 rounded-full hp-pulse" />
+            <div
+              className="relative h-32 w-32 sm:h-44 sm:w-44 rounded-full border-2 border-cyan-hp/60 bg-gradient-to-br from-slate-hp/80 to-midnight overflow-hidden flex items-center justify-center shadow-[0_0_36px_rgba(102,252,241,0.35)]"
+              aria-label="Hexafalls mascot"
+            >
+              {/* TODO: <Image src="/mascot.png" fill ... /> */}
+              <span className="font-wizard text-cyan-hp/70 text-[10px] uppercase tracking-[0.4em]">
+                mascot
+              </span>
+              <span className="absolute inset-0 rounded-full ring-1 ring-inset ring-cyan-hp/20" />
+              <span className="absolute inset-0 rounded-full hp-stars opacity-30 mix-blend-screen" />
+            </div>
+            {/* tag */}
+            <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap font-wizard text-[10px] tracking-[0.3em] text-silver-hp/60 uppercase">
+              · the keeper ·
+            </div>
+          </div>
         </motion.div>
       </motion.div>
 
