@@ -10,21 +10,7 @@ import RoughFrame from "./RoughFrame";
  * Drop the AI map at /public/map-placeholder.png.
  */
 export default function LocationMap() {
-  const wrapRef    = useRef(null);
   const compassRef = useRef(null);
-
-  // Scroll-driven unfurl — wide range so the reveal feels lucid, not snappy.
-  const { scrollYProgress } = useScroll({
-    target: wrapRef,
-    offset: ["start end", "end 40%"],
-  });
-  const clipBottom = useTransform(scrollYProgress, [0, 1], [98, 0]);
-  const blurPx     = useTransform(scrollYProgress, [0, 1], [16, 0]);
-  const yPx        = useTransform(scrollYProgress, [0, 1], [70, 0]);
-  const scale      = useTransform(scrollYProgress, [0, 1], [0.92, 1]);
-  const opacity    = useTransform(scrollYProgress, [0, 0.15, 1], [0, 0.3, 1]);
-  const clipPath   = useMotionTemplate`inset(0% 0% ${clipBottom}% 0%)`;
-  const filter     = useMotionTemplate`blur(${blurPx}px)`;
 
   // sketched compass
   useEffect(() => {
@@ -51,8 +37,28 @@ export default function LocationMap() {
 
   return (
     <motion.div
-      ref={wrapRef}
-      style={{ clipPath, filter, scale, y: yPx, opacity }}
+      initial={{
+        clipPath: "inset(0% 0% 100% 0%)",
+        filter:   "blur(18px)",
+        opacity:  0,
+        y:        80,
+        scale:    0.94,
+      }}
+      whileInView={{
+        clipPath: "inset(0% 0% 0% 0%)",
+        filter:   "blur(0px)",
+        opacity:  1,
+        y:        0,
+        scale:    1,
+      }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{
+        duration: 2.0,
+        ease: [0.22, 1, 0.36, 1],
+        clipPath: { duration: 2.4, ease: [0.22, 1, 0.36, 1] },
+        filter:   { duration: 1.6, ease: "easeOut", delay: 0.2 },
+        opacity:  { duration: 0.8, ease: "easeOut" },
+      }}
       className="w-full will-change-[transform,filter,clip-path]"
     >
       <RoughFrame
