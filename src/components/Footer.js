@@ -32,36 +32,36 @@ export default function Footer() {
       <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-cyan-hp/40 to-transparent" />
       <div className="absolute inset-0 hp-stars opacity-20 pointer-events-none" />
 
-      <div className="relative mx-auto max-w-7xl px-6 py-14 grid gap-10 md:grid-cols-3 items-start">
-        {/* Brand */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="flex flex-col gap-3"
-        >
-          <div className="flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-md border border-cyan-hp/40 bg-slate-hp/60">
-              <span className="font-display text-cyan-hp text-lg font-bold">H</span>
-            </span>
-            <span className="font-display tracking-[0.4em] text-silver-hp/85">
-              HEXAFALLS
-            </span>
-          </div>
-          <p className="font-wizard text-sm text-silver-hp/60 max-w-xs leading-relaxed">
-            A wizarding hackathon, conjured by GDG on Campus · JIS University.
-            More scrolls of prophecy unfurling soon.
-          </p>
-        </motion.div>
+      {/* Brand row */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7 }}
+        className="relative mx-auto max-w-7xl px-6 pt-14 pb-6 flex flex-col items-center text-center gap-3"
+      >
+        <div className="flex items-center gap-3">
+          <span className="flex h-10 w-10 items-center justify-center rounded-md border border-cyan-hp/40 bg-slate-hp/60">
+            <span className="font-display text-cyan-hp text-lg font-bold">H</span>
+          </span>
+          <span className="font-display tracking-[0.4em] text-silver-hp/85">
+            HEXAFALLS
+          </span>
+        </div>
+        <p className="font-wizard text-sm text-silver-hp/60 max-w-md leading-relaxed">
+          A wizarding hackathon, conjured by GDG on Campus · JIS University.
+          More scrolls of prophecy unfurling soon.
+        </p>
+      </motion.div>
 
-        {/* Contact */}
+      <div className="relative mx-auto max-w-7xl px-6 pb-14 grid gap-10 md:grid-cols-3 items-start">
+        {/* LEFT — Contact (Send an Owl) */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="flex flex-col gap-3"
+          transition={{ duration: 0.7, delay: 0.05 }}
+          className="flex flex-col gap-3 md:items-start"
         >
           <div className="font-display text-[11px] uppercase tracking-[0.4em] text-cyan-hp/70">
             Send an Owl
@@ -79,12 +79,29 @@ export default function Footer() {
           </button>
         </motion.div>
 
-        {/* Links */}
+        {/* MIDDLE — sitemap placeholder */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.2 }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="flex flex-col gap-3 md:items-center text-center"
+        >
+          <div className="font-display text-[11px] uppercase tracking-[0.4em] text-silver-hp/40">
+            Sitemap
+          </div>
+          {/* TODO: populate sitemap links once sub-pages exist */}
+          <span className="font-wizard text-[12px] italic text-silver-hp/40">
+            charting the corridors · soon
+          </span>
+        </motion.div>
+
+        {/* RIGHT — The Order */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.15 }}
           className="flex flex-col gap-3 md:items-end"
         >
           <div className="font-display text-[11px] uppercase tracking-[0.4em] text-cyan-hp/70">
