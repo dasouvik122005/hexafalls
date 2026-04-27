@@ -17,10 +17,10 @@ export default function CallToOwl() {
         transition={{ duration: 0.9 }}
         className="mx-auto max-w-3xl"
       >
-        <p className="font-[family-name:var(--font-wizard)] uppercase tracking-[0.4em] text-cyan-hp/70 text-xs">
+        <p className="font-wizard uppercase tracking-[0.4em] text-cyan-hp/70 text-xs">
           By order of the Headmaster
         </p>
-        <h2 className="mt-6 font-[family-name:var(--font-display)] text-4xl sm:text-6xl text-silver-hp hp-glow">
+        <h2 className="mt-6 font-display text-4xl sm:text-6xl text-silver-hp hp-glow">
           Send the Owl.
         </h2>
         <p className="mt-6 text-silver-hp/75 text-lg">
@@ -40,7 +40,7 @@ export default function CallToOwl() {
           />
           <button
             type="submit"
-            className="rounded-full border border-gold-hp/60 bg-gold-hp/10 px-6 py-3 font-[family-name:var(--font-display)] tracking-widest text-gold-hp hover:bg-gold-hp/20 hover:shadow-[0_0_28px_rgba(212,175,55,0.4)] transition"
+            className="rounded-full border border-gold-hp/60 bg-gold-hp/10 px-6 py-3 font-display tracking-widest text-gold-hp hover:bg-gold-hp/20 hover:shadow-[0_0_28px_rgba(212,175,55,0.4)] transition"
           >
             DISPATCH
           </button>

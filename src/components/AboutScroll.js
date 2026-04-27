@@ -31,7 +31,7 @@ export default function AboutScroll() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
-          className="text-center font-[family-name:var(--font-display)] text-4xl sm:text-5xl tracking-wide text-cyan-hp hp-glow"
+          className="text-center font-display text-4xl sm:text-5xl tracking-wide text-cyan-hp hp-glow"
         >
           Unfurl the Parchment
         </motion.h2>
@@ -41,7 +41,7 @@ export default function AboutScroll() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2, duration: 1 }}
-          className="mt-4 text-center font-[family-name:var(--font-wizard)] text-silver-hp/70 max-w-2xl mx-auto"
+          className="mt-4 text-center font-wizard text-silver-hp/70 max-w-2xl mx-auto"
         >
           Three things every wizard should know before stepping into the Great Hall.
         </motion.p>
@@ -58,7 +58,7 @@ export default function AboutScroll() {
             >
               <div className="absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition pointer-events-none"
                    style={{ boxShadow: "0 0 36px rgba(102,252,241,.20)" }} />
-              <h3 className="font-[family-name:var(--font-display)] text-2xl text-gold-hp hp-glow-gold">
+              <h3 className="font-display text-2xl text-gold-hp hp-glow-gold">
                 {p.title}
               </h3>
               <p className="mt-4 text-silver-hp/80 leading-relaxed">{p.body}</p>

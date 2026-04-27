@@ -82,13 +82,42 @@ export default function Hero() {
         <Sparkles count={36} />
       </motion.div>
 
+      {/* partner logos */}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, delay: 0.1 }}
+        className="mb-8 flex flex-wrap items-center justify-center gap-5 sm:gap-8"
+        aria-label="Presented by"
+      >
+        {[
+          { id: "gdg",  label: "GDG JISU" },
+          { id: "jisu", label: "JIS University" },
+          { id: "cse",  label: "Dept. of CSE" },
+        ].map((l, i, arr) => (
+          <div key={l.id} className="flex items-center gap-3 group">
+            <div
+              title={l.label}
+              className="h-10 w-10 sm:h-12 sm:w-12 rounded-md border border-silver-hp/25 bg-slate-hp/50 backdrop-blur flex items-center justify-center text-[10px] font-display text-silver-hp/70 group-hover:border-cyan-hp/60 group-hover:text-cyan-hp transition"
+            >
+              {/* TODO: drop /public/logos/{l.id}.svg */}
+              {l.id.toUpperCase()}
+            </div>
+            <span className="text-[11px] sm:text-xs uppercase tracking-[0.3em] text-silver-hp/70 group-hover:text-silver-hp transition font-display">
+              {l.label}
+            </span>
+            {i < arr.length - 1 && <span className="text-silver-hp/20">·</span>}
+          </div>
+        ))}
+      </motion.div>
+
       {/* tagline strip */}
       <motion.div
         ref={stripRef}
-        className="mb-6 flex items-center gap-3 text-[11px] sm:text-xs uppercase tracking-[0.5em] text-cyan-hp/70 font-[family-name:var(--font-display)]"
+        className="mb-6 flex items-center gap-3 text-[11px] sm:text-xs uppercase tracking-[0.5em] text-cyan-hp/70 font-display"
       >
         <span className="h-px w-8 bg-cyan-hp/40" />
-        Presented by GDG · JIS University
+        A Wizarding Hackathon
         <span className="h-px w-8 bg-cyan-hp/40" />
       </motion.div>
 
@@ -100,7 +129,7 @@ export default function Hero() {
       >
         <h1
           aria-label="HexaFalls Techfest"
-          className="font-[family-name:var(--font-display)] font-black tracking-tight text-silver-hp leading-[0.95] text-[14vw] sm:text-[10vw] md:text-[8.5vw] hp-glow"
+          className="font-display font-black tracking-tight text-silver-hp leading-[0.95] text-[14vw] sm:text-[10vw] md:text-[8.5vw] hp-glow"
           style={{ perspective: 800 }}
         >
           <span className="block">{splitLetters("HexaFalls")}</span>
@@ -111,7 +140,7 @@ export default function Hero() {
 
         <p
           ref={subRef}
-          className="mt-8 max-w-2xl mx-auto text-base sm:text-lg font-[family-name:var(--font-wizard)] text-silver-hp/80"
+          className="mt-8 max-w-2xl mx-auto text-base sm:text-lg font-wizard text-silver-hp/80"
         >
           Owls have been dispatched. Robes pressed, wands tuned. A 36-hour
           gathering of code, chaos and conjuring at the edge of the magical
@@ -128,13 +157,13 @@ export default function Hero() {
       >
         <a
           href="#register"
-          className="hp-underline group relative inline-flex items-center justify-center rounded-full border border-cyan-hp/60 bg-cyan-hp/10 px-8 py-3 font-[family-name:var(--font-display)] tracking-[0.3em] text-cyan-hp transition hover:bg-cyan-hp/20 hover:shadow-[0_0_36px_rgba(102,252,241,0.45)]"
+          className="hp-underline group relative inline-flex items-center justify-center rounded-full border border-cyan-hp/60 bg-cyan-hp/10 px-8 py-3 font-display tracking-[0.3em] text-cyan-hp transition hover:bg-cyan-hp/20 hover:shadow-[0_0_36px_rgba(102,252,241,0.45)]"
         >
           REGISTER
         </a>
         <a
           href="#about"
-          className="inline-flex items-center justify-center rounded-full border border-silver-hp/30 px-8 py-3 font-[family-name:var(--font-display)] tracking-[0.3em] text-silver-hp/80 hover:text-silver-hp hover:border-silver-hp/70 transition"
+          className="inline-flex items-center justify-center rounded-full border border-silver-hp/30 px-8 py-3 font-display tracking-[0.3em] text-silver-hp/80 hover:text-silver-hp hover:border-silver-hp/70 transition"
         >
           THE PROPHECY
         </a>
@@ -163,11 +192,11 @@ export default function Hero() {
           >
             <div className="relative h-56 w-56 sm:h-64 sm:w-64 hp-float flex items-center justify-center">
               {/* TODO: <Image src="/mascot.png" .../> */}
-              <span className="font-[family-name:var(--font-wizard)] text-cyan-hp/70 text-xs uppercase tracking-[0.4em]">
+              <span className="font-wizard text-cyan-hp/70 text-xs uppercase tracking-[0.4em]">
                 mascot · placeholder
               </span>
             </div>
-            <div className="mt-3 text-center font-[family-name:var(--font-wizard)] text-[11px] text-silver-hp/50 italic">
+            <div className="mt-3 text-center font-wizard text-[11px] text-silver-hp/50 italic">
               the keeper of Hexafalls
             </div>
           </RoughFrame>
@@ -188,7 +217,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.6, y: [0, 8, 0] }}
         transition={{ delay: 2, duration: 2.4, repeat: Infinity }}
-        className="mt-16 text-xs uppercase tracking-[0.4em] text-silver-hp/50 font-[family-name:var(--font-display)]"
+        className="mt-16 text-xs uppercase tracking-[0.4em] text-silver-hp/50 font-display"
       >
         ↓ unfurl the parchment
       </motion.div>

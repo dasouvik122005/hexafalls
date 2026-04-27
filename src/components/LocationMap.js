@@ -68,13 +68,13 @@ export default function LocationMap() {
           aria-hidden="true"
         />
         <div className="flex-1">
-          <div className="font-[family-name:var(--font-wizard)] text-cyan-hp/70 uppercase tracking-[0.3em] text-[10px]">
+          <div className="font-wizard text-cyan-hp/70 uppercase tracking-[0.3em] text-[10px]">
             You are summoned to
           </div>
-          <div className="font-[family-name:var(--font-display)] text-xl text-silver-hp leading-tight mt-1">
+          <div className="font-display text-xl text-silver-hp leading-tight mt-1">
             JIS University
           </div>
-          <div className="font-[family-name:var(--font-wizard)] text-silver-hp/70 text-sm">
+          <div className="font-wizard text-silver-hp/70 text-sm">
             Agarpara · Kolkata
           </div>
         </div>
@@ -106,14 +106,14 @@ export default function LocationMap() {
       <div className="relative w-full aspect-[16/7] overflow-hidden rounded-sm border border-silver-hp/15 bg-midnight/60">
         {/* TODO: replace with <Image src="/map-placeholder.png" .../> */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="font-[family-name:var(--font-wizard)] text-silver-hp/40 text-xs uppercase tracking-[0.4em]">
+          <span className="font-wizard text-silver-hp/40 text-xs uppercase tracking-[0.4em]">
             map · placeholder
           </span>
         </div>
         <div className="absolute inset-0 hp-stars opacity-30 mix-blend-screen" />
       </div>
 
-      <div className="font-[family-name:var(--font-wizard)] text-[11px] text-silver-hp/50 italic">
+      <div className="font-wizard text-[11px] text-silver-hp/50 italic">
         “I solemnly swear that I am up to no good.”
       </div>
     </RoughFrame>
