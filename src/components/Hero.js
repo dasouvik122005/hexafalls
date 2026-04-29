@@ -89,9 +89,9 @@ export default function Hero() {
         aria-label="Presented by"
       >
         {[
-          { id: "gdg",  label: "GDG JISU" },
-          { id: "jisu", label: "JIS University" },
-          { id: "cse",  label: "Dept. of CSE" },
+          { id: "gdg",  label: "", logo: "/logos/gdg.svg" },
+          { id: "jisu", label: "", logo: "/logos/jisu.svg" },
+          { id: "cse",  label: "", logo: "/logos/cse.svg" },
         ].map((l, i, arr) => (
           <div key={l.id} className="flex items-center gap-3 group">
             <div
