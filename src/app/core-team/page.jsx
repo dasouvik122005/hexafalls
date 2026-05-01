@@ -17,6 +17,7 @@ export default function CoreTeamPage() {
         accent="Core Team"
         lede="The architects of HexaFalls — the ones who shape every spell. Applications to the inner circle will open soon."
         whisper="“Behind every great gathering, a quiet council steadies the wand.”"
+        apply={{ open: false, label: "APPLY NOW" }}
       />
       <Footer />
     </main>

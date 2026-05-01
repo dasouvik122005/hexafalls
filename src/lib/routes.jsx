@@ -1,3 +1,7 @@
+// The Google Form link for volunteer applications.
+export const VOLUNTEER_FORM_URL = "https://forms.gle/wM2qEnr3oB95wss89";
+
+// Top-level navbar entries (kept lean — Call-for-X CTAs live in the Hero).
 export const SITEMAP = [
   {
     href: "/about", label: "The Prophecy",
@@ -28,7 +32,7 @@ export const SITEMAP = [
     ),
   },
   {
-    href: "/core-team", label: "Call for Core Team", soon: true,
+    href: "/team", label: "The Team",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
         <circle cx="9" cy="8" r="3" />
@@ -38,31 +42,37 @@ export const SITEMAP = [
       </svg>
     ),
   },
+];
+
+// "Call for…" CTA buttons surfaced from the Hero (and reusable elsewhere).
+export const CALLS = [
   {
-    href: "/judges", label: "Judges & Mentors", soon: true,
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-        <path d="M12 3l3 6 6 .9-4.5 4.2L18 21l-6-3.3L6 21l1.5-6.9L3 9.9 9 9z" />
-      </svg>
-    ),
+    href: "/core-team",
+    label: "Call for Core Team",
+    short: "Core Team",
+    accent: "cyan",
+    blurb: "Shape every spell from the inner circle.",
   },
   {
-    href: "/sponsors", label: "Call for Sponsors", soon: true,
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-        <path d="M20 12c0 4.5-8 9-8 9s-8-4.5-8-9a5 5 0 0 1 9-3 5 5 0 0 1 7 3z" />
-      </svg>
-    ),
+    href: "/judges",
+    label: "Call for Judges & Mentors",
+    short: "Judges & Mentors",
+    accent: "cyan",
+    blurb: "Wise hands. Sharp eyes. Guide the council.",
   },
   {
-    href: "/volunteer", label: "Call for Volunteers",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-        <path d="M19 3l2 2-9 9-3 1 1-3 9-9z" />
-        <path d="M14 8l2 2" />
-        <path d="M5 21c2-3 4-4 7-4" />
-        <path d="M3 21h6" />
-      </svg>
-    ),
+    href: "/sponsors",
+    label: "Call for Sponsors",
+    short: "Sponsors",
+    accent: "cyan",
+    blurb: "Stand beside the hall. Fuel the magic.",
+  },
+  {
+    href: "/volunteer",
+    label: "Call for Volunteers",
+    short: "Volunteers",
+    accent: "gold",
+    open: true,
+    blurb: "Open now — sign the scroll, join the order.",
   },
 ];

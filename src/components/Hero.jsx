@@ -6,6 +6,7 @@ import gsap from "gsap";
 import Link from "next/link";
 import Sparkles from "./Sparkles";
 import LocationMap from "./LocationMap";
+import { CALLS } from "@/lib/routes";
 
 export default function Hero() {
   const sectionRef = useRef(null);
@@ -194,6 +195,85 @@ export default function Hero() {
         >
           THE PROPHECY
         </Link>
+      </motion.div>
+
+      {/* Call for ... — entry points to the four scrolls */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="mt-20 w-full max-w-5xl"
+      >
+        <div className="mb-6 flex items-center justify-center gap-3 text-[11px] uppercase tracking-[0.5em] text-cyan-hp/70 font-display text-center">
+          <span className="h-px w-8 bg-cyan-hp/40" />
+          The scrolls go out
+          <span className="h-px w-8 bg-cyan-hp/40" />
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {CALLS.map((c, i) => {
+            const gold = c.accent === "gold";
+            return (
+              <motion.div
+                key={c.href}
+                initial={{ opacity: 0, y: 16, filter: "blur(8px)" }}
+                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.8, delay: 0.05 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <Link
+                  href={c.href}
+                  className={`group relative flex h-full flex-col gap-2 overflow-hidden rounded-lg border px-4 py-4 transition ${
+                    gold
+                      ? "border-gold-hp/50 bg-gold-hp/10 hover:bg-gold-hp/15 hover:border-gold-hp/80 hover:shadow-[0_0_24px_rgba(212,175,55,0.3)]"
+                      : "border-cyan-hp/40 bg-cyan-hp/5 hover:bg-cyan-hp/10 hover:border-cyan-hp/70 hover:shadow-[0_0_24px_rgba(102,252,241,0.25)]"
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span
+                      className={`font-display tracking-[0.25em] uppercase text-[10px] ${
+                        gold ? "text-gold-hp hp-glow-gold" : "text-cyan-hp/85"
+                      }`}
+                    >
+                      Call for
+                    </span>
+                    {c.open ? (
+                      <span className="rounded-full border border-gold-hp/60 bg-gold-hp/15 px-2 py-0.5 font-display text-[8px] uppercase tracking-[0.3em] text-gold-hp hp-glow-gold">
+                        open
+                      </span>
+                    ) : (
+                      <span className="rounded-full border border-silver-hp/30 px-2 py-0.5 font-display text-[8px] uppercase tracking-[0.3em] text-silver-hp/55">
+                        soon
+                      </span>
+                    )}
+                  </div>
+                  <div className="font-display tracking-tight text-silver-hp text-lg leading-tight group-hover:text-silver-hp/100">
+                    {c.short}
+                  </div>
+                  <div className="font-wizard text-[12px] text-silver-hp/60 leading-relaxed">
+                    {c.blurb}
+                  </div>
+                  <div className={`mt-1 inline-flex items-center gap-1.5 font-display text-[10px] tracking-[0.3em] uppercase ${gold ? "text-gold-hp" : "text-cyan-hp/85"}`}>
+                    {c.open ? "Apply now" : "Read more"}
+                    <span className="group-hover:translate-x-0.5 transition">→</span>
+                  </div>
+
+                  {gold && (
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3"
+                      style={{
+                        background:
+                          "linear-gradient(90deg, transparent, rgba(212,175,55,0.18), transparent)",
+                        animation: "hp-shimmer 4.2s linear infinite",
+                      }}
+                    />
+                  )}
+                </Link>
+              </motion.div>
+            );
+          })}
+        </div>
       </motion.div>
 
       {/* Full-width Map with mascot orb pinned bottom-right */}

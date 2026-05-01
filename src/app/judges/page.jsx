@@ -18,6 +18,7 @@ export default function JudgesPage() {
         accent="Mentors"
         lede="Wise hands and sharp eyes, summoned to guide and to judge. The call to the council will open soon."
         whisper="“No spell is complete until elders have weighed it.”"
+        apply={{ open: false, label: "APPLY NOW" }}
       />
       <Footer />
     </main>

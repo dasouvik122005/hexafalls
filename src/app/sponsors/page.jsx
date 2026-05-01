@@ -18,6 +18,7 @@ export default function SponsorsPage() {
         accent="Sponsors"
         lede="The hall is large, the journey long, and the patrons we walk with shape the magic we can cast. Sponsorship scrolls will be unfurled soon."
         whisper="“Even the brightest fire is fed by the hands that carry the wood.”"
+        apply={{ open: false, label: "BECOME A PATRON" }}
       />
       <Footer />
     </main>

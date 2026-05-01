@@ -11,12 +11,19 @@ import RoughFrame from "./RoughFrame";
  * Generic "Coming Soon" page in the wizarding theme.
  * Used for stubbed routes (core team, sponsors, timeline, register, judges, etc.)
  */
+/**
+ * `apply` shape:
+ *   { href: string, label?: string, open?: boolean, external?: boolean }
+ * - open=false renders a disabled "APPLY NOW · COMING SOON" pill
+ * - open=true renders an active gold "APPLY NOW ↗" link (use external for new tab)
+ */
 export default function ComingSoon({
   eyebrow = "A scroll yet to be inked",
   title  = "Coming",
   accent = "Soon",
   lede   = "The owls are still in flight. This corridor of the castle will open soon — return for the unveiling.",
   whisper = "“Patience, young wizard. The map reveals itself in due course.”",
+  apply,
 }) {
   const sectionRef = useRef(null);
 
@@ -132,17 +139,59 @@ export default function ComingSoon({
         Inscription in progress
       </motion.div>
 
-      {/* Back */}
+      {/* Apply CTA + Back */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 1, delay: 0.5 }}
-        className="mt-12"
+        className="mt-12 flex flex-col sm:flex-row items-center gap-4"
       >
+        {apply && (apply.open ? (
+          <a
+            href={apply.href}
+            target={apply.external ? "_blank" : undefined}
+            rel={apply.external ? "noopener noreferrer" : undefined}
+            className="relative inline-flex items-center gap-3 overflow-hidden rounded-full border border-gold-hp/60 bg-gold-hp/10 px-7 py-3 font-display tracking-[0.3em] text-[12px] text-gold-hp hp-glow-gold hover:bg-gold-hp/15 hover:border-gold-hp hover:shadow-[0_0_24px_rgba(212,175,55,0.35)] transition"
+          >
+            <span className="relative z-10">{apply.label || "APPLY NOW"}</span>
+            <span className="relative z-10">↗</span>
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3"
+              style={{
+                background:
+                  "linear-gradient(90deg, transparent, rgba(212,175,55,0.25), transparent)",
+                animation: "hp-shimmer 3.2s linear infinite",
+              }}
+            />
+          </a>
+        ) : (
+          <button
+            type="button"
+            disabled
+            aria-disabled="true"
+            className="relative inline-flex items-center gap-3 rounded-full border border-cyan-hp/50 bg-cyan-hp/10 px-7 py-3 font-display tracking-[0.3em] text-[12px] text-cyan-hp cursor-not-allowed select-none overflow-hidden hp-pulse"
+          >
+            <span className="relative z-10">{apply.label || "APPLY NOW"}</span>
+            <span className="relative z-10 text-[9px] tracking-[0.25em] px-2 py-0.5 rounded-full border border-gold-hp/60 bg-gold-hp/10 text-gold-hp hp-glow-gold">
+              COMING SOON
+            </span>
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3"
+              style={{
+                background:
+                  "linear-gradient(90deg, transparent, rgba(102,252,241,0.25), transparent)",
+                animation: "hp-shimmer 3.2s linear infinite",
+              }}
+            />
+          </button>
+        ))}
+
         <Link
           href="/"
-          className="inline-flex items-center justify-center rounded-full border border-silver-hp/30 px-8 py-3 font-display tracking-[0.3em] text-[11px] text-silver-hp/80 hover:text-silver-hp hover:border-silver-hp/70 transition"
+          className="inline-flex items-center justify-center rounded-full border border-silver-hp/30 px-7 py-3 font-display tracking-[0.3em] text-[11px] text-silver-hp/80 hover:text-silver-hp hover:border-silver-hp/70 transition"
         >
           ← BACK TO THE HALL
         </Link>
