@@ -176,7 +176,7 @@ export default function Footer() {
       <div className="relative border-t border-cyan-hp/10">
         <div className="mx-auto max-w-7xl px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] uppercase tracking-[0.3em] text-silver-hp/40 font-display">
           <span>© {new Date().getFullYear()} Hexafalls</span>
-          <span className="text-silver-hp/30">cast with care · no muggles harmed</span>
+          <span className="text-silver-hp/60">developed by @elixpo on GitHub</span>
         </div>
       </div>
     </footer>
