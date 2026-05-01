@@ -84,6 +84,24 @@ export default function Footer() {
           A wizarding hackathon, conjured by GDG on Campus · JIS University.
           More scrolls of prophecy unfurling soon.
         </p>
+
+        {/* Socials */}
+        <ul className="mt-3 flex items-center gap-3" aria-label="Follow Hexafalls">
+          {SOCIALS.map((s) => (
+            <li key={s.name}>
+              <a
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={s.name}
+                title={s.name}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-silver-hp/25 bg-slate-hp/50 text-silver-hp/75 hover:text-cyan-hp hover:border-cyan-hp/60 hover:shadow-[0_0_18px_rgba(102,252,241,0.25)] transition"
+              >
+                {s.icon}
+              </a>
+            </li>
+          ))}
+        </ul>
       </motion.div>
 
       <div className="relative mx-auto max-w-7xl px-6 pb-14 grid gap-10 md:grid-cols-3 items-start">
