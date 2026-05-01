@@ -1,0 +1,37 @@
+/**
+ * Cloudflare Worker config for HexaFalls.
+ * Deploy with `bun run deploy` (or `npm run deploy`) after `wrangler login`.
+ *
+ * Custom domain (hexafalls.org) is bound via the `routes` field below — make
+ * sure the zone is on the same Cloudflare account `wrangler` is logged into.
+ *
+ * Docs: https://developers.cloudflare.com/workers/frameworks/framework-guides/nextjs
+ */
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "hexafalls",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-04-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+
+  // Static assets emitted by @opennextjs/cloudflare
+  "assets": {
+    "binding": "ASSETS",
+    "directory": ".open-next/assets"
+  },
+
+  // Bind hexafalls.org (and www.) to this Worker. Zone must be on this CF account.
+  "routes": [
+    { "pattern": "hexafalls.org", "custom_domain": true },
+    { "pattern": "www.hexafalls.org", "custom_domain": true }
+  ],
+
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  }
+
+  // KV / R2 / D1 bindings can be added here later if you need server-side state.
+  // "kv_namespaces": [{ "binding": "KV", "id": "<id>" }],
+  // "r2_buckets":    [{ "binding": "R2", "bucket_name": "<name>" }],
+}
