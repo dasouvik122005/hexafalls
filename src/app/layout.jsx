@@ -29,10 +29,9 @@ const SITE_DESCRIPTION =
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://hexafalls.org";
 
-// Brand mark used for OG / Twitter previews when no custom banner is provided
-// per page. Drop the wide social banner at /public/banners/og.png and update
-// `OG_IMAGE` to point to it once it lands.
-const OG_IMAGE = "/logos/main_logo.png";
+// Wide social banner used for OG / Twitter previews. Per-page metadata can
+// override `openGraph.images` to provide a different banner.
+const OG_IMAGE = "/banners/seo_banner.png";
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
