@@ -22,10 +22,13 @@ export default function RoughFrame({
   className = "",
   inner = "",        // class for the inner content wrapper
   as: Tag = "div",
+  mist = true,       // soft drifting cloud halo around the frame
+  mistColor = stroke,
 }) {
   const wrapRef = useRef(null);
   const svgRef  = useRef(null);
   const [size, setSize] = useState({ w: 0, h: 0 });
+  const [drawn, setDrawn] = useState(false);
 
   // Observe size so the sketch reflows with content.
   useEffect(() => {
@@ -67,18 +70,57 @@ export default function RoughFrame({
         }
       );
       svgRef.current.appendChild(node);
+
+      // Animate strokes in: fade + scale, plus stroke-dashoffset draw-on
+      // for each path so the sketch feels drawn rather than popping in.
+      const paths = svgRef.current.querySelectorAll("path");
+      paths.forEach((p, i) => {
+        try {
+          const len = p.getTotalLength();
+          if (!isFinite(len) || len <= 0) return;
+          p.style.strokeDasharray  = `${len}`;
+          p.style.strokeDashoffset = `${len}`;
+          p.style.transition       = `stroke-dashoffset 900ms cubic-bezier(0.22,1,0.36,1) ${i * 60}ms, opacity 600ms ease-out ${i * 60}ms`;
+          p.style.opacity          = "0";
+          // next frame → trigger transition
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              p.style.strokeDashoffset = "0";
+              p.style.opacity          = "1";
+            });
+          });
+        } catch { /* ignore filled paths without length */ }
+      });
+
+      setDrawn(true);
     })();
     return () => { cancelled = true; };
   }, [size.w, size.h, seed, stroke, strokeWidth, fill, fillStyle, hachureGap, roughness, bowing, radius]);
 
   return (
-    <Tag ref={wrapRef} className={`relative ${className}`}>
+    <Tag ref={wrapRef} className={`relative ${className}`} style={{ overflow: "visible" }}>
+      {mist && (
+        <div
+          aria-hidden="true"
+          className="rf-mist pointer-events-none absolute"
+          style={{ inset: "-60px", "--mist": mistColor }}
+        >
+          <span className="rf-mist__blob rf-mist__blob--a" />
+          <span className="rf-mist__blob rf-mist__blob--b" />
+          <span className="rf-mist__blob rf-mist__blob--c" />
+          <span className="rf-mist__blob rf-mist__blob--d" />
+        </div>
+      )}
       <svg
         ref={svgRef}
         className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
         aria-hidden="true"
+        style={{
+          opacity: drawn ? 1 : 0,
+          transition: "opacity 600ms ease-out",
+        }}
       />
-      <div className={`relative`} style={{ padding }}>
+      <div className="relative" style={{ padding }}>
         <div className={inner}>{children}</div>
       </div>
     </Tag>

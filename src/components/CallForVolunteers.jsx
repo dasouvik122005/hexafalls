@@ -11,7 +11,7 @@ import RoughFrame from "./RoughFrame";
 const VOLUNTEER_FORM_URL = "https://forms.gle/wM2qEnr3oB95wss89";
 
 // Drop the banner art at /public/volunteers-banner.png (or .jpg/.webp)
-const BANNER_SRC = "/volunteers-banner.png";
+const BANNER_SRC = "/banners/vol_form.png";
 
 const PERKS = [
   { rune: "✦", title: "Wear the badge", body: "Crest, robes, and a name on the wall of helpers." },
@@ -138,23 +138,15 @@ export default function CallForVolunteers() {
         >
           {/* Banner image holder */}
           <div className="relative w-full aspect-[21/9] sm:aspect-[21/8] overflow-hidden rounded-sm border border-silver-hp/15 bg-midnight/70">
-            {/* TODO: replace with <Image src={BANNER_SRC} fill alt="Volunteers banner" /> once asset lands */}
+
             <img
               src={BANNER_SRC}
               alt=""
               aria-hidden="true"
               onError={(e) => { e.currentTarget.style.display = "none"; }}
-              className="absolute inset-0 h-full w-full object-cover opacity-80"
+              className="absolute inset-0 h-[80%] w-full object-fill opacity-80"
             />
-            {/* Placeholder legend */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
-              <span className="font-wizard text-silver-hp/50 text-xs uppercase tracking-[0.4em]">
-                banner · placeholder
-              </span>
-              <span className="font-wizard italic text-silver-hp/35 text-[11px]">
-                drop /public/volunteers-banner.png
-              </span>
-            </div>
+
             <div className="absolute inset-0 hp-stars opacity-25 mix-blend-screen pointer-events-none" />
             <span className="absolute top-2 left-2 text-[10px] font-wizard text-gold-hp/60 tracking-widest">★ · the order</span>
             <span className="absolute bottom-2 right-2 text-[10px] font-wizard text-cyan-hp/50 tracking-widest">helpers · welcome</span>

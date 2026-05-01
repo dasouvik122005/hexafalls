@@ -90,7 +90,7 @@ export default function Hero() {
         aria-label="Presented by"
       >
         {[
-          { id: "gdg",  label: "", logo: "/logos/gdg.svg" },
+          { id: "gdg",  label: "", logo: "/logos/gdg_jisu.png" },
           { id: "jisu", label: "", logo: "/logos/jisu.svg" },
           { id: "cse",  label: "", logo: "/logos/cse.svg" },
         ].map((l, i, arr) => (
