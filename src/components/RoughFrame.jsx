@@ -71,28 +71,14 @@ export default function RoughFrame({
       );
       svgRef.current.appendChild(node);
 
-      // Animate strokes in: fade + scale, plus stroke-dashoffset draw-on
-      // for each path so the sketch feels drawn rather than popping in.
-      const paths = svgRef.current.querySelectorAll("path");
-      paths.forEach((p, i) => {
-        try {
-          const len = p.getTotalLength();
-          if (!isFinite(len) || len <= 0) return;
-          p.style.strokeDasharray  = `${len}`;
-          p.style.strokeDashoffset = `${len}`;
-          p.style.transition       = `stroke-dashoffset 900ms cubic-bezier(0.22,1,0.36,1) ${i * 60}ms, opacity 600ms ease-out ${i * 60}ms`;
-          p.style.opacity          = "0";
-          // next frame → trigger transition
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              p.style.strokeDashoffset = "0";
-              p.style.opacity          = "1";
-            });
-          });
-        } catch { /* ignore filled paths without length */ }
+      // Two RAFs so the browser commits the freshly-appended (hidden) SVG
+      // before flipping the `drawn` state — that way the opacity/blur
+      // transition on the SVG actually plays instead of snapping.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (!cancelled) setDrawn(true);
+        });
       });
-
-      setDrawn(true);
     })();
     return () => { cancelled = true; };
   }, [size.w, size.h, seed, stroke, strokeWidth, fill, fillStyle, hachureGap, roughness, bowing, radius]);
@@ -117,7 +103,12 @@ export default function RoughFrame({
         aria-hidden="true"
         style={{
           opacity: drawn ? 1 : 0,
-          transition: "opacity 600ms ease-out",
+          filter:  drawn ? "blur(0px)" : "blur(8px)",
+          transform: drawn ? "scale(1)" : "scale(1.02)",
+          transformOrigin: "center",
+          transition:
+            "opacity 800ms ease-out, filter 800ms ease-out, transform 900ms cubic-bezier(0.22,1,0.36,1)",
+          willChange: "opacity, filter, transform",
         }}
       />
       <div className="relative" style={{ padding }}>
