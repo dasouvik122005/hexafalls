@@ -31,7 +31,7 @@ const PILLARS = [
 const TIMELINE = [
   { mark: "I",   label: "Owls dispatched",   note: "Registrations open · scrolls go out" },
   { mark: "II",  label: "The gathering",     note: "Robes pressed at JIS University, Agarpara" },
-  { mark: "III", label: "The 36 hours",      note: "Build · break · brew · build again" },
+  { mark: "III", label: "The 58 hours",      note: "Build · break · brew · build again" },
   { mark: "IV",  label: "The reveal",        note: "Demos before the council of judges" },
   { mark: "V",   label: "The keeper's gift", note: "Prizes, lore, and stories carried home" },
 ];
@@ -197,9 +197,9 @@ export default function Prophecy() {
         className="mx-auto mt-24 grid max-w-5xl grid-cols-2 gap-6 sm:grid-cols-4"
       >
         {[
-          { n: "36", l: "hours of magic" },
-          { n: "5+", l: "tracks of craft" },
-          { n: "1",  l: "wizarding hall" },
+          { n: "58", l: "hours of magic" },
+          { n: "10+", l: "tracks of craft" },
+          { n: "4",  l: "wizarding hall" },
           { n: "∞",  l: "stories to carry" },
         ].map((s) => (
           <div
