@@ -113,22 +113,12 @@ export default function CallForVolunteers() {
         of HexaFalls.
       </motion.p>
 
-      {/* Banner */}
-      <motion.div
-        initial={{ opacity: 0, filter: "blur(20px)", y: 50, scale: 0.96 }}
-        whileInView={{ opacity: 1, filter: "blur(0px)", y: 0, scale: 1 }}
-        viewport={{ once: true, amount: 0.15 }}
-        transition={{
-          duration: 2.0,
-          ease: [0.22, 1, 0.36, 1],
-          filter: { duration: 2.2, ease: "easeOut" },
-          opacity: { duration: 1.6, ease: "easeOut" },
-        }}
-        className="mx-auto mt-16 w-full max-w-5xl"
-      >
+      {/* Banner — static, image centered, edges blend into the bg */}
+      <div className="mx-auto mt-16 w-full max-w-5xl">
         <RoughFrame
           seed={29}
           stroke="#D4AF37"
+          mistColor="#D4AF37"
           strokeWidth={1.4}
           roughness={1.6}
           bowing={1.2}
@@ -136,18 +126,28 @@ export default function CallForVolunteers() {
           className="w-full bg-slate-hp/40 backdrop-blur-sm"
           inner="flex flex-col gap-5"
         >
-          {/* Banner image holder */}
-          <div className="relative w-full aspect-[21/9] sm:aspect-[21/8] overflow-hidden rounded-sm border border-silver-hp/15 bg-midnight/70">
-
+          <div className="relative w-full aspect-[21/9] sm:aspect-[21/8] overflow-hidden rounded-sm bg-midnight/70 flex items-center justify-center">
             <img
               src={BANNER_SRC}
-              alt=""
-              aria-hidden="true"
-              onError={(e) => { e.currentTarget.style.display = "none"; }}
-              className="absolute inset-0 h-[80%] w-full object-fill opacity-80"
+              alt="Call for Volunteers"
+              className="block max-h-full max-w-full object-contain"
+              style={{
+                WebkitMaskImage:
+                  "radial-gradient(ellipse at center, #000 55%, transparent 95%)",
+                maskImage:
+                  "radial-gradient(ellipse at center, #000 55%, transparent 95%)",
+              }}
             />
-
-            <div className="absolute inset-0 hp-stars opacity-25 mix-blend-screen pointer-events-none" />
+            {/* edge vignette so any rectangular image dissolves into the dark bg */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(ellipse at center, transparent 55%, rgba(11,12,16,0.55) 85%, rgba(11,12,16,0.95) 100%)",
+              }}
+            />
+            <div className="absolute inset-0 hp-stars opacity-15 mix-blend-screen pointer-events-none" />
             <span className="absolute top-2 left-2 text-[10px] font-wizard text-gold-hp/60 tracking-widest">★ · the order</span>
             <span className="absolute bottom-2 right-2 text-[10px] font-wizard text-cyan-hp/50 tracking-widest">helpers · welcome</span>
           </div>
@@ -156,7 +156,7 @@ export default function CallForVolunteers() {
             “No spell holds without the hands that steady the wand.”
           </div>
         </RoughFrame>
-      </motion.div>
+      </div>
 
       {/* Perks */}
       <div className="mx-auto mt-20 grid max-w-5xl gap-6 sm:grid-cols-3">

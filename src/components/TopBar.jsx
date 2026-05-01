@@ -8,11 +8,14 @@ export default function TopBar() {
     <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-midnight/60 border-b border-cyan-hp/10">
       <div className="mx-auto max-w-7xl px-5 py-3 flex items-center justify-between gap-4">
         {/* Left: brand */}
-        <motion.a
-          href="#"
+        <motion.div
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7 }}
+        >
+        <Link
+          href="/"
+          aria-label="HexaFalls — home"
           className="flex items-center gap-3 group"
         >
           <span
@@ -25,7 +28,8 @@ export default function TopBar() {
           <span className="font-display tracking-[0.4em] text-sm text-silver-hp/85 group-hover:text-cyan-hp transition">
             HEXAFALLS
           </span>
-        </motion.a>
+        </Link>
+        </motion.div>
 
         {/* Right: nav */}
         <motion.nav
