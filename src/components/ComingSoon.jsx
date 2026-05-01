@@ -24,7 +24,20 @@ export default function ComingSoon({
   lede   = "The owls are still in flight. This corridor of the castle will open soon — return for the unveiling.",
   whisper = "“Patience, young wizard. The map reveals itself in due course.”",
   apply,
+  // theme overrides — when set, replace the default cyan/gold palette
+  accentColor,           // hex e.g. "#E879F9"
+  accentGlow,            // rgba e.g. "rgba(232,121,249,0.30)"
+  // back button
+  backHref  = "/",
+  backLabel = "← BACK TO THE HALL",
 }) {
+  const themed = Boolean(accentColor);
+  const titleAccentStyle = themed
+    ? { color: accentColor, textShadow: `0 0 28px ${accentGlow || accentColor}` }
+    : undefined;
+  const titleAccentClass = themed
+    ? "block text-[14vw] sm:text-[9vw] md:text-[7vw] mt-2"
+    : "block text-gold-hp hp-glow-gold text-[14vw] sm:text-[9vw] md:text-[7vw] mt-2";
   const sectionRef = useRef(null);
 
   const { scrollYProgress } = useScroll({
@@ -96,7 +109,7 @@ export default function ComingSoon({
           style={{ perspective: 800 }}
         >
           <span className="block">{splitLetters(title)}</span>
-          <span className="block text-gold-hp hp-glow-gold text-[14vw] sm:text-[9vw] md:text-[7vw] mt-2">
+          <span className={titleAccentClass} style={titleAccentStyle}>
             {splitLetters(accent)}
           </span>
         </h1>
@@ -106,8 +119,8 @@ export default function ComingSoon({
       <div className="mx-auto mt-14 w-full max-w-2xl">
         <RoughFrame
           seed={37}
-          stroke="#66FCF1"
-          mistColor="#66FCF1"
+          stroke={accentColor || "#66FCF1"}
+          mistColor={accentColor || "#66FCF1"}
           strokeWidth={1.4}
           roughness={1.5}
           bowing={1.2}
@@ -130,29 +143,50 @@ export default function ComingSoon({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 1, delay: 0.4 }}
-        className="mt-12 flex items-center gap-3 font-display text-[10px] uppercase tracking-[0.5em] text-gold-hp/80"
+        className="mt-12 flex items-center gap-3 font-display text-[10px] uppercase tracking-[0.5em]"
+        style={themed ? { color: accentColor } : undefined}
       >
         <span className="relative flex h-2 w-2">
-          <span className="absolute inline-flex h-full w-full rounded-full bg-gold-hp opacity-60 animate-ping" />
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-gold-hp" />
+          <span
+            className="absolute inline-flex h-full w-full rounded-full opacity-60 animate-ping"
+            style={{ backgroundColor: accentColor || "#D4AF37" }}
+          />
+          <span
+            className="relative inline-flex h-2 w-2 rounded-full"
+            style={{ backgroundColor: accentColor || "#D4AF37" }}
+          />
         </span>
-        Inscription in progress
+        <span className={themed ? "" : "text-gold-hp/80"}>Inscription in progress</span>
       </motion.div>
 
-      {/* Apply CTA + Back */}
+      {/* Apply CTA + Back — sits side-by-side on every breakpoint */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 1, delay: 0.5 }}
-        className="mt-12 flex flex-col sm:flex-row items-center gap-4"
+        className="mt-12 flex flex-row flex-wrap items-center justify-center gap-4"
       >
         {apply && (apply.open ? (
           <a
             href={apply.href}
             target={apply.external ? "_blank" : undefined}
             rel={apply.external ? "noopener noreferrer" : undefined}
-            className="relative inline-flex items-center gap-3 overflow-hidden rounded-full border border-gold-hp/60 bg-gold-hp/10 px-7 py-3 font-display tracking-[0.3em] text-[12px] text-gold-hp hp-glow-gold hover:bg-gold-hp/15 hover:border-gold-hp hover:shadow-[0_0_24px_rgba(212,175,55,0.35)] transition"
+            className="relative inline-flex items-center gap-3 overflow-hidden rounded-full border px-7 py-3 font-display tracking-[0.3em] text-[12px] transition"
+            style={
+              themed
+                ? {
+                    borderColor: `${accentColor}99`,
+                    backgroundColor: `${accentColor}1a`,
+                    color: accentColor,
+                    textShadow: `0 0 14px ${accentGlow || accentColor}`,
+                  }
+                : {
+                    borderColor: "#D4AF37cc",
+                    backgroundColor: "rgba(212,175,55,0.10)",
+                    color: "#D4AF37",
+                  }
+            }
           >
             <span className="relative z-10">{apply.label || "APPLY NOW"}</span>
             <span className="relative z-10">↗</span>
@@ -160,8 +194,7 @@ export default function ComingSoon({
               aria-hidden="true"
               className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3"
               style={{
-                background:
-                  "linear-gradient(90deg, transparent, rgba(212,175,55,0.25), transparent)",
+                background: `linear-gradient(90deg, transparent, ${accentColor ? accentGlow || `${accentColor}55` : "rgba(212,175,55,0.25)"}, transparent)`,
                 animation: "hp-shimmer 3.2s linear infinite",
               }}
             />
@@ -171,7 +204,16 @@ export default function ComingSoon({
             type="button"
             disabled
             aria-disabled="true"
-            className="relative inline-flex items-center gap-3 rounded-full border border-cyan-hp/50 bg-cyan-hp/10 px-7 py-3 font-display tracking-[0.3em] text-[12px] text-cyan-hp cursor-not-allowed select-none overflow-hidden hp-pulse"
+            className="relative inline-flex items-center gap-3 rounded-full border px-7 py-3 font-display tracking-[0.3em] text-[12px] cursor-not-allowed select-none overflow-hidden hp-pulse"
+            style={
+              themed
+                ? {
+                    borderColor: `${accentColor}80`,
+                    backgroundColor: `${accentColor}1a`,
+                    color: accentColor,
+                  }
+                : { borderColor: "rgba(102,252,241,0.5)", backgroundColor: "rgba(102,252,241,0.10)", color: "#66FCF1" }
+            }
           >
             <span className="relative z-10">{apply.label || "APPLY NOW"}</span>
             <span className="relative z-10 text-[9px] tracking-[0.25em] px-2 py-0.5 rounded-full border border-gold-hp/60 bg-gold-hp/10 text-gold-hp hp-glow-gold">
@@ -181,8 +223,7 @@ export default function ComingSoon({
               aria-hidden="true"
               className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3"
               style={{
-                background:
-                  "linear-gradient(90deg, transparent, rgba(102,252,241,0.25), transparent)",
+                background: `linear-gradient(90deg, transparent, ${accentColor ? `${accentColor}40` : "rgba(102,252,241,0.25)"}, transparent)`,
                 animation: "hp-shimmer 3.2s linear infinite",
               }}
             />
@@ -190,10 +231,10 @@ export default function ComingSoon({
         ))}
 
         <Link
-          href="/"
+          href={backHref}
           className="inline-flex items-center justify-center rounded-full border border-silver-hp/30 px-7 py-3 font-display tracking-[0.3em] text-[11px] text-silver-hp/80 hover:text-silver-hp hover:border-silver-hp/70 transition"
         >
-          ← BACK TO THE HALL
+          {backLabel}
         </Link>
       </motion.div>
     </section>
