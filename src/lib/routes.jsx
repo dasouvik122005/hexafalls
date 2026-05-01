@@ -54,42 +54,39 @@ export const SITEMAP = [
   },
 ];
 
-// Tracks / events that run during HexaFalls.
+// Tracks / events that run during HexaFalls — each carries its own house color.
 export const EVENTS = [
   {
     slug: "hackathon",
     name: "The Hackathon",
     rune: "✦",
     blurb: "Thirty-six hours of pure spellwork — full-stack, AI, anything that ships.",
-    accent: "gold",
+    color: "#D4AF37", // gold
+    glow:  "rgba(212,175,55,0.30)",
   },
   {
     slug: "cp",
     name: "Competitive Programming",
     rune: "⌬",
     blurb: "Duels of logic. Sharpen the wand, race the clock.",
-    accent: "cyan",
+    color: "#66FCF1", // cyan
+    glow:  "rgba(102,252,241,0.30)",
   },
   {
     slug: "gaming",
     name: "Gaming Arena",
     rune: "✶",
     blurb: "Stadium of charms — controller in hand, glory on the line.",
-    accent: "cyan",
+    color: "#E879F9", // magenta
+    glow:  "rgba(232,121,249,0.30)",
   },
   {
     slug: "hardware",
     name: "Hardware Hack",
     rune: "❖",
     blurb: "Solder, sparks, sensors. Magic that you can hold.",
-    accent: "cyan",
-  },
-  {
-    slug: "software",
-    name: "Software Showdown",
-    rune: "✧",
-    blurb: "Polish a product, ship a relic, win the council's nod.",
-    accent: "cyan",
+    color: "#34D399", // emerald
+    glow:  "rgba(52,211,153,0.30)",
   },
 ];
 

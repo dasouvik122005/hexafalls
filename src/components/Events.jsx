@@ -110,75 +110,95 @@ export default function Events() {
         Full briefs unfurling soon
       </motion.div>
 
-      {/* Event cards */}
-      <div className="mx-auto mt-16 grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {EVENTS.map((e, i) => {
-          const gold = e.accent === "gold";
-          const stroke = gold ? "#D4AF37" : "#66FCF1";
-          return (
-            <motion.div
-              key={e.slug}
-              initial={{ opacity: 0, filter: "blur(16px)", y: 30 }}
-              whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 1.2, delay: 0.05 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-              className="h-full"
+      {/* Event cards — each carries its own house color */}
+      <div className="mx-auto mt-16 grid max-w-6xl gap-6 sm:grid-cols-2">
+        {EVENTS.map((e, i) => (
+          <motion.div
+            key={e.slug}
+            initial={{ opacity: 0, filter: "blur(16px)", y: 30 }}
+            whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 1.2, delay: 0.05 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+            className="h-full"
+          >
+            <RoughFrame
+              seed={51 + i * 9}
+              stroke={e.color}
+              mistColor={e.color}
+              strokeWidth={1.4}
+              roughness={1.5}
+              bowing={1.2}
+              padding={22}
+              className="h-full bg-slate-hp/30 backdrop-blur-sm"
+              inner="flex h-full flex-col gap-3"
             >
-              <RoughFrame
-                seed={51 + i * 9}
-                stroke={stroke}
-                mistColor={stroke}
-                strokeWidth={1.4}
-                roughness={1.5}
-                bowing={1.2}
-                padding={22}
-                className="h-full bg-slate-hp/30 backdrop-blur-sm"
-                inner="flex h-full flex-col gap-3"
+              <div className="flex items-center justify-between">
+                <span
+                  className="font-wizard text-3xl"
+                  style={{
+                    color: e.color,
+                    textShadow: `0 0 14px ${e.glow}`,
+                  }}
+                  aria-hidden="true"
+                >
+                  {e.rune}
+                </span>
+                <span
+                  className="rounded-full border px-2 py-0.5 font-display text-[8px] uppercase tracking-[0.3em]"
+                  style={{
+                    borderColor: `${e.color}55`,
+                    color: `${e.color}cc`,
+                    backgroundColor: `${e.color}1a`,
+                  }}
+                >
+                  soon
+                </span>
+              </div>
+              <h2
+                className="font-display tracking-tight text-2xl leading-tight"
+                style={{ color: e.color, textShadow: `0 0 18px ${e.glow}` }}
               >
-                <div className="flex items-center justify-between">
-                  <span
-                    className={`font-wizard text-3xl ${
-                      gold ? "text-gold-hp hp-glow-gold" : "text-cyan-hp hp-glow"
-                    }`}
-                    aria-hidden="true"
-                  >
-                    {e.rune}
-                  </span>
-                  <span className="rounded-full border border-silver-hp/30 px-2 py-0.5 font-display text-[8px] uppercase tracking-[0.3em] text-silver-hp/55">
-                    soon
-                  </span>
-                </div>
-                <h2 className="font-display tracking-tight text-silver-hp text-2xl leading-tight">
-                  {e.name}
-                </h2>
-                <p className="font-wizard text-silver-hp/65 text-sm leading-relaxed">
-                  {e.blurb}
-                </p>
+                {e.name}
+              </h2>
+              <p className="font-wizard text-silver-hp/65 text-sm leading-relaxed">
+                {e.blurb}
+              </p>
 
-                <div className="mt-auto flex flex-wrap gap-2 pt-2">
-                  <Link
-                    href={`/events/${e.slug}`}
-                    className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] transition ${
-                      gold
-                        ? "border-gold-hp/50 bg-gold-hp/10 text-gold-hp hover:border-gold-hp hover:bg-gold-hp/15"
-                        : "border-cyan-hp/45 bg-cyan-hp/10 text-cyan-hp hover:border-cyan-hp hover:bg-cyan-hp/15"
-                    }`}
-                  >
-                    Details
-                    <span>→</span>
-                  </Link>
-                  <Link
-                    href={`/events/${e.slug}/prizes`}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-silver-hp/25 bg-slate-hp/40 px-3 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] text-silver-hp/75 hover:border-gold-hp/60 hover:text-gold-hp transition"
-                  >
-                    Prizes
-                    <span>↗</span>
-                  </Link>
-                </div>
-              </RoughFrame>
-            </motion.div>
-          );
-        })}
+              <div className="mt-auto flex flex-wrap gap-2 pt-2">
+                <Link
+                  href={`/events/${e.slug}`}
+                  className="group inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] transition"
+                  style={{
+                    borderColor: `${e.color}80`,
+                    color: e.color,
+                    backgroundColor: `${e.color}1a`,
+                  }}
+                >
+                  Details
+                  <span className="group-hover:translate-x-0.5 transition">→</span>
+                </Link>
+                <Link
+                  href={`/events/${e.slug}/prizes`}
+                  className="group inline-flex items-center gap-1.5 rounded-full border border-silver-hp/25 bg-slate-hp/40 px-3 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] text-silver-hp/75 transition"
+                  style={{
+                    /* hover handled inline via CSS variables */
+                  }}
+                  onMouseEnter={(ev) => {
+                    ev.currentTarget.style.borderColor = `${e.color}aa`;
+                    ev.currentTarget.style.color = e.color;
+                  }}
+                  onMouseLeave={(ev) => {
+                    ev.currentTarget.style.borderColor = "";
+                    ev.currentTarget.style.color = "";
+                  }}
+                >
+                  Prizes
+                  <span className="group-hover:translate-x-0.5 transition">↗</span>
+                </Link>
+              </div>
+            </RoughFrame>
+          </motion.div>
+        ))}
       </div>
 
       {/* Back */}
