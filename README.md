@@ -1,7 +1,5 @@
 <div align="center">
 
-  <img src="public/banners/seo_banner.png" alt="HexaFalls Techfest" width="100%" />
-
   <br />
 
   <img src="public/logos/main_logo.png" alt="HexaFalls" width="120" />
@@ -11,11 +9,15 @@
 
   *Owls have been dispatched. Robes pressed, wands tuned.*
 
-  [hexafalls.org](https://hexafalls.org) · JIS University, Agarpara, Kolkata
+  GDG JIS University · JIS University, Agarpara, Kolkata
 
 </div>
 
 ---
+
+<img src="public/banners/seo_banner.png" alt="HexaFalls Techfest" width="100%" />
+
+
 
 ## The Prophecy
 
