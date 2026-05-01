@@ -39,10 +39,15 @@ export default function TopBar() {
             onClick={() => setOpen(false)}
           >
             <span
-              className="flex h-9 w-9 items-center justify-center rounded-md border border-cyan-hp/40 bg-slate-hp/60 group-hover:border-cyan-hp/80 transition"
+              className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-md border border-cyan-hp/40 bg-slate-hp/60 group-hover:border-cyan-hp/80 transition"
               aria-label="Hexafalls logo"
             >
-              <span className="font-display text-cyan-hp text-lg font-bold">H</span>
+              <img
+                src="/logos/main_logo.png"
+                alt="HexaFalls"
+                className="h-full w-full object-contain p-1"
+                draggable={false}
+              />
             </span>
             <span className="font-display tracking-[0.4em] text-sm text-silver-hp/85 group-hover:text-cyan-hp transition">
               HEXAFALLS

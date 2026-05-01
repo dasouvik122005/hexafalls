@@ -76,8 +76,13 @@ export default function Footer() {
         className="relative mx-auto max-w-7xl px-6 pt-14 pb-6 flex flex-col items-center text-center gap-3"
       >
         <div className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-md border border-cyan-hp/40 bg-slate-hp/60">
-            <span className="font-display text-cyan-hp text-lg font-bold">H</span>
+          <span className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-md border border-cyan-hp/40 bg-slate-hp/60">
+            <img
+              src="/logos/main_logo.png"
+              alt="HexaFalls"
+              className="h-full w-full object-contain p-1"
+              draggable={false}
+            />
           </span>
           <span className="font-display tracking-[0.4em] text-silver-hp/85">
             HEXAFALLS
