@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { SITEMAP } from "@/lib/routes";
 
 export default function TopBar() {
   return (

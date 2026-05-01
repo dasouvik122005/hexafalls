@@ -3,16 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { SITEMAP } from "@/lib/routes";
 
-const SITEMAP = [
-  { href: "/about",     label: "The Prophecy" },
-  { href: "/timeline",  label: "Timeline",            soon: true },
-  { href: "/register",  label: "Registration",        soon: true },
-  { href: "/core-team", label: "Call for Core Team",  soon: true },
-  { href: "/judges",    label: "Judges & Mentors",    soon: true },
-  { href: "/sponsors",  label: "Call for Sponsors",   soon: true },
-  { href: "/volunteer", label: "Call for Volunteers" },
-];
 
 const EMAIL    = "teams.hexafalls@gmail.com";
 const GDG_LINK = "https://gdg.community.dev/gdg-on-campus-jis-university-kolkata-india/";
@@ -140,7 +132,7 @@ export default function Footer() {
           </button>
         </motion.div>
 
-        {/* MIDDLE — sitemap */}
+        {/* MIDDLE — sitemap (icon row) */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -151,21 +143,49 @@ export default function Footer() {
           <div className="font-display text-[11px] uppercase tracking-[0.4em] text-cyan-hp/70">
             The Corridors
           </div>
-          <ul className="flex flex-col gap-1.5 md:items-center">
+          <ul className="flex flex-wrap items-center justify-center gap-2.5" aria-label="Sitemap">
             {SITEMAP.map((s) => (
-              <li key={s.href}>
+              <li key={s.href} className="relative group">
                 <Link
                   href={s.href}
-                  className="group inline-flex items-center gap-2 text-[13px] text-silver-hp/75 hover:text-cyan-hp transition"
+                  aria-label={s.label}
+                  className={`relative inline-flex h-9 w-9 items-center justify-center rounded-full border transition ${
+                    s.soon
+                      ? "border-gold-hp/35 bg-gold-hp/10 text-gold-hp/85 hover:border-gold-hp/70 hover:bg-gold-hp/15 hover:shadow-[0_0_18px_rgba(212,175,55,0.3)]"
+                      : "border-cyan-hp/40 bg-cyan-hp/10 text-cyan-hp hover:border-cyan-hp/70 hover:bg-cyan-hp/15 hover:shadow-[0_0_18px_rgba(102,252,241,0.3)]"
+                  }`}
                 >
-                  <span className="font-wizard">{s.label}</span>
+                  {s.icon}
                   {s.soon && (
-                    <span className="rounded-full border border-gold-hp/40 bg-gold-hp/10 px-1.5 py-0.5 font-display text-[8px] uppercase tracking-[0.25em] text-gold-hp/80">
-                      soon
-                    </span>
+                    <span
+                      aria-hidden="true"
+                      className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-gold-hp shadow-[0_0_8px_rgba(212,175,55,0.6)]"
+                    />
                   )}
-                  <span className="text-cyan-hp/50 group-hover:translate-x-0.5 transition">→</span>
                 </Link>
+
+                {/* tooltip */}
+                <div
+                  role="tooltip"
+                  className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-full mb-2 origin-bottom scale-95 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:scale-100 transition-all duration-200 ease-out z-10"
+                >
+                  <div
+                    className={`relative whitespace-nowrap rounded-md border bg-midnight/95 backdrop-blur-sm px-2.5 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] shadow-[0_4px_24px_rgba(0,0,0,0.6)] ${
+                      s.soon
+                        ? "border-gold-hp/50 text-gold-hp hp-glow-gold"
+                        : "border-cyan-hp/50 text-cyan-hp hp-glow"
+                    }`}
+                  >
+                    {s.label}
+                    {s.soon && <span className="ml-2 text-[8px] tracking-[0.25em] text-gold-hp/70">· soon</span>}
+                    <span
+                      aria-hidden="true"
+                      className={`absolute -bottom-1 left-1/2 -translate-x-1/2 h-2 w-2 rotate-45 border-r border-b bg-midnight/95 ${
+                        s.soon ? "border-gold-hp/50" : "border-cyan-hp/50"
+                      }`}
+                    />
+                  </div>
+                </div>
               </li>
             ))}
           </ul>
