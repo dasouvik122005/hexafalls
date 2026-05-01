@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 import RoughFrame from "./RoughFrame";
 
 /**
@@ -36,28 +35,7 @@ export default function LocationMap() {
   }, []);
 
   return (
-    <motion.div
-      initial={{
-        filter:  "blur(20px)",
-        opacity: 0,
-        y:       80,
-        scale:   0.92,
-      }}
-      whileInView={{
-        filter:  "blur(0px)",
-        opacity: 1,
-        y:       0,
-        scale:   1,
-      }}
-      viewport={{ once: true, amount: 0.05 }}
-      transition={{
-        duration: 2.2,
-        ease: [0.22, 1, 0.36, 1],
-        filter:  { duration: 2.4, ease: "easeOut" },
-        opacity: { duration: 2.0, ease: [0.4, 0, 0.2, 1] },
-      }}
-      className="w-full will-change-[transform,filter]"
-    >
+    <div className="w-full">
       <RoughFrame
         seed={11}
         stroke="#C5C6C7"
@@ -150,6 +128,6 @@ export default function LocationMap() {
           “I solemnly swear that I am up to no good.”
         </div>
       </RoughFrame>
-    </motion.div>
+    </div>
   );
 }

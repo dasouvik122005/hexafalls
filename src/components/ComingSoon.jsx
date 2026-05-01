@@ -96,13 +96,7 @@ export default function ComingSoon({
       </div>
 
       {/* Lede in a rough frame */}
-      <motion.div
-        initial={{ opacity: 0, filter: "blur(20px)", y: 40 }}
-        whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
-        className="mx-auto mt-14 w-full max-w-2xl"
-      >
+      <div className="mx-auto mt-14 w-full max-w-2xl">
         <RoughFrame
           seed={37}
           stroke="#66FCF1"
@@ -121,7 +115,7 @@ export default function ComingSoon({
             {whisper}
           </p>
         </RoughFrame>
-      </motion.div>
+      </div>
 
       {/* Pulsing "owl in flight" indicator */}
       <motion.div

@@ -140,17 +140,7 @@ export default function Prophecy() {
       {/* Pillars / "the calling" */}
       <div className="mx-auto mt-24 grid max-w-6xl gap-8 sm:grid-cols-3">
         {PILLARS.map((p, i) => (
-          <motion.div
-            key={p.title}
-            initial={{ opacity: 0, filter: "blur(18px)", y: 40 }}
-            whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{
-              duration: 1.4,
-              ease: [0.22, 1, 0.36, 1],
-              delay: 0.1 + i * 0.15,
-            }}
-          >
+          <div key={p.title}>
             <RoughFrame
               seed={13 + i * 7}
               stroke={i === 1 ? "#D4AF37" : "#66FCF1"}
@@ -176,7 +166,7 @@ export default function Prophecy() {
                 {p.body}
               </p>
             </RoughFrame>
-          </motion.div>
+          </div>
         ))}
       </div>
 
