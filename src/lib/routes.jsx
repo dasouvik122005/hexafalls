@@ -54,7 +54,11 @@ export const SITEMAP = [
   },
 ];
 
-// Tracks / events that run during HexaFalls — each carries its own house color.
+// Tracks / events that run during HexaFalls — one per Hogwarts house.
+//   Hackathon → Gryffindor gold
+//   CP        → Ravenclaw blue
+//   Gaming    → (Gryffindor) red
+//   Hardware  → Slytherin green
 export const EVENTS = [
   {
     slug: "hackathon",
@@ -62,31 +66,31 @@ export const EVENTS = [
     rune: "✦",
     blurb: "Thirty-six hours of pure spellwork — full-stack, AI, anything that ships.",
     color: "#D4AF37", // gold
-    glow:  "rgba(212,175,55,0.30)",
+    glow:  "rgba(212,175,55,0.35)",
   },
   {
     slug: "cp",
     name: "Competitive Programming",
     rune: "⌬",
     blurb: "Duels of logic. Sharpen the wand, race the clock.",
-    color: "#66FCF1", // cyan
-    glow:  "rgba(102,252,241,0.30)",
+    color: "#3B82F6", // ravenclaw blue
+    glow:  "rgba(59,130,246,0.40)",
   },
   {
     slug: "gaming",
     name: "Gaming Arena",
     rune: "✶",
     blurb: "Stadium of charms — controller in hand, glory on the line.",
-    color: "#E879F9", // magenta
-    glow:  "rgba(232,121,249,0.30)",
+    color: "#EF4444", // gryffindor red
+    glow:  "rgba(239,68,68,0.40)",
   },
   {
     slug: "hardware",
     name: "Hardware Hack",
     rune: "❖",
     blurb: "Solder, sparks, sensors. Magic that you can hold.",
-    color: "#34D399", // emerald
-    glow:  "rgba(52,211,153,0.30)",
+    color: "#22C55E", // slytherin green
+    glow:  "rgba(34,197,94,0.35)",
   },
 ];
 
