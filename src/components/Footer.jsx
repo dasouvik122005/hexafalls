@@ -1,7 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
+
+const SITEMAP = [
+  { href: "/about",     label: "The Prophecy" },
+  { href: "/timeline",  label: "Timeline",            soon: true },
+  { href: "/register",  label: "Registration",        soon: true },
+  { href: "/core-team", label: "Call for Core Team",  soon: true },
+  { href: "/judges",    label: "Judges & Mentors",    soon: true },
+  { href: "/sponsors",  label: "Call for Sponsors",   soon: true },
+  { href: "/volunteer", label: "Call for Volunteers" },
+];
 
 const EMAIL    = "teams.hexafalls@gmail.com";
 const GDG_LINK = "https://gdg.community.dev/gdg-on-campus-jis-university-kolkata-india/";
@@ -129,7 +140,7 @@ export default function Footer() {
           </button>
         </motion.div>
 
-        {/* MIDDLE — sitemap placeholder */}
+        {/* MIDDLE — sitemap */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -137,13 +148,27 @@ export default function Footer() {
           transition={{ duration: 0.7, delay: 0.1 }}
           className="flex flex-col gap-3 md:items-center text-center"
         >
-          <div className="font-display text-[11px] uppercase tracking-[0.4em] text-silver-hp/40">
-            Sitemap
+          <div className="font-display text-[11px] uppercase tracking-[0.4em] text-cyan-hp/70">
+            The Corridors
           </div>
-          {/* TODO: populate sitemap links once sub-pages exist */}
-          <span className="font-wizard text-[12px] italic text-silver-hp/40">
-            charting the corridors · soon
-          </span>
+          <ul className="flex flex-col gap-1.5 md:items-center">
+            {SITEMAP.map((s) => (
+              <li key={s.href}>
+                <Link
+                  href={s.href}
+                  className="group inline-flex items-center gap-2 text-[13px] text-silver-hp/75 hover:text-cyan-hp transition"
+                >
+                  <span className="font-wizard">{s.label}</span>
+                  {s.soon && (
+                    <span className="rounded-full border border-gold-hp/40 bg-gold-hp/10 px-1.5 py-0.5 font-display text-[8px] uppercase tracking-[0.25em] text-gold-hp/80">
+                      soon
+                    </span>
+                  )}
+                  <span className="text-cyan-hp/50 group-hover:translate-x-0.5 transition">→</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </motion.div>
 
         {/* RIGHT — The Order */}
