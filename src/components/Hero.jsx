@@ -209,23 +209,16 @@ export default function Hero() {
           className="absolute -bottom-10 -right-6 sm:-bottom-14 sm:-right-10 z-20"
         >
           <div className="relative hp-float" style={{ animationDuration: "7s" }}>
-            {/* outer rough ring */}
-            <div className="absolute inset-0 rounded-full hp-pulse" />
-            <div
-              className="relative h-32 w-32 sm:h-44 sm:w-44 rounded-full border-2 border-cyan-hp/60 bg-gradient-to-br from-slate-hp/80 to-midnight overflow-hidden flex items-center justify-center shadow-[0_0_36px_rgba(102,252,241,0.35)]"
-              aria-label="Hexafalls mascot"
-            >
-              {/* TODO: <Image src="/mascot.png" fill ... /> */}
-              <span className="font-wizard text-cyan-hp/70 text-[10px] uppercase tracking-[0.4em]">
-                mascot
-              </span>
-              <span className="absolute inset-0 rounded-full ring-1 ring-inset ring-cyan-hp/20" />
-              <span className="absolute inset-0 rounded-full hp-stars opacity-30 mix-blend-screen" />
-            </div>
-            {/* tag */}
-            <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap font-wizard text-[10px] tracking-[0.3em] text-silver-hp/60 uppercase">
-              · the keeper ·
-            </div>
+            <img
+              src="/mascot/mascot.webp"
+              alt="HexaFalls mascot"
+              className="relative h-40 w-40 sm:h-56 sm:w-56 object-contain select-none"
+              style={{
+                filter:
+                  "drop-shadow(0 0 18px rgba(102,252,241,0.45)) drop-shadow(0 8px 24px rgba(0,0,0,0.55)) drop-shadow(0 0 36px rgba(212,175,55,0.18))",
+              }}
+              draggable={false}
+            />
           </div>
         </motion.div>
       </div>
