@@ -156,12 +156,6 @@ export default function Footer() {
                   }`}
                 >
                   {s.icon}
-                  {s.soon && (
-                    <span
-                      aria-hidden="true"
-                      className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-gold-hp shadow-[0_0_8px_rgba(212,175,55,0.6)]"
-                    />
-                  )}
                 </Link>
 
                 {/* tooltip */}
