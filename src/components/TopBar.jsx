@@ -39,6 +39,34 @@ export default function TopBar() {
           aria-label="Primary"
           className="flex items-center gap-3 sm:gap-5 text-[11px] uppercase tracking-[0.3em] text-silver-hp/50 font-display"
         >
+          {/* About / The Prophecy */}
+          <div className="relative group">
+            <Link
+              href="/about"
+              aria-label="The Prophecy"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-cyan-hp/40 bg-cyan-hp/10 text-cyan-hp hover:bg-cyan-hp/15 hover:border-cyan-hp/70 hover:shadow-[0_0_18px_rgba(102,252,241,0.3)] transition hp-glow"
+            >
+              {/* open book / scroll icon */}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="h-4 w-4 group-hover:-translate-y-0.5 transition-transform">
+                <path d="M3 5h6a3 3 0 0 1 3 3v12a3 3 0 0 0-3-3H3z" />
+                <path d="M21 5h-6a3 3 0 0 0-3 3v12a3 3 0 0 1 3-3h6z" />
+              </svg>
+            </Link>
+            <div
+              role="tooltip"
+              className="pointer-events-none absolute right-0 top-full mt-3 origin-top-right scale-95 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:scale-100 transition-all duration-200 ease-out z-10"
+            >
+              <div className="relative whitespace-nowrap rounded-md border border-cyan-hp/50 bg-midnight/95 backdrop-blur-sm px-3 py-1.5 font-display text-[10px] uppercase tracking-[0.35em] text-cyan-hp hp-glow shadow-[0_4px_24px_rgba(0,0,0,0.6)]">
+                The Prophecy
+                <span
+                  aria-hidden="true"
+                  className="absolute -top-1 right-3 h-2 w-2 rotate-45 border-l border-t border-cyan-hp/50 bg-midnight/95"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Volunteer */}
           <div className="relative group">
             <Link
               href="/volunteer"
@@ -54,14 +82,12 @@ export default function TopBar() {
               </svg>
             </Link>
 
-            {/* custom tooltip */}
             <div
               role="tooltip"
               className="pointer-events-none absolute right-0 top-full mt-3 origin-top-right scale-95 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:scale-100 transition-all duration-200 ease-out z-10"
             >
               <div className="relative whitespace-nowrap rounded-md border border-gold-hp/50 bg-midnight/95 backdrop-blur-sm px-3 py-1.5 font-display text-[10px] uppercase tracking-[0.35em] text-gold-hp hp-glow-gold shadow-[0_4px_24px_rgba(0,0,0,0.6)]">
                 Call for Volunteers
-                {/* arrow */}
                 <span
                   aria-hidden="true"
                   className="absolute -top-1 right-3 h-2 w-2 rotate-45 border-l border-t border-gold-hp/50 bg-midnight/95"
