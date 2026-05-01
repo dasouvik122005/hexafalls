@@ -107,16 +107,41 @@ export default function LocationMap() {
           </svg>
         </div>
 
-        {/* Big map placeholder */}
-        <div className="relative w-full aspect-[21/9] sm:aspect-[21/8] overflow-hidden rounded-sm border border-silver-hp/15 bg-midnight/70">
-          {/* TODO: replace with <Image src="/map-placeholder.png" .../> */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="font-wizard text-silver-hp/40 text-xs uppercase tracking-[0.4em]">
-              map · placeholder
-            </span>
+        {/* Big map */}
+        <div className="relative w-full aspect-[21/9] sm:aspect-[21/8] overflow-hidden rounded-sm bg-midnight/70 flex items-center justify-center">
+          <img
+            src="/banners/hexafalls_map.png"
+            alt="HexaFalls map"
+            className="block h-full w-full object-cover"
+            style={{
+              filter: "saturate(0.8) brightness(0.95) contrast(1.05)",
+              WebkitMaskImage:
+                "radial-gradient(ellipse at center, #000 55%, transparent 95%)",
+              maskImage:
+                "radial-gradient(ellipse at center, #000 55%, transparent 95%)",
+            }}
+            draggable={false}
+          />
+
+          {/* misty fog drifting over the map */}
+          <div aria-hidden="true" className="rf-mist pointer-events-none absolute inset-0" style={{ "--mist": "#66FCF1" }}>
+            <span className="rf-mist__blob rf-mist__blob--a" />
+            <span className="rf-mist__blob rf-mist__blob--b" />
+            <span className="rf-mist__blob rf-mist__blob--c" />
+            <span className="rf-mist__blob rf-mist__blob--d" />
           </div>
-          <div className="absolute inset-0 hp-stars opacity-25 mix-blend-screen" />
-          {/* corner sigils */}
+
+          {/* edge vignette so the rectangular image dissolves into the bg */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, transparent 55%, rgba(11,12,16,0.55) 85%, rgba(11,12,16,0.95) 100%)",
+            }}
+          />
+
+          <div className="absolute inset-0 hp-stars opacity-20 mix-blend-screen pointer-events-none" />
           <span className="absolute top-2 left-2 text-[10px] font-wizard text-gold-hp/60 tracking-widest">N · ✦</span>
           <span className="absolute bottom-2 right-2 text-[10px] font-wizard text-cyan-hp/50 tracking-widest">S · ✦</span>
         </div>
