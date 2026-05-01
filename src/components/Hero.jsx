@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
+import Link from "next/link";
 import Sparkles from "./Sparkles";
 import LocationMap from "./LocationMap";
 
@@ -175,12 +176,12 @@ export default function Hero() {
             }}
           />
         </button>
-        <a
-          href="#about"
+        <Link
+          href="/about"
           className="inline-flex items-center justify-center rounded-full border border-silver-hp/30 px-8 py-3 font-display tracking-[0.3em] text-silver-hp/80 hover:text-silver-hp hover:border-silver-hp/70 transition"
         >
           THE PROPHECY
-        </a>
+        </Link>
       </motion.div>
 
       {/* Full-width Map with mascot orb pinned bottom-right */}

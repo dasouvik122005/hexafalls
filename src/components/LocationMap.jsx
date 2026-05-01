@@ -38,28 +38,25 @@ export default function LocationMap() {
   return (
     <motion.div
       initial={{
-        clipPath: "inset(0% 0% 100% 0%)",
-        filter:   "blur(18px)",
-        opacity:  0,
-        y:        80,
-        scale:    0.94,
+        filter:  "blur(20px)",
+        opacity: 0,
+        y:       80,
+        scale:   0.92,
       }}
       whileInView={{
-        clipPath: "inset(0% 0% 0% 0%)",
-        filter:   "blur(0px)",
-        opacity:  1,
-        y:        0,
-        scale:    1,
+        filter:  "blur(0px)",
+        opacity: 1,
+        y:       0,
+        scale:   1,
       }}
-      viewport={{ once: true, amount: 0.2 }}
+      viewport={{ once: true, amount: 0.05 }}
       transition={{
-        duration: 2.0,
+        duration: 2.2,
         ease: [0.22, 1, 0.36, 1],
-        clipPath: { duration: 2.4, ease: [0.22, 1, 0.36, 1] },
-        filter:   { duration: 1.6, ease: "easeOut", delay: 0.2 },
-        opacity:  { duration: 0.8, ease: "easeOut" },
+        filter:  { duration: 2.4, ease: "easeOut" },
+        opacity: { duration: 2.0, ease: [0.4, 0, 0.2, 1] },
       }}
-      className="w-full will-change-[transform,filter,clip-path]"
+      className="w-full will-change-[transform,filter]"
     >
       <RoughFrame
         seed={11}
