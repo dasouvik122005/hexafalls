@@ -83,8 +83,22 @@ export default function RoughFrame({
     return () => { cancelled = true; };
   }, [size.w, size.h, seed, stroke, strokeWidth, fill, fillStyle, hachureGap, roughness, bowing, radius]);
 
+  const revealStyle = {
+    opacity: drawn ? 1 : 0,
+    filter:  drawn ? "blur(0px)" : "blur(14px)",
+    transform: drawn ? "scale(1)" : "scale(1.02)",
+    transformOrigin: "center",
+    transition:
+      "opacity 1100ms ease-out, filter 1100ms ease-out, transform 1200ms cubic-bezier(0.22,1,0.36,1)",
+    willChange: "opacity, filter, transform",
+  };
+
   return (
-    <Tag ref={wrapRef} className={`relative ${className}`} style={{ overflow: "visible" }}>
+    <Tag
+      ref={wrapRef}
+      className={`relative ${className}`}
+      style={{ overflow: "visible", ...revealStyle }}
+    >
       {mist && (
         <div
           aria-hidden="true"
@@ -101,15 +115,6 @@ export default function RoughFrame({
         ref={svgRef}
         className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
         aria-hidden="true"
-        style={{
-          opacity: drawn ? 1 : 0,
-          filter:  drawn ? "blur(0px)" : "blur(8px)",
-          transform: drawn ? "scale(1)" : "scale(1.02)",
-          transformOrigin: "center",
-          transition:
-            "opacity 800ms ease-out, filter 800ms ease-out, transform 900ms cubic-bezier(0.22,1,0.36,1)",
-          willChange: "opacity, filter, transform",
-        }}
       />
       <div className="relative" style={{ padding }}>
         <div className={inner}>{children}</div>
