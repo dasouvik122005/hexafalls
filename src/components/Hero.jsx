@@ -96,11 +96,23 @@ export default function Hero() {
         ].map((l, i, arr) => (
           <div key={l.id} className="flex items-center gap-3 group">
             <div
-              title={l.label}
-              className="h-10 w-10 sm:h-12 sm:w-12 rounded-md border border-silver-hp/25 bg-slate-hp/50 backdrop-blur flex items-center justify-center text-[10px] font-display text-silver-hp/70 group-hover:border-cyan-hp/60 group-hover:text-cyan-hp transition"
+              title={l.id.toUpperCase()}
+              className="relative h-10 w-10 sm:h-12 sm:w-12 shrink-0 overflow-hidden rounded-md border border-silver-hp/25 bg-slate-hp/50 backdrop-blur flex items-center justify-center group-hover:border-cyan-hp/60 transition"
             >
-              {/* TODO: drop /public/logos/{l.id}.svg */}
-              {l.id.toUpperCase()}
+              <img
+                src={l.logo}
+                alt={l.id.toUpperCase()}
+                className="block h-full w-full object-contain p-1.5 transition duration-300"
+                style={{
+                  filter:
+                    "brightness(1.05) contrast(1.05) saturate(0.85) drop-shadow(0 0 6px rgba(102,252,241,0.18))",
+                }}
+              />
+              {/* themed tint overlay — cyan glow on hover */}
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 bg-cyan-hp/0 group-hover:bg-cyan-hp/10 transition mix-blend-screen"
+              />
             </div>
             <span className="text-[11px] sm:text-xs uppercase tracking-[0.3em] text-silver-hp/70 group-hover:text-silver-hp transition font-display">
               {l.label}
