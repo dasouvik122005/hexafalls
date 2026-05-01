@@ -64,7 +64,7 @@ export const EVENTS = [
     slug: "hackathon",
     name: "The Hackathon",
     rune: "✦",
-    blurb: "Thirty-six hours of pure spellwork — full-stack, AI, anything that ships.",
+    blurb: "Fifty-eight hours of pure spellwork — full-stack, AI, anything that ships.",
     color: "#D4AF37", // gold
     glow:  "rgba(212,175,55,0.35)",
   },

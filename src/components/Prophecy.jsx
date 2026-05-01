@@ -12,7 +12,7 @@ const PILLARS = [
     rune: "✦",
     title: "Code",
     body:
-      "Thirty-six hours of incantations in TypeScript, Rust, Python — wands of your own choosing. Build something that wasn't there before dawn.",
+      "Fifty-eight hours of incantations in TypeScript, Rust, Python — wands of your own choosing. Build something that wasn't there before dawn.",
   },
   {
     rune: "✧",
@@ -129,7 +129,7 @@ export default function Prophecy() {
         <p className="font-wizard text-silver-hp/80 text-base sm:text-lg leading-relaxed">
           When the moon hangs low above Agarpara and the owls grow restless, six
           falls of light shall meet — code, chaos, conjuring, courage, craft and
-          curiosity. For thirty-six hours the veil thins, and what is built
+          curiosity. For fifty-eight hours the veil thins, and what is built
           there will travel far beyond the hall.
         </p>
         <p className="mt-4 font-wizard italic text-silver-hp/55 text-sm">
@@ -170,7 +170,7 @@ export default function Prophecy() {
         ))}
       </div>
 
-      {/* The 36 hours / numbers */}
+      {/* The 58 hours / numbers */}
       <motion.div
         initial={{ opacity: 0, filter: "blur(16px)", y: 30 }}
         whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}

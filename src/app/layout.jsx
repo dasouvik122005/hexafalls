@@ -24,7 +24,7 @@ const body = Inter({
 const SITE_NAME = "HexaFalls Techfest";
 const SITE_TAGLINE = "A Wizarding Hackathon";
 const SITE_DESCRIPTION =
-  "HexaFalls techfest — a 36-hour wizarding hackathon at JIS University, summoned at the edge of the magical and the mundane. Pack your wand, sharpen your code.";
+  "HexaFalls techfest — a 58-hour wizarding hackathon at JIS University, summoned at the edge of the magical and the mundane. Pack your wand, sharpen your code.";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://hexafalls.org";

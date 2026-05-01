@@ -91,7 +91,7 @@ export default function Events() {
         transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
         className="mx-auto mt-10 max-w-2xl text-center font-wizard text-silver-hp/75 text-base sm:text-lg leading-relaxed"
       >
-        Five tracks. One night that breaks into thirty-six hours. Each has its
+        Five tracks. One night that breaks into fifty-eight hours. Each has its
         own scrolls, its own duels, and its own gold to be won.
       </motion.p>
 

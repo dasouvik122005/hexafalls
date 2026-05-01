@@ -154,7 +154,7 @@ export default function Hero() {
           ref={subRef}
           className="mt-8 max-w-2xl mx-auto text-base sm:text-lg font-wizard text-silver-hp/80"
         >
-          Owls have been dispatched. Robes pressed, wands tuned. A 36-hour
+          Owls have been dispatched. Robes pressed, wands tuned. A 58-hour
           gathering of code, chaos and conjuring at the edge of the magical
           and the mundane.
         </p>

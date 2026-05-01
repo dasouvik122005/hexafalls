@@ -15,7 +15,7 @@ const BANNER_SRC = "/banners/vol_form.png";
 
 const PERKS = [
   { rune: "✦", title: "Wear the badge", body: "Crest, robes, and a name on the wall of helpers." },
-  { rune: "✧", title: "Inside the magic", body: "Backstage view of how a 36-hour hackathon is conjured." },
+  { rune: "✧", title: "Inside the magic", body: "Backstage view of how a 58-hour hackathon is conjured." },
   { rune: "❖", title: "The order grows", body: "Mentors, organisers, alumni — your circle, expanded." },
 ];
 
@@ -109,7 +109,7 @@ export default function CallForVolunteers() {
         className="mx-auto mt-10 max-w-2xl text-center font-wizard text-silver-hp/80 text-base sm:text-lg leading-relaxed"
       >
         Every great spell needs hands behind it. Help us run the hall, guide
-        the wanderers, and keep the magic on schedule across thirty-six hours
+        the wanderers, and keep the magic on schedule across fifty-eight hours
         of HexaFalls.
       </motion.p>
 
