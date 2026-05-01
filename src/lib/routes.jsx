@@ -32,6 +32,16 @@ export const SITEMAP = [
     ),
   },
   {
+    href: "/events", label: "The Events", soon: true,
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+        <path d="M5 4h14a2 2 0 0 1 2 2v3H3V6a2 2 0 0 1 2-2z" />
+        <path d="M3 9v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9" />
+        <path d="M8 2v4M16 2v4" />
+      </svg>
+    ),
+  },
+  {
     href: "/team", label: "The Team",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
@@ -41,6 +51,45 @@ export const SITEMAP = [
         <path d="M15 20c0-2 2-3.5 4-3.5" />
       </svg>
     ),
+  },
+];
+
+// Tracks / events that run during HexaFalls.
+export const EVENTS = [
+  {
+    slug: "hackathon",
+    name: "The Hackathon",
+    rune: "✦",
+    blurb: "Thirty-six hours of pure spellwork — full-stack, AI, anything that ships.",
+    accent: "gold",
+  },
+  {
+    slug: "cp",
+    name: "Competitive Programming",
+    rune: "⌬",
+    blurb: "Duels of logic. Sharpen the wand, race the clock.",
+    accent: "cyan",
+  },
+  {
+    slug: "gaming",
+    name: "Gaming Arena",
+    rune: "✶",
+    blurb: "Stadium of charms — controller in hand, glory on the line.",
+    accent: "cyan",
+  },
+  {
+    slug: "hardware",
+    name: "Hardware Hack",
+    rune: "❖",
+    blurb: "Solder, sparks, sensors. Magic that you can hold.",
+    accent: "cyan",
+  },
+  {
+    slug: "software",
+    name: "Software Showdown",
+    rune: "✧",
+    blurb: "Polish a product, ship a relic, win the council's nod.",
+    accent: "cyan",
   },
 ];
 
