@@ -7,6 +7,8 @@ import Link from "next/link";
 import Sparkles from "./Sparkles";
 import LocationMap from "./LocationMap";
 import RoughButton from "./RoughButton";
+import RoughDivider from "./RoughDivider";
+import RoughStar from "./RoughStar";
 import { CALLS } from "@/lib/routes";
 
 export default function Hero() {
@@ -129,9 +131,9 @@ export default function Hero() {
         ref={stripRef}
         className="mb-6 flex items-center gap-3 text-[11px] sm:text-xs uppercase tracking-[0.5em] text-cyan-hp/70 font-display"
       >
-        <span className="h-px w-8 bg-cyan-hp/40" />
+        <RoughDivider width={48} height={20} color="#66FCF1" seed={3} />
         A Wizarding Hackathon
-        <span className="h-px w-8 bg-cyan-hp/40" />
+        <RoughDivider width={48} height={20} color="#66FCF1" seed={5} />
       </motion.div>
 
       {/* HEADLINE */}
@@ -205,9 +207,9 @@ export default function Hero() {
         className="mt-20 w-full max-w-5xl"
       >
         <div className="mb-6 flex items-center justify-center gap-3 text-[11px] uppercase tracking-[0.5em] text-cyan-hp/70 font-display text-center">
-          <span className="h-px w-8 bg-cyan-hp/40" />
+          <RoughDivider width={48} height={20} color="#66FCF1" seed={7} />
           The scrolls go out
-          <span className="h-px w-8 bg-cyan-hp/40" />
+          <RoughDivider width={48} height={20} color="#66FCF1" seed={11} />
         </div>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {CALLS.map((c, i) => {
