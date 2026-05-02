@@ -26,6 +26,11 @@ jobs:
       NEXT_TELEMETRY_DISABLED: 1
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Don't write the GITHUB_TOKEN credential helper into .git/config —
+          # we authenticate later with the GitHub App token, and the helper
+          # would otherwise override our in-URL App credentials.
+          persist-credentials: false
 
       - uses: actions/setup-node@v4
         with:
