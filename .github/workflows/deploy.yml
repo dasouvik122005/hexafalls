@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
-      contents: read
+      contents: write
       deployments: write
     environment:
       name: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
@@ -32,6 +32,18 @@ jobs:
           node-version: 22
           cache: npm
 
+      - name: Verify Cloudflare secrets are wired
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "::error::CLOUDFLARE_API_TOKEN is empty. Check the secret on the '${{ job.environment.name || 'production' }}' GitHub Environment (or at repo level)."
+            exit 1
+          fi
+          if [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::error::CLOUDFLARE_ACCOUNT_ID is empty. Same check applies."
+            exit 1
+          fi
+          echo "secrets present (token len=${#CLOUDFLARE_API_TOKEN}, account len=${#CLOUDFLARE_ACCOUNT_ID})"
+
       - name: Install
         run: npm ci
 
@@ -40,7 +52,7 @@ jobs:
 
       - name: Deploy to Cloudflare (Production)
         if: github.ref == 'refs/heads/main'
-        run: npx wrangler deploy
+        run: npx wrangler deploy --env=""
 
       - name: Deploy to Cloudflare (Preview)
         if: github.ref == 'refs/heads/preview'
@@ -54,3 +66,18 @@ jobs:
           else
             echo "deployment-url=https://preview.hexafalls.org" >> "$GITHUB_OUTPUT"
           fi
+
+      # After a successful production deploy, advance the patch version so the
+      # repo always reflects "what will ship on the next prod deploy".
+      # `[skip ci]` in the commit message tells Actions not to retrigger.
+      - name: Bump patch version (production only)
+        if: github.ref == 'refs/heads/main' && success()
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase --autostash origin main
+          npm version patch --no-git-tag-version
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          git add package.json package-lock.json
+          git commit -m "chore(release): v${NEW_VERSION} [skip ci]"
+          git push origin HEAD:main
