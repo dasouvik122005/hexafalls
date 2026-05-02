@@ -3,7 +3,7 @@ import TopBar from "@/components/TopBar";
 import Footer from "@/components/Footer";
 import ComingSoon from "@/components/ComingSoon";
 import CallForVolunteers from "@/components/CallForVolunteers";
-import { TEAMS, VOLUNTEER_FORM_URL } from "@/lib/routes";
+import { TEAMS } from "@/lib/routes";
 
 export function generateStaticParams() {
   return TEAMS.map((t) => ({ slug: t.slug }));

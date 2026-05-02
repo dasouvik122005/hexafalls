@@ -22,12 +22,12 @@ export default function NotFound() {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const ctx = gsap.context(() => {
       if (reduce) {
-        gsap.set(".nf-letter", { opacity: 1, y: 0, filter: "blur(0px)" });
+        gsap.set(".nf-letter", { opacity: 1, y: 0 });
         return;
       }
-      gsap.set(".nf-letter", { opacity: 0, y: 28, rotateX: -45, filter: "blur(12px)" });
+      gsap.set(".nf-letter", { opacity: 0, y: 28, rotateX: -45 });
       gsap.to(".nf-letter", {
-        opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)",
+        opacity: 1, y: 0, rotateX: 0,
         duration: 1.0,
         ease: "power3.out",
         stagger: { each: 0.06, from: "start" },
@@ -95,8 +95,8 @@ export default function NotFound() {
 
       {/* Lede in rough frame */}
       <motion.div
-        initial={{ opacity: 0, filter: "blur(20px)", y: 40 }}
-        whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
         className="mx-auto mt-12 w-full max-w-2xl"

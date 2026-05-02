@@ -33,9 +33,9 @@ export default function Hero() {
         gsap.set([".hp-letter", subRef.current, stripRef.current], { opacity: 1, y: 0 });
         return;
       }
-      gsap.set(".hp-letter", { opacity: 0, y: 28, rotateX: -60, filter: "blur(10px)" });
+      gsap.set(".hp-letter", { opacity: 0, y: 28, rotateX: -60 });
       gsap.to(".hp-letter", {
-        opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)",
+        opacity: 1, y: 0, rotateX: 0,
         duration: 1.0,
         ease: "power3.out",
         stagger: { each: 0.045, from: "start" },
@@ -216,8 +216,8 @@ export default function Hero() {
             return (
               <motion.div
                 key={c.href}
-                initial={{ opacity: 0, y: 16, filter: "blur(8px)" }}
-                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.8, delay: 0.05 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
               >

@@ -44,14 +44,13 @@ export default function Prophecy() {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const ctx = gsap.context(() => {
       if (reduce) {
-        gsap.set(".pr-letter", { opacity: 1, y: 0, filter: "blur(0px)" });
+        gsap.set(".pr-letter", { opacity: 1, y: 0 });
         return;
       }
-      gsap.set(".pr-letter", { opacity: 0, y: 24, filter: "blur(10px)" });
+      gsap.set(".pr-letter", { opacity: 0, y: 24 });
       gsap.to(".pr-letter", {
         opacity: 1,
         y: 0,
-        filter: "blur(0px)",
         duration: 1.0,
         ease: "power3.out",
         stagger: { each: 0.04, from: "start" },
@@ -120,8 +119,8 @@ export default function Prophecy() {
 
       {/* Opening verse */}
       <motion.div
-        initial={{ opacity: 0, filter: "blur(16px)", y: 30 }}
-        whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
         className="mx-auto mt-12 max-w-3xl text-center"
@@ -172,8 +171,8 @@ export default function Prophecy() {
 
       {/* The 58 hours / numbers */}
       <motion.div
-        initial={{ opacity: 0, filter: "blur(16px)", y: 30 }}
-        whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
         className="mx-auto mt-24 grid max-w-5xl grid-cols-2 gap-6 sm:grid-cols-4"
@@ -211,8 +210,8 @@ export default function Prophecy() {
         </motion.h2>
 
         <motion.div
-          initial={{ opacity: 0, filter: "blur(16px)", y: 30 }}
-          whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
           className="relative mt-12 mx-auto w-full"

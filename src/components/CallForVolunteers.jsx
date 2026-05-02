@@ -34,12 +34,12 @@ export default function CallForVolunteers() {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const ctx = gsap.context(() => {
       if (reduce) {
-        gsap.set(".cv-letter", { opacity: 1, y: 0, filter: "blur(0px)" });
+        gsap.set(".cv-letter", { opacity: 1, y: 0 });
         return;
       }
-      gsap.set(".cv-letter", { opacity: 0, y: 24, filter: "blur(10px)" });
+      gsap.set(".cv-letter", { opacity: 0, y: 24 });
       gsap.to(".cv-letter", {
-        opacity: 1, y: 0, filter: "blur(0px)",
+        opacity: 1, y: 0,
         duration: 1.0,
         ease: "power3.out",
         stagger: { each: 0.04, from: "start" },
@@ -102,8 +102,8 @@ export default function CallForVolunteers() {
 
       {/* Lede */}
       <motion.p
-        initial={{ opacity: 0, filter: "blur(16px)", y: 30 }}
-        whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
         className="mx-auto mt-10 max-w-2xl text-center font-wizard text-silver-hp/80 text-base sm:text-lg leading-relaxed"
@@ -163,8 +163,8 @@ export default function CallForVolunteers() {
         {PERKS.map((p, i) => (
           <motion.div
             key={p.title}
-            initial={{ opacity: 0, filter: "blur(16px)", y: 30 }}
-            whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{
               duration: 1.3,

@@ -52,12 +52,12 @@ export default function ComingSoon({
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const ctx = gsap.context(() => {
       if (reduce) {
-        gsap.set(".cs-letter", { opacity: 1, y: 0, filter: "blur(0px)" });
+        gsap.set(".cs-letter", { opacity: 1, y: 0 });
         return;
       }
-      gsap.set(".cs-letter", { opacity: 0, y: 24, filter: "blur(10px)" });
+      gsap.set(".cs-letter", { opacity: 0, y: 24 });
       gsap.to(".cs-letter", {
-        opacity: 1, y: 0, filter: "blur(0px)",
+        opacity: 1, y: 0,
         duration: 1.0,
         ease: "power3.out",
         stagger: { each: 0.045, from: "start" },
