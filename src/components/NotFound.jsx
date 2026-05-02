@@ -7,6 +7,7 @@ import gsap from "gsap";
 import Sparkles from "./Sparkles";
 import RoughFrame from "./RoughFrame";
 import RoughButton from "./RoughButton";
+import RoughDivider from "./RoughDivider";
 
 export default function NotFound() {
   const sectionRef = useRef(null);
@@ -67,9 +68,9 @@ export default function NotFound() {
         transition={{ duration: 0.9 }}
         className="mb-6 flex items-center justify-center gap-3 text-[11px] uppercase tracking-[0.5em] text-cyan-hp/70 font-display text-center"
       >
-        <span className="h-px w-8 bg-cyan-hp/40" />
+        <RoughDivider width={48} height={20} color="#66FCF1" seed={3} />
         The map shifts
-        <span className="h-px w-8 bg-cyan-hp/40" />
+        <RoughDivider width={48} height={20} color="#66FCF1" seed={5} />
       </motion.div>
 
       {/* 404 */}

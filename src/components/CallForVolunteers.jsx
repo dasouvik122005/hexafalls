@@ -7,6 +7,7 @@ import gsap from "gsap";
 import Sparkles from "./Sparkles";
 import RoughFrame from "./RoughFrame";
 import RoughButton from "./RoughButton";
+import RoughDivider from "./RoughDivider";
 
 // TODO: replace with the real Google Form URL
 const VOLUNTEER_FORM_URL = "https://forms.gle/wM2qEnr3oB95wss89";
@@ -82,9 +83,9 @@ export default function CallForVolunteers() {
         transition={{ duration: 0.9 }}
         className="mx-auto mb-6 flex max-w-3xl items-center justify-center gap-3 text-[11px] uppercase tracking-[0.5em] text-cyan-hp/70 font-display"
       >
-        <span className="h-px w-8 bg-cyan-hp/40" />
+        <RoughDivider width={48} height={20} color="#66FCF1" seed={3} />
         The order seeks helpers
-        <span className="h-px w-8 bg-cyan-hp/40" />
+        <RoughDivider width={48} height={20} color="#66FCF1" seed={5} />
       </motion.div>
 
       {/* Headline */}

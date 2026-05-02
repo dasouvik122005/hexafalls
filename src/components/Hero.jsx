@@ -277,8 +277,35 @@ export default function Hero() {
         </div>
       </motion.div>
 
+      {/* sketched divider */}
+      <div className="mt-20 flex justify-center">
+        <RoughDivider
+          width={420}
+          height={48}
+          color="#D4AF37"
+          ornament="✦"
+          seed={19}
+        />
+      </div>
+
       {/* Full-width Map with mascot orb pinned bottom-right */}
-      <div className="relative mt-24 w-full max-w-6xl">
+      <div className="relative mt-12 w-full max-w-6xl">
+        {/* sketched stars at the upper corners as page-margin scribbles */}
+        <RoughStar
+          size={28}
+          color="#66FCF1"
+          seed={23}
+          className="absolute -top-8 -left-2 hp-float"
+          style={{ animationDuration: "9s" }}
+        />
+        <RoughStar
+          size={22}
+          color="#A78BFA"
+          seed={29}
+          fill
+          className="absolute -top-6 right-10 hp-float"
+          style={{ animationDuration: "11s", animationDelay: "1s" }}
+        />
         <LocationMap />
 
         {/* Mascot orb */}
@@ -341,9 +368,9 @@ export default function Hero() {
         className="mt-24 flex flex-col items-center gap-2 text-center"
       >
         <span className="inline-flex items-center gap-3 font-display text-[11px] uppercase tracking-[0.5em] text-cyan-hp/70">
-          <span className="h-px w-8 bg-cyan-hp/40" />
+          <RoughDivider width={48} height={20} color="#66FCF1" seed={3} />
           more scrolls unfurling soon
-          <span className="h-px w-8 bg-cyan-hp/40" />
+          <RoughDivider width={48} height={20} color="#66FCF1" seed={5} />
         </span>
         <span className="font-wizard text-[12px] italic text-silver-hp/45">
           tracks · prizes · sponsors · the keeper&apos;s lore — revealing in due time
