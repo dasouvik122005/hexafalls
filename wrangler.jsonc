@@ -39,14 +39,14 @@
   "observability": {
     "enabled": true,
     "head_sampling_rate": 1
-  }
+  },
 
-  // Custom domains are bound manually via the dashboard (see header comment),
-  // so no `routes` block here. If you'd rather declare them in code later:
-  //   "routes": [
-  //     { "pattern": "hexafalls.org",     "custom_domain": true },
-  //     { "pattern": "www.hexafalls.org", "custom_domain": true }
-  //   ]
+  // Bind hexafalls.org (apex + www) to this Worker on every deploy.
+  // The zone must be on the same Cloudflare account as the Worker.
+  "routes": [
+    { "pattern": "hexafalls.org",     "custom_domain": true },
+    { "pattern": "www.hexafalls.org", "custom_domain": true }
+  ]
 
   // KV / R2 / D1 bindings can be added here later if you need server-side state.
   // "kv_namespaces": [{ "binding": "KV", "id": "<id>" }],
