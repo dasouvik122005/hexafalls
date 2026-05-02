@@ -26,7 +26,17 @@ export default function TopBar() {
   }, [open]);
 
   return (
-    <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-midnight/60 border-b border-cyan-hp/10">
+    <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-midnight/60">
+      {/* hand-drawn underscore beneath the bar instead of a flat 1px border */}
+      <span aria-hidden="true" className="pointer-events-none absolute -bottom-3 inset-x-0 flex justify-center opacity-70">
+        <RoughDivider width={760} height={20} color="#66FCF1" seed={113} />
+      </span>
+      {/* a small wandering star pinned to the upper-right corner of the bar */}
+      <RoughStar
+        size={14} color="#D4AF37" seed={117}
+        className="absolute top-2 right-4 opacity-70 hp-float pointer-events-none hidden md:block"
+        style={{ animationDuration: "9s" }}
+      />
       <div className="mx-auto max-w-7xl px-5 py-3 flex items-center justify-between gap-4">
         {/* Left: brand */}
         <motion.div
