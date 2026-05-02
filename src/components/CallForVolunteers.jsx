@@ -133,6 +133,8 @@ export default function CallForVolunteers() {
             <img
               src={BANNER_SRC}
               alt="Call for Volunteers"
+            loading="lazy"
+            decoding="async"
               className="block max-h-full max-w-full object-contain"
               style={{
                 WebkitMaskImage:

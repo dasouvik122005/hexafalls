@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { loadRough } from "@/lib/loadRough";
 
 /**
  * Sketched L-shaped brackets in all four corners of the parent. Drop into any
@@ -31,16 +32,23 @@ export default function RoughCorners({
     const el = wrapRef.current;
     const measure = () => setSize({ w: el.offsetWidth, h: el.offsetHeight });
     measure();
-    const ro = new ResizeObserver(measure);
+    let rafId = 0;
+    const ro = new ResizeObserver(() => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => { rafId = 0; measure(); });
+    });
     ro.observe(el);
-    return () => ro.disconnect();
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      ro.disconnect();
+    };
   }, []);
 
   useEffect(() => {
     if (!svgRef.current || !size.w || !size.h) return;
     let cancelled = false;
     (async () => {
-      const rough = (await import("roughjs/bin/rough")).default;
+      const rough = await loadRough();
       if (cancelled || !svgRef.current) return;
       svgRef.current.innerHTML = "";
       const rc = rough.svg(svgRef.current);

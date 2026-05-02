@@ -65,7 +65,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative mt-20 border-t border-cyan-hp/10 bg-midnight overflow-hidden">
+    <footer className="relative mt-20 border-t border-cyan-hp/10 bg-midnight overflow-hidden cv-footer">
       {/* hand-drawn divider that opens the footer like a chapter break */}
       <div className="absolute inset-x-0 -top-3 flex justify-center pointer-events-none">
         <RoughDivider width={520} height={32} color="#66FCF1" ornament="✦" seed={101} />

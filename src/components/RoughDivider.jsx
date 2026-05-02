@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { loadRough } from "@/lib/loadRough";
 
 /**
  * Hand-sketched horizontal divider — two squiggly curves with an optional
@@ -30,7 +31,7 @@ export default function RoughDivider({
     if (!svgRef.current) return;
     let cancelled = false;
     (async () => {
-      const rough = (await import("roughjs/bin/rough")).default;
+      const rough = await loadRough();
       if (cancelled || !svgRef.current) return;
       svgRef.current.innerHTML = "";
       const rc = rough.svg(svgRef.current);

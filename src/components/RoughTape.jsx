@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { loadRough } from "@/lib/loadRough";
 
 /**
  * Two short diagonal "washi tape" strips, one at the top-left and one at the
@@ -36,7 +37,7 @@ export default function RoughTape({
     if (!ready || !leftRef.current || !rightRef.current) return;
     let cancelled = false;
     (async () => {
-      const rough = (await import("roughjs/bin/rough")).default;
+      const rough = await loadRough();
       if (cancelled) return;
       [leftRef, rightRef].forEach((r, idx) => {
         if (!r.current) return;

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { loadRough } from "@/lib/loadRough";
 
 /**
  * Hand-sketched star — drop it as a floating decoration.
@@ -26,7 +27,7 @@ export default function RoughStar({
     if (!svgRef.current) return;
     let cancelled = false;
     (async () => {
-      const rough = (await import("roughjs/bin/rough")).default;
+      const rough = await loadRough();
       if (cancelled || !svgRef.current) return;
       svgRef.current.innerHTML = "";
       const rc = rough.svg(svgRef.current);

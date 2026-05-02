@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { loadRough } from "@/lib/loadRough";
 
 /**
  * Hand-sketched rectangle/border drawn with rough.js into an SVG.
@@ -34,15 +35,27 @@ export default function RoughFrame({
   const [size, setSize] = useState({ w: 0, h: 0 });
   const [drawn, setDrawn] = useState(false);
 
-  // Observe size so the sketch reflows with content.
+  // Observe size so the sketch reflows with content. rAF-debounced so a
+  // window-drag burst of ResizeObserver entries doesn't trigger N re-renders +
+  // N rough re-draws.
   useEffect(() => {
     if (!wrapRef.current) return;
+    let rafId = 0;
+    let pending;
     const ro = new ResizeObserver((entries) => {
       const r = entries[0].contentRect;
-      setSize({ w: Math.round(r.width), h: Math.round(r.height) });
+      pending = { w: Math.round(r.width), h: Math.round(r.height) };
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = 0;
+        if (pending) setSize(pending);
+      });
     });
     ro.observe(wrapRef.current);
-    return () => ro.disconnect();
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      ro.disconnect();
+    };
   }, []);
 
   // Re-draw whenever size or props change.
@@ -50,7 +63,7 @@ export default function RoughFrame({
     if (!svgRef.current || !size.w || !size.h) return;
     let cancelled = false;
     (async () => {
-      const rough = (await import("roughjs/bin/rough")).default;
+      const rough = await loadRough();
       if (cancelled || !svgRef.current) return;
       svgRef.current.innerHTML = "";
       const rc = rough.svg(svgRef.current);

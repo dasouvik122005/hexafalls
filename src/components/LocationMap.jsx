@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { loadRough } from "@/lib/loadRough";
 import RoughFrame from "./RoughFrame";
 import RoughTicks from "./RoughTicks";
 
@@ -17,7 +18,7 @@ export default function LocationMap() {
     if (!compassRef.current) return;
     let cancelled = false;
     (async () => {
-      const rough = (await import("roughjs/bin/rough")).default;
+      const rough = await loadRough();
       if (cancelled || !compassRef.current) return;
       compassRef.current.innerHTML = "";
       const rc = rough.svg(compassRef.current);
@@ -91,6 +92,8 @@ export default function LocationMap() {
           <img
             src="/banners/hexafalls_map.png"
             alt="HexaFalls map"
+            loading="lazy"
+            decoding="async"
             className="block h-full w-full object-cover"
             style={{
               filter: "saturate(0.8) brightness(0.95) contrast(1.05)",

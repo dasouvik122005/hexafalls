@@ -227,6 +227,24 @@ html, body {
   50%      { transform: translate(-9%, 4%)  scale(1.15); opacity: 0.32; }
 }
 
+/* Skip rendering offscreen sections entirely. The browser still reserves the
+ * intrinsic size we hint, so layout/scroll position stays stable, but paint,
+ * style, and animation work is skipped until the section enters the viewport.
+ * Massive win on long pages with parallax + sparkle layers, zero visual diff.
+ *
+ * Apply by adding `cv-section` to a top-level `<section>` that the user has
+ * to scroll to (i.e. NOT the Hero — that one is above the fold).
+ */
+.cv-section {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 1200px;
+}
+/* Smaller intrinsic-size hint for the footer (it's shorter than a full section). */
+.cv-footer {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 700px;
+}
+
 /* Reduce motion respect */
 @media (prefers-reduced-motion: reduce) {
   .hp-stars, .hp-float, .hp-pulse,
