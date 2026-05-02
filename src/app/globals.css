@@ -6,6 +6,7 @@
   --hx-cyan:     #66FCF1;
   --hx-silver:   #C5C6C7;
   --hx-gold:     #D4AF37;
+  --hx-violet:   #A78BFA;   /* third accent for fog / aurora */
 
   --background: var(--hx-midnight);
   --foreground: var(--hx-silver);
@@ -35,13 +36,15 @@ html, body {
 /* Soft animated star/sparkle background — pure CSS, no JS cost */
 .hp-stars {
   background-image:
-    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,.7), transparent 50%),
-    radial-gradient(1px 1px at 75% 80%, rgba(255,255,255,.6), transparent 50%),
-    radial-gradient(1.5px 1.5px at 50% 50%, rgba(102,252,241,.5), transparent 50%),
-    radial-gradient(1px 1px at 10% 70%, rgba(255,255,255,.5), transparent 50%),
-    radial-gradient(1px 1px at 90% 20%, rgba(212,175,55,.5), transparent 50%),
-    radial-gradient(1.5px 1.5px at 35% 85%, rgba(102,252,241,.4), transparent 50%),
-    radial-gradient(1px 1px at 60% 15%, rgba(255,255,255,.7), transparent 50%);
+    radial-gradient(1.5px 1.5px at 20% 30%, rgba(255,255,255,.85), transparent 50%),
+    radial-gradient(1px   1px   at 75% 80%, rgba(255,255,255,.75), transparent 50%),
+    radial-gradient(2px   2px   at 50% 50%, rgba(102,252,241,.65), transparent 50%),
+    radial-gradient(1px   1px   at 10% 70%, rgba(255,255,255,.65), transparent 50%),
+    radial-gradient(1.5px 1.5px at 90% 20%, rgba(212,175,55,.65),  transparent 50%),
+    radial-gradient(2px   2px   at 35% 85%, rgba(102,252,241,.55), transparent 50%),
+    radial-gradient(1px   1px   at 60% 15%, rgba(255,255,255,.85), transparent 50%),
+    radial-gradient(1.5px 1.5px at 82% 55%, rgba(167,139,250,.55), transparent 50%),
+    radial-gradient(1px   1px   at 25% 55%, rgba(212,175,55,.55),  transparent 50%);
   background-size: 200% 200%;
   animation: hp-drift 60s linear infinite;
 }
@@ -54,14 +57,15 @@ html, body {
 /* Glowing text */
 .hp-glow {
   text-shadow:
-    0 0 8px  rgba(102, 252, 241, 0.55),
-    0 0 24px rgba(102, 252, 241, 0.35),
-    0 0 48px rgba(102, 252, 241, 0.18);
+    0 0 10px rgba(102, 252, 241, 0.70),
+    0 0 28px rgba(102, 252, 241, 0.45),
+    0 0 56px rgba(102, 252, 241, 0.22);
 }
 .hp-glow-gold {
   text-shadow:
-    0 0 8px  rgba(212, 175, 55, 0.55),
-    0 0 24px rgba(212, 175, 55, 0.35);
+    0 0 10px rgba(212, 175, 55, 0.70),
+    0 0 28px rgba(212, 175, 55, 0.45),
+    0 0 56px rgba(212, 175, 55, 0.20);
 }
 
 /* Magical underline used on CTAs */
@@ -91,11 +95,13 @@ html, body {
 }
 .hp-pulse { animation: hp-pulse 4.5s ease-in-out infinite; }
 
-/* Parchment-style scrim */
+/* Parchment-style scrim — multi-light wash that suggests stained glass */
 .hp-scrim {
   background:
-    radial-gradient(ellipse at top, rgba(102,252,241,.10), transparent 60%),
-    radial-gradient(ellipse at bottom, rgba(212,175,55,.06), transparent 60%);
+    radial-gradient(ellipse at top left,     rgba(102,252,241,.16), transparent 55%),
+    radial-gradient(ellipse at top right,    rgba(167,139,250,.12), transparent 55%),
+    radial-gradient(ellipse at bottom left,  rgba(212,175,55,.10),  transparent 55%),
+    radial-gradient(ellipse at bottom right, rgba(102,252,241,.08), transparent 55%);
 }
 
 /* Shimmer sweep for "coming soon" CTA */
@@ -159,8 +165,70 @@ html, body {
   50%      { transform: translate(-6%, -3%) scale(1.12); opacity: 0.28; }
 }
 
+/* ---------------------------------------------------------------------------
+ * Page-wide ambient fog. Four very large, very blurred, very slow-moving
+ * radial gradient blobs in cyan/gold/violet/white — sit behind every page,
+ * fixed to viewport so they breathe through scroll. mix-blend: screen so they
+ * ADD light to the dark midnight bg (gives the cloudy, lit-from-within feel).
+ * --------------------------------------------------------------------------- */
+.hp-fog {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;             /* behind page content but in front of body bg */
+  filter: blur(90px);
+  overflow: hidden;
+}
+.hp-fog__cloud {
+  position: absolute;
+  border-radius: 9999px;
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+}
+.hp-fog__cloud--a {
+  top: 8%;  left: -12%;
+  width: 65%; height: 55%;
+  background: radial-gradient(circle, rgba(102,252,241,0.30), transparent 70%);
+  animation: hp-fog-drift-a 28s ease-in-out infinite;
+}
+.hp-fog__cloud--b {
+  top: -10%; right: -12%;
+  width: 60%; height: 50%;
+  background: radial-gradient(circle, rgba(212,175,55,0.22), transparent 70%);
+  animation: hp-fog-drift-b 32s ease-in-out infinite;
+}
+.hp-fog__cloud--c {
+  top: 45%; left: 15%;
+  width: 75%; height: 55%;
+  background: radial-gradient(circle, rgba(167,139,250,0.22), transparent 70%);
+  animation: hp-fog-drift-c 36s ease-in-out infinite;
+}
+.hp-fog__cloud--d {
+  bottom: -10%; right: 5%;
+  width: 55%; height: 55%;
+  background: radial-gradient(circle, rgba(255,255,255,0.10), transparent 70%);
+  animation: hp-fog-drift-d 40s ease-in-out infinite;
+}
+
+@keyframes hp-fog-drift-a {
+  0%, 100% { transform: translate(0, 0)     scale(1);    opacity: 0.55; }
+  50%      { transform: translate(8%, -5%)  scale(1.10); opacity: 0.75; }
+}
+@keyframes hp-fog-drift-b {
+  0%, 100% { transform: translate(0, 0)      scale(1);    opacity: 0.40; }
+  50%      { transform: translate(-7%,  6%)  scale(1.12); opacity: 0.60; }
+}
+@keyframes hp-fog-drift-c {
+  0%, 100% { transform: translate(0, 0)     scale(1);    opacity: 0.45; }
+  50%      { transform: translate(6%, -7%)  scale(1.08); opacity: 0.65; }
+}
+@keyframes hp-fog-drift-d {
+  0%, 100% { transform: translate(0, 0)     scale(1);    opacity: 0.20; }
+  50%      { transform: translate(-9%, 4%)  scale(1.15); opacity: 0.32; }
+}
+
 /* Reduce motion respect */
 @media (prefers-reduced-motion: reduce) {
   .hp-stars, .hp-float, .hp-pulse,
-  .rf-mist__blob { animation: none !important; }
+  .rf-mist__blob, .hp-fog__cloud { animation: none !important; }
 }

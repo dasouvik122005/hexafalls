@@ -101,6 +101,13 @@ export default function RootLayout({ children }) {
       className={`${display.variable} ${wizard.variable} ${body.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-midnight text-silver-hp">
+        {/* Page-wide ambient fog. Fixed to the viewport, sits behind everything. */}
+        <div aria-hidden="true" className="hp-fog">
+          <span className="hp-fog__cloud hp-fog__cloud--a" />
+          <span className="hp-fog__cloud hp-fog__cloud--b" />
+          <span className="hp-fog__cloud hp-fog__cloud--c" />
+          <span className="hp-fog__cloud hp-fog__cloud--d" />
+        </div>
         {children}
       </body>
     </html>
