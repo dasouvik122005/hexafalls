@@ -38,11 +38,11 @@ export default function RoughButton({
 
   useEffect(() => {
     if (!wrapRef.current) return;
-    const ro = new ResizeObserver(([entry]) => {
-      const r = entry.contentRect;
-      setSize({ w: Math.round(r.width), h: Math.round(r.height) });
-    });
-    ro.observe(wrapRef.current);
+    const el = wrapRef.current;
+    const measure = () => setSize({ w: el.offsetWidth, h: el.offsetHeight });
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
     return () => ro.disconnect();
   }, []);
 
@@ -115,7 +115,9 @@ export default function RoughButton({
       >
         <svg
           ref={svgRef}
-          className="absolute inset-0 h-full w-full overflow-visible"
+          width={size.w || undefined}
+          height={size.h || undefined}
+          className="absolute left-0 top-0 overflow-visible"
         />
       </span>
 
