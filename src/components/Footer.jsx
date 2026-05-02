@@ -109,7 +109,7 @@ export default function Footer() {
             />
           </span>
           <span className="font-display tracking-[0.4em] text-silver-hp/85">
-            HEXAFALLS
+            HEXAFALLS 2
           </span>
         </div>
         <p className="font-wizard text-sm text-silver-hp/60 max-w-md leading-relaxed">
