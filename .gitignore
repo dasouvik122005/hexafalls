@@ -30,8 +30,12 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files — only the SOPS-encrypted .env and the .env.example template
+# are committed. Everything else (.env.local, .env.development.local, etc.)
+# stays local.
 .env*
+!.env
+!.env.example
 
 # vercel
 .vercel
@@ -42,6 +46,10 @@ yarn-error.log*
 .dev.vars
 .dev.vars.local
 cloudflare-env.d.ts
+
+# sops / age — never commit private age keys
+*.age.key
+keys.txt
 
 # typescript
 *.tsbuildinfo
