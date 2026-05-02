@@ -54,7 +54,9 @@ export default function RoughButton({
       if (cancelled || !svgRef.current) return;
       svgRef.current.innerHTML = "";
       const rc = rough.svg(svgRef.current);
-      const inset = 2;
+      // Bigger inset gives rough's stroke wiggles room to breathe inside the
+      // overflow-hidden wrapper so corner strokes don't get clipped.
+      const inset = 4;
       const rect = rc.rectangle(
         inset,
         inset,
@@ -93,7 +95,7 @@ export default function RoughButton({
       ref={wrapRef}
       {...tagProps}
       {...rest}
-      className={`group relative inline-flex items-center justify-center select-none transition font-display tracking-[0.3em] ${
+      className={`group relative inline-flex items-center justify-center overflow-hidden select-none transition font-display tracking-[0.3em] ${
         disabled ? "cursor-not-allowed opacity-90" : "cursor-pointer hover:brightness-110"
       } ${className}`}
       style={{
