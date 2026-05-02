@@ -10,6 +10,7 @@ import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
 import RoughStar from "./RoughStar";
 import RoughCorners from "./RoughCorners";
+import RoughTape from "./RoughTape";
 import { CALLS } from "@/lib/routes";
 
 export default function Hero() {
