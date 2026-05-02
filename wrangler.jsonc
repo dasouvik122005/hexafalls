@@ -1,11 +1,23 @@
 /**
  * Cloudflare Worker config for HexaFalls.
- * Deploy with `bun run deploy` (or `npm run deploy`) after `wrangler login`.
  *
- * Custom domain (hexafalls.org) is bound via the `routes` field below — make
- * sure the zone is on the same Cloudflare account `wrangler` is logged into.
+ * Worker name : `hexafalls`
+ * Workers URL : https://hexafalls.<your-account-subdomain>.workers.dev
  *
- * Docs: https://developers.cloudflare.com/workers/frameworks/framework-guides/nextjs
+ * Deploy: `npm run deploy` (after `wrangler login`).
+ *
+ * Custom domain (hexafalls.org) is wired manually:
+ *   1. Deploy this Worker — `hexafalls.<account>.workers.dev` becomes live.
+ *   2. In the Cloudflare dashboard, on the hexafalls.org zone, add a CNAME:
+ *        Name    : @            (or "www" for www.hexafalls.org)
+ *        Target  : hexafalls.<account>.workers.dev
+ *        Proxied : ON           (orange cloud — required)
+ *   3. Then attach the Custom Domain to the Worker:
+ *        Workers & Pages → hexafalls → Settings → Domains & Routes → Add → Custom domain
+ *        Enter `hexafalls.org` (and `www.hexafalls.org`)
+ *      Cloudflare provisions the cert and binds the hostname.
+ *
+ * Docs: https://developers.cloudflare.com/workers/configuration/routing/custom-domains/
  */
 {
   "$schema": "node_modules/wrangler/config-schema.json",
@@ -14,22 +26,27 @@
   "compatibility_date": "2026-04-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
 
+  // Keep the workers.dev preview URL live (hexafalls.<account>.workers.dev).
+  // Useful for sharing previews before / after the apex domain is wired.
+  "workers_dev": true,
+
   // Static assets emitted by @opennextjs/cloudflare
   "assets": {
     "binding": "ASSETS",
     "directory": ".open-next/assets"
   },
 
-  // Bind hexafalls.org (and www.) to this Worker. Zone must be on this CF account.
-  "routes": [
-    { "pattern": "hexafalls.org", "custom_domain": true },
-    { "pattern": "www.hexafalls.org", "custom_domain": true }
-  ],
-
   "observability": {
     "enabled": true,
     "head_sampling_rate": 1
   }
+
+  // Custom domains are bound manually via the dashboard (see header comment),
+  // so no `routes` block here. If you'd rather declare them in code later:
+  //   "routes": [
+  //     { "pattern": "hexafalls.org",     "custom_domain": true },
+  //     { "pattern": "www.hexafalls.org", "custom_domain": true }
+  //   ]
 
   // KV / R2 / D1 bindings can be added here later if you need server-side state.
   // "kv_namespaces": [{ "binding": "KV", "id": "<id>" }],
