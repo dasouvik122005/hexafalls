@@ -41,12 +41,28 @@
     "head_sampling_rate": 1
   },
 
-  // Bind hexafalls.org (apex + www) to this Worker on every deploy.
+  // Bind hexafalls.org (apex + www) to this Worker on every prod deploy.
   // The zone must be on the same Cloudflare account as the Worker.
   "routes": [
     { "pattern": "hexafalls.org",     "custom_domain": true },
     { "pattern": "www.hexafalls.org", "custom_domain": true }
-  ]
+  ],
+
+  // Preview environment — pushed by CI on the `preview` branch.
+  // Bound to preview.hexafalls.org so stakeholders share one stable URL.
+  "env": {
+    "preview": {
+      "name": "hexafalls-preview",
+      "workers_dev": true,
+      "routes": [
+        { "pattern": "preview.hexafalls.org", "custom_domain": true }
+      ],
+      "observability": {
+        "enabled": true,
+        "head_sampling_rate": 1
+      }
+    }
+  }
 
   // KV / R2 / D1 bindings can be added here later if you need server-side state.
   // "kv_namespaces": [{ "binding": "KV", "id": "<id>" }],

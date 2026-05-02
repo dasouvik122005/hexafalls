@@ -1,0 +1,66 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main, preview]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Preview' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      deployments: write
+    environment:
+      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
+      url: ${{ steps.deploy.outputs.deployment-url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build via OpenNext
+        run: npx opennextjs-cloudflare build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+
+      - name: Deploy to Cloudflare (Production)
+        id: deploy_prod
+        if: github.ref == 'refs/heads/main'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
+          packageManager: npm
+
+      - name: Deploy to Cloudflare (Preview)
+        id: deploy_preview
+        if: github.ref == 'refs/heads/preview'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --env preview
+          packageManager: npm
+
+      - name: Surface URL
+        id: deploy
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "deployment-url=https://hexafalls.org" >> "$GITHUB_OUTPUT"
+          else
+            echo "deployment-url=https://preview.hexafalls.org" >> "$GITHUB_OUTPUT"
+          fi
