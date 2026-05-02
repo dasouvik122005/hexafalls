@@ -4,6 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { SITEMAP } from "@/lib/routes";
+import RoughDivider from "./RoughDivider";
+import RoughStar from "./RoughStar";
+import RoughTape from "./RoughTape";
 
 
 const EMAIL    = "teams.hexafalls@gmail.com";
@@ -63,9 +66,30 @@ export default function Footer() {
 
   return (
     <footer className="relative mt-20 border-t border-cyan-hp/10 bg-midnight overflow-hidden">
-      {/* sketched divider sparkle */}
-      <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-cyan-hp/40 to-transparent" />
+      {/* hand-drawn divider that opens the footer like a chapter break */}
+      <div className="absolute inset-x-0 -top-3 flex justify-center pointer-events-none">
+        <RoughDivider width={520} height={32} color="#66FCF1" ornament="✦" seed={101} />
+      </div>
       <div className="absolute inset-0 hp-stars opacity-20 pointer-events-none" />
+
+      {/* margin scribbles in the footer corners */}
+      <RoughStar
+        size={22} color="#D4AF37" seed={103}
+        className="absolute top-12 left-6 sm:left-12 opacity-60 hp-float pointer-events-none"
+        style={{ animationDuration: "13s" }}
+      />
+      <RoughStar
+        size={18} color="#A78BFA" fill seed={107}
+        className="absolute bottom-16 right-8 sm:right-14 opacity-50 hp-float pointer-events-none"
+        style={{ animationDuration: "15s", animationDelay: "1s" }}
+      />
+
+      {/* a piece of tape stuck to the top-right of the footer */}
+      <span aria-hidden="true" className="pointer-events-none absolute -top-2 right-10 opacity-80">
+        <span className="relative block h-5 w-20">
+          <RoughTape color="#D4AF37" width={84} height={18} rotation={-22} inset={0} seed={109} />
+        </span>
+      </span>
 
       {/* Brand row */}
       <motion.div

@@ -86,6 +86,37 @@ export default function Hero() {
         <Sparkles count={36} />
       </motion.div>
 
+      {/* Scrapbook scribbles — scattered rough doodles in the page margins.
+          Sit between the parallax layers and the foreground content via
+          document order; pointer-events stay off so they never block clicks. */}
+      <RoughStar
+        size={26} color="#A78BFA" seed={71}
+        className="absolute top-24 left-6 sm:left-12 opacity-70 hp-float"
+        style={{ animationDuration: "12s" }}
+      />
+      <RoughStar
+        size={32} color="#D4AF37" fill seed={79}
+        className="absolute top-40 right-8 sm:right-16 opacity-80 hp-float"
+        style={{ animationDuration: "14s", animationDelay: "1.5s" }}
+      />
+      <RoughStar
+        size={20} color="#66FCF1" seed={83}
+        className="absolute bottom-32 left-12 opacity-60 hp-float"
+        style={{ animationDuration: "10s", animationDelay: "2s" }}
+      />
+
+      {/* a single piece of "tape" peeling off the top-left corner of the page */}
+      <span aria-hidden="true" className="pointer-events-none absolute top-20 -left-4 opacity-90">
+        <span className="relative block h-5 w-24">
+          <RoughTape color="#66FCF1" width={96} height={20} rotation={28} inset={0} seed={89} />
+        </span>
+      </span>
+
+      {/* sketched mini-divider tucked above the partner logos */}
+      <div className="absolute top-24 left-1/2 -translate-x-1/2 opacity-60 pointer-events-none">
+        <RoughDivider width={140} height={20} color="#C5C6C7" seed={97} />
+      </div>
+
       {/* partner logos */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
@@ -148,7 +179,7 @@ export default function Hero() {
           className="font-display font-black tracking-tight text-silver-hp leading-[0.95] text-[14vw] sm:text-[10vw] md:text-[8.5vw] hp-glow"
           style={{ perspective: 800 }}
         >
-          <span className="block">{splitLetters("HexaFalls")}</span>
+          <span className="block">{splitLetters("HexaFalls 2")}</span>
           <span className="block text-gold-hp hp-glow-gold text-[10vw] sm:text-[7vw] md:text-[6vw] mt-2">
             {splitLetters("Techfest")}
           </span>

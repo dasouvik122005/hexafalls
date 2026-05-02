@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { SITEMAP } from "@/lib/routes";
+import RoughDivider from "./RoughDivider";
+import RoughStar from "./RoughStar";
 
 export default function TopBar() {
   const [open, setOpen] = useState(false);
@@ -50,7 +52,7 @@ export default function TopBar() {
               />
             </span>
             <span className="font-display tracking-[0.4em] text-sm text-silver-hp/85 group-hover:text-cyan-hp transition">
-              HEXAFALLS
+              HEXAFALLS 2
             </span>
           </Link>
         </motion.div>
