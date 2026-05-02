@@ -6,6 +6,7 @@ import gsap from "gsap";
 import Link from "next/link";
 import Sparkles from "./Sparkles";
 import LocationMap from "./LocationMap";
+import RoughButton from "./RoughButton";
 import { CALLS } from "@/lib/routes";
 
 export default function Hero() {
@@ -168,33 +169,31 @@ export default function Hero() {
         className="mt-10 flex flex-col sm:flex-row items-center gap-4"
       >
         {/* Register — Coming Soon highlight */}
-        <button
-          type="button"
+        <RoughButton
+          color="#66FCF1"
+          glow="rgba(102,252,241,0.25)"
+          shimmer
           disabled
           aria-disabled="true"
-          className="relative inline-flex items-center gap-3 rounded-full border border-cyan-hp/50 bg-cyan-hp/10 px-7 py-3 font-display tracking-[0.3em] text-cyan-hp cursor-not-allowed select-none overflow-hidden hp-pulse"
+          seed={9}
+          className="px-7 py-3 text-[12px] hp-pulse"
         >
-          <span className="relative z-10">REGISTER</span>
-          <span className="relative z-10 text-[10px] tracking-[0.25em] px-2 py-0.5 rounded-full border border-gold-hp/60 bg-gold-hp/10 text-gold-hp hp-glow-gold">
+          <span>REGISTER</span>
+          <span className="text-[10px] tracking-[0.25em] px-2 py-0.5 rounded-full border border-gold-hp/60 bg-gold-hp/10 text-gold-hp hp-glow-gold">
             COMING SOON
           </span>
-          {/* shimmer sweep */}
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3"
-            style={{
-              background:
-                "linear-gradient(90deg, transparent, rgba(102,252,241,0.25), transparent)",
-              animation: "hp-shimmer 3.2s linear infinite",
-            }}
-          />
-        </button>
-        <Link
+        </RoughButton>
+
+        <RoughButton
+          as={Link}
           href="/about"
-          className="inline-flex items-center justify-center rounded-full border border-silver-hp/30 px-8 py-3 font-display tracking-[0.3em] text-silver-hp/80 hover:text-silver-hp hover:border-silver-hp/70 transition"
+          color="#C5C6C7"
+          fill={false}
+          seed={11}
+          className="px-8 py-3 text-[12px]"
         >
           THE PROPHECY
-        </Link>
+        </RoughButton>
       </motion.div>
 
       {/* Call for ... — entry points to the four scrolls */}
@@ -311,29 +310,24 @@ export default function Hero() {
         transition={{ duration: 0.9, ease: "easeOut" }}
         className="mt-12 flex justify-center"
       >
-        <a
+        <RoughButton
+          as="a"
           href="https://www.google.com/maps/place/JIS+UNIVERSITY/@22.6759713,88.3783425,17z/data=!4m6!3m5!1s0x39f89c46c06efd83:0x36a29a26ce825e99!8m2!3d22.6759713!4d88.3783425!16s%2Fm%2F0138jwhb"
           target="_blank"
           rel="noopener noreferrer"
-          className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full border border-cyan-hp/50 bg-cyan-hp/10 px-6 py-3 font-display tracking-[0.3em] text-[12px] text-cyan-hp hover:bg-cyan-hp/15 hover:border-cyan-hp hover:shadow-[0_0_24px_rgba(102,252,241,0.35)] transition"
+          color="#66FCF1"
+          glow="rgba(102,252,241,0.30)"
+          shimmer
+          seed={17}
+          className="px-6 py-3 text-[12px]"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="h-4 w-4">
             <path d="M12 22s7-7.58 7-13a7 7 0 1 0-14 0c0 5.42 7 13 7 13z" />
             <circle cx="12" cy="9" r="2.5" />
           </svg>
-          <span className="relative z-10">VIEW ON GOOGLE MAPS</span>
-          <span className="text-cyan-hp/70 group-hover:translate-x-0.5 transition">↗</span>
-          {/* shimmer */}
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3"
-            style={{
-              background:
-                "linear-gradient(90deg, transparent, rgba(102,252,241,0.25), transparent)",
-              animation: "hp-shimmer 3.6s linear infinite",
-            }}
-          />
-        </a>
+          <span>VIEW ON GOOGLE MAPS</span>
+          <span className="opacity-70 group-hover:translate-x-0.5 transition">↗</span>
+        </RoughButton>
       </motion.div>
 
       {/* footnote — more reveals coming */}

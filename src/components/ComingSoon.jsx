@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
 import Sparkles from "./Sparkles";
 import RoughFrame from "./RoughFrame";
+import RoughButton from "./RoughButton";
 
 /**
  * Generic "Coming Soon" page in the wizarding theme.
@@ -168,74 +169,47 @@ export default function ComingSoon({
         className="mt-12 flex flex-row flex-wrap items-center justify-center gap-4"
       >
         {apply && (apply.open ? (
-          <a
+          <RoughButton
+            as="a"
             href={apply.href}
             target={apply.external ? "_blank" : undefined}
             rel={apply.external ? "noopener noreferrer" : undefined}
-            className="relative inline-flex items-center gap-3 overflow-hidden rounded-full border px-7 py-3 font-display tracking-[0.3em] text-[12px] transition"
-            style={
-              themed
-                ? {
-                    borderColor: `${accentColor}99`,
-                    backgroundColor: `${accentColor}1a`,
-                    color: accentColor,
-                    textShadow: `0 0 14px ${accentGlow || accentColor}`,
-                  }
-                : {
-                    borderColor: "#D4AF37cc",
-                    backgroundColor: "rgba(212,175,55,0.10)",
-                    color: "#D4AF37",
-                  }
-            }
+            color={accentColor || "#D4AF37"}
+            glow={accentGlow || (themed ? `${accentColor}55` : "rgba(212,175,55,0.30)")}
+            shimmer
+            seed={23}
+            className="px-7 py-3 text-[12px]"
           >
-            <span className="relative z-10">{apply.label || "APPLY NOW"}</span>
-            <span className="relative z-10">↗</span>
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3"
-              style={{
-                background: `linear-gradient(90deg, transparent, ${accentColor ? accentGlow || `${accentColor}55` : "rgba(212,175,55,0.25)"}, transparent)`,
-                animation: "hp-shimmer 3.2s linear infinite",
-              }}
-            />
-          </a>
+            <span>{apply.label || "APPLY NOW"}</span>
+            <span>↗</span>
+          </RoughButton>
         ) : (
-          <button
-            type="button"
+          <RoughButton
+            color={accentColor || "#66FCF1"}
+            glow={accentGlow || "rgba(102,252,241,0.25)"}
+            shimmer
             disabled
             aria-disabled="true"
-            className="relative inline-flex items-center gap-3 rounded-full border px-7 py-3 font-display tracking-[0.3em] text-[12px] cursor-not-allowed select-none overflow-hidden hp-pulse"
-            style={
-              themed
-                ? {
-                    borderColor: `${accentColor}80`,
-                    backgroundColor: `${accentColor}1a`,
-                    color: accentColor,
-                  }
-                : { borderColor: "rgba(102,252,241,0.5)", backgroundColor: "rgba(102,252,241,0.10)", color: "#66FCF1" }
-            }
+            seed={29}
+            className="px-7 py-3 text-[12px] hp-pulse"
           >
-            <span className="relative z-10">{apply.label || "APPLY NOW"}</span>
-            <span className="relative z-10 text-[9px] tracking-[0.25em] px-2 py-0.5 rounded-full border border-gold-hp/60 bg-gold-hp/10 text-gold-hp hp-glow-gold">
+            <span>{apply.label || "APPLY NOW"}</span>
+            <span className="text-[9px] tracking-[0.25em] px-2 py-0.5 rounded-full border border-gold-hp/60 bg-gold-hp/10 text-gold-hp hp-glow-gold">
               COMING SOON
             </span>
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3"
-              style={{
-                background: `linear-gradient(90deg, transparent, ${accentColor ? `${accentColor}40` : "rgba(102,252,241,0.25)"}, transparent)`,
-                animation: "hp-shimmer 3.2s linear infinite",
-              }}
-            />
-          </button>
+          </RoughButton>
         ))}
 
-        <Link
+        <RoughButton
+          as={Link}
           href={backHref}
-          className="inline-flex items-center justify-center rounded-full border border-silver-hp/30 px-7 py-3 font-display tracking-[0.3em] text-[11px] text-silver-hp/80 hover:text-silver-hp hover:border-silver-hp/70 transition"
+          color="#C5C6C7"
+          fill={false}
+          seed={31}
+          className="px-7 py-3 text-[11px]"
         >
           {backLabel}
-        </Link>
+        </RoughButton>
       </motion.div>
     </section>
   );

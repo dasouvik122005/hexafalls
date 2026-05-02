@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
 import Sparkles from "./Sparkles";
 import RoughFrame from "./RoughFrame";
+import RoughButton from "./RoughButton";
 import { TEAMS } from "@/lib/routes";
 
 export default function Teams() {
@@ -171,12 +172,16 @@ export default function Teams() {
         transition={{ duration: 0.8, delay: 0.3 }}
         className="mt-16 flex justify-center"
       >
-        <Link
+        <RoughButton
+          as={Link}
           href="/"
-          className="inline-flex items-center justify-center rounded-full border border-silver-hp/30 px-8 py-3 font-display tracking-[0.3em] text-[11px] text-silver-hp/80 hover:text-silver-hp hover:border-silver-hp/70 transition"
+          color="#C5C6C7"
+          fill={false}
+          seed={61}
+          className="px-8 py-3 text-[11px]"
         >
           ← BACK TO THE HALL
-        </Link>
+        </RoughButton>
       </motion.div>
     </section>
   );

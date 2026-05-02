@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
 import Sparkles from "./Sparkles";
 import RoughFrame from "./RoughFrame";
+import RoughButton from "./RoughButton";
 
 // TODO: replace with the real Google Form URL
 const VOLUNTEER_FORM_URL = "https://forms.gle/wM2qEnr3oB95wss89";
@@ -202,31 +203,31 @@ export default function CallForVolunteers() {
         </span>
 
         <div className="flex flex-col sm:flex-row items-center gap-4">
-          <a
+          <RoughButton
+            as="a"
             href={VOLUNTEER_FORM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative inline-flex items-center gap-3 rounded-full border border-gold-hp/60 bg-gold-hp/10 px-8 py-3 font-display tracking-[0.3em] text-gold-hp hp-glow-gold hover:bg-gold-hp/15 hover:border-gold-hp transition overflow-hidden"
+            color="#D4AF37"
+            glow="rgba(212,175,55,0.30)"
+            shimmer
+            seed={37}
+            className="px-8 py-3 text-[12px]"
           >
-            <span className="relative z-10">SIGN THE SCROLL</span>
-            <span className="relative z-10 text-cyan-hp/80 group-hover:translate-x-0.5 transition">↗</span>
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3"
-              style={{
-                background:
-                  "linear-gradient(90deg, transparent, rgba(212,175,55,0.25), transparent)",
-                animation: "hp-shimmer 3.2s linear infinite",
-              }}
-            />
-          </a>
+            <span>SIGN THE SCROLL</span>
+            <span>↗</span>
+          </RoughButton>
 
-          <Link
+          <RoughButton
+            as={Link}
             href="/"
-            className="inline-flex items-center justify-center rounded-full border border-silver-hp/30 px-8 py-3 font-display tracking-[0.3em] text-silver-hp/80 hover:text-silver-hp hover:border-silver-hp/70 transition"
+            color="#C5C6C7"
+            fill={false}
+            seed={41}
+            className="px-8 py-3 text-[12px]"
           >
             ← BACK TO THE HALL
-          </Link>
+          </RoughButton>
         </div>
       </motion.div>
     </section>

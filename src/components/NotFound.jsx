@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
 import Sparkles from "./Sparkles";
 import RoughFrame from "./RoughFrame";
+import RoughButton from "./RoughButton";
 
 export default function NotFound() {
   const sectionRef = useRef(null);
@@ -131,28 +132,28 @@ export default function NotFound() {
         transition={{ duration: 1, delay: 0.4 }}
         className="mt-12 flex flex-col sm:flex-row items-center gap-4"
       >
-        <Link
+        <RoughButton
+          as={Link}
           href="/"
-          className="relative inline-flex items-center gap-3 overflow-hidden rounded-full border border-cyan-hp/50 bg-cyan-hp/10 px-7 py-3 font-display tracking-[0.3em] text-[12px] text-cyan-hp hover:bg-cyan-hp/15 hover:border-cyan-hp hover:shadow-[0_0_24px_rgba(102,252,241,0.35)] transition"
+          color="#66FCF1"
+          glow="rgba(102,252,241,0.30)"
+          shimmer
+          seed={43}
+          className="px-7 py-3 text-[12px]"
         >
-          <span className="relative z-10">← BACK TO THE HALL</span>
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3"
-            style={{
-              background:
-                "linear-gradient(90deg, transparent, rgba(102,252,241,0.25), transparent)",
-              animation: "hp-shimmer 3.6s linear infinite",
-            }}
-          />
-        </Link>
+          ← BACK TO THE HALL
+        </RoughButton>
 
-        <Link
+        <RoughButton
+          as={Link}
           href="/about"
-          className="inline-flex items-center justify-center rounded-full border border-silver-hp/30 px-7 py-3 font-display tracking-[0.3em] text-[12px] text-silver-hp/80 hover:text-silver-hp hover:border-silver-hp/70 transition"
+          color="#C5C6C7"
+          fill={false}
+          seed={47}
+          className="px-7 py-3 text-[12px]"
         >
           READ THE PROPHECY
-        </Link>
+        </RoughButton>
       </motion.div>
 
       {/* Footer whisper */}
