@@ -9,6 +9,7 @@ import LocationMap from "./LocationMap";
 import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
 import RoughStar from "./RoughStar";
+import RoughCorners from "./RoughCorners";
 import { CALLS } from "@/lib/routes";
 
 export default function Hero() {
@@ -248,7 +249,7 @@ export default function Hero() {
                       </span>
                     )}
                   </div>
-                  <div className="font-display tracking-tight text-silver-hp text-lg leading-tight group-hover:text-silver-hp/100">
+                  <div className="font-display tracking-tight text-silver-hp text-lg leading-tight group-hover:text-silver-hp">
                     {c.short}
                   </div>
                   <div className="font-wizard text-[12px] text-silver-hp/60 leading-relaxed">

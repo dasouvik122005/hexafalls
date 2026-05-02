@@ -8,6 +8,7 @@ import Sparkles from "./Sparkles";
 import RoughFrame from "./RoughFrame";
 import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
+import RoughTape from "./RoughTape";
 
 // TODO: replace with the real Google Form URL
 const VOLUNTEER_FORM_URL = "https://forms.gle/wM2qEnr3oB95wss89";
@@ -128,7 +129,7 @@ export default function CallForVolunteers() {
           className="w-full bg-slate-hp/40 backdrop-blur-sm"
           inner="flex flex-col gap-5"
         >
-          <div className="relative w-full aspect-[21/9] sm:aspect-[21/8] overflow-hidden rounded-sm bg-midnight/70 flex items-center justify-center">
+          <div className="relative w-full aspect-21/9 sm:aspect-21/8 overflow-hidden rounded-sm bg-midnight/70 flex items-center justify-center">
             <img
               src={BANNER_SRC}
               alt="Call for Volunteers"
@@ -150,6 +151,10 @@ export default function CallForVolunteers() {
               }}
             />
             <div className="absolute inset-0 hp-stars opacity-15 mix-blend-screen pointer-events-none" />
+
+            {/* sketched washi-tape strips at the corners — looks pasted in */}
+            <RoughTape color="#D4AF37" seed={51} />
+
             <span className="absolute top-2 left-2 text-[10px] font-wizard text-gold-hp/60 tracking-widest">★ · the order</span>
             <span className="absolute bottom-2 right-2 text-[10px] font-wizard text-cyan-hp/50 tracking-widest">helpers · welcome</span>
           </div>

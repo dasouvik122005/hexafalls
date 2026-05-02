@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import RoughFrame from "./RoughFrame";
+import RoughTicks from "./RoughTicks";
 
 /**
  * Marauder's-Map-style full-width card.
@@ -86,7 +87,7 @@ export default function LocationMap() {
         </div>
 
         {/* Big map */}
-        <div className="relative w-full aspect-[21/9] sm:aspect-[21/8] overflow-hidden rounded-sm bg-midnight/70 flex items-center justify-center">
+        <div className="relative w-full aspect-21/9 sm:aspect-21/8 overflow-hidden rounded-sm bg-midnight/70 flex items-center justify-center">
           <img
             src="/banners/hexafalls_map.png"
             alt="HexaFalls map"
@@ -120,6 +121,10 @@ export default function LocationMap() {
           />
 
           <div className="absolute inset-0 hp-stars opacity-20 mix-blend-screen pointer-events-none" />
+
+          {/* cartography registration ticks */}
+          <RoughTicks color="#D4AF37" arm={9} inset={16} seed={43} />
+
           <span className="absolute top-2 left-2 text-[10px] font-wizard text-gold-hp/60 tracking-widest">N · ✦</span>
           <span className="absolute bottom-2 right-2 text-[10px] font-wizard text-cyan-hp/50 tracking-widest">S · ✦</span>
         </div>
