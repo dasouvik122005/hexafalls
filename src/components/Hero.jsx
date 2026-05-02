@@ -317,11 +317,14 @@ export default function Hero() {
           transition={{ duration: 1.1, ease: "easeOut", delay: 0.2 }}
           className="absolute -bottom-10 -right-6 sm:-bottom-14 sm:-right-10 z-20"
         >
-          <div className="relative hp-float" style={{ animationDuration: "7s" }}>
+          <div className="relative hp-float h-40 w-40 sm:h-56 sm:w-56" style={{ animationDuration: "7s" }}>
+            {/* sketched frame brackets around the keeper */}
+            <RoughCorners color="#66FCF1" length={20} inset={2} seed={67} />
+
             <img
               src="/mascot/mascot.webp"
               alt="HexaFalls mascot"
-              className="relative h-40 w-40 sm:h-56 sm:w-56 object-contain select-none"
+              className="relative h-full w-full object-contain select-none"
               style={{
                 filter:
                   "drop-shadow(0 0 18px rgba(102,252,241,0.45)) drop-shadow(0 8px 24px rgba(0,0,0,0.55)) drop-shadow(0 0 36px rgba(212,175,55,0.18))",
