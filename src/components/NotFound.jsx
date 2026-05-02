@@ -113,9 +113,9 @@ export default function NotFound() {
           inner="flex flex-col items-center text-center gap-4"
         >
           <p className="font-wizard text-silver-hp/80 text-base sm:text-lg leading-relaxed">
-            This corridor doesn't appear on any map of the castle. The walls
+            This corridor doesn&apos;t appear on any map of the castle. The walls
             here have a habit of moving — perhaps you took a staircase that
-            wasn't where it ought to have been.
+            wasn&apos;t where it ought to have been.
           </p>
           <p className="font-wizard italic text-silver-hp/55 text-sm">
             “Mischief managed. Try a different door.”

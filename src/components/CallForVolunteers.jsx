@@ -198,7 +198,7 @@ export default function CallForVolunteers() {
         className="mt-20 flex flex-col items-center gap-6"
       >
         <span className="font-wizard italic text-silver-hp/60 text-sm text-center max-w-xl">
-          Sign the scroll. We'll dispatch an owl with the next steps.
+          Sign the scroll. We&apos;ll dispatch an owl with the next steps.
         </span>
 
         <div className="flex flex-col sm:flex-row items-center gap-4">

@@ -1,0 +1,66 @@
+# Cloudflare Worker config for HexaFalls.
+#
+# Worker name : `hexafalls`
+# Workers URL : https://hexafalls.<account-subdomain>.workers.dev
+#
+# Deploy: `npm run deploy` locally, or push to `main` (prod) / `preview` (preview)
+#         to trigger the GitHub Actions deploy workflow.
+#
+# Custom domains:
+#   main    branch → hexafalls.org + www.hexafalls.org   (top-level routes below)
+#   preview branch → preview.hexafalls.org               (env.preview routes)
+#
+# Docs: https://developers.cloudflare.com/workers/configuration/routing/custom-domains/
+
+name                 = "hexafalls"
+main                 = ".open-next/worker.js"
+compatibility_date   = "2026-04-01"
+compatibility_flags  = ["nodejs_compat", "global_fetch_strictly_public"]
+
+# Keep the workers.dev preview URL live alongside the custom domain.
+workers_dev = true
+
+# Static assets emitted by @opennextjs/cloudflare
+[assets]
+binding   = "ASSETS"
+directory = ".open-next/assets"
+
+[observability]
+enabled            = true
+head_sampling_rate = 1
+
+# Bind hexafalls.org (apex + www) to this Worker on every prod deploy.
+# Zone must be on the same Cloudflare account.
+[[routes]]
+pattern        = "hexafalls.org"
+custom_domain  = true
+
+[[routes]]
+pattern        = "www.hexafalls.org"
+custom_domain  = true
+
+# ---------------------------------------------------------------------------
+# Preview environment — pushed by CI on the `preview` branch.
+# Lives at hexafalls-preview.<account>.workers.dev AND preview.hexafalls.org
+# ---------------------------------------------------------------------------
+
+[env.preview]
+name        = "hexafalls-preview"
+workers_dev = true
+
+[env.preview.observability]
+enabled            = true
+head_sampling_rate = 1
+
+[[env.preview.routes]]
+pattern        = "preview.hexafalls.org"
+custom_domain  = true
+
+# KV / R2 / D1 bindings can be added here later if you need server-side state.
+# [[kv_namespaces]]
+# binding = "KV"
+# id      = "<id>"
+#
+# [[r2_buckets]]
+# binding     = "R2"
+# bucket_name = "<name>"

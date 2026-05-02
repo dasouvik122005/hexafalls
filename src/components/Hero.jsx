@@ -350,7 +350,7 @@ export default function Hero() {
           <span className="h-px w-8 bg-cyan-hp/40" />
         </span>
         <span className="font-wizard text-[12px] italic text-silver-hp/45">
-          tracks · prizes · sponsors · the keeper's lore — revealing in due time
+          tracks · prizes · sponsors · the keeper&apos;s lore — revealing in due time
         </span>
       </motion.div>
     </section>
