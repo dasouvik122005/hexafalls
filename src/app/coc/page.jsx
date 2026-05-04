@@ -1,6 +1,5 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import Link from "next/link";
 import { marked } from "marked";
 import TopBar from "@/components/TopBar";
 import Footer from "@/components/Footer";
@@ -115,7 +114,7 @@ export default async function CodeOfConductPage() {
             REPORT AN INCIDENT <span>↗</span>
           </RoughButton>
           <RoughButton
-            as={Link}
+            as="a"
             href="/"
             color="#C5C6C7"
             fill={false}
