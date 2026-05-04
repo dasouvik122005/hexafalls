@@ -1,4 +1,4 @@
-import { promises as fs } from "node:fs";
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import { marked } from "marked";
 import TopBar from "@/components/TopBar";
@@ -14,18 +14,21 @@ export const metadata = {
     "How we behave at HexaFalls — pledge, expected standards, scope, reporting, and enforcement.",
 };
 
-// Static page; cache the rendered HTML across requests.
+// Static page; force prerender at build so the worker never reads from disk.
 export const dynamic = "force-static";
 export const revalidate = false;
 
-export default async function CodeOfConductPage() {
-  const md = await fs.readFile(
-    path.join(process.cwd(), "CODE_OF_CONDUCT.md"),
-    "utf8"
-  );
-  marked.setOptions({ gfm: true, breaks: false, headerIds: true });
-  const html = marked.parse(md);
+// ─── Read + parse the markdown ONCE at module load (build time on the runner).
+//     Cloudflare Workers don't have a filesystem; baking the HTML into the
+//     bundle here means no fs.readFile call ever happens at the edge.
+const COC_MD = readFileSync(
+  path.join(process.cwd(), "CODE_OF_CONDUCT.md"),
+  "utf8"
+);
+marked.setOptions({ gfm: true, breaks: false });
+const COC_HTML = marked.parse(COC_MD);
 
+export default function CodeOfConductPage() {
   return (
     <main className="flex-1">
       <TopBar />
@@ -95,7 +98,7 @@ export default async function CodeOfConductPage() {
           >
             <article
               className="coc-prose"
-              dangerouslySetInnerHTML={{ __html: html }}
+              dangerouslySetInnerHTML={{ __html: COC_HTML }}
             />
           </RoughFrame>
         </div>
