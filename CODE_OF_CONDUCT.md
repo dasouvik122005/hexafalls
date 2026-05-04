@@ -44,9 +44,8 @@ We commit to acting and interacting in ways that contribute to an open, welcomin
 
 This Code of Conduct applies to all event spaces and times, including but not limited to:
 
-- The JIS University campus, hostel, food halls, and any partner venue used during the event.
-- Travel and transport organised by HexaFalls.
-- Online channels — Discord, Slack, GitHub repositories, Devfolio listings, mailing lists, video calls, and any official social-media account.
+- The JIS University campus, canteen,  and in camous accomodation rooms and any partner venue used during the event.
+- Online channels — Discord and GitHub repositories, Participant listings, mailing lists, communication , and any official social-media account.
 - Sponsor booths, after-parties, and informal meetups associated with the event.
 
 It also applies when an individual is officially representing the HexaFalls community in public spaces.
@@ -57,7 +56,7 @@ It also applies when an individual is officially representing the HexaFalls comm
 
 If you experience or witness behaviour that violates this Code of Conduct, please report it. We take every report seriously and will respect your confidentiality.
 
-- **Email** — [teams.hexafalls@gmail.com](mailto:teams.hexafalls@gmail.com)
+- **Email** — [support@hexafalls.org](mailto:support@hexafalls.org)
 - **In person** — find any organiser wearing a HexaFalls badge; the **Crisis Helpline desk** at the main hall is staffed throughout the event.
 - **Anonymous form** — a link will be shared on the event Discord on day one.
 
