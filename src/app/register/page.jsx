@@ -24,7 +24,6 @@ export default function RegisterPage() {
         whisper="“The hall remembers every wand that was raised within it.”"
       />
 
-      {/* Devfolio CTA — sits between the page section and the footer. */}
       <div className="-mt-8 mb-24 flex flex-col items-center gap-3 px-6">
         <span className="font-display text-[10px] uppercase tracking-[0.4em] text-silver-hp/55">
           or
