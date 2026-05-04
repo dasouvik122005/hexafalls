@@ -11,6 +11,7 @@ import RoughDivider from "./RoughDivider";
 import RoughStar from "./RoughStar";
 import RoughCorners from "./RoughCorners";
 import RoughTape from "./RoughTape";
+import DevfolioApply from "./DevfolioApply";
 import { CALLS } from "@/lib/routes";
 
 export default function Hero() {
@@ -203,21 +204,8 @@ export default function Hero() {
         transition={{ duration: 1, delay: 1.6 }}
         className="mt-10 flex flex-col sm:flex-row items-center gap-4"
       >
-        {/* Register — Coming Soon highlight */}
-        <RoughButton
-          color="#66FCF1"
-          glow="rgba(102,252,241,0.25)"
-          shimmer
-          disabled
-          aria-disabled="true"
-          seed={9}
-          className="px-7 py-3 text-[12px] hp-pulse"
-        >
-          <span>REGISTER</span>
-          <span className="text-[10px] tracking-[0.25em] px-2 py-0.5 rounded-full border border-gold-hp/60 bg-gold-hp/10 text-gold-hp hp-glow-gold">
-            COMING SOON
-          </span>
-        </RoughButton>
+        {/* Register — Apply with Devfolio (cosmetic until the listing is verified) */}
+        <DevfolioApply slug="hexafalls2" theme="dark" />
 
         <RoughButton
           as={Link}
