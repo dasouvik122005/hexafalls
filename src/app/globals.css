@@ -245,6 +245,27 @@ html, body {
   contain-intrinsic-size: 1px 700px;
 }
 
+/* ---------------------------------------------------------------------------
+ * /coc — plain-prose styles for the rendered CODE_OF_CONDUCT.md.
+ * Deliberately not themed: no rough chrome, no glow, no parallax. Just a
+ * readable doc on the dark background.
+ * --------------------------------------------------------------------------- */
+.coc-prose             { line-height: 1.65; }
+.coc-prose h1          { font-size: 2rem;     font-weight: 700; margin-bottom: 0.75rem; color: #fff; }
+.coc-prose h2          { font-size: 1.5rem;   font-weight: 700; margin: 2.5rem 0 1rem;   color: #fff; border-bottom: 1px solid rgba(197,198,199,0.18); padding-bottom: 0.4rem; }
+.coc-prose h3          { font-size: 1.125rem; font-weight: 600; margin: 1.75rem 0 0.6rem; color: rgba(255,255,255,0.9); }
+.coc-prose p           { margin-bottom: 1rem; }
+.coc-prose ul          { margin: 0 0 1rem 1.5rem; list-style: disc; }
+.coc-prose ol          { margin: 0 0 1rem 1.5rem; list-style: decimal; }
+.coc-prose li          { margin-bottom: 0.35rem; }
+.coc-prose strong      { color: #fff; font-weight: 600; }
+.coc-prose em          { color: rgba(197,198,199,0.75); }
+.coc-prose a           { color: #66FCF1; text-decoration: underline; text-underline-offset: 3px; }
+.coc-prose a:hover     { color: #aafff8; }
+.coc-prose hr          { margin: 2.5rem 0; border: 0; border-top: 1px solid rgba(197,198,199,0.15); }
+.coc-prose code        { background: rgba(255,255,255,0.07); padding: 1px 6px; border-radius: 4px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; }
+.coc-prose blockquote  { margin: 1.25rem 0; padding-left: 1rem; border-left: 3px solid rgba(102,252,241,0.4); color: rgba(197,198,199,0.85); font-style: italic; }
+
 /* Reduce motion respect */
 @media (prefers-reduced-motion: reduce) {
   .hp-stars, .hp-float, .hp-pulse,
