@@ -1,9 +1,7 @@
-"use client";
-
-import { useEffect } from "react";
-
 // Strict Devfolio integration — see https://guide.devfolio.co/docs/guide/apply-with-devfolio-integration
-// The button only renders once the hackathon is verified on Devfolio.
+// The SDK script is loaded once site-wide from the root layout (so the tag
+// is in the SSR HTML and Devfolio's verifier finds it). This component only
+// renders the placeholder div the SDK looks for and populates.
 export default function DevfolioApply({
   slug = "hexafalls2",
   theme = "light", // "light" | "dark" | "dark-inverted"
@@ -11,17 +9,6 @@ export default function DevfolioApply({
   height = 44,
   className = "",
 }) {
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://apply.devfolio.co/v2/sdk.js";
-    script.async = true;
-    script.defer = true;
-    document.body.appendChild(script);
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
-
   return (
     <div
       className={`apply-button ${className}`}

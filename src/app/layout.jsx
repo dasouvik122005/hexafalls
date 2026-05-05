@@ -1,4 +1,5 @@
 import { Cinzel, MedievalSharp, Inter } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const display = Cinzel({
@@ -109,6 +110,13 @@ export default function RootLayout({ children }) {
           <span className="hp-fog__cloud hp-fog__cloud--d" />
         </div>
         {children}
+        {/* Devfolio Apply-with-Devfolio SDK. Loaded site-wide via the layout
+            so the <script> tag is in the SSR HTML — Devfolio's verifier
+            scans the raw response and checks for apply.devfolio.co. */}
+        <Script
+          src="https://apply.devfolio.co/v2/sdk.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
