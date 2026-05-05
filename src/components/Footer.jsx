@@ -240,6 +240,36 @@ export default function Footer() {
         </motion.div>
       </div>
 
+      {/* Sponsor strip — Devfolio brand-verification scanner crawls the
+          homepage, so the logo (with the exact required alt text) lives in
+          the footer where it's present on every page. */}
+      <div className="relative border-t border-cyan-hp/10">
+        <div className="mx-auto max-w-7xl px-6 py-8 flex flex-col items-center gap-4">
+          <span className="font-display text-[10px] uppercase tracking-[0.5em] text-gold-hp/70">
+            Gold Patron
+          </span>
+          <a
+            href="https://devfolio.co"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Devfolio"
+            className="inline-flex items-center justify-center"
+          >
+            {/* Plain <img> (not next/image) so the scanner sees the original
+                asset path with the required alt tag verbatim. */}
+            <img
+              src="/sponsors/Devfolio_Logo-White.png"
+              alt="DEVFOLIO LOGO"
+              width="160"
+              height="36"
+              loading="eager"
+              decoding="async"
+              className="h-9 w-auto opacity-90 hover:opacity-100 transition"
+            />
+          </a>
+        </div>
+      </div>
+
       {/* Bottom strip */}
       <div className="relative border-t border-cyan-hp/10">
         <div className="mx-auto max-w-7xl px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] uppercase tracking-[0.3em] text-silver-hp/40 font-display">
