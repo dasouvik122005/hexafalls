@@ -18,7 +18,6 @@ const GOLD = [
     href: "https://devfolio.co",
     logo: "/sponsors/Devfolio_Logo-White.png",
     logoAlt: "DEVFOLIO LOGO",
-    blurb: "Hackathon platform of record — registrations, submissions, judging.",
   },
 ];
 
@@ -121,7 +120,7 @@ export default function SponsorsHall() {
       </p>
 
       {/* Gold tier */}
-      <div className="mt-20 mx-auto max-w-5xl">
+      <div className="mt-20 mx-auto max-w-3xl">
         <div className="flex items-center justify-center gap-4 mb-10">
           <RoughDivider width={120} height={22} color="#D4AF37" seed={11} />
           <span className="font-display text-[11px] uppercase tracking-[0.5em] text-gold-hp hp-glow-gold">
@@ -130,27 +129,28 @@ export default function SponsorsHall() {
           <RoughDivider width={120} height={22} color="#D4AF37" seed={13} />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-5 justify-items-center">
           {GOLD.map((s, i) => (
             <motion.a
               key={s.name}
               href={s.href}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={s.name}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.9, delay: 0.1 + i * 0.1 }}
-              className="group block"
+              className="group block w-full max-w-55"
             >
               <RoughFrame
                 seed={37 + i * 4}
                 stroke="#D4AF37"
                 mist={false}
-                strokeWidth={1.5}
+                strokeWidth={1.4}
                 roughness={1.6}
                 bowing={1.2}
-                padding={28}
+                padding={12}
                 className="w-full bg-midnight transition-transform duration-500 group-hover:-translate-y-1"
               >
                 {/* Brand mark on a solid single-colour background, no mask,
@@ -160,60 +160,15 @@ export default function SponsorsHall() {
                     src={s.logo}
                     alt={s.logoAlt || s.name}
                     fill
-                    sizes="(min-width: 640px) 40vw, 90vw"
+                    sizes="(min-width: 640px) 200px, 40vw"
                     priority
-                    className="object-contain p-10 transition-transform duration-700 group-hover:scale-[1.03]"
+                    className="object-contain p-4 transition-transform duration-700 group-hover:scale-[1.03]"
                   />
-                  <RoughTape color="#D4AF37" seed={61 + i} />
-                </div>
-
-                <div className="mt-5 flex flex-col items-center text-center gap-2">
-                  <span className="font-display text-[10px] uppercase tracking-[0.4em] text-gold-hp/80">
-                    Gold patron
-                  </span>
-                  <h3 className="font-display text-2xl text-silver-hp hp-glow">
-                    {s.name}
-                  </h3>
-                  <p className="font-wizard text-silver-hp/65 text-sm max-w-xs">
-                    {s.blurb}
-                  </p>
+                  <RoughTape color="#D4AF37" seed={61 + i} width={56} height={14} />
                 </div>
               </RoughFrame>
             </motion.a>
           ))}
-
-          {/* "Reserved" slot for the next gold patron */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.9, delay: 0.3 }}
-          >
-            <RoughFrame
-              seed={59}
-              stroke="#C5C6C7"
-              mistColor="#C5C6C7"
-              strokeWidth={1.3}
-              roughness={1.7}
-              bowing={1.3}
-              padding={28}
-              className="w-full bg-slate-hp/15 backdrop-blur-sm"
-            >
-              <div className="relative w-full aspect-video flex items-center justify-center">
-                <span className="font-wizard italic text-silver-hp/40 text-sm">
-                  scroll yet to be inked
-                </span>
-              </div>
-              <div className="mt-5 flex flex-col items-center text-center gap-2">
-                <span className="font-display text-[10px] uppercase tracking-[0.4em] text-silver-hp/40">
-                  Reserved
-                </span>
-                <h3 className="font-display text-2xl text-silver-hp/55">
-                  Coming soon
-                </h3>
-              </div>
-            </RoughFrame>
-          </motion.div>
         </div>
       </div>
 
