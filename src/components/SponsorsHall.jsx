@@ -12,7 +12,7 @@ import RoughDivider from "./RoughDivider";
 import RoughStar from "./RoughStar";
 import RoughTape from "./RoughTape";
 
-const PLATINUM = [
+const GOLD = [
   {
     name: "Devfolio",
     href: "https://devfolio.co",
@@ -120,18 +120,18 @@ export default function SponsorsHall() {
         The hands that carry the wood, the lanterns that light the long halls.
       </p>
 
-      {/* Platinum tier */}
+      {/* Gold tier */}
       <div className="mt-20 mx-auto max-w-5xl">
         <div className="flex items-center justify-center gap-4 mb-10">
           <RoughDivider width={120} height={22} color="#D4AF37" seed={11} />
           <span className="font-display text-[11px] uppercase tracking-[0.5em] text-gold-hp hp-glow-gold">
-            Platinum
+            Gold
           </span>
           <RoughDivider width={120} height={22} color="#D4AF37" seed={13} />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
-          {PLATINUM.map((s, i) => (
+          {GOLD.map((s, i) => (
             <motion.a
               key={s.name}
               href={s.href}
@@ -180,7 +180,7 @@ export default function SponsorsHall() {
 
                 <div className="mt-5 flex flex-col items-center text-center gap-2">
                   <span className="font-display text-[10px] uppercase tracking-[0.4em] text-gold-hp/80">
-                    Platinum patron
+                    Gold patron
                   </span>
                   <h3 className="font-display text-2xl text-silver-hp hp-glow">
                     {s.name}
@@ -193,7 +193,7 @@ export default function SponsorsHall() {
             </motion.a>
           ))}
 
-          {/* "Reserved" slot for the next platinum patron */}
+          {/* "Reserved" slot for the next gold patron */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -242,7 +242,7 @@ export default function SponsorsHall() {
           inner="flex flex-col items-center text-center gap-3"
         >
           <span className="font-display text-[10px] uppercase tracking-[0.5em] text-cyan-hp/80">
-            Gold · Silver · In-kind
+            Platinum · Silver · In-kind
           </span>
           <p className="font-wizard text-silver-hp/75 text-sm sm:text-base leading-relaxed">
             More patrons join the procession soon. Their seals will be set in
