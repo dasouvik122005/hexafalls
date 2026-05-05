@@ -16,7 +16,7 @@ const GOLD = [
   {
     name: "Devfolio",
     href: "https://devfolio.co",
-    logo: "/sponsors/devfolio_dark.webp",
+    logo: "/sponsors/Devfolio_Logo-White.png",
     logoAlt: "DEVFOLIO LOGO",
     blurb: "Hackathon platform of record — registrations, submissions, judging.",
   },
@@ -146,35 +146,24 @@ export default function SponsorsHall() {
               <RoughFrame
                 seed={37 + i * 4}
                 stroke="#D4AF37"
-                mistColor="#D4AF37"
+                mist={false}
                 strokeWidth={1.5}
                 roughness={1.6}
                 bowing={1.2}
                 padding={28}
-                className="w-full bg-slate-hp/30 backdrop-blur-sm transition-transform duration-500 group-hover:-translate-y-1"
+                className="w-full bg-midnight transition-transform duration-500 group-hover:-translate-y-1"
               >
-                <div className="relative w-full aspect-video overflow-hidden bg-midnight/70 flex items-center justify-center">
+                {/* Brand mark on a solid single-colour background, no mask,
+                    no overlay — per Devfolio brand guidelines. */}
+                <div className="relative w-full aspect-video overflow-hidden bg-midnight flex items-center justify-center">
                   <Image
                     src={s.logo}
-                    alt={s.logoAlt || `${s.name} LOGO`}
+                    alt={s.logoAlt || s.name}
                     fill
                     sizes="(min-width: 640px) 40vw, 90vw"
-                    className="object-contain p-8 transition-transform duration-700 group-hover:scale-[1.03]"
-                    style={{
-                      WebkitMaskImage:
-                        "radial-gradient(ellipse at center, black 60%, transparent 100%)",
-                      maskImage:
-                        "radial-gradient(ellipse at center, black 60%, transparent 100%)",
-                    }}
+                    priority
+                    className="object-contain p-10 transition-transform duration-700 group-hover:scale-[1.03]"
                   />
-                  <div
-                    className="pointer-events-none absolute inset-0"
-                    style={{
-                      background:
-                        "radial-gradient(ellipse at center, transparent 55%, rgba(11,12,16,0.55) 85%, rgba(11,12,16,0.95) 100%)",
-                    }}
-                  />
-                  <div className="absolute inset-0 hp-stars opacity-15 mix-blend-screen pointer-events-none" />
                   <RoughTape color="#D4AF37" seed={61 + i} />
                 </div>
 
