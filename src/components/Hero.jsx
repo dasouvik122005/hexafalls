@@ -205,7 +205,7 @@ export default function Hero() {
         className="mt-10 flex flex-col sm:flex-row items-center gap-4"
       >
         {/* Register — official "Apply with Devfolio" SDK button */}
-        <DevfolioApply slug="hexafalls2" theme="light" variant="sdk" />
+        <DevfolioApply slug="hexafalls2" theme="light" />
 
         <RoughButton
           as={Link}
