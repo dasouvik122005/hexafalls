@@ -1,12 +1,10 @@
-import { readFileSync } from "node:fs";
-import path from "node:path";
-import { marked } from "marked";
 import TopBar from "@/components/TopBar";
 import Footer from "@/components/Footer";
 import RoughFrame from "@/components/RoughFrame";
 import RoughDivider from "@/components/RoughDivider";
 import RoughStar from "@/components/RoughStar";
 import RoughButton from "@/components/RoughButton";
+import CodeOfConductBody from "@/components/CodeOfConductBody";
 
 export const metadata = {
   title: "Code of Conduct · HexaFalls Techfest",
@@ -14,19 +12,8 @@ export const metadata = {
     "How we behave at HexaFalls — pledge, expected standards, scope, reporting, and enforcement.",
 };
 
-// Static page; force prerender at build so the worker never reads from disk.
 export const dynamic = "force-static";
 export const revalidate = false;
-
-// ─── Read + parse the markdown ONCE at module load (build time on the runner).
-//     Cloudflare Workers don't have a filesystem; baking the HTML into the
-//     bundle here means no fs.readFile call ever happens at the edge.
-const COC_MD = readFileSync(
-  path.join(process.cwd(), "CODE_OF_CONDUCT.md"),
-  "utf8"
-);
-marked.setOptions({ gfm: true, breaks: false });
-const COC_HTML = marked.parse(COC_MD);
 
 export default function CodeOfConductPage() {
   return (
@@ -96,10 +83,7 @@ export default function CodeOfConductPage() {
             padding={36}
             className="w-full bg-slate-hp/30 backdrop-blur-sm"
           >
-            <article
-              className="coc-prose"
-              dangerouslySetInnerHTML={{ __html: COC_HTML }}
-            />
+            <CodeOfConductBody />
           </RoughFrame>
         </div>
 

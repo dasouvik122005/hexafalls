@@ -204,8 +204,8 @@ export default function Hero() {
         transition={{ duration: 1, delay: 1.6 }}
         className="mt-10 flex flex-col sm:flex-row items-center gap-4"
       >
-        {/* Register — Apply with Devfolio (cosmetic until the listing is verified) */}
-        <DevfolioApply slug="hexafalls2" theme="dark" />
+        {/* Register — official "Apply with Devfolio" SDK button */}
+        <DevfolioApply slug="hexafalls2" theme="light" variant="sdk" />
 
         <RoughButton
           as={Link}
