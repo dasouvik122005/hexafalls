@@ -11,7 +11,6 @@ import RoughDivider from "./RoughDivider";
 import RoughStar from "./RoughStar";
 import RoughCorners from "./RoughCorners";
 import RoughTape from "./RoughTape";
-import DevfolioApply from "./DevfolioApply";
 import { CALLS } from "@/lib/routes";
 
 export default function Hero() {
@@ -204,8 +203,18 @@ export default function Hero() {
         transition={{ duration: 1, delay: 1.6 }}
         className="mt-10 flex flex-col sm:flex-row items-center gap-4"
       >
-        {/* Register — official "Apply with Devfolio" SDK button */}
-        <DevfolioApply slug="hexafalls2" theme="light" />
+        {/* Register — routes to /events/hackathon which then sends to Devfolio */}
+        <RoughButton
+          as={Link}
+          href="/events/hackathon"
+          color="#D4AF37"
+          glow="rgba(212,175,55,0.30)"
+          shimmer
+          seed={7}
+          className="px-8 py-3 text-[12px]"
+        >
+          REGISTER NOW <span>↗</span>
+        </RoughButton>
 
         <RoughButton
           as={Link}

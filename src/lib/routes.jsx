@@ -1,5 +1,7 @@
 // The Google Form link for volunteer applications.
 export const VOLUNTEER_FORM_URL = "https://forms.gle/wM2qEnr3oB95wss89";
+// The Google Form link for core-team applications.
+export const CORE_TEAM_FORM_URL = "https://forms.gle/VrZB4PVeDMzMRscz5";
 
 // Top-level navbar entries (kept lean — Call-for-X CTAs live in the Hero).
 export const SITEMAP = [
@@ -52,6 +54,14 @@ export const SITEMAP = [
       </svg>
     ),
   },
+  {
+    href: "/sponsors", label: "Sponsors",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+        <path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10z" />
+      </svg>
+    ),
+  },
 ];
 
 // Sub-orders inside the /teams hub. Each has its own house color, page, and
@@ -82,7 +92,8 @@ export const TEAMS = [
     blurb: "The architects on the floor — execution, ops, the spine of HexaFalls.",
     color: "#EF4444", // gryffindor red
     glow:  "rgba(239,68,68,0.40)",
-    open:  false,
+    open:  true,
+    formUrl: "https://forms.gle/VrZB4PVeDMzMRscz5",
   },
   {
     slug: "volunteers",
@@ -141,8 +152,9 @@ export const CALLS = [
     href: "/teams/core-team",
     label: "Call for Core Team",
     short: "Core Team",
-    accent: "cyan",
-    blurb: "Shape every spell from the inner circle.",
+    accent: "gold",
+    open: true,
+    blurb: "Open now — shape every spell from the inner circle.",
   },
   {
     href: "/judges",

@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
 import Sparkles from "./Sparkles";
@@ -12,12 +11,45 @@ import RoughDivider from "./RoughDivider";
 import RoughStar from "./RoughStar";
 import RoughTape from "./RoughTape";
 
-const GOLD = [
+const TIERS = [
   {
-    name: "Devfolio",
-    href: "https://devfolio.co",
-    logo: "/sponsors/Devfolio_Logo-White.png",
-    logoAlt: "DEVFOLIO LOGO",
+    label: "Collaborative Partner",
+    sponsors: [
+      {
+        name: "Miro",
+        href: "https://miro.com",
+        logo: "/sponsors/miro.png",
+        logoAlt: "MIRO LOGO",
+      },
+    ],
+  },
+  {
+    label: "Gold",
+    sponsors: [
+      {
+        name: "Devfolio",
+        href: "https://devfolio.co",
+        logo: "/sponsors/devfolio.png",
+        logoAlt: "DEVFOLIO LOGO",
+      },
+    ],
+  },
+  {
+    label: "In Kind",
+    sponsors: [
+      {
+        name: ".xyz",
+        href: "https://gen.xyz",
+        logo: "/sponsors/xyz.png",
+        logoAlt: "XYZ LOGO",
+      },
+      {
+        name: "n8n",
+        href: "https://n8n.io",
+        logo: "/sponsors/n8n.png",
+        logoAlt: "N8N LOGO",
+      },
+    ],
   },
 ];
 
@@ -106,11 +138,11 @@ export default function SponsorsHall() {
       {/* Headline */}
       <h1
         aria-label="Our Patrons"
-        className="font-display font-black tracking-tight text-silver-hp leading-[0.95] text-center text-[12vw] sm:text-[8vw] md:text-[6vw] hp-glow"
+        className="font-display font-black tracking-tight text-silver-hp leading-[0.95] text-center text-[9vw] sm:text-[6vw] md:text-[4.5vw] hp-glow"
         style={{ perspective: 800 }}
       >
         <span className="block">{splitLetters("Our")}</span>
-        <span className="block text-gold-hp hp-glow-gold text-[12vw] sm:text-[7vw] md:text-[5.5vw] mt-2">
+        <span className="block text-gold-hp hp-glow-gold text-[9vw] sm:text-[5vw] md:text-[4vw] mt-2">
           {splitLetters("Patrons")}
         </span>
       </h1>
@@ -119,57 +151,62 @@ export default function SponsorsHall() {
         The hands that carry the wood, the lanterns that light the long halls.
       </p>
 
-      {/* Gold tier */}
-      <div className="mt-20 mx-auto max-w-3xl">
-        <div className="flex items-center justify-center gap-4 mb-10">
-          <RoughDivider width={120} height={22} color="#D4AF37" seed={11} />
-          <span className="font-display text-[11px] uppercase tracking-[0.5em] text-gold-hp hp-glow-gold">
-            Gold
-          </span>
-          <RoughDivider width={120} height={22} color="#D4AF37" seed={13} />
-        </div>
+      {/* Tiered patrons */}
+      <div className="mt-16 mx-auto max-w-4xl space-y-14">
+        {TIERS.map((tier, t) => (
+          <div key={tier.label}>
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <RoughDivider width={96} height={20} color="#D4AF37" seed={11 + t * 2} />
+              <span className="font-display text-[11px] uppercase tracking-[0.5em] text-gold-hp hp-glow-gold whitespace-nowrap">
+                {tier.label}
+              </span>
+              <RoughDivider width={96} height={20} color="#D4AF37" seed={13 + t * 2} />
+            </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-5 justify-items-center">
-          {GOLD.map((s, i) => (
-            <motion.a
-              key={s.name}
-              href={s.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={s.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.9, delay: 0.1 + i * 0.1 }}
-              className="group block w-full max-w-55"
-            >
-              <RoughFrame
-                seed={37 + i * 4}
-                stroke="#D4AF37"
-                mist={false}
-                strokeWidth={1.4}
-                roughness={1.6}
-                bowing={1.2}
-                padding={12}
-                className="w-full bg-midnight transition-transform duration-500 group-hover:-translate-y-1"
-              >
-                {/* Brand mark on a solid single-colour background, no mask,
-                    no overlay — per Devfolio brand guidelines. */}
-                <div className="relative w-full aspect-video overflow-hidden bg-midnight flex items-center justify-center">
-                  <Image
-                    src={s.logo}
-                    alt={s.logoAlt || s.name}
-                    fill
-                    sizes="(min-width: 640px) 200px, 40vw"
-                    priority
-                    className="object-contain p-4 transition-transform duration-700 group-hover:scale-[1.03]"
-                  />
-                  <RoughTape color="#D4AF37" seed={61 + i} width={56} height={14} />
-                </div>
-              </RoughFrame>
-            </motion.a>
-          ))}
-        </div>
+            <div className="flex flex-wrap items-stretch justify-center gap-6">
+              {tier.sponsors.map((s, i) => (
+                <motion.a
+                  key={s.name}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.9, delay: 0.1 + i * 0.1 }}
+                  className="group block w-72 max-w-full"
+                >
+                  <RoughFrame
+                    seed={37 + (t * 17) + i * 4}
+                    stroke="#D4AF37"
+                    mist={false}
+                    strokeWidth={1.4}
+                    roughness={1.6}
+                    bowing={1.2}
+                    padding={14}
+                    className="w-full bg-silver-hp transition-transform duration-500 group-hover:-translate-y-1"
+                  >
+                    {/* Brand mark on a solid single-colour background, no
+                        mask, no overlay — per partner brand guidelines.
+                        Plain <img> + a fixed-height holder so wide wordmark
+                        logos render legibly without being cropped. */}
+                    <div className="relative w-full h-24 bg-silver-hp flex items-center justify-center px-6 rounded-sm">
+                      <img
+                        src={s.logo}
+                        alt={s.logoAlt || s.name}
+                        loading="eager"
+                        decoding="async"
+                        className="max-h-full max-w-full object-contain transition-transform duration-700 group-hover:scale-[1.03]"
+                      />
+                      <RoughTape color="#D4AF37" seed={61 + t * 11 + i} width={56} height={14} />
+                    </div>
+                  </RoughFrame>
+                </motion.a>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Other tiers — placeholder note */}
@@ -186,7 +223,7 @@ export default function SponsorsHall() {
           inner="flex flex-col items-center text-center gap-3"
         >
           <span className="font-display text-[10px] uppercase tracking-[0.5em] text-cyan-hp/80">
-            Platinum · Silver · In-kind
+            Platinum · Silver
           </span>
           <p className="font-wizard text-silver-hp/75 text-sm sm:text-base leading-relaxed">
             More patrons join the procession soon. Their seals will be set in

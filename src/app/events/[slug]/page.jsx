@@ -23,6 +23,8 @@ export default async function EventPage({ params }) {
   const event = EVENTS.find((e) => e.slug === slug);
   if (!event) notFound();
 
+  const isHackathon = event.slug === "hackathon";
+
   return (
     <main className="flex-1">
       <TopBar />
@@ -30,11 +32,28 @@ export default async function EventPage({ params }) {
         eyebrow={`Track · ${event.name}`}
         title="The"
         accent={event.name.replace(/^The\s+/i, "")}
-        lede={`${event.blurb} The full brief — rules, schedule, judging — is being inked. Return soon, or peek at the prizes already.`}
+        lede={
+          isHackathon
+            ? `${event.blurb} The full brief — rules, schedule, judging — is yet to come. Registrations are open on Devfolio.`
+            : `${event.blurb} The full brief — rules, schedule, judging — is being inked. Return soon, or peek at the prizes already.`
+        }
         whisper="“Every contest is a small spell, and every spell needs its rules.”"
         accentColor={event.color}
         accentGlow={event.glow}
-        apply={{ open: true, label: "SEE THE PRIZES", href: `/events/${event.slug}/prizes` }}
+        apply={
+          isHackathon
+            ? {
+                open: true,
+                label: "REGISTER ON DEVFOLIO",
+                href: "https://hexafalls2.devfolio.co",
+                external: true,
+              }
+            : {
+                open: true,
+                label: "SEE THE PRIZES",
+                href: `/events/${event.slug}/prizes`,
+              }
+        }
         backHref="/events"
         backLabel="← ALL EVENTS"
       />
