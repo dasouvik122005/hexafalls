@@ -32,7 +32,7 @@ const SITE_URL =
 
 // Wide social banner used for OG / Twitter previews. Per-page metadata can
 // override `openGraph.images` to provide a different banner.
-const OG_IMAGE = "/banners/seo_banner.png";
+const OG_IMAGE = "/banners/og-banner.png";
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
