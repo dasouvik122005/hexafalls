@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import gsap from "gsap";
 import Sparkles from "./Sparkles";
 import RoughFrame from "./RoughFrame";
@@ -56,13 +56,6 @@ const TIERS = [
 export default function SponsorsHall() {
   const sectionRef = useRef(null);
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
-  const yStars = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const yMid = useTransform(scrollYProgress, [0, 1], ["0%", "55%"]);
-
   useEffect(() => {
     if (typeof window === "undefined") return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -75,7 +68,7 @@ export default function SponsorsHall() {
       gsap.to(".sp-letter", {
         opacity: 1,
         y: 0,
-        duration: 1.0,
+        duration: 0.4,
         ease: "power3.out",
         stagger: { each: 0.045, from: "start" },
         delay: 0.15,
@@ -100,11 +93,11 @@ export default function SponsorsHall() {
       ref={sectionRef}
       className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6"
     >
-      <motion.div style={{ y: yStars }} className="absolute inset-0 -z-30 hp-stars opacity-70" />
-      <motion.div style={{ y: yMid }} className="absolute inset-0 -z-20 hp-scrim" />
-      <motion.div style={{ y: yMid }} className="absolute inset-0 -z-10">
-        <Sparkles count={28} />
-      </motion.div>
+      <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars pointer-events-none" />
+      <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
+      <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
+        <Sparkles count={24} />
+      </div>
 
       {/* margin scribbles */}
       <RoughStar
@@ -127,7 +120,7 @@ export default function SponsorsHall() {
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9 }}
+        transition={{ duration: 0.4 }}
         className="mx-auto mb-6 flex max-w-3xl items-center justify-center gap-3 text-[11px] uppercase tracking-[0.5em] text-cyan-hp/70 font-display text-center"
       >
         <RoughDivider width={48} height={20} color="#66FCF1" seed={3} />
@@ -174,7 +167,7 @@ export default function SponsorsHall() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.9, delay: 0.1 + i * 0.1 }}
+                  transition={{ duration: 0.4, delay: i * 0.03 }}
                   className="group block w-72 max-w-full"
                 >
                   <RoughFrame
@@ -244,12 +237,12 @@ export default function SponsorsHall() {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 1, delay: 0.3 }}
+        transition={{ duration: 0.4, delay: 0.3 }}
         className="mx-auto mt-14 flex max-w-3xl flex-row flex-wrap items-center justify-center gap-4"
       >
         <RoughButton
           as="a"
-          href="mailto:sponsors@hexafalls.org"
+          href="mailto:support@hexafalls.org"
           color="#D4AF37"
           glow="rgba(212,175,55,0.30)"
           shimmer

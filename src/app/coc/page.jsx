@@ -4,6 +4,7 @@ import RoughFrame from "@/components/RoughFrame";
 import RoughDivider from "@/components/RoughDivider";
 import RoughStar from "@/components/RoughStar";
 import RoughButton from "@/components/RoughButton";
+import Sparkles from "@/components/Sparkles";
 import CodeOfConductBody from "@/components/CodeOfConductBody";
 
 export const metadata = {
@@ -21,6 +22,13 @@ export default function CodeOfConductPage() {
       <TopBar />
 
       <section className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6">
+        {/* ambience — pure CSS, no JS animation cost */}
+        <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars opacity-60 pointer-events-none" />
+        <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
+          <Sparkles count={22} />
+        </div>
+
         {/* margin scribbles in the page corners */}
         <RoughStar
           size={28} color="#A78BFA" seed={71}

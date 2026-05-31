@@ -24,16 +24,6 @@ export const SITEMAP = [
     ),
   },
   {
-    href: "/register", label: "Registration", soon: true,
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-        <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
-        <path d="M14 3v6h6" />
-        <path d="M9 14h6M9 17h4" />
-      </svg>
-    ),
-  },
-  {
     href: "/events", label: "The Events", soon: true,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
@@ -64,16 +54,20 @@ export const SITEMAP = [
   },
 ];
 
-// Sub-orders inside the /teams hub. Each has its own house color, page, and
-// "Apply Now" semantics (only `volunteers` is open right now).
+// Sub-orders inside the /teams hub. All four share the project's cyan
+// primary accent so the hub reads as one cohesive order — only the events
+// hub keeps the per-track house colours.
+const TEAM_COLOR = "#66FCF1"; // --hx-cyan
+const TEAM_GLOW  = "rgba(102,252,241,0.35)";
+
 export const TEAMS = [
   {
     slug: "organising-team",
     name: "Organising Team",
     rune: "✦",
     blurb: "The high council that shapes the entire night. Direction, scope, vision.",
-    color: "#D4AF37", // gold
-    glow:  "rgba(212,175,55,0.35)",
+    color: TEAM_COLOR,
+    glow:  TEAM_GLOW,
     open:  false,
   },
   {
@@ -81,8 +75,8 @@ export const TEAMS = [
     name: "Evangelists",
     rune: "✶",
     blurb: "The voice of the order — outreach, partners, the world beyond the walls.",
-    color: "#3B82F6", // ravenclaw blue
-    glow:  "rgba(59,130,246,0.40)",
+    color: TEAM_COLOR,
+    glow:  TEAM_GLOW,
     open:  false,
   },
   {
@@ -90,8 +84,8 @@ export const TEAMS = [
     name: "Core Team",
     rune: "❖",
     blurb: "The architects on the floor — execution, ops, the spine of HexaFalls.",
-    color: "#EF4444", // gryffindor red
-    glow:  "rgba(239,68,68,0.40)",
+    color: TEAM_COLOR,
+    glow:  TEAM_GLOW,
     open:  true,
     formUrl: "https://forms.gle/VrZB4PVeDMzMRscz5",
   },
@@ -100,8 +94,8 @@ export const TEAMS = [
     name: "Volunteers",
     rune: "★",
     blurb: "Hands that steady the wand. Sign the scroll, join the order.",
-    color: "#22C55E", // slytherin green
-    glow:  "rgba(34,197,94,0.35)",
+    color: TEAM_COLOR,
+    glow:  TEAM_GLOW,
     open:  true,
   },
 ];

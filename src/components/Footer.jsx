@@ -9,7 +9,7 @@ import RoughStar from "./RoughStar";
 import RoughTape from "./RoughTape";
 
 
-const EMAIL    = "teams.hexafalls@gmail.com";
+const EMAIL    = "support@hexafalls.org";
 const GDG_LINK = "https://gdg.community.dev/gdg-on-campus-jis-university-kolkata-india/";
 
 const SOCIALS = [
@@ -60,7 +60,7 @@ export default function Footer() {
       ta.select();
       try { document.execCommand("copy"); setCopied(true); setTimeout(() => setCopied(false), 1800); }
       catch { /* noop */ }
-      document.body.removeChild(ta);
+      if (ta.parentNode) ta.parentNode.removeChild(ta);
     }
   };
 

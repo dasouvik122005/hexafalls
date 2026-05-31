@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import gsap from "gsap";
 import Sparkles from "./Sparkles";
 import RoughFrame from "./RoughFrame";
@@ -35,13 +35,6 @@ export default function Prophecy() {
   const sectionRef = useRef(null);
   const headingRef = useRef(null);
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
-  const yStars = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const yMid   = useTransform(scrollYProgress, [0, 1], ["0%", "55%"]);
-
   useEffect(() => {
     if (typeof window === "undefined") return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -54,7 +47,7 @@ export default function Prophecy() {
       gsap.to(".pr-letter", {
         opacity: 1,
         y: 0,
-        duration: 1.0,
+        duration: 0.4,
         ease: "power3.out",
         stagger: { each: 0.04, from: "start" },
         delay: 0.15,
@@ -79,26 +72,17 @@ export default function Prophecy() {
       ref={sectionRef}
       className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6"
     >
-      {/* parallax: deep stars */}
-      <motion.div
-        style={{ y: yStars }}
-        className="absolute inset-0 -z-30 hp-stars opacity-70"
-      />
-      {/* parallax: scrim */}
-      <motion.div
-        style={{ y: yMid }}
-        className="absolute inset-0 -z-20 hp-scrim"
-      />
-      {/* floating sparks */}
-      <motion.div style={{ y: yMid }} className="absolute inset-0 -z-10">
-        <Sparkles count={28} />
-      </motion.div>
+      <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars pointer-events-none" />
+      <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
+      <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
+        <Sparkles count={24} />
+      </div>
 
       {/* Eyebrow */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9 }}
+        transition={{ duration: 0.4 }}
         className="mx-auto mb-6 flex max-w-3xl items-center justify-center gap-3 text-[11px] uppercase tracking-[0.5em] text-cyan-hp/70 font-display"
       >
         <RoughDivider width={48} height={20} color="#66FCF1" seed={3} />
@@ -124,7 +108,7 @@ export default function Prophecy() {
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.05 }}
         transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
         className="mx-auto mt-12 max-w-3xl text-center"
       >
@@ -176,7 +160,7 @@ export default function Prophecy() {
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.05 }}
         transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
         className="mx-auto mt-24 grid max-w-5xl grid-cols-2 gap-6 sm:grid-cols-4"
       >
@@ -215,7 +199,7 @@ export default function Prophecy() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.05 }}
           transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
           className="relative mt-12 mx-auto w-full"
         >
