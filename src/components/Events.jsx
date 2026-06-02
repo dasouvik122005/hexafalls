@@ -2,23 +2,17 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import gsap from "gsap";
 import Sparkles from "./Sparkles";
 import RoughFrame from "./RoughFrame";
 import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
+import HeroVideoBg from "./HeroVideoBg";
 import { EVENTS } from "@/lib/routes";
 
 export default function Events() {
   const sectionRef = useRef(null);
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
-  const yStars = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const yMid   = useTransform(scrollYProgress, [0, 1], ["0%", "55%"]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -31,7 +25,7 @@ export default function Events() {
       gsap.set(".ev-letter", { opacity: 0, y: 24 });
       gsap.to(".ev-letter", {
         opacity: 1, y: 0,
-        duration: 1.0,
+        duration: 0.4,
         ease: "power3.out",
         stagger: { each: 0.045, from: "start" },
         delay: 0.15,
@@ -56,16 +50,16 @@ export default function Events() {
       ref={sectionRef}
       className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6"
     >
-      <motion.div style={{ y: yStars }} className="absolute inset-0 -z-30 hp-stars opacity-70" />
-      <motion.div style={{ y: yMid }} className="absolute inset-0 -z-20 hp-scrim" />
-      <motion.div style={{ y: yMid }} className="absolute inset-0 -z-10">
-        <Sparkles count={28} />
-      </motion.div>
+      <HeroVideoBg />
+      <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
+      <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
+        <Sparkles count={18} />
+      </div>
 
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9 }}
+        transition={{ duration: 0.4 }}
         className="mx-auto mb-6 flex max-w-3xl items-center justify-center gap-3 text-[11px] uppercase tracking-[0.5em] text-cyan-hp/70 font-display"
       >
         <RoughDivider width={48} height={20} color="#66FCF1" seed={3} />
@@ -76,22 +70,19 @@ export default function Events() {
       <div className="text-center">
         <h1
           aria-label="The Events"
-          className="font-display font-black tracking-tight text-silver-hp leading-[0.95] text-[14vw] sm:text-[10vw] md:text-[8vw] hp-glow"
+          className="font-display font-black tracking-tight text-silver-hp leading-[1.05] text-balance text-[14vw] sm:text-[10vw] md:text-[8vw] hp-glow"
           style={{ perspective: 800 }}
         >
-          <span className="block">{splitLetters("The")}</span>
-          <span className="block text-gold-hp hp-glow-gold text-[14vw] sm:text-[9vw] md:text-[7vw] mt-2">
-            {splitLetters("Events")}
-          </span>
+          {splitLetters("The")}<span style={{whiteSpace: "pre"}}> </span><span className="text-gold-hp hp-glow-gold text-[14vw] sm:text-[9vw] md:text-[7vw]">{splitLetters("Events")}</span>
         </h1>
       </div>
 
       <motion.p
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-        className="mx-auto mt-10 max-w-2xl text-center font-wizard text-silver-hp/75 text-base sm:text-lg leading-relaxed"
+        viewport={{ once: true, amount: 0.05 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="mx-auto mt-10 max-w-2xl text-center font-wizard text-silver-hp/85 text-base sm:text-lg leading-relaxed"
       >
         Five tracks. One night that breaks into fifty-eight hours. Each has its
         own scrolls, its own duels, and its own gold to be won.
@@ -102,7 +93,7 @@ export default function Events() {
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 1, delay: 0.3 }}
+        transition={{ duration: 0.4, delay: 0.3 }}
         className="mt-10 flex items-center justify-center gap-3 font-display text-[10px] uppercase tracking-[0.5em] text-gold-hp/80"
       >
         <span className="relative flex h-2 w-2">
@@ -119,8 +110,8 @@ export default function Events() {
             key={e.slug}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.15 }}
-            transition={{ duration: 1.2, delay: 0.05 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+            viewport={{ once: true, amount: 0.05 }}
+            transition={{ duration: 0.45, delay: i * 0.03, ease: [0.22, 1, 0.36, 1] }}
             className="h-full"
           >
             <RoughFrame
@@ -162,7 +153,7 @@ export default function Events() {
               >
                 {e.name}
               </h2>
-              <p className="font-wizard text-silver-hp/65 text-sm leading-relaxed">
+              <p className="font-wizard text-silver-hp/85 text-sm leading-relaxed">
                 {e.blurb}
               </p>
 
@@ -181,7 +172,7 @@ export default function Events() {
                 </Link>
                 <Link
                   href={`/events/${e.slug}/prizes`}
-                  className="group inline-flex items-center gap-1.5 rounded-full border border-silver-hp/25 bg-slate-hp/40 px-3 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] text-silver-hp/75 transition"
+                  className="group inline-flex items-center gap-1.5 rounded-full border border-silver-hp/25 bg-slate-hp/40 px-3 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] text-silver-hp/85 transition"
                   style={{
                     /* hover handled inline via CSS variables */
                   }}
@@ -208,7 +199,7 @@ export default function Events() {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 1, delay: 0.4 }}
+        transition={{ duration: 0.4, delay: 0.4 }}
         className="mt-16 flex justify-center"
       >
         <RoughButton

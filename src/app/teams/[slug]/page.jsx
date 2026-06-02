@@ -43,11 +43,19 @@ export default async function TeamSlugPage({ params }) {
         eyebrow={`Order · ${team.name}`}
         title="The"
         accent={team.name}
-        lede={`${team.blurb} The roster, the duties, and the call to apply will be inscribed soon.`}
+        lede={
+          team.formUrl
+            ? `${team.blurb} The scroll is open — sign on to join the order.`
+            : `${team.blurb} The roster, the duties, and the call to apply will be inscribed soon.`
+        }
         whisper="“Behind every great gathering, a quiet council steadies the wand.”"
         accentColor={team.color}
         accentGlow={team.glow}
-        apply={{ open: false, label: "APPLY NOW" }}
+        apply={
+          team.formUrl
+            ? { open: true, href: team.formUrl, external: true, label: "APPLY NOW" }
+            : { open: false, label: "APPLY NOW" }
+        }
         backHref="/teams"
         backLabel="← ALL TEAMS"
       />

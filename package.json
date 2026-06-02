@@ -1,16 +1,56 @@
 {
   "name": "hexafalls",
-  "version": "1.0.12",
+  "version": "1.0.25",
   "private": true,
+  "description": "HexaFalls — a 58-hour wizarding-themed hackathon at JIS University, Kolkata. Next.js + Tailwind app deployed on Cloudflare via OpenNext.",
+  "keywords": [
+    "hexafalls",
+    "hackathon",
+    "techfest",
+    "jis-university",
+    "gdg",
+    "kolkata",
+    "nextjs",
+    "tailwindcss",
+    "cloudflare",
+    "opennext"
+  ],
+  "homepage": "https://hexafalls.org",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hexafest/hexafalls.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hexafest/hexafalls/issues"
+  },
+  "author": {
+    "name": "Ayushman Bhattacharya (@elixpo)",
+    "email": "ayushman@myceli.ai",
+    "url": "https://github.com/Circuit-Overtime"
+  },
+  "contributors": [
+    {
+      "name": "GDG on Campus · JIS University",
+      "url": "https://gdg.community.dev/gdg-on-campus-jis-university-kolkata-india/"
+    }
+  ],
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "optimize:logos": "node scripts/optimize-logos.mjs",
+<<<<<<< HEAD
     "db:migrate":         "wrangler d1 migrations apply hexafalls --local",
     "db:migrate:prod":    "wrangler d1 migrations apply hexafalls --remote",
     "db:migrate:preview": "wrangler d1 migrations apply hexafalls-preview --remote --env preview",
+=======
+    "optimize:brochure": "node scripts/optimize-brochure.mjs",
+>>>>>>> ca25c5251616d9b65894494c292954369ad64a27
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",

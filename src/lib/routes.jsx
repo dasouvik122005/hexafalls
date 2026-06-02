@@ -1,5 +1,7 @@
 // The Google Form link for volunteer applications.
 export const VOLUNTEER_FORM_URL = "https://forms.gle/wM2qEnr3oB95wss89";
+// The Google Form link for core-team applications.
+export const CORE_TEAM_FORM_URL = "https://forms.gle/VrZB4PVeDMzMRscz5";
 
 // Top-level navbar entries (kept lean — Call-for-X CTAs live in the Hero).
 export const SITEMAP = [
@@ -18,16 +20,6 @@ export const SITEMAP = [
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
         <circle cx="12" cy="12" r="9" />
         <path d="M12 7v5l3 2" />
-      </svg>
-    ),
-  },
-  {
-    href: "/register", label: "Registration", soon: true,
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-        <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
-        <path d="M14 3v6h6" />
-        <path d="M9 14h6M9 17h4" />
       </svg>
     ),
   },
@@ -52,45 +44,69 @@ export const SITEMAP = [
       </svg>
     ),
   },
+  {
+    href: "/sponsors", label: "Sponsors",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+        <path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10z" />
+      </svg>
+    ),
+  },
+  {
+    href: "/faq", label: "FAQ",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+        <line x1="12" y1="17" x2="12.01" y2="17" />
+      </svg>
+    ),
+  },
 ];
 
-// Sub-orders inside the /teams hub. Each has its own house color, page, and
-// "Apply Now" semantics (only `volunteers` is open right now).
+// Sub-orders inside the /teams hub. All four share the project's cyan
+// primary accent so the hub reads as one cohesive order — only the events
+// hub keeps the per-track house colours.
+const TEAM_COLOR = "#66FCF1"; // --hx-cyan
+const TEAM_GLOW  = "rgba(102,252,241,0.35)";
+
 export const TEAMS = [
   {
     slug: "organising-team",
     name: "Organising Team",
     rune: "✦",
     blurb: "The high council that shapes the entire night. Direction, scope, vision.",
-    color: "#D4AF37", // gold
-    glow:  "rgba(212,175,55,0.35)",
+    color: TEAM_COLOR,
+    glow:  TEAM_GLOW,
     open:  false,
   },
   {
     slug: "evangelists",
     name: "Evangelists",
     rune: "✶",
-    blurb: "The voice of the order — outreach, partners, the world beyond the walls.",
-    color: "#3B82F6", // ravenclaw blue
-    glow:  "rgba(59,130,246,0.40)",
-    open:  false,
+    blurb: "The voice of the order: outreach, partners and the world beyond the walls.",
+    color: TEAM_COLOR,
+    glow:  TEAM_GLOW,
+    open:  true,
+    formUrl: "https://luma.com/vc0k1lcq",
   },
   {
     slug: "core-team",
     name: "Core Team",
     rune: "❖",
-    blurb: "The architects on the floor — execution, ops, the spine of HexaFalls.",
-    color: "#EF4444", // gryffindor red
-    glow:  "rgba(239,68,68,0.40)",
-    open:  false,
+    blurb: "The architects on the floor: execution, ops and the spine of HexaFalls.",
+    color: TEAM_COLOR,
+    glow:  TEAM_GLOW,
+    open:  true,
+    formUrl: "https://forms.gle/VrZB4PVeDMzMRscz5",
   },
   {
     slug: "volunteers",
     name: "Volunteers",
     rune: "★",
     blurb: "Hands that steady the wand. Sign the scroll, join the order.",
-    color: "#22C55E", // slytherin green
-    glow:  "rgba(34,197,94,0.35)",
+    color: TEAM_COLOR,
+    glow:  TEAM_GLOW,
     open:  true,
   },
 ];
@@ -105,7 +121,7 @@ export const EVENTS = [
     slug: "hackathon",
     name: "The Hackathon",
     rune: "✦",
-    blurb: "Fifty-eight hours of pure spellwork — full-stack, AI, anything that ships.",
+    blurb: "Fifty-eight hours of pure spellwork: full-stack, AI, anything that ships.",
     color: "#D4AF37", // gold
     glow:  "rgba(212,175,55,0.35)",
   },
@@ -121,7 +137,7 @@ export const EVENTS = [
     slug: "gaming",
     name: "Gaming Arena",
     rune: "✶",
-    blurb: "Stadium of charms — controller in hand, glory on the line.",
+    blurb: "Stadium of charms. Controller in hand, glory on the line.",
     color: "#EF4444", // gryffindor red
     glow:  "rgba(239,68,68,0.40)",
   },
@@ -141,8 +157,9 @@ export const CALLS = [
     href: "/teams/core-team",
     label: "Call for Core Team",
     short: "Core Team",
-    accent: "cyan",
-    blurb: "Shape every spell from the inner circle.",
+    accent: "gold",
+    open: true,
+    blurb: "Open now. Shape every spell from the inner circle.",
   },
   {
     href: "/judges",
@@ -164,6 +181,6 @@ export const CALLS = [
     short: "Volunteers",
     accent: "gold",
     open: true,
-    blurb: "Open now — sign the scroll, join the order.",
+    blurb: "Open now. Sign the scroll, join the order.",
   },
 ];

@@ -5,7 +5,7 @@ import NotFound from "@/components/NotFound";
 export const metadata = {
   title: "Lost in the Castle · HexaFalls Techfest",
   description:
-    "This corridor of HexaFalls cannot be found. The map shifts — return to the hall.",
+    "This corridor of HexaFalls cannot be found. The map shifts. Return to the hall.",
 };
 
 export default function NotFoundPage() {

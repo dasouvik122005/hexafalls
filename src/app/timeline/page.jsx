@@ -4,7 +4,7 @@ import ComingSoon from "@/components/ComingSoon";
 
 export const metadata = {
   title: "Timeline · HexaFalls Techfest",
-  description: "The path foretold — full HexaFalls timeline, coming soon.",
+  description: "The path foretold. The full HexaFalls timeline is being inscribed. Coming soon.",
 };
 
 export default function TimelinePage() {
@@ -15,7 +15,7 @@ export default function TimelinePage() {
         eyebrow="The path foretold"
         title="The"
         accent="Timeline"
-        lede="Hours, milestones, and rituals — every chapter of the 58-hour gathering. The full timeline will be inscribed soon."
+        lede="Hours, milestones and rituals: every chapter of the 58-hour gathering. The full timeline will be inscribed soon."
         whisper="“Time, in the right hands, is itself a kind of magic.”"
       />
       <Footer />

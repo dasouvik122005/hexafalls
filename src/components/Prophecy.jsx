@@ -2,12 +2,13 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import gsap from "gsap";
 import Sparkles from "./Sparkles";
 import RoughFrame from "./RoughFrame";
 import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
+import HeroVideoBg from "./HeroVideoBg";
 import RoughStar from "./RoughStar";
 
 const PILLARS = [
@@ -35,13 +36,6 @@ export default function Prophecy() {
   const sectionRef = useRef(null);
   const headingRef = useRef(null);
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
-  const yStars = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const yMid   = useTransform(scrollYProgress, [0, 1], ["0%", "55%"]);
-
   useEffect(() => {
     if (typeof window === "undefined") return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -54,7 +48,7 @@ export default function Prophecy() {
       gsap.to(".pr-letter", {
         opacity: 1,
         y: 0,
-        duration: 1.0,
+        duration: 0.4,
         ease: "power3.out",
         stagger: { each: 0.04, from: "start" },
         delay: 0.15,
@@ -79,26 +73,17 @@ export default function Prophecy() {
       ref={sectionRef}
       className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6"
     >
-      {/* parallax: deep stars */}
-      <motion.div
-        style={{ y: yStars }}
-        className="absolute inset-0 -z-30 hp-stars opacity-70"
-      />
-      {/* parallax: scrim */}
-      <motion.div
-        style={{ y: yMid }}
-        className="absolute inset-0 -z-20 hp-scrim"
-      />
-      {/* floating sparks */}
-      <motion.div style={{ y: yMid }} className="absolute inset-0 -z-10">
-        <Sparkles count={28} />
-      </motion.div>
+      <HeroVideoBg />
+      <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
+      <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
+        <Sparkles count={18} />
+      </div>
 
       {/* Eyebrow */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9 }}
+        transition={{ duration: 0.4 }}
         className="mx-auto mb-6 flex max-w-3xl items-center justify-center gap-3 text-[11px] uppercase tracking-[0.5em] text-cyan-hp/70 font-display"
       >
         <RoughDivider width={48} height={20} color="#66FCF1" seed={3} />
@@ -110,13 +95,10 @@ export default function Prophecy() {
       <div ref={headingRef} className="text-center">
         <h1
           aria-label="The Prophecy"
-          className="font-display font-black tracking-tight text-silver-hp leading-[0.95] text-[14vw] sm:text-[10vw] md:text-[8vw] hp-glow"
+          className="font-display font-black tracking-tight text-silver-hp leading-[1.05] text-balance text-[14vw] sm:text-[10vw] md:text-[8vw] hp-glow"
           style={{ perspective: 800 }}
         >
-          <span className="block">{splitLetters("The")}</span>
-          <span className="block text-gold-hp hp-glow-gold text-[12vw] sm:text-[8vw] md:text-[6.5vw] mt-2">
-            {splitLetters("Prophecy")}
-          </span>
+          {splitLetters("The")}<span style={{whiteSpace: "pre"}}> </span><span className="text-gold-hp hp-glow-gold text-[12vw] sm:text-[8vw] md:text-[6.5vw]">{splitLetters("Prophecy")}</span>
         </h1>
       </div>
 
@@ -124,7 +106,7 @@ export default function Prophecy() {
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.05 }}
         transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
         className="mx-auto mt-12 max-w-3xl text-center"
       >
@@ -164,7 +146,7 @@ export default function Prophecy() {
               <h3 className="font-display tracking-[0.35em] text-silver-hp uppercase text-sm">
                 {p.title}
               </h3>
-              <p className="font-wizard text-silver-hp/70 text-sm leading-relaxed">
+              <p className="font-wizard text-silver-hp/85 text-sm leading-relaxed">
                 {p.body}
               </p>
             </RoughFrame>
@@ -176,7 +158,7 @@ export default function Prophecy() {
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.05 }}
         transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
         className="mx-auto mt-24 grid max-w-5xl grid-cols-2 gap-6 sm:grid-cols-4"
       >
@@ -215,7 +197,7 @@ export default function Prophecy() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.05 }}
           transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
           className="relative mt-12 mx-auto w-full"
         >
@@ -344,7 +326,7 @@ export default function Prophecy() {
             color="#C5C6C7"
             fill={false}
             seed={59}
-            className="px-8 py-3 text-[12px]"
+            className="px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.35em]"
           >
             ← BACK TO THE HALL
           </RoughButton>

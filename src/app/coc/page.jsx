@@ -1,36 +1,35 @@
-import { promises as fs } from "node:fs";
-import path from "node:path";
-import { marked } from "marked";
 import TopBar from "@/components/TopBar";
 import Footer from "@/components/Footer";
 import RoughFrame from "@/components/RoughFrame";
 import RoughDivider from "@/components/RoughDivider";
 import RoughStar from "@/components/RoughStar";
 import RoughButton from "@/components/RoughButton";
+import Sparkles from "@/components/Sparkles";
+import HeroVideoBg from "@/components/HeroVideoBg";
+import CodeOfConductBody from "@/components/CodeOfConductBody";
 
 export const metadata = {
   title: "Code of Conduct · HexaFalls Techfest",
   description:
-    "How we behave at HexaFalls — pledge, expected standards, scope, reporting, and enforcement.",
+    "Our code of conduct at HexaFalls: the pledge, expected standards, scope, reporting and enforcement.",
 };
 
-// Static page; cache the rendered HTML across requests.
 export const dynamic = "force-static";
 export const revalidate = false;
 
-export default async function CodeOfConductPage() {
-  const md = await fs.readFile(
-    path.join(process.cwd(), "CODE_OF_CONDUCT.md"),
-    "utf8"
-  );
-  marked.setOptions({ gfm: true, breaks: false, headerIds: true });
-  const html = marked.parse(md);
-
+export default function CodeOfConductPage() {
   return (
     <main className="flex-1">
       <TopBar />
 
       <section className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6">
+        {/* ambience — pure CSS, no JS animation cost */}
+        <HeroVideoBg />
+        <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
+          <Sparkles count={22} />
+        </div>
+
         {/* margin scribbles in the page corners */}
         <RoughStar
           size={28} color="#A78BFA" seed={71}
@@ -58,10 +57,10 @@ export default async function CodeOfConductPage() {
         {/* Headline */}
         <h1
           aria-label="Code of Conduct"
-          className="font-display font-black tracking-tight text-silver-hp leading-[0.95] text-center text-[12vw] sm:text-[8vw] md:text-[6vw] hp-glow"
+          className="font-display font-black tracking-tight text-silver-hp leading-[1.05] text-center text-[10vw] sm:text-[7vw] md:text-[5.5vw] hp-glow text-balance"
         >
-          <span className="block">Code of</span>
-          <span className="block text-gold-hp hp-glow-gold text-[12vw] sm:text-[7vw] md:text-[5.5vw] mt-2">
+          Code of{" "}
+          <span className="text-gold-hp hp-glow-gold">
             Conduct
           </span>
         </h1>
@@ -93,10 +92,7 @@ export default async function CodeOfConductPage() {
             padding={36}
             className="w-full bg-slate-hp/30 backdrop-blur-sm"
           >
-            <article
-              className="coc-prose"
-              dangerouslySetInnerHTML={{ __html: html }}
-            />
+            <CodeOfConductBody />
           </RoughFrame>
         </div>
 
@@ -109,7 +105,7 @@ export default async function CodeOfConductPage() {
             glow="rgba(212,175,55,0.30)"
             shimmer
             seed={43}
-            className="px-7 py-3 text-[12px]"
+            className="px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.35em]"
           >
             REPORT AN INCIDENT <span>↗</span>
           </RoughButton>
