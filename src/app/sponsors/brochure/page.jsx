@@ -55,9 +55,8 @@ export default function SponsorshipBrochurePage() {
         </h1>
 
         <p className="mx-auto mt-6 max-w-2xl text-center font-wizard text-silver-hp/85 text-base sm:text-lg leading-relaxed">
-          Tiers, benefits, audience and reach. The preview opens at the
-          tier breakdown (page {BROCHURE_PREVIEW_PAGE}); flip back from there
-          for the lore, or grab the full scroll below.
+          Tiers, benefits, audience and reach. Page through the scroll
+          below, or take a copy with you.
         </p>
 
         {/* Primary download CTA */}
@@ -104,7 +103,7 @@ export default function SponsorshipBrochurePage() {
             {/* aspect-[3/4] matches a standard portrait PDF; on wide
                 desktops the frame still bounds the height nicely. */}
             <object
-              data={`${BROCHURE_PATH}#page=${BROCHURE_PREVIEW_PAGE}&view=FitH`}
+              data={`${BROCHURE_PATH}#view=FitH`}
               type="application/pdf"
               className="block w-full aspect-3/4 sm:aspect-[1/1.2] bg-midnight rounded-sm"
               aria-label="HexaFalls sponsorship brochure"
