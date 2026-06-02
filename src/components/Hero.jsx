@@ -13,6 +13,7 @@ import RoughCorners from "./RoughCorners";
 import RoughTape from "./RoughTape";
 import { CALLS } from "@/lib/routes";
 import MysticalTicker from "./MysticalTicker";
+import OwlCountdown from "./OwlCountdown";
 
 // ── Scroll card accent colours keyed to each call ──────────────────────────
 // Gradients lightened (~+40% L on each stop) so cards stand out against the
@@ -558,6 +559,8 @@ export default function Hero() {
       <div className="relative w-full overflow-hidden">
         <MysticalTicker />
       </div>
+
+      <OwlCountdown />
 
       {/* ═══════════════════════════════════════════════════════════════════
           SCROLLS SECTION — fully redesigned as parchment scroll cards
