@@ -56,17 +56,6 @@ export default function Events() {
         <Sparkles count={18} />
       </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="mx-auto mb-6 flex max-w-3xl items-center justify-center gap-3 text-[11px] uppercase tracking-[0.5em] text-cyan-hp/70 font-display"
-      >
-        <RoughDivider width={48} height={20} color="#66FCF1" seed={3} />
-        Tracks of the techfest
-        <RoughDivider width={48} height={20} color="#66FCF1" seed={5} />
-      </motion.div>
-
       <div className="text-center">
         <h1
           aria-label="The Events"
