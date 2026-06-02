@@ -321,13 +321,13 @@ export default function FAQ() {
       {/* ── Headline ────────────────────────────────────────────────────── */}
       <div className="text-center">
         <h1
-          aria-label="Room of Requirements"
+          aria-label="Frequently Asked Questions"
           className="font-display font-black tracking-tight text-silver-hp leading-[0.95] text-[12vw] sm:text-[8vw] md:text-[6.5vw] hp-glow"
           style={{ perspective: 800 }}
         >
-          <span className="block">{splitLetters("Room of")}</span>
+          <span className="block">{splitLetters("Frequently")}</span>
           <span className="block text-gold-hp hp-glow-gold text-[10vw] sm:text-[7vw] md:text-[5.5vw] mt-2">
-            {splitLetters("Requirements")}
+            {splitLetters("Asked")}
           </span>
         </h1>
       </div>
@@ -366,8 +366,8 @@ export default function FAQ() {
         className="mt-20 flex flex-col items-center gap-6"
       >
         <span className="font-wizard italic text-silver-hp/55 text-sm text-center max-w-xl">
-          &ldquo;The Room of Requirement appears to those in great need.
-          If your question isn&apos;t here, send an owl.&rdquo;
+          &ldquo;Some scrolls speak only when asked. If your question
+          isn&apos;t here, send an owl.&rdquo;
         </span>
 
         <div className="flex flex-col sm:flex-row items-center gap-4">
