@@ -44,13 +44,10 @@
     "start": "next start",
     "lint": "eslint",
     "optimize:logos": "node scripts/optimize-logos.mjs",
-<<<<<<< HEAD
+    "optimize:brochure":  "node scripts/optimize-brochure.mjs",
     "db:migrate":         "wrangler d1 migrations apply hexafalls --local",
     "db:migrate:prod":    "wrangler d1 migrations apply hexafalls --remote",
     "db:migrate:preview": "wrangler d1 migrations apply hexafalls-preview --remote --env preview",
-=======
-    "optimize:brochure": "node scripts/optimize-brochure.mjs",
->>>>>>> ca25c5251616d9b65894494c292954369ad64a27
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
