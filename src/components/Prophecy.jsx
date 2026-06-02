@@ -98,10 +98,7 @@ export default function Prophecy() {
           className="font-display font-black tracking-tight text-silver-hp leading-[0.95] text-[14vw] sm:text-[10vw] md:text-[8vw] hp-glow"
           style={{ perspective: 800 }}
         >
-          <span className="block">{splitLetters("The")}</span>
-          <span className="block text-gold-hp hp-glow-gold text-[12vw] sm:text-[8vw] md:text-[6.5vw] mt-2">
-            {splitLetters("Prophecy")}
-          </span>
+          {splitLetters("The")}<span style={{whiteSpace: "pre"}}> </span><span className="text-gold-hp hp-glow-gold text-[12vw] sm:text-[8vw] md:text-[6.5vw]">{splitLetters("Prophecy")}</span>
         </h1>
       </div>
 

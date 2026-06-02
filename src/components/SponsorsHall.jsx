@@ -135,10 +135,7 @@ export default function SponsorsHall() {
         className="font-display font-black tracking-tight text-silver-hp leading-[0.95] text-center text-[9vw] sm:text-[6vw] md:text-[4.5vw] hp-glow"
         style={{ perspective: 800 }}
       >
-        <span className="block">{splitLetters("Our")}</span>
-        <span className="block text-gold-hp hp-glow-gold text-[9vw] sm:text-[5vw] md:text-[4vw] mt-2">
-          {splitLetters("Patrons")}
-        </span>
+        {splitLetters("Our")}<span style={{whiteSpace: "pre"}}> </span><span className="text-gold-hp hp-glow-gold text-[9vw] sm:text-[5vw] md:text-[4vw]">{splitLetters("Patrons")}</span>
       </h1>
 
       <p className="mx-auto mt-8 max-w-2xl text-center font-wizard italic text-silver-hp/60 text-sm">

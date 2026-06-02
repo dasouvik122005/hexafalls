@@ -5,6 +5,7 @@ import RoughDivider from "@/components/RoughDivider";
 import RoughStar from "@/components/RoughStar";
 import RoughButton from "@/components/RoughButton";
 import Sparkles from "@/components/Sparkles";
+import HeroVideoBg from "@/components/HeroVideoBg";
 import CodeOfConductBody from "@/components/CodeOfConductBody";
 
 export const metadata = {
@@ -23,7 +24,7 @@ export default function CodeOfConductPage() {
 
       <section className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6">
         {/* ambience — pure CSS, no JS animation cost */}
-        <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars opacity-60 pointer-events-none" />
+        <HeroVideoBg />
         <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
         <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
           <Sparkles count={22} />

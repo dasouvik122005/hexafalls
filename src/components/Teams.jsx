@@ -72,10 +72,7 @@ export default function Teams() {
           aria-label="The Teams"
           className="font-display font-black tracking-tight text-silver-hp leading-[0.95] text-[14vw] sm:text-[10vw] md:text-[8vw] hp-glow"
         >
-          <span className="block">{splitLetters("The")}</span>
-          <span className="block text-gold-hp hp-glow-gold text-[14vw] sm:text-[9vw] md:text-[7vw] mt-2">
-            {splitLetters("Teams")}
-          </span>
+          {splitLetters("The")}<span style={{whiteSpace: "pre"}}> </span><span className="text-gold-hp hp-glow-gold text-[14vw] sm:text-[9vw] md:text-[7vw]">{splitLetters("Teams")}</span>
         </h1>
       </div>
 

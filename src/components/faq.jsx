@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import Link from "next/link";
 import Sparkles from "./Sparkles";
+import HeroVideoBg from "./HeroVideoBg";
 import RoughFrame from "./RoughFrame";
 import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
@@ -276,7 +277,7 @@ export default function FAQ() {
       className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6"
     >
       {/* ── Parallax background stack ────────────────────────────────────── */}
-      <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars pointer-events-none" />
+      <HeroVideoBg />
       <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
       <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
         <Sparkles count={20} />
@@ -325,10 +326,7 @@ export default function FAQ() {
           className="font-display font-black tracking-tight text-silver-hp leading-[0.95] text-[12vw] sm:text-[8vw] md:text-[6.5vw] hp-glow"
           style={{ perspective: 800 }}
         >
-          <span className="block">{splitLetters("Frequently")}</span>
-          <span className="block text-gold-hp hp-glow-gold text-[10vw] sm:text-[7vw] md:text-[5.5vw] mt-2">
-            {splitLetters("Asked")}
-          </span>
+          {splitLetters("Frequently")}<span style={{whiteSpace: "pre"}}> </span><span className="text-gold-hp hp-glow-gold text-[10vw] sm:text-[7vw] md:text-[5.5vw]">{splitLetters("Asked")}</span>
         </h1>
       </div>
 
