@@ -29,7 +29,7 @@ export const ID_SPECS = {
 export const ID_PATTERNS = Object.fromEntries(
   Object.entries(ID_SPECS).map(([k, { prefix, len }]) => [
     k,
-    new RegExp(`^${prefix.replace(/-/g, "\\-")}[${ALPHABET}]{${len}}$`),
+    new RegExp(`^${prefix.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}[${ALPHABET}]{${len}}$`),
   ]),
 );
 
