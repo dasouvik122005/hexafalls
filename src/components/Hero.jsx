@@ -441,15 +441,6 @@ export default function Hero() {
           ))}
         </motion.div>
 
-        {/* tagline strip */}
-        <motion.div
-          ref={stripRef}
-          className="mb-6 flex items-center gap-3 text-[11px] sm:text-xs uppercase tracking-[0.5em] text-cyan-hp/70 font-display"
-        >
-          <RoughDivider width={48} height={20} color="#66FCF1" seed={3} />
-          A Wizarding Hackathon
-          <RoughDivider width={48} height={20} color="#66FCF1" seed={5} />
-        </motion.div>
 
         {/* HEADLINE */}
         <motion.div

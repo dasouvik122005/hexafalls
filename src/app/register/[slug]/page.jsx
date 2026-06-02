@@ -18,6 +18,7 @@ import { getSessionUser } from "@/lib/auth/server";
 import {
   REGISTRATION_EVENTS,
   isSquadEvent,
+  teamUrl,
 } from "@/lib/registration/events";
 import { getDB } from "@/lib/db";
 
@@ -70,7 +71,10 @@ export default async function EventRegisterPage({ params }) {
         {!user && <SignInPanel returnTo={returnTo} />}
         {user && !user.gdg_verified && <GdgGate returnTo={returnTo} />}
         {user && user.gdg_verified && existingSquadId && (
-          <AlreadyInSquad squadId={existingSquadId} eventLabel={cfg.label} />
+          <AlreadyInSquad
+            href={teamUrl(slug, existingSquadId)}
+            eventLabel={cfg.label}
+          />
         )}
         {user && user.gdg_verified && !existingSquadId && (
           isSquadEvent(slug) ? (
@@ -114,7 +118,8 @@ function SignInPanel({ returnTo }) {
   );
 }
 
-function AlreadyInSquad({ squadId, eventLabel }) {
+function AlreadyInSquad({ href, eventLabel }) {
+  void eventLabel;
   return (
     <RoughFrame
       seed={59}
@@ -129,7 +134,7 @@ function AlreadyInSquad({ squadId, eventLabel }) {
       </h2>
       <RoughButton
         as={Link}
-        href={`/register/squad/${squadId}`}
+        href={href}
         color="#D4AF37"
         glow="rgba(212,175,55,0.40)"
         shimmer

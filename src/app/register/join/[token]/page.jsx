@@ -5,7 +5,8 @@
 //   signed in, GDG ok   → render <JoinSquadForm /> with the squad context
 //
 // The token never leaves the URL; the POST to /api/register/squad/:id/join
-// re-validates it.
+// re-validates it, then the client navigates to the team profile URL
+// returned by the API (/events/<event>/teams/<slug>).
 
 import { notFound } from "next/navigation";
 import TopBar from "@/components/TopBar";

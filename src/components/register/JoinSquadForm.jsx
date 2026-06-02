@@ -49,7 +49,7 @@ export default function JoinSquadForm({
         setBusy(false);
         return;
       }
-      window.location.href = `/register/squad/${squadId}`;
+      window.location.href = body.teamUrl ?? "/register";
     } catch (err) {
       setError(err.message);
       setBusy(false);

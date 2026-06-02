@@ -10,7 +10,7 @@ import Footer from "@/components/Footer";
 import RoughFrame from "@/components/RoughFrame";
 import RegisterShell from "@/components/register/RegisterShell";
 import { getDB } from "@/lib/db";
-import { REGISTRATION_EVENTS } from "@/lib/registration/events";
+import { REGISTRATION_EVENTS, teamUrl } from "@/lib/registration/events";
 
 export const dynamic = "force-dynamic";
 
@@ -123,7 +123,7 @@ export default async function HackerProfilePage({ params }) {
                 {squads.results.map((s) => (
                   <li key={s.id}>
                     <Link
-                      href={`/register/squad/${s.id}`}
+                      href={teamUrl(s.event, s.id)}
                       className="flex items-center justify-between gap-3 rounded-sm border border-cyan-hp/20 bg-slate-hp/30 px-4 py-3 transition hover:bg-slate-hp/50"
                     >
                       <span className="flex items-center gap-3">

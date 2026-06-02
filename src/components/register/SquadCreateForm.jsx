@@ -45,7 +45,7 @@ export default function SquadCreateForm({ event, eventLabel, hasUsername }) {
         setBusy(false);
         return;
       }
-      window.location.href = `/register/squad/${body.squadId}?just_created=1`;
+      window.location.href = `${body.teamUrl}?just_created=1`;
     } catch (err) {
       setError(err.message);
       setBusy(false);

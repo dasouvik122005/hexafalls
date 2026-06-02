@@ -7,6 +7,7 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/auth/server";
 import { getDB } from "@/lib/db";
+import { teamUrl } from "@/lib/registration/events";
 
 export const runtime = "edge";
 
@@ -102,5 +103,9 @@ export async function POST(req, { params }) {
   if (!r.success) {
     return NextResponse.json({ error: "db_failure" }, { status: 500 });
   }
-  return NextResponse.json({ ok: true, squadId });
+  return NextResponse.json({
+    ok: true,
+    squadId,
+    teamUrl: teamUrl(squad.event, squadId),
+  });
 }

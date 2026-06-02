@@ -13,6 +13,7 @@ import { generateId, generateInviteToken } from "@/lib/ids";
 import {
   REGISTRATION_EVENTS,
   isSquadEvent,
+  teamUrl,
 } from "@/lib/registration/events";
 
 export const runtime = "edge";
@@ -119,5 +120,6 @@ export async function POST(req) {
     squadId,
     inviteToken,
     inviteUrl: `${url.origin}/register/join/${inviteToken}`,
+    teamUrl: teamUrl(event, squadId),
   });
 }
