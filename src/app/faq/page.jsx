@@ -1,5 +1,5 @@
 import TopBar from "@/components/TopBar";
-import RoomOfRequirements from "@/components/RoomOfRequirements";
+import FAQ from "@/components/faq";
 import Footer from "@/components/Footer";
 
 export const metadata = {
@@ -12,7 +12,7 @@ export default function FaqPage() {
   return (
     <main className="flex-1">
       <TopBar />
-      <RoomOfRequirements />
+      <FAQ />
       <Footer />
     </main>
   );

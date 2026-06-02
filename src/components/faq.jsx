@@ -13,82 +13,7 @@ import RoughTape from "./RoughTape";
 import RoughCorners from "./RoughCorners";
 import RoughTicks from "./RoughTicks";
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   FAQ DATA — each scroll carries a question + answer + a decoration style.
-   The decoration alternates so no two adjacent scrolls look the same.
-   ═══════════════════════════════════════════════════════════════════════════ */
-const FAQS = [
-  {
-    q: "What exactly is HexaFalls?",
-    a: "A 58-hour wizarding-themed techfest held at JIS University, Kolkata. Four tracks run in parallel — Hackathon, Competitive Programming, Gaming Arena, and Hardware Hack — each inspired by a Hogwarts house. Think code, chaos, and conjuring under one roof.",
-    rune: "✦",
-    decoration: "tape",
-    accentColor: "#D4AF37",
-  },
-  {
-    q: "Who can participate?",
-    a: "Any witch, wizard, or muggle with a wand (laptop) and curiosity. Students from any college, any year, any department are welcome. You don't need prior hackathon experience — just the will to build something magical.",
-    rune: "✧",
-    decoration: "corners",
-    accentColor: "#66FCF1",
-  },
-  {
-    q: "How do teams work?",
-    a: "Teams of 2–4 for the Hackathon track. Solo for CP. Gaming depends on the title (solo or squad). Hardware teams of 2–4. You can form teams beforehand or find teammates at the Sorting Ceremony on Day 1.",
-    rune: "❖",
-    decoration: "ticks",
-    accentColor: "#3B82F6",
-  },
-  {
-    q: "Is there a registration fee?",
-    a: "The owls deliver acceptance letters free of charge. Registration is completely free. We believe magic should never be gated behind gold.",
-    rune: "✦",
-    decoration: "tape",
-    accentColor: "#22C55E",
-  },
-  {
-    q: "What should I bring?",
-    a: "Your laptop, charger, any hardware components (for the Hardware track), a water bottle, and your best robes (optional but encouraged). We'll provide food, Wi-Fi, workspace, and all the magical ambiance you need.",
-    rune: "✶",
-    decoration: "corners",
-    accentColor: "#D4AF37",
-  },
-  {
-    q: "Will food and accommodation be provided?",
-    a: "Meals and snacks will be provided throughout the 58 hours — no wizard goes hungry in this hall. Sleeping arrangements are informal (bring a sleeping bag if you like), but honestly, most participants don't sleep much.",
-    rune: "✧",
-    decoration: "ticks",
-    accentColor: "#EF4444",
-  },
-  {
-    q: "What are the judging criteria?",
-    a: "Innovation, technical complexity, design & UX, real-world impact, and presentation. The council of judges values bold ideas over polished demos. A beautifully broken prototype beats a boring working one.",
-    rune: "❖",
-    decoration: "tape",
-    accentColor: "#A78BFA",
-  },
-  {
-    q: "Can I participate in multiple tracks?",
-    a: "You may enter one primary track (Hackathon, CP, or Hardware) plus the Gaming Arena on the side. Gaming sessions are scheduled so they don't fully overlap with the main tracks. Choose wisely — a wand stretched too thin snaps.",
-    rune: "✦",
-    decoration: "corners",
-    accentColor: "#66FCF1",
-  },
-  {
-    q: "I'm not a coder. Can I still join?",
-    a: "Absolutely. Designers, storytellers, hardware tinkerers, gamers, project managers — every order needs more than just spellcasters. The best teams are cross-disciplinary. If you can contribute, you belong.",
-    rune: "✶",
-    decoration: "ticks",
-    accentColor: "#D4AF37",
-  },
-  {
-    q: "How do I contact the organisers?",
-    a: "Send an owl to our social channels (linked in the footer), or visit the Teams page and reach out to the Core Team directly. For urgent matters, the Keeper's office is always open.",
-    rune: "✧",
-    decoration: "tape",
-    accentColor: "#22C55E",
-  },
-];
+import FAQS from "@/data/faq.json";
 
 /* ─── Wax Seal SVG — the "lock" icon on each sealed scroll ───────────────── */
 function WaxSeal({ color = "#D4AF37", broken = false }) {
@@ -304,7 +229,7 @@ function FaqScroll({ faq, index, isOpen, onToggle }) {
 /* ═══════════════════════════════════════════════════════════════════════════
    MAIN COMPONENT
    ═══════════════════════════════════════════════════════════════════════════ */
-export default function RoomOfRequirements() {
+export default function FAQ() {
   const sectionRef = useRef(null);
   const [openIndex, setOpenIndex] = useState(null);
 
