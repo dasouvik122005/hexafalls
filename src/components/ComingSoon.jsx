@@ -148,79 +148,125 @@ export default function ComingSoon({
         </RoughFrame>
       </div>
 
-      {/* Pulsing "owl in flight" indicator */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.4, delay: 0.4 }}
-        className="mt-12 flex items-center gap-3 font-display text-[10px] uppercase tracking-[0.5em]"
-        style={themed ? { color: accentColor } : undefined}
-      >
-        <span className="relative flex h-2 w-2">
+      {/* Apply CTA — when the scroll is open, it sits as the visual focal
+          point directly under the lede with hero-sized chrome and a small
+          "live now" badge above it. When closed, falls back to the muted
+          "coming soon" pill below the inscription pulse. */}
+      {isOpen && apply ? (
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.25 }}
+          className="mt-10 flex flex-col items-center gap-4"
+        >
           <span
-            className="absolute inline-flex h-full w-full rounded-full opacity-60 animate-ping"
-            style={{ backgroundColor: accentColor || "#D4AF37" }}
-          />
-          <span
-            className="relative inline-flex h-2 w-2 rounded-full"
-            style={{ backgroundColor: accentColor || "#D4AF37" }}
-          />
-        </span>
-        <span className={themed ? "" : "text-gold-hp/80"}>Inscription in progress</span>
-      </motion.div>
-
-      {/* Apply CTA + Back — sits side-by-side on every breakpoint */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.4, delay: 0.5 }}
-        className="mt-12 flex flex-row flex-wrap items-center justify-center gap-4"
-      >
-        {apply && (apply.open ? (
+            className="inline-flex items-center gap-2 rounded-full border px-3 py-1 font-display text-[10px] uppercase tracking-[0.4em]"
+            style={{
+              borderColor: `${accentColor || "#D4AF37"}80`,
+              color: accentColor || "#D4AF37",
+              backgroundColor: `${accentColor || "#D4AF37"}1a`,
+            }}
+          >
+            <span className="relative flex h-1.5 w-1.5">
+              <span
+                className="absolute inline-flex h-full w-full rounded-full opacity-70 animate-ping"
+                style={{ backgroundColor: accentColor || "#D4AF37" }}
+              />
+              <span
+                className="relative inline-flex h-1.5 w-1.5 rounded-full"
+                style={{ backgroundColor: accentColor || "#D4AF37" }}
+              />
+            </span>
+            Scroll is open
+          </span>
           <RoughButton
             as="a"
             href={apply.href}
             target={apply.external ? "_blank" : undefined}
             rel={apply.external ? "noopener noreferrer" : undefined}
             color={accentColor || "#D4AF37"}
-            glow={accentGlow || (themed ? `${accentColor}55` : "rgba(212,175,55,0.30)")}
+            glow={accentGlow || (themed ? `${accentColor}66` : "rgba(212,175,55,0.40)")}
             shimmer
             seed={23}
-            className="px-7 py-3 text-[12px]"
+            className="px-10 sm:px-12 py-4 sm:py-5 text-[13px] sm:text-[14px] tracking-[0.4em]"
           >
             <span>{apply.label || "APPLY NOW"}</span>
-            <span>↗</span>
+            <span aria-hidden="true">↗</span>
           </RoughButton>
-        ) : (
           <RoughButton
-            color={accentColor || "#66FCF1"}
-            glow={accentGlow || "rgba(102,252,241,0.25)"}
-            shimmer
-            disabled
-            aria-disabled="true"
-            seed={29}
-            className="px-7 py-3 text-[12px] hp-pulse"
+            as={Link}
+            href={backHref}
+            color="#C5C6C7"
+            fill={false}
+            seed={31}
+            className="px-5 py-2 text-[10px] tracking-[0.35em] opacity-75 hover:opacity-100 transition"
           >
-            <span>{apply.label || "APPLY NOW"}</span>
-            <span className="text-[9px] tracking-[0.25em] px-2 py-0.5 rounded-full border border-gold-hp/60 bg-gold-hp/10 text-gold-hp hp-glow-gold">
-              COMING SOON
-            </span>
+            {backLabel}
           </RoughButton>
-        ))}
+        </motion.div>
+      ) : (
+        <>
+          {/* Pulsing "owl in flight" indicator (closed scrolls only) */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.4 }}
+            className="mt-12 flex items-center gap-3 font-display text-[10px] uppercase tracking-[0.5em]"
+            style={themed ? { color: accentColor } : undefined}
+          >
+            <span className="relative flex h-2 w-2">
+              <span
+                className="absolute inline-flex h-full w-full rounded-full opacity-60 animate-ping"
+                style={{ backgroundColor: accentColor || "#D4AF37" }}
+              />
+              <span
+                className="relative inline-flex h-2 w-2 rounded-full"
+                style={{ backgroundColor: accentColor || "#D4AF37" }}
+              />
+            </span>
+            <span className={themed ? "" : "text-gold-hp/80"}>Inscription in progress</span>
+          </motion.div>
 
-        <RoughButton
-          as={Link}
-          href={backHref}
-          color="#C5C6C7"
-          fill={false}
-          seed={31}
-          className="px-7 py-3 text-[11px]"
-        >
-          {backLabel}
-        </RoughButton>
-      </motion.div>
+          {/* Disabled "coming soon" pill + back link */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.5 }}
+            className="mt-10 flex flex-row flex-wrap items-center justify-center gap-4"
+          >
+            {apply && (
+              <RoughButton
+                color={accentColor || "#66FCF1"}
+                glow={accentGlow || "rgba(102,252,241,0.25)"}
+                shimmer
+                disabled
+                aria-disabled="true"
+                seed={29}
+                className="px-7 py-3 text-[12px] hp-pulse"
+              >
+                <span>{apply.label || "APPLY NOW"}</span>
+                <span className="text-[9px] tracking-[0.25em] px-2 py-0.5 rounded-full border border-gold-hp/60 bg-gold-hp/10 text-gold-hp hp-glow-gold">
+                  COMING SOON
+                </span>
+              </RoughButton>
+            )}
+
+            <RoughButton
+              as={Link}
+              href={backHref}
+              color="#C5C6C7"
+              fill={false}
+              seed={31}
+              className="px-7 py-3 text-[11px]"
+            >
+              {backLabel}
+            </RoughButton>
+          </motion.div>
+        </>
+      )}
     </section>
   );
 }
