@@ -143,16 +143,16 @@ export default function SponsorsHall() {
       </p>
 
       {/* ── Marquee: Collaborative Partner ─────────────────────────────────
-          The headline patron gets a single wide horizontal card — one
+          The headline sponsor gets a single wide horizontal card — one
           confident beat rather than a vertical stack. */}
       {TIERS[0]?.sponsors?.length > 0 && (
         <div className="mt-14 mx-auto max-w-3xl">
-          <div className="flex items-center justify-center gap-4 mb-6">
-            <RoughDivider width={96} height={20} color="#D4AF37" seed={11} />
-            <span className="font-display text-[11px] uppercase tracking-[0.5em] text-gold-hp hp-glow-gold whitespace-nowrap">
+          <div className="flex items-center justify-center gap-5 mb-8">
+            <RoughDivider width={120} height={24} color="#D4AF37" seed={11} />
+            <span className="font-display font-black text-base sm:text-lg uppercase tracking-[0.55em] text-gold-hp hp-glow-gold whitespace-nowrap drop-shadow-[0_0_18px_rgba(212,175,55,0.45)]">
               {TIERS[0].label}
             </span>
-            <RoughDivider width={96} height={20} color="#D4AF37" seed={13} />
+            <RoughDivider width={120} height={24} color="#D4AF37" seed={13} />
           </div>
           {TIERS[0].sponsors.map((s, i) => (
             <motion.a
@@ -193,20 +193,21 @@ export default function SponsorsHall() {
         </div>
       )}
 
-      {/* ── Horizontal procession of all other patrons ─────────────────────
+      {/* ── Horizontal procession of all other sponsors ────────────────────
           Every remaining tier collapses into ONE wrapping flex row of
-          compact chips — small white plate + logo + tier caption beneath.
-          Replaces the previous long vertical shaft of tier sections. */}
+          compact chips — each logo lives inside its own RoughFrame artifact
+          with a sketched gold tape accent and a bold gold tier caption
+          beneath. Replaces the previous long vertical shaft. */}
       <div className="mt-20 mx-auto max-w-5xl">
-        <div className="flex items-center justify-center gap-4 mb-8">
-          <RoughDivider width={96} height={20} color="#D4AF37" seed={17} />
-          <span className="font-display text-[11px] uppercase tracking-[0.5em] text-gold-hp hp-glow-gold whitespace-nowrap">
+        <div className="flex items-center justify-center gap-5 mb-10">
+          <RoughDivider width={120} height={24} color="#D4AF37" seed={17} />
+          <span className="font-display font-black text-base sm:text-lg uppercase tracking-[0.55em] text-gold-hp hp-glow-gold whitespace-nowrap drop-shadow-[0_0_18px_rgba(212,175,55,0.45)]">
             The Procession
           </span>
-          <RoughDivider width={96} height={20} color="#D4AF37" seed={19} />
+          <RoughDivider width={120} height={24} color="#D4AF37" seed={19} />
         </div>
 
-        <div className="flex flex-wrap items-start justify-center gap-x-6 gap-y-8">
+        <div className="flex flex-wrap items-start justify-center gap-x-7 gap-y-10">
           {TIERS.slice(1).flatMap((tier, ti) =>
             tier.sponsors.map((s, i) => (
               <motion.a
@@ -219,18 +220,33 @@ export default function SponsorsHall() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.4, delay: (ti * 2 + i) * 0.03 }}
-                className="group flex flex-col items-center gap-2"
+                className="group flex flex-col items-center gap-3"
               >
-                <div className="relative h-16 w-40 sm:h-20 sm:w-48 bg-silver-hp rounded-sm flex items-center justify-center px-4 transition-transform duration-500 group-hover:-translate-y-1">
-                  <img
-                    src={s.logo}
-                    alt={s.logoAlt || s.name}
-                    loading="lazy"
-                    decoding="async"
-                    className="max-h-full max-w-full object-contain"
-                  />
-                </div>
-                <span className="font-display text-[9px] uppercase tracking-[0.35em] text-gold-hp/75 whitespace-nowrap">
+                {/* Same rough.js artifact treatment as the marquee — sketched
+                    gold outline, silver plate, washi tape corner. Smaller
+                    scale for the row chips. */}
+                <RoughFrame
+                  seed={41 + ti * 13 + i * 5}
+                  stroke="#D4AF37"
+                  mist={false}
+                  strokeWidth={1.3}
+                  roughness={1.6}
+                  bowing={1.2}
+                  padding={10}
+                  className="bg-silver-hp transition-transform duration-500 group-hover:-translate-y-1"
+                >
+                  <div className="relative h-14 w-36 sm:h-16 sm:w-40 bg-silver-hp flex items-center justify-center px-3 rounded-sm">
+                    <img
+                      src={s.logo}
+                      alt={s.logoAlt || s.name}
+                      loading="lazy"
+                      decoding="async"
+                      className="max-h-full max-w-full object-contain"
+                    />
+                    <RoughTape color="#D4AF37" seed={73 + ti * 7 + i} width={42} height={11} />
+                  </div>
+                </RoughFrame>
+                <span className="font-display font-bold text-[11px] sm:text-xs uppercase tracking-[0.45em] text-gold-hp hp-glow-gold whitespace-nowrap">
                   {tier.label}
                 </span>
               </motion.a>
@@ -256,7 +272,7 @@ export default function SponsorsHall() {
             Platinum · Silver
           </span>
           <p className="font-wizard text-silver-hp/85 text-base sm:text-lg leading-relaxed">
-            More patrons join the procession soon. Their seals will be set in
+            More sponsors join the procession soon. Their seals will be set in
             the wax of these scrolls as they arrive.
           </p>
           <div className="flex items-center gap-3 mt-1 font-display text-[10px] uppercase tracking-[0.5em] text-gold-hp/80">
