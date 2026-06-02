@@ -1,9 +1,13 @@
-// /register/squad/[id] — public squad profile.
+// /events/[slug]/teams/[teamSlug] — public team / individual profile.
 //
+// - Slug = squad.id lowercased (URL-friendly, still unique).
 // - Public-by-default. Anyone can read the roster + status.
 // - Leader sees the invite-link panel + "Submit for review" CTA.
-// - Once submitted, leader sees the status; admins see review actions
-//   (review UI shipped under /admin in a follow-up PR).
+// - Once submitted, leader sees the status; admin review UI ships under
+//   /admin in a follow-up PR.
+//
+// The route's [slug] (= /events parent) must match the squad's parentEvent,
+// or we 404 — keeps shareable URLs from rendering the wrong context.
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -20,18 +24,21 @@ import { REGISTRATION_EVENTS } from "@/lib/registration/events";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }) {
-  const { id } = await params;
+  const { slug, teamSlug } = await params;
   const squad = await getDB()
     .prepare(`SELECT name, tagline, event FROM squads WHERE id = ?`)
-    .bind(id)
+    .bind(teamSlug.toUpperCase())
     .first();
-  if (!squad) return { title: "Squad · HexaFalls" };
+  if (!squad) return { title: "Team · HexaFalls" };
   const cfg = REGISTRATION_EVENTS[squad.event];
+  if (cfg?.parentEvent && cfg.parentEvent !== slug) {
+    return { title: "Team · HexaFalls" };
+  }
   return {
-    title: `${squad.name} · HexaFalls Squads`,
+    title: `${squad.name} · HexaFalls Teams`,
     description:
       squad.tagline ??
-      `A ${cfg?.label ?? squad.event} squad at HexaFalls 2026, JIS University.`,
+      `A ${cfg?.label ?? squad.event} team at HexaFalls 2026, JIS University.`,
   };
 }
 
@@ -43,11 +50,12 @@ const STATUS_COLOR = {
   locked:    "#A78BFA",
 };
 
-export default async function SquadProfilePage({ params }) {
-  const { id } = await params;
+export default async function TeamProfilePage({ params }) {
+  const { slug, teamSlug } = await params;
   const db = getDB();
   const me = await getSessionUser();
 
+  const squadId = teamSlug.toUpperCase();
   const squad = await db
     .prepare(
       `SELECT id, event, name, tagline, description, leader_id,
@@ -55,9 +63,15 @@ export default async function SquadProfilePage({ params }) {
               submitted_at, reviewed_at, review_notes, created_at
          FROM squads WHERE id = ?`,
     )
-    .bind(id)
+    .bind(squadId)
     .first();
   if (!squad) notFound();
+
+  // Guard: the squad's parent event must match the URL's /events slug.
+  const cfgForGuard = REGISTRATION_EVENTS[squad.event];
+  if (cfgForGuard?.parentEvent && cfgForGuard.parentEvent !== slug) {
+    notFound();
+  }
 
   const members = await db
     .prepare(
@@ -68,7 +82,7 @@ export default async function SquadProfilePage({ params }) {
         ORDER BY CASE sm.role WHEN 'leader' THEN 0 ELSE 1 END,
                  sm.joined_at`,
     )
-    .bind(id)
+    .bind(squadId)
     .all();
 
   const memberRows  = members.results ?? [];
@@ -85,7 +99,7 @@ export default async function SquadProfilePage({ params }) {
     <main className="flex-1">
       <TopBar />
       <RegisterShell
-        eyebrow={`${cfg?.label ?? squad.event} · Squad`}
+        eyebrow={`${cfg?.label ?? squad.event} · Team`}
         title=""
         accent={squad.name}
       >

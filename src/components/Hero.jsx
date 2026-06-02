@@ -408,8 +408,8 @@ export default function Hero() {
           aria-label="Presented by"
         >
           {[
-            { id: "gdg", label: "", logo: "/logos/gdg_jisu.png" },
             { id: "jisu", label: "", logo: "/logos/jisu.png" },
+            { id: "gdg", label: "", logo: "/logos/gdg_jisu.png" },
             { id: "cse", label: "", logo: "/logos/cse_jisu.png" },
           ].map((l, i, arr) => (
             <div key={l.id} className="flex items-center gap-3 group">

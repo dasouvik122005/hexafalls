@@ -57,13 +57,8 @@ function BeginPanel({ returnTo }) {
       inner="flex flex-col gap-5 items-center text-center"
     >
       <h2 className="font-display tracking-[0.3em] uppercase text-sm text-cyan-hp">
-        Begin with a single login
+        Sign in to begin
       </h2>
-      <p className="font-wizard text-silver-hp/85 text-base sm:text-lg leading-relaxed max-w-xl">
-        HexaFalls uses Elixpo Accounts for sign-in. One account works for
-        every event, every squad, every scroll you sign. Free, takes about
-        a minute.
-      </p>
       <RoughButton
         as="a"
         href={`/api/auth/login?return_to=${encodeURIComponent(returnTo)}`}
@@ -102,12 +97,28 @@ function EventPicker({ user, flash }) {
           {user.username ?? "(handle pending)"}{" "}
           <span className="text-silver-hp/55 text-sm">· {user.id}</span>
         </span>
-        <Link
-          href="/api/auth/logout"
-          className="self-start mt-2 font-display text-[10px] uppercase tracking-[0.35em] text-cyan-hp/75 hover:text-cyan-hp underline underline-offset-4"
-        >
-          ← sign out
-        </Link>
+        <div className="mt-2 flex flex-wrap items-center gap-4 font-display text-[10px] uppercase tracking-[0.35em]">
+          {user.username && (
+            <Link
+              href={`/register/u/${user.username}`}
+              className="text-gold-hp/80 hover:text-gold-hp underline underline-offset-4"
+            >
+              view profile ↗
+            </Link>
+          )}
+          <Link
+            href="/register/me"
+            className="text-cyan-hp/85 hover:text-cyan-hp underline underline-offset-4"
+          >
+            edit profile
+          </Link>
+          <Link
+            href="/api/auth/logout"
+            className="text-silver-hp/60 hover:text-silver-hp underline underline-offset-4"
+          >
+            sign out
+          </Link>
+        </div>
       </RoughFrame>
 
       <h2 className="font-display tracking-[0.3em] uppercase text-sm text-gold-hp hp-glow-gold">

@@ -2,11 +2,17 @@
 // Slugs match `EVENTS` in `src/lib/routes.jsx`; new tracks added there
 // must be mirrored here.
 
+// `parentEvent` maps each registration event onto the user-facing /events
+// slug it belongs to. Team profiles live under
+// `/events/<parentEvent>/teams/<slug>` so all squads of a given track share
+// a parent URL even when the registration is split (e.g. hardware-exhibition
+// + hardware-competition both nest under /events/hardware).
 export const REGISTRATION_EVENTS = {
   hackathon: {
     label: "The Hackathon",
     mode: "squad",
     squadKind: "hackathon_squad",
+    parentEvent: "hackathon",
     minMembers: 2,
     maxMembers: 4,
     fields: ["projectIdea", "track"],
@@ -15,6 +21,7 @@ export const REGISTRATION_EVENTS = {
     label: "Hardware · Exhibition",
     mode: "squad",
     squadKind: "hardware_exhibit_squad",
+    parentEvent: "hardware",
     minMembers: 2,
     maxMembers: 5,
     fields: ["exhibitTitle", "shortDescription"],
@@ -22,19 +29,29 @@ export const REGISTRATION_EVENTS = {
   "hardware-competition": {
     label: "Hardware · Competition",
     mode: "solo",
+    parentEvent: "hardware",
     fields: ["category"],
   },
   cp: {
     label: "Competitive Programming",
     mode: "solo",
+    parentEvent: "cp",
     fields: ["platformHandles"],
   },
   gaming: {
     label: "Gaming Arena",
     mode: "solo",
+    parentEvent: "gaming",
     fields: ["gameId", "discordHandle"],
   },
 };
+
+// Canonical URL for a team profile. Squad id is stored uppercase in the DB
+// (Crockford alphabet) — we lowercase it for URLs and re-uppercase on read.
+export function teamUrl(eventKey, squadId) {
+  const parent = REGISTRATION_EVENTS[eventKey]?.parentEvent ?? eventKey;
+  return `/events/${parent}/teams/${squadId.toLowerCase()}`;
+}
 
 export function isSquadEvent(eventKey) {
   return REGISTRATION_EVENTS[eventKey]?.mode === "squad";

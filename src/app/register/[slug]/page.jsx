@@ -99,9 +99,6 @@ function SignInPanel({ returnTo }) {
       className="w-full bg-slate-hp/40 backdrop-blur-sm"
       inner="flex flex-col gap-4 items-center text-center"
     >
-      <p className="font-wizard text-silver-hp/85 text-base sm:text-lg">
-        Sign in with Elixpo Accounts to begin.
-      </p>
       <RoughButton
         as="a"
         href={`/api/auth/login?return_to=${encodeURIComponent(returnTo)}`}
@@ -130,10 +127,6 @@ function AlreadyInSquad({ squadId, eventLabel }) {
       <h2 className="font-display tracking-[0.3em] uppercase text-sm text-gold-hp hp-glow-gold">
         Already signed on
       </h2>
-      <p className="font-wizard text-silver-hp/85 text-base">
-        You are already part of a {eventLabel} squad. Open it to view the
-        roster or share the invite link.
-      </p>
       <RoughButton
         as={Link}
         href={`/register/squad/${squadId}`}
