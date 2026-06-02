@@ -521,7 +521,7 @@ export default function Hero() {
             glow="rgba(212,175,55,0.30)"
             shimmer
             seed={7}
-            className="px-8 py-3 text-[12px]"
+            className="px-10 sm:px-14 py-4 sm:py-5 text-[14px] sm:text-[15px] tracking-[0.4em]"
           >
             REGISTER NOW <span>↗</span>
           </RoughButton>
@@ -531,7 +531,7 @@ export default function Hero() {
             color="#C9A84C"
             fill={false}
             seed={11}
-            className="px-8 py-3 text-[12px] tracking-[0.3em] transition-all duration-200 active:scale-95"
+            className="px-10 sm:px-14 py-4 sm:py-5 text-[13px] sm:text-[14px] tracking-[0.4em] transition-all duration-200 active:scale-95"
             style={{
               color: "#C9A84C",
               textShadow: "0 0 8px rgba(201,168,76,0.4)",

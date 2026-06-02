@@ -11,7 +11,8 @@ const STATIC_ROUTES = [
   { path: "/events",   priority: 0.9, changeFrequency: "weekly"  },
   { path: "/timeline", priority: 0.7, changeFrequency: "weekly"  },
   { path: "/judges",   priority: 0.6, changeFrequency: "monthly" },
-  { path: "/sponsors", priority: 0.7, changeFrequency: "monthly" },
+  { path: "/sponsors",          priority: 0.7, changeFrequency: "monthly" },
+  { path: "/sponsors/brochure", priority: 0.6, changeFrequency: "monthly" },
 ];
 
 export default function sitemap() {

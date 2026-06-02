@@ -5,6 +5,7 @@ import RoughDivider from "@/components/RoughDivider";
 import RoughStar from "@/components/RoughStar";
 import RoughButton from "@/components/RoughButton";
 import Sparkles from "@/components/Sparkles";
+import HeroVideoBg from "@/components/HeroVideoBg";
 import CodeOfConductBody from "@/components/CodeOfConductBody";
 
 export const metadata = {
@@ -23,7 +24,7 @@ export default function CodeOfConductPage() {
 
       <section className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6">
         {/* ambience — pure CSS, no JS animation cost */}
-        <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars opacity-60 pointer-events-none" />
+        <HeroVideoBg />
         <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
         <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
           <Sparkles count={22} />
@@ -56,10 +57,10 @@ export default function CodeOfConductPage() {
         {/* Headline */}
         <h1
           aria-label="Code of Conduct"
-          className="font-display font-black tracking-tight text-silver-hp leading-[0.95] text-center text-[12vw] sm:text-[8vw] md:text-[6vw] hp-glow"
+          className="font-display font-black tracking-tight text-silver-hp leading-[1.05] text-center text-[10vw] sm:text-[7vw] md:text-[5.5vw] hp-glow text-balance"
         >
-          <span className="block">Code of</span>
-          <span className="block text-gold-hp hp-glow-gold text-[12vw] sm:text-[7vw] md:text-[5.5vw] mt-2">
+          Code of{" "}
+          <span className="text-gold-hp hp-glow-gold">
             Conduct
           </span>
         </h1>
@@ -104,7 +105,7 @@ export default function CodeOfConductPage() {
             glow="rgba(212,175,55,0.30)"
             shimmer
             seed={43}
-            className="px-7 py-3 text-[12px]"
+            className="px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.35em]"
           >
             REPORT AN INCIDENT <span>↗</span>
           </RoughButton>

@@ -140,7 +140,7 @@ export default function NotFound() {
           glow="rgba(102,252,241,0.30)"
           shimmer
           seed={43}
-          className="px-7 py-3 text-[12px]"
+          className="px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.35em]"
         >
           ← BACK TO THE HALL
         </RoughButton>
@@ -151,7 +151,7 @@ export default function NotFound() {
           color="#C5C6C7"
           fill={false}
           seed={47}
-          className="px-7 py-3 text-[12px]"
+          className="px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.35em]"
         >
           READ THE PROPHECY
         </RoughButton>

@@ -8,6 +8,7 @@ import Sparkles from "./Sparkles";
 import RoughFrame from "./RoughFrame";
 import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
+import HeroVideoBg from "./HeroVideoBg";
 import RoughStar from "./RoughStar";
 
 const PILLARS = [
@@ -72,10 +73,10 @@ export default function Prophecy() {
       ref={sectionRef}
       className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6"
     >
-      <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars pointer-events-none" />
+      <HeroVideoBg />
       <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
       <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
-        <Sparkles count={24} />
+        <Sparkles count={18} />
       </div>
 
       {/* Eyebrow */}
@@ -94,13 +95,10 @@ export default function Prophecy() {
       <div ref={headingRef} className="text-center">
         <h1
           aria-label="The Prophecy"
-          className="font-display font-black tracking-tight text-silver-hp leading-[0.95] text-[14vw] sm:text-[10vw] md:text-[8vw] hp-glow"
+          className="font-display font-black tracking-tight text-silver-hp leading-[1.05] text-balance text-[14vw] sm:text-[10vw] md:text-[8vw] hp-glow"
           style={{ perspective: 800 }}
         >
-          <span className="block">{splitLetters("The")}</span>
-          <span className="block text-gold-hp hp-glow-gold text-[12vw] sm:text-[8vw] md:text-[6.5vw] mt-2">
-            {splitLetters("Prophecy")}
-          </span>
+          {splitLetters("The")}<span style={{whiteSpace: "pre"}}> </span><span className="text-gold-hp hp-glow-gold text-[12vw] sm:text-[8vw] md:text-[6.5vw]">{splitLetters("Prophecy")}</span>
         </h1>
       </div>
 
@@ -148,7 +146,7 @@ export default function Prophecy() {
               <h3 className="font-display tracking-[0.35em] text-silver-hp uppercase text-sm">
                 {p.title}
               </h3>
-              <p className="font-wizard text-silver-hp/70 text-sm leading-relaxed">
+              <p className="font-wizard text-silver-hp/85 text-sm leading-relaxed">
                 {p.body}
               </p>
             </RoughFrame>
@@ -328,7 +326,7 @@ export default function Prophecy() {
             color="#C5C6C7"
             fill={false}
             seed={59}
-            className="px-8 py-3 text-[12px]"
+            className="px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.35em]"
           >
             ← BACK TO THE HALL
           </RoughButton>

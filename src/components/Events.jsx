@@ -8,6 +8,7 @@ import Sparkles from "./Sparkles";
 import RoughFrame from "./RoughFrame";
 import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
+import HeroVideoBg from "./HeroVideoBg";
 import { EVENTS } from "@/lib/routes";
 
 export default function Events() {
@@ -49,10 +50,10 @@ export default function Events() {
       ref={sectionRef}
       className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6"
     >
-      <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars pointer-events-none" />
+      <HeroVideoBg />
       <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
       <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
-        <Sparkles count={24} />
+        <Sparkles count={18} />
       </div>
 
       <motion.div
@@ -69,13 +70,10 @@ export default function Events() {
       <div className="text-center">
         <h1
           aria-label="The Events"
-          className="font-display font-black tracking-tight text-silver-hp leading-[0.95] text-[14vw] sm:text-[10vw] md:text-[8vw] hp-glow"
+          className="font-display font-black tracking-tight text-silver-hp leading-[1.05] text-balance text-[14vw] sm:text-[10vw] md:text-[8vw] hp-glow"
           style={{ perspective: 800 }}
         >
-          <span className="block">{splitLetters("The")}</span>
-          <span className="block text-gold-hp hp-glow-gold text-[14vw] sm:text-[9vw] md:text-[7vw] mt-2">
-            {splitLetters("Events")}
-          </span>
+          {splitLetters("The")}<span style={{whiteSpace: "pre"}}> </span><span className="text-gold-hp hp-glow-gold text-[14vw] sm:text-[9vw] md:text-[7vw]">{splitLetters("Events")}</span>
         </h1>
       </div>
 
@@ -84,7 +82,7 @@ export default function Events() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.05 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="mx-auto mt-10 max-w-2xl text-center font-wizard text-silver-hp/75 text-base sm:text-lg leading-relaxed"
+        className="mx-auto mt-10 max-w-2xl text-center font-wizard text-silver-hp/85 text-base sm:text-lg leading-relaxed"
       >
         Five tracks. One night that breaks into fifty-eight hours. Each has its
         own scrolls, its own duels, and its own gold to be won.
@@ -155,7 +153,7 @@ export default function Events() {
               >
                 {e.name}
               </h2>
-              <p className="font-wizard text-silver-hp/65 text-sm leading-relaxed">
+              <p className="font-wizard text-silver-hp/85 text-sm leading-relaxed">
                 {e.blurb}
               </p>
 
@@ -174,7 +172,7 @@ export default function Events() {
                 </Link>
                 <Link
                   href={`/events/${e.slug}/prizes`}
-                  className="group inline-flex items-center gap-1.5 rounded-full border border-silver-hp/25 bg-slate-hp/40 px-3 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] text-silver-hp/75 transition"
+                  className="group inline-flex items-center gap-1.5 rounded-full border border-silver-hp/25 bg-slate-hp/40 px-3 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] text-silver-hp/85 transition"
                   style={{
                     /* hover handled inline via CSS variables */
                   }}
