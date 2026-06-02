@@ -5,7 +5,6 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
 import Link from "next/link";
 import Sparkles from "./Sparkles";
-import FloatingCandles from "./FloatingCandles";
 import LocationMap from "./LocationMap";
 import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
@@ -354,7 +353,6 @@ export default function Hero() {
           style={{ y: yMid }}
           className="absolute inset-0 -z-10 opacity-60"
         >
-          <FloatingCandles count={15} />
           <Sparkles count={16} />
         </motion.div>
 
