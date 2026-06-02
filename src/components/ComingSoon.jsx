@@ -34,12 +34,24 @@ export default function ComingSoon({
   backLabel = "← BACK TO THE HALL",
 }) {
   const themed = Boolean(accentColor);
+  // Softer eye-friendly glow when themed (especially for the cyan teams).
+  // Two thin halos at low alpha read as "luminous" without the searing burn
+  // of a single big shadow on bright cyans.
   const titleAccentStyle = themed
-    ? { color: accentColor, textShadow: `0 0 28px ${accentGlow || accentColor}` }
+    ? {
+        color: accentColor,
+        textShadow: `0 0 8px ${accentColor}b3, 0 0 22px ${accentGlow || accentColor + "55"}`,
+        letterSpacing: "0.02em",
+      }
     : undefined;
+  // Phone-aware clamp() sizing — caps the headline so it never floods the
+  // viewport on narrow screens, while keeping the dramatic feel on desktop.
   const titleAccentClass = themed
-    ? "block text-[14vw] sm:text-[9vw] md:text-[7vw] mt-2"
-    : "block text-gold-hp hp-glow-gold text-[14vw] sm:text-[9vw] md:text-[7vw] mt-2";
+    ? "block mt-2"
+    : "block text-gold-hp hp-glow-gold mt-2";
+  const titleAccentInlineSize = "clamp(2.6rem, 11vw, 6.5rem)";
+  const titleBaseInlineSize = "clamp(2.2rem, 9vw, 5.5rem)";
+  const isOpen = Boolean(apply?.open);
   const sectionRef = useRef(null);
 
   useEffect(() => {
@@ -96,15 +108,19 @@ export default function ComingSoon({
         <RoughDivider width={48} height={20} color="#66FCF1" seed={5} />
       </motion.div>
 
-      {/* Headline */}
+      {/* Headline — clamp() sizing so the title never floods phones,
+          softer themed glow so cyan headlines don't burn the retina. */}
       <div className="text-center">
         <h1
           aria-label={`${title} ${accent}`}
-          className="font-display font-black tracking-tight text-silver-hp leading-[0.95] text-[14vw] sm:text-[10vw] md:text-[8vw] hp-glow"
-          style={{ perspective: 800 }}
+          className="font-display font-black tracking-tight text-silver-hp leading-[0.95] hp-glow"
+          style={{ perspective: 800, fontSize: titleBaseInlineSize, letterSpacing: "0.01em" }}
         >
           <span className="block">{splitLetters(title)}</span>
-          <span className={titleAccentClass} style={titleAccentStyle}>
+          <span
+            className={titleAccentClass}
+            style={{ ...(titleAccentStyle || {}), fontSize: titleAccentInlineSize }}
+          >
             {splitLetters(accent)}
           </span>
         </h1>
