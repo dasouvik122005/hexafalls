@@ -77,7 +77,8 @@ export const TEAMS = [
     blurb: "The voice of the order — outreach, partners, the world beyond the walls.",
     color: TEAM_COLOR,
     glow:  TEAM_GLOW,
-    open:  false,
+    open:  true,
+    formUrl: "https://luma.com/vc0k1lcq",
   },
   {
     slug: "core-team",
