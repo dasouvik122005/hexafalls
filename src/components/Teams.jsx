@@ -70,7 +70,7 @@ export default function Teams() {
       <div className="text-center">
         <h1
           aria-label="The Teams"
-          className="font-display font-black tracking-tight text-silver-hp leading-[0.95] text-[14vw] sm:text-[10vw] md:text-[8vw] hp-glow"
+          className="font-display font-black tracking-tight text-silver-hp leading-[1.05] text-balance text-[14vw] sm:text-[10vw] md:text-[8vw] hp-glow"
         >
           {splitLetters("The")}<span style={{whiteSpace: "pre"}}> </span><span className="text-gold-hp hp-glow-gold text-[14vw] sm:text-[9vw] md:text-[7vw]">{splitLetters("Teams")}</span>
         </h1>
@@ -81,7 +81,7 @@ export default function Teams() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.05 }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        className="mx-auto mt-10 max-w-2xl text-center font-wizard text-silver-hp/75 text-base sm:text-lg leading-relaxed"
+        className="mx-auto mt-10 max-w-2xl text-center font-wizard text-silver-hp/85 text-base sm:text-lg leading-relaxed"
       >
         Four orders make HexaFalls run. Some shape it from the high seats, some
         carry the lanterns through the corridors. Pick the one that calls.
@@ -102,54 +102,83 @@ export default function Teams() {
           >
             <Link
               href={`/teams/${t.slug}`}
-              className="group block h-full"
+              className="group relative block h-full"
               aria-label={`${t.name} — ${t.open ? "apply now" : "details"}`}
             >
+              {/* Soft outer glow ring — only on open scrolls, so the live
+                  cards literally radiate against the muted soon-cards. */}
+              {t.open && (
+                <span
+                  aria-hidden="true"
+                  className="absolute -inset-1 rounded-md opacity-60 group-hover:opacity-90 transition pointer-events-none"
+                  style={{
+                    background: `radial-gradient(ellipse at center, ${t.glow}, transparent 70%)`,
+                    filter: "blur(10px)",
+                  }}
+                />
+              )}
               <RoughFrame
                 seed={71 + i * 11}
                 stroke={t.color}
                 mistColor={t.color}
-                strokeWidth={1.4}
+                strokeWidth={t.open ? 1.8 : 1.2}
                 roughness={1.5}
                 bowing={1.2}
                 padding={16}
-                className="h-full bg-slate-hp/30 backdrop-blur-sm transition group-hover:bg-slate-hp/40"
+                className={`relative h-full backdrop-blur-sm transition ${
+                  t.open
+                    ? "bg-slate-hp/55 group-hover:bg-slate-hp/65 group-hover:-translate-y-0.5"
+                    : "bg-slate-hp/20 group-hover:bg-slate-hp/30"
+                }`}
                 inner="flex h-full flex-col items-center text-center gap-2"
               >
                 <span
-                  className="font-wizard text-2xl"
-                  style={{ color: t.color, textShadow: `0 0 12px ${t.glow}` }}
+                  className="font-wizard"
+                  style={{
+                    color: t.color,
+                    textShadow: `0 0 ${t.open ? 18 : 10}px ${t.glow}`,
+                    fontSize: t.open ? "2rem" : "1.6rem",
+                    opacity: t.open ? 1 : 0.6,
+                  }}
                   aria-hidden="true"
                 >
                   {t.rune}
                 </span>
                 <h2
                   className="font-display tracking-tight text-base sm:text-lg leading-tight"
-                  style={{ color: t.color, textShadow: `0 0 14px ${t.glow}` }}
+                  style={{
+                    color: t.open ? t.color : "#C5C6C7",
+                    textShadow: t.open ? `0 0 16px ${t.glow}` : "none",
+                    opacity: t.open ? 1 : 0.75,
+                  }}
                 >
                   {t.name}
                 </h2>
                 <span
-                  className="mt-auto inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-display text-[9px] uppercase tracking-[0.3em]"
+                  className="mt-auto inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-display text-[9px] uppercase tracking-[0.3em]"
                   style={{
-                    borderColor: `${t.color}80`,
-                    color: t.color,
-                    backgroundColor: `${t.color}1a`,
+                    borderColor: t.open ? t.color : `${t.color}40`,
+                    color: t.open ? t.color : `${t.color}99`,
+                    backgroundColor: t.open ? `${t.color}26` : `${t.color}10`,
                   }}
                 >
-                  {t.open && (
-                    <span className="relative flex h-1.5 w-1.5">
-                      <span
-                        className="absolute inline-flex h-full w-full rounded-full opacity-70 animate-ping"
-                        style={{ backgroundColor: t.color }}
-                      />
-                      <span
-                        className="relative inline-flex h-1.5 w-1.5 rounded-full"
-                        style={{ backgroundColor: t.color }}
-                      />
-                    </span>
+                  {t.open ? (
+                    <>
+                      <span className="relative flex h-1.5 w-1.5">
+                        <span
+                          className="absolute inline-flex h-full w-full rounded-full opacity-70 animate-ping"
+                          style={{ backgroundColor: t.color }}
+                        />
+                        <span
+                          className="relative inline-flex h-1.5 w-1.5 rounded-full"
+                          style={{ backgroundColor: t.color }}
+                        />
+                      </span>
+                      Apply now ↗
+                    </>
+                  ) : (
+                    "Soon"
                   )}
-                  {t.open ? "Apply" : "Soon"}
                 </span>
               </RoughFrame>
             </Link>

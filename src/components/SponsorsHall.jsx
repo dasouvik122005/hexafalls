@@ -132,7 +132,7 @@ export default function SponsorsHall() {
       {/* Headline */}
       <h1
         aria-label="Our Patrons"
-        className="font-display font-black tracking-tight text-silver-hp leading-[0.95] text-center text-[9vw] sm:text-[6vw] md:text-[4.5vw] hp-glow"
+        className="font-display font-black tracking-tight text-silver-hp leading-[1.05] text-balance text-center text-[9vw] sm:text-[6vw] md:text-[4.5vw] hp-glow"
         style={{ perspective: 800 }}
       >
         {splitLetters("Our")}<span style={{whiteSpace: "pre"}}> </span><span className="text-gold-hp hp-glow-gold text-[9vw] sm:text-[5vw] md:text-[4vw]">{splitLetters("Patrons")}</span>
@@ -216,7 +216,7 @@ export default function SponsorsHall() {
           <span className="font-display text-[10px] uppercase tracking-[0.5em] text-cyan-hp/80">
             Platinum · Silver
           </span>
-          <p className="font-wizard text-silver-hp/75 text-sm sm:text-base leading-relaxed">
+          <p className="font-wizard text-silver-hp/85 text-base sm:text-lg leading-relaxed">
             More patrons join the procession soon. Their seals will be set in
             the wax of these scrolls as they arrive.
           </p>

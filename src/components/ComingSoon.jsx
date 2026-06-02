@@ -47,9 +47,13 @@ export default function ComingSoon({
     : undefined;
   // Phone-aware clamp() sizing — caps the headline so it never floods the
   // viewport on narrow screens, while keeping the dramatic feel on desktop.
+  // Inline accent — sits beside the base title on one line and wraps
+  // naturally onto a second line on narrow phones (rather than always
+  // stacking, which was wasting vertical space and forcing tiny mobile
+  // sizing to compensate).
   const titleAccentClass = themed
-    ? "block mt-2"
-    : "block text-gold-hp hp-glow-gold mt-2";
+    ? ""
+    : "text-gold-hp hp-glow-gold";
   const titleAccentInlineSize = "clamp(2.6rem, 11vw, 6.5rem)";
   const titleBaseInlineSize = "clamp(2.2rem, 9vw, 5.5rem)";
   const isOpen = Boolean(apply?.open);
@@ -120,10 +124,11 @@ export default function ComingSoon({
       <div className="text-center">
         <h1
           aria-label={`${title} ${accent}`}
-          className="font-display font-black tracking-tight text-silver-hp leading-[0.95] hp-glow"
+          className="font-display font-black tracking-tight text-silver-hp leading-[1.05] hp-glow text-balance"
           style={{ perspective: 800, fontSize: titleBaseInlineSize, letterSpacing: "0.01em" }}
         >
-          <span className="block">{splitLetters(title)}</span>
+          {splitLetters(title)}
+          <span style={{ whiteSpace: "pre" }}> </span>
           <span
             className={titleAccentClass}
             style={{ ...(titleAccentStyle || {}), fontSize: titleAccentInlineSize }}
@@ -229,10 +234,10 @@ export default function ComingSoon({
           className="w-full bg-slate-hp/30 backdrop-blur-sm"
           inner="flex flex-col items-center text-center gap-4"
         >
-          <p className="font-wizard text-silver-hp/80 text-base sm:text-lg leading-relaxed">
+          <p className="font-wizard text-silver-hp/90 text-lg sm:text-xl leading-relaxed">
             {lede}
           </p>
-          <p className="font-wizard italic text-silver-hp/55 text-sm">
+          <p className="font-wizard italic text-silver-hp/65 text-sm sm:text-base">
             {whisper}
           </p>
         </RoughFrame>

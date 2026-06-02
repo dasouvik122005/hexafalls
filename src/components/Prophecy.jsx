@@ -95,7 +95,7 @@ export default function Prophecy() {
       <div ref={headingRef} className="text-center">
         <h1
           aria-label="The Prophecy"
-          className="font-display font-black tracking-tight text-silver-hp leading-[0.95] text-[14vw] sm:text-[10vw] md:text-[8vw] hp-glow"
+          className="font-display font-black tracking-tight text-silver-hp leading-[1.05] text-balance text-[14vw] sm:text-[10vw] md:text-[8vw] hp-glow"
           style={{ perspective: 800 }}
         >
           {splitLetters("The")}<span style={{whiteSpace: "pre"}}> </span><span className="text-gold-hp hp-glow-gold text-[12vw] sm:text-[8vw] md:text-[6.5vw]">{splitLetters("Prophecy")}</span>
@@ -146,7 +146,7 @@ export default function Prophecy() {
               <h3 className="font-display tracking-[0.35em] text-silver-hp uppercase text-sm">
                 {p.title}
               </h3>
-              <p className="font-wizard text-silver-hp/70 text-sm leading-relaxed">
+              <p className="font-wizard text-silver-hp/85 text-sm leading-relaxed">
                 {p.body}
               </p>
             </RoughFrame>

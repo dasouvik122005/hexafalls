@@ -180,7 +180,7 @@ function FaqScroll({ faq, index, isOpen, onToggle }) {
 
                 {/* Answer text */}
                 <div className="relative">
-                  <p className="font-wizard text-silver-hp/75 text-sm sm:text-base leading-relaxed">
+                  <p className="font-wizard text-silver-hp/85 text-base sm:text-lg leading-relaxed">
                     {faq.a}
                   </p>
 
@@ -323,7 +323,7 @@ export default function FAQ() {
       <div className="text-center">
         <h1
           aria-label="Frequently Asked Questions"
-          className="font-display font-black tracking-tight text-silver-hp leading-[0.95] text-[12vw] sm:text-[8vw] md:text-[6.5vw] hp-glow"
+          className="font-display font-black tracking-tight text-silver-hp leading-[1.05] text-balance text-[12vw] sm:text-[8vw] md:text-[6.5vw] hp-glow"
           style={{ perspective: 800 }}
         >
           {splitLetters("Frequently")}<span style={{whiteSpace: "pre"}}> </span><span className="text-gold-hp hp-glow-gold text-[10vw] sm:text-[7vw] md:text-[5.5vw]">{splitLetters("Asked")}</span>
@@ -336,7 +336,7 @@ export default function FAQ() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6, delay: 0.2 }}
-        className="mx-auto mt-8 mb-16 max-w-2xl text-center font-wizard text-silver-hp/70 text-sm sm:text-base leading-relaxed"
+        className="mx-auto mt-8 mb-16 max-w-2xl text-center font-wizard text-silver-hp/85 text-base sm:text-lg leading-relaxed"
       >
         Break the seal on any scroll below to reveal its contents.
         The Room only shows what you truly need to know.

@@ -11,6 +11,14 @@ import RoughTape from "./RoughTape";
 
 const EMAIL    = "support@hexafalls.org";
 const GDG_LINK = "https://gdg.community.dev/gdg-on-campus-jis-university-kolkata-india/";
+const GITHUB_ORG = "https://github.com/hexafest";
+
+// GitHub usernames who built the site. Their avatars are pulled from the
+// public GitHub avatar endpoint (no API call, no auth). Add new entries
+// here as more people commit — they'll appear in the stack automatically.
+const CONTRIBUTORS = [
+  { name: "Ayushman (@elixpo)", username: "Circuit-Overtime" },
+];
 
 const SOCIALS = [
   {

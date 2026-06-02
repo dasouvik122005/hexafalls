@@ -57,10 +57,10 @@ export default function CodeOfConductPage() {
         {/* Headline */}
         <h1
           aria-label="Code of Conduct"
-          className="font-display font-black tracking-tight text-silver-hp leading-[0.95] text-center text-[12vw] sm:text-[8vw] md:text-[6vw] hp-glow"
+          className="font-display font-black tracking-tight text-silver-hp leading-[1.05] text-center text-[10vw] sm:text-[7vw] md:text-[5.5vw] hp-glow text-balance"
         >
-          <span className="block">Code of</span>
-          <span className="block text-gold-hp hp-glow-gold text-[12vw] sm:text-[7vw] md:text-[5.5vw] mt-2">
+          Code of{" "}
+          <span className="text-gold-hp hp-glow-gold">
             Conduct
           </span>
         </h1>
