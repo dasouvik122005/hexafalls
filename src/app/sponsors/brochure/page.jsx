@@ -115,7 +115,7 @@ export default function SponsorshipBrochurePage() {
             counter underneath. */}
         <div className="mx-auto mt-14 w-full max-w-4xl flex flex-col gap-10">
           {BROCHURE_PAGES.map((page, i) => (
-            <figure key={page.src} className="flex flex-col items-center gap-3">
+            <figure key={page.jpg} className="flex flex-col items-center gap-3">
               <RoughFrame
                 seed={37 + i * 7}
                 stroke="#D4AF37"
@@ -126,13 +126,23 @@ export default function SponsorshipBrochurePage() {
                 padding={10}
                 className="w-full bg-midnight"
               >
-                <img
-                  src={page.src}
-                  alt={page.alt}
-                  loading={i === 0 ? "eager" : "lazy"}
-                  decoding="async"
-                  className="block w-full h-auto rounded-sm shadow-[0_4px_24px_rgba(0,0,0,0.45)]"
-                />
+                {/* <picture> lets modern browsers pull the ~250 KB WebP
+                    while older clients fall back to the ~410 KB JPG.
+                    width/height attrs reserve the layout box so the
+                    surrounding rough frame doesn't reflow on load. */}
+                <picture>
+                  <source srcSet={page.webp} type="image/webp" />
+                  <img
+                    src={page.jpg}
+                    alt={page.alt}
+                    width={page.width}
+                    height={page.height}
+                    loading={i === 0 ? "eager" : "lazy"}
+                    fetchPriority={i === 0 ? "high" : "auto"}
+                    decoding="async"
+                    className="block w-full h-auto rounded-sm shadow-[0_4px_24px_rgba(0,0,0,0.45)]"
+                  />
+                </picture>
               </RoughFrame>
               <figcaption className="font-display text-[10px] uppercase tracking-[0.5em] text-gold-hp/70">
                 Page {i + 1} of {BROCHURE_PAGES.length}
