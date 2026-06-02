@@ -1,101 +1,160 @@
+// /register — the front door of registration.
+//
+//   not signed in       → render the "begin" panel + login CTA
+//   signed in, no GDG   → render <GdgGate />
+//   signed in, GDG ok   → render the event picker
+//
+// All redirects are link-based (no JS); pages render server-side.
+
 import Link from "next/link";
 import TopBar from "@/components/TopBar";
 import Footer from "@/components/Footer";
 import RoughFrame from "@/components/RoughFrame";
-import RoughDivider from "@/components/RoughDivider";
-import { REGISTRATION_TRACKS } from "@/lib/registrationTracks";
+import RoughButton from "@/components/RoughButton";
+import RegisterShell from "@/components/register/RegisterShell";
+import GdgGate from "@/components/register/GdgGate";
+import { getSessionUser } from "@/lib/auth/server";
+import { REGISTRATION_EVENTS } from "@/lib/registration/events";
 
 export const metadata = {
-  title: "Registration · HexaFalls Techfest",
+  title: "Register · HexaFalls Techfest",
   description:
-    "Pick a track and sign the scroll — registration for HexaFalls is open.",
+    "Register for HexaFalls 2026. Pick your event, form your squad and lock your seat at the wizarding hackathon at JIS University.",
 };
 
-export default function RegisterPage() {
-  const tracks = Object.values(REGISTRATION_TRACKS);
+export const dynamic = "force-dynamic";
+
+export default async function RegisterPage({ searchParams }) {
+  const params = (await searchParams) ?? {};
+  const user = await getSessionUser();
+
   return (
     <main className="flex-1">
       <TopBar />
-      <section className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6">
-        <div className="mx-auto mb-6 flex max-w-3xl items-center justify-center gap-3 text-[11px] uppercase tracking-[0.5em] text-cyan-hp/70 font-display text-center">
-          <RoughDivider width={48} height={20} color="#66FCF1" seed={3} />
-          Owls await your name
-          <RoughDivider width={48} height={20} color="#66FCF1" seed={5} />
-        </div>
-
-        <h1 className="text-center font-display font-black tracking-tight text-silver-hp leading-[0.95] text-[14vw] sm:text-[10vw] md:text-[8vw] hp-glow">
-          <span className="block">Open</span>
-          <span className="block text-gold-hp hp-glow-gold text-[12vw] sm:text-[8vw] md:text-[6.5vw] mt-2">
-            Registration
-          </span>
-        </h1>
-
-        <p className="mx-auto mt-10 max-w-2xl text-center font-wizard text-silver-hp/75 text-base sm:text-lg leading-relaxed">
-          Four tracks, four scrolls. Pick the path that calls to you and sign your name.
-        </p>
-
-        <div className="mx-auto mt-16 grid max-w-5xl gap-6 sm:grid-cols-2">
-          {tracks.map((t, i) => (
-            <RoughFrame
-              key={t.slug}
-              seed={101 + i * 7}
-              stroke={t.color}
-              mistColor={t.color}
-              strokeWidth={1.4}
-              roughness={1.5}
-              bowing={1.2}
-              padding={22}
-              className="h-full bg-slate-hp/30 backdrop-blur-sm"
-              inner="flex h-full flex-col gap-3"
-            >
-              <div className="flex items-center justify-between">
-                <span
-                  className="font-display tracking-[0.3em] uppercase text-[10px]"
-                  style={{ color: t.color }}
-                >
-                  Sign the scroll
-                </span>
-                <span
-                  className="rounded-full border px-2 py-0.5 font-display text-[8px] uppercase tracking-[0.3em]"
-                  style={{
-                    borderColor: `${t.color}55`,
-                    color: `${t.color}cc`,
-                    backgroundColor: `${t.color}1a`,
-                  }}
-                >
-                  {t.kind === "solo" ? "solo" : t.kind === "squad" ? "squad" : "team"}
-                </span>
-              </div>
-
-              <h2
-                className="font-display tracking-tight text-2xl leading-tight"
-                style={{ color: t.color, textShadow: `0 0 18px ${t.glow}` }}
-              >
-                {t.name}
-              </h2>
-              <p className="font-wizard text-silver-hp/65 text-sm leading-relaxed">
-                {t.blurb}
-              </p>
-
-              <div className="mt-auto pt-2">
-                <Link
-                  href={`/register/${t.slug}`}
-                  className="group inline-flex items-center gap-2 rounded-full border px-4 py-2 font-display text-[11px] uppercase tracking-[0.3em] transition"
-                  style={{
-                    borderColor: `${t.color}80`,
-                    color: t.color,
-                    backgroundColor: `${t.color}1a`,
-                  }}
-                >
-                  Register
-                  <span className="group-hover:translate-x-0.5 transition">→</span>
-                </Link>
-              </div>
-            </RoughFrame>
-          ))}
-        </div>
-      </section>
+      <RegisterShell
+        eyebrow="Sign the scroll"
+        title="Register for"
+        accent="HexaFalls"
+      >
+        {!user && <BeginPanel returnTo="/register" />}
+        {user && !user.gdg_verified && <GdgGate returnTo="/register" />}
+        {user && user.gdg_verified && <EventPicker user={user} flash={params} />}
+      </RegisterShell>
       <Footer />
     </main>
+  );
+}
+
+function BeginPanel({ returnTo }) {
+  return (
+    <RoughFrame
+      seed={71}
+      stroke="#66FCF1"
+      mistColor="#66FCF1"
+      strokeWidth={1.4}
+      padding={26}
+      className="w-full bg-slate-hp/40 backdrop-blur-sm"
+      inner="flex flex-col gap-5 items-center text-center"
+    >
+      <h2 className="font-display tracking-[0.3em] uppercase text-sm text-cyan-hp">
+        Begin with a single login
+      </h2>
+      <p className="font-wizard text-silver-hp/85 text-base sm:text-lg leading-relaxed max-w-xl">
+        HexaFalls uses Elixpo Accounts for sign-in. One account works for
+        every event, every squad, every scroll you sign. Free, takes about
+        a minute.
+      </p>
+      <RoughButton
+        as="a"
+        href={`/api/auth/login?return_to=${encodeURIComponent(returnTo)}`}
+        color="#D4AF37"
+        glow="rgba(212,175,55,0.40)"
+        shimmer
+        seed={17}
+        className="px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.4em]"
+      >
+        SIGN IN WITH ELIXPO ↗
+      </RoughButton>
+      <p className="font-wizard italic text-silver-hp/55 text-xs">
+        Powered by accounts.elixpo.com · OAuth 2.0
+      </p>
+    </RoughFrame>
+  );
+}
+
+function EventPicker({ user, flash }) {
+  const entries = Object.entries(REGISTRATION_EVENTS);
+  return (
+    <div className="flex flex-col gap-6">
+      <RoughFrame
+        seed={89}
+        stroke="#D4AF37"
+        mistColor="#D4AF37"
+        strokeWidth={1.4}
+        padding={20}
+        className="w-full bg-slate-hp/30 backdrop-blur-sm"
+        inner="flex flex-col gap-2"
+      >
+        <span className="font-display tracking-[0.3em] uppercase text-[10px] text-gold-hp/80">
+          Signed in as
+        </span>
+        <span className="font-mono text-base text-silver-hp">
+          {user.username ?? "(handle pending)"}{" "}
+          <span className="text-silver-hp/55 text-sm">· {user.id}</span>
+        </span>
+        <Link
+          href="/api/auth/logout"
+          className="self-start mt-2 font-display text-[10px] uppercase tracking-[0.35em] text-cyan-hp/75 hover:text-cyan-hp underline underline-offset-4"
+        >
+          ← sign out
+        </Link>
+      </RoughFrame>
+
+      <h2 className="font-display tracking-[0.3em] uppercase text-sm text-gold-hp hp-glow-gold">
+        Pick your event
+      </h2>
+
+      {flash.error && (
+        <p className="font-wizard italic text-red-300 text-sm">
+          {String(flash.error)}
+        </p>
+      )}
+
+      <div className="grid sm:grid-cols-2 gap-4">
+        {entries.map(([key, cfg]) => (
+          <Link
+            key={key}
+            href={`/register/${key}`}
+            className="group"
+            aria-label={`Register for ${cfg.label}`}
+          >
+            <RoughFrame
+              seed={103 + key.length * 7}
+              stroke="#66FCF1"
+              mistColor="#66FCF1"
+              strokeWidth={1.3}
+              padding={18}
+              className="h-full bg-slate-hp/30 backdrop-blur-sm transition group-hover:bg-slate-hp/50"
+              inner="flex h-full flex-col gap-2"
+            >
+              <span className="font-display tracking-[0.3em] uppercase text-[10px] text-cyan-hp/80">
+                {cfg.mode === "squad" ? "Squad event" : "Solo event"}
+              </span>
+              <span className="font-display text-base sm:text-lg text-silver-hp">
+                {cfg.label}
+              </span>
+              {cfg.mode === "squad" && (
+                <span className="font-wizard text-xs text-silver-hp/65">
+                  Min {cfg.minMembers} · Max {cfg.maxMembers}
+                </span>
+              )}
+              <span className="mt-auto font-display text-[10px] uppercase tracking-[0.35em] text-gold-hp/80 group-hover:translate-x-0.5 transition">
+                Open the scroll →
+              </span>
+            </RoughFrame>
+          </Link>
+        ))}
+      </div>
+    </div>
   );
 }

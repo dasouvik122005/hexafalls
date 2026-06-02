@@ -1,7 +1,8 @@
 -- HexaFalls registration: initial schema for D1.
 --
--- Apply locally:   wrangler d1 execute hexafalls --local --file=migrations/0001_init.sql
--- Apply remote:    wrangler d1 execute hexafalls --remote --file=migrations/0001_init.sql
+-- Apply locally:   wrangler d1 execute hexafalls --local  --file=worker/migrations/0001_init.sql
+-- Apply remote:    wrangler d1 execute hexafalls --remote --file=worker/migrations/0001_init.sql
+-- npm scripts:     `npm run db:migrate` (local) / `npm run db:migrate:prod` (remote)
 
 PRAGMA foreign_keys = ON;
 
