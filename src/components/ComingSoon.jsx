@@ -8,6 +8,7 @@ import Sparkles from "./Sparkles";
 import RoughFrame from "./RoughFrame";
 import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
+import HeroVideoBg from "./HeroVideoBg";
 
 /**
  * Generic "Coming Soon" page in the wizarding theme.
