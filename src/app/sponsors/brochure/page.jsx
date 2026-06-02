@@ -12,14 +12,25 @@ const BROCHURE_FILENAME = "hexafalls-sponsorship.pdf";
 
 // One image per PDF page — rendered inside our own themed frames so the
 // preview blends with the rest of the site (no native PDF viewer chrome).
-// Export each page from the PDF as a JPG (any of these works):
-//   pdftoppm -jpeg -r 200 public/brochures/brochure_sponsor.pdf public/brochures/brochure-page
-//   → produces brochure-page-1.jpg, brochure-page-2.jpg
-//   Or in Preview/Acrobat: File → Export → JPEG, 200dpi.
-// Drop them in /public/brochures/ at the paths below.
+// The optimized assets live alongside the source PDF; regenerate with:
+//   node scripts/optimize-brochure.mjs   (or rerun the inline sharp script)
+// Each page ships as both .webp (~250 KB) and .jpg (~410 KB) — browsers
+// pick the smaller one via the <picture><source> element below.
 const BROCHURE_PAGES = [
-  { src: "/brochures/brochure-page-1.jpg", alt: "Sponsorship brochure — page 1" },
-  { src: "/brochures/brochure-page-2.jpg", alt: "Sponsorship brochure — page 2" },
+  {
+    webp: "/brochures/brochure-page-1.webp",
+    jpg:  "/brochures/brochure-page-1.jpg",
+    alt:  "Sponsorship brochure — page 1",
+    width: 1600,
+    height: 2262,
+  },
+  {
+    webp: "/brochures/brochure-page-2.webp",
+    jpg:  "/brochures/brochure-page-2.jpg",
+    alt:  "Sponsorship brochure — page 2",
+    width: 1600,
+    height: 2262,
+  },
 ];
 
 export const metadata = {
