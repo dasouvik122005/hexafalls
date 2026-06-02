@@ -142,62 +142,101 @@ export default function SponsorsHall() {
         The hands that carry the wood, the lanterns that light the long halls.
       </p>
 
-      {/* Tiered patrons */}
-      <div className="mt-16 mx-auto max-w-4xl space-y-14">
-        {TIERS.map((tier, t) => (
-          <div key={tier.label}>
-            <div className="flex items-center justify-center gap-4 mb-6">
-              <RoughDivider width={96} height={20} color="#D4AF37" seed={11 + t * 2} />
-              <span className="font-display text-[11px] uppercase tracking-[0.5em] text-gold-hp hp-glow-gold whitespace-nowrap">
-                {tier.label}
-              </span>
-              <RoughDivider width={96} height={20} color="#D4AF37" seed={13 + t * 2} />
-            </div>
-
-            <div className="flex flex-wrap items-stretch justify-center gap-6">
-              {tier.sponsors.map((s, i) => (
-                <motion.a
-                  key={s.name}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={s.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.4, delay: i * 0.03 }}
-                  className="group block w-72 max-w-full"
-                >
-                  <RoughFrame
-                    seed={37 + (t * 17) + i * 4}
-                    stroke="#D4AF37"
-                    mist={false}
-                    strokeWidth={1.4}
-                    roughness={1.6}
-                    bowing={1.2}
-                    padding={14}
-                    className="w-full bg-silver-hp transition-transform duration-500 group-hover:-translate-y-1"
-                  >
-                    {/* Brand mark on a solid single-colour background, no
-                        mask, no overlay — per partner brand guidelines.
-                        Plain <img> + a fixed-height holder so wide wordmark
-                        logos render legibly without being cropped. */}
-                    <div className="relative w-full h-24 bg-silver-hp flex items-center justify-center px-6 rounded-sm">
-                      <img
-                        src={s.logo}
-                        alt={s.logoAlt || s.name}
-                        loading="eager"
-                        decoding="async"
-                        className="max-h-full max-w-full object-contain transition-transform duration-700 group-hover:scale-[1.03]"
-                      />
-                      <RoughTape color="#D4AF37" seed={61 + t * 11 + i} width={56} height={14} />
-                    </div>
-                  </RoughFrame>
-                </motion.a>
-              ))}
-            </div>
+      {/* ── Marquee: Collaborative Partner ─────────────────────────────────
+          The headline patron gets a single wide horizontal card — one
+          confident beat rather than a vertical stack. */}
+      {TIERS[0]?.sponsors?.length > 0 && (
+        <div className="mt-14 mx-auto max-w-3xl">
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <RoughDivider width={96} height={20} color="#D4AF37" seed={11} />
+            <span className="font-display text-[11px] uppercase tracking-[0.5em] text-gold-hp hp-glow-gold whitespace-nowrap">
+              {TIERS[0].label}
+            </span>
+            <RoughDivider width={96} height={20} color="#D4AF37" seed={13} />
           </div>
-        ))}
+          {TIERS[0].sponsors.map((s, i) => (
+            <motion.a
+              key={s.name}
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={s.name}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.4, delay: i * 0.03 }}
+              className="group block"
+            >
+              <RoughFrame
+                seed={37 + i * 4}
+                stroke="#D4AF37"
+                mist={false}
+                strokeWidth={1.6}
+                roughness={1.6}
+                bowing={1.2}
+                padding={16}
+                className="w-full bg-silver-hp transition-transform duration-500 group-hover:-translate-y-1"
+              >
+                <div className="relative w-full h-28 sm:h-32 bg-silver-hp flex items-center justify-center px-8 rounded-sm">
+                  <img
+                    src={s.logo}
+                    alt={s.logoAlt || s.name}
+                    loading="eager"
+                    decoding="async"
+                    className="max-h-full max-w-full object-contain transition-transform duration-700 group-hover:scale-[1.03]"
+                  />
+                  <RoughTape color="#D4AF37" seed={61 + i} width={64} height={14} />
+                </div>
+              </RoughFrame>
+            </motion.a>
+          ))}
+        </div>
+      )}
+
+      {/* ── Horizontal procession of all other patrons ─────────────────────
+          Every remaining tier collapses into ONE wrapping flex row of
+          compact chips — small white plate + logo + tier caption beneath.
+          Replaces the previous long vertical shaft of tier sections. */}
+      <div className="mt-20 mx-auto max-w-5xl">
+        <div className="flex items-center justify-center gap-4 mb-8">
+          <RoughDivider width={96} height={20} color="#D4AF37" seed={17} />
+          <span className="font-display text-[11px] uppercase tracking-[0.5em] text-gold-hp hp-glow-gold whitespace-nowrap">
+            The Procession
+          </span>
+          <RoughDivider width={96} height={20} color="#D4AF37" seed={19} />
+        </div>
+
+        <div className="flex flex-wrap items-start justify-center gap-x-6 gap-y-8">
+          {TIERS.slice(1).flatMap((tier, ti) =>
+            tier.sponsors.map((s, i) => (
+              <motion.a
+                key={`${tier.label}-${s.name}`}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${s.name} — ${tier.label}`}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.4, delay: (ti * 2 + i) * 0.03 }}
+                className="group flex flex-col items-center gap-2"
+              >
+                <div className="relative h-16 w-40 sm:h-20 sm:w-48 bg-silver-hp rounded-sm flex items-center justify-center px-4 transition-transform duration-500 group-hover:-translate-y-1">
+                  <img
+                    src={s.logo}
+                    alt={s.logoAlt || s.name}
+                    loading="lazy"
+                    decoding="async"
+                    className="max-h-full max-w-full object-contain"
+                  />
+                </div>
+                <span className="font-display text-[9px] uppercase tracking-[0.35em] text-gold-hp/75 whitespace-nowrap">
+                  {tier.label}
+                </span>
+              </motion.a>
+            )),
+          )}
+        </div>
       </div>
 
       {/* Other tiers — placeholder note */}
