@@ -8,6 +8,7 @@ import Sparkles from "./Sparkles";
 import RoughFrame from "./RoughFrame";
 import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
+import HeroVideoBg from "./HeroVideoBg";
 import RoughStar from "./RoughStar";
 
 const PILLARS = [
@@ -72,10 +73,10 @@ export default function Prophecy() {
       ref={sectionRef}
       className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6"
     >
-      <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars pointer-events-none" />
+      <HeroVideoBg />
       <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
       <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
-        <Sparkles count={24} />
+        <Sparkles count={18} />
       </div>
 
       {/* Eyebrow */}
