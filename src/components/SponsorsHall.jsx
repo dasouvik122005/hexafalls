@@ -294,15 +294,39 @@ export default function SponsorsHall() {
         className="mx-auto mt-14 flex max-w-3xl flex-row flex-wrap items-center justify-center gap-4"
       >
         <RoughButton
-          as="a"
-          href="mailto:support@hexafalls.org"
+          as={Link}
+          href="/sponsors/brochure"
           color="#D4AF37"
-          glow="rgba(212,175,55,0.30)"
+          glow="rgba(212,175,55,0.40)"
           shimmer
           seed={43}
           className="px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.35em]"
         >
-          BECOME A PATRON <span>↗</span>
+          VIEW SPONSORSHIP BROCHURE <span>↗</span>
+        </RoughButton>
+        <RoughButton
+          as="a"
+          href="mailto:support@hexafalls.org?subject=HexaFalls%20Sponsorship%20—%20interested"
+          color="#66FCF1"
+          glow="rgba(102,252,241,0.30)"
+          seed={45}
+          className="px-9 sm:px-10 py-4 text-[12px] sm:text-[13px] tracking-[0.35em]"
+        >
+          TALK TO ORGANIZER <span>↗</span>
+        </RoughButton>
+        <RoughButton
+          color="#66FCF1"
+          glow="rgba(102,252,241,0.25)"
+          shimmer
+          disabled
+          aria-disabled="true"
+          seed={46}
+          className="px-9 sm:px-10 py-4 text-[12px] sm:text-[13px] tracking-[0.35em] hp-pulse"
+        >
+          <span>APPLY FOR SPONSOR</span>
+          <span className="text-[9px] tracking-[0.25em] px-2 py-0.5 rounded-full border border-gold-hp/60 bg-gold-hp/10 text-gold-hp hp-glow-gold">
+            COMING SOON
+          </span>
         </RoughButton>
         <RoughButton
           as={Link}

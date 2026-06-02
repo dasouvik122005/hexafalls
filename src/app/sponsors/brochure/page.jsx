@@ -1,4 +1,3 @@
-import Link from "next/link";
 import TopBar from "@/components/TopBar";
 import Footer from "@/components/Footer";
 import RoughFrame from "@/components/RoughFrame";
@@ -7,9 +6,21 @@ import RoughButton from "@/components/RoughButton";
 import Sparkles from "@/components/Sparkles";
 import HeroVideoBg from "@/components/HeroVideoBg";
 
-// Drop your brochure PDF at this path under /public to make it live.
+// Drop your brochure PDF at this path under /public for the download link.
 const BROCHURE_PATH = "/brochures/brochure_sponsor.pdf";
 const BROCHURE_FILENAME = "hexafalls-sponsorship.pdf";
+
+// One image per PDF page — rendered inside our own themed frames so the
+// preview blends with the rest of the site (no native PDF viewer chrome).
+// Export each page from the PDF as a JPG (any of these works):
+//   pdftoppm -jpeg -r 200 public/brochures/brochure_sponsor.pdf public/brochures/brochure-page
+//   → produces brochure-page-1.jpg, brochure-page-2.jpg
+//   Or in Preview/Acrobat: File → Export → JPEG, 200dpi.
+// Drop them in /public/brochures/ at the paths below.
+const BROCHURE_PAGES = [
+  { src: "/brochures/brochure-page-1.jpg", alt: "Sponsorship brochure — page 1" },
+  { src: "/brochures/brochure-page-2.jpg", alt: "Sponsorship brochure — page 2" },
+];
 
 export const metadata = {
   title: "Sponsorship Brochure · HexaFalls Techfest",
@@ -87,56 +98,69 @@ export default function SponsorshipBrochurePage() {
           </RoughButton>
         </div>
 
-        {/* PDF viewer — framed by a sketched gold border. The browser's
-            built-in PDF viewer handles the rendering inside the iframe. */}
-        <div className="mx-auto mt-14 w-full max-w-5xl">
-          <RoughFrame
-            seed={37}
-            stroke="#D4AF37"
-            mist={false}
-            strokeWidth={1.6}
-            roughness={1.6}
-            bowing={1.2}
-            padding={10}
-            className="w-full bg-midnight"
-          >
-            {/* aspect-[3/4] matches a standard portrait PDF; on wide
-                desktops the frame still bounds the height nicely. */}
-            <object
-              data={`${BROCHURE_PATH}#view=FitH`}
-              type="application/pdf"
-              className="block w-full aspect-3/4 sm:aspect-[1/1.2] bg-midnight rounded-sm"
-              aria-label="HexaFalls sponsorship brochure"
-            >
-              {/* Fallback for browsers without PDF rendering, or before the
-                  PDF asset is uploaded. */}
-              <div className="flex flex-col items-center justify-center gap-4 p-10 text-center min-h-[60vh]">
-                <p className="font-wizard text-silver-hp/80 text-base sm:text-lg max-w-md">
-                  Your browser can&apos;t render the scroll inline.
-                </p>
-                <p className="font-wizard italic text-silver-hp/55 text-sm">
-                  Download or open it in a new tab using the buttons above.
-                </p>
-              </div>
-            </object>
-          </RoughFrame>
+        {/* Brochure pages — rendered as themed images so the preview blends
+            with the rest of the site (no native PDF viewer chrome). Each
+            page sits inside its own gold rough-js frame with a small page
+            counter underneath. */}
+        <div className="mx-auto mt-14 w-full max-w-4xl flex flex-col gap-10">
+          {BROCHURE_PAGES.map((page, i) => (
+            <figure key={page.src} className="flex flex-col items-center gap-3">
+              <RoughFrame
+                seed={37 + i * 7}
+                stroke="#D4AF37"
+                mist={false}
+                strokeWidth={1.6}
+                roughness={1.6}
+                bowing={1.2}
+                padding={10}
+                className="w-full bg-midnight"
+              >
+                <img
+                  src={page.src}
+                  alt={page.alt}
+                  loading={i === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                  className="block w-full h-auto rounded-sm shadow-[0_4px_24px_rgba(0,0,0,0.45)]"
+                />
+              </RoughFrame>
+              <figcaption className="font-display text-[10px] uppercase tracking-[0.5em] text-gold-hp/70">
+                Page {i + 1} of {BROCHURE_PAGES.length}
+              </figcaption>
+            </figure>
+          ))}
         </div>
 
-        {/* Footer CTAs */}
+        {/* Footer CTAs — the live mailto for direct conversation sits next
+            to the disabled "Apply for Sponsor" pill (form lands in a
+            follow-up PR). Pair reads as "two paths, one ready, one soon". */}
         <div className="mx-auto mt-12 flex flex-row flex-wrap items-center justify-center gap-4">
           <RoughButton
             as="a"
             href="mailto:support@hexafalls.org?subject=HexaFalls%20Sponsorship%20—%20interested"
             color="#D4AF37"
-            glow="rgba(212,175,55,0.30)"
+            glow="rgba(212,175,55,0.40)"
             shimmer
             seed={43}
             className="px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.35em]"
           >
-            BECOME A SPONSOR <span aria-hidden="true">↗</span>
+            TALK TO ORGANIZER <span aria-hidden="true">↗</span>
           </RoughButton>
           <RoughButton
-            as={Link}
+            color="#66FCF1"
+            glow="rgba(102,252,241,0.25)"
+            shimmer
+            disabled
+            aria-disabled="true"
+            seed={44}
+            className="px-9 sm:px-10 py-4 text-[12px] sm:text-[13px] tracking-[0.35em] hp-pulse"
+          >
+            <span>APPLY FOR SPONSOR</span>
+            <span className="text-[9px] tracking-[0.25em] px-2 py-0.5 rounded-full border border-gold-hp/60 bg-gold-hp/10 text-gold-hp hp-glow-gold">
+              COMING SOON
+            </span>
+          </RoughButton>
+          <RoughButton
+            as="a"
             href="/sponsors"
             color="#C5C6C7"
             fill={false}
