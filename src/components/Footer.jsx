@@ -17,7 +17,10 @@ const GITHUB_ORG = "https://github.com/hexafest";
 // public GitHub avatar endpoint (no API call, no auth). Add new entries
 // here as more people commit — they'll appear in the stack automatically.
 const CONTRIBUTORS = [
-  { name: "Ayushman (@elixpo)", username: "Circuit-Overtime" },
+  { name: "@Circuit-Overtime",      username: "Circuit-Overtime" },
+  { name: "@elixpoo",      username: "elixpoo" },
+  { name: "@ez-vivek",     username: "ez-vivek" },
+  { name: "@dasouvik122005", username: "dasouvik122005" },
 ];
 
 const SOCIALS = [
@@ -259,9 +262,47 @@ export default function Footer() {
 
       {/* Bottom strip */}
       <div className="relative border-t border-cyan-hp/10">
-        <div className="mx-auto max-w-7xl px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] uppercase tracking-[0.3em] text-silver-hp/40 font-display">
+        <div className="mx-auto max-w-7xl px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] uppercase tracking-[0.3em] text-silver-hp/40 font-display">
           <span>© {new Date().getFullYear()} Hexafalls</span>
-          <span className="text-silver-hp/60">developed by @elixpo on GitHub</span>
+
+          {/* Contributors — overlapping circular GitHub avatars next to a
+              link to the open-source org. Avatars come straight from
+              github.com/<user>.png (auto-redirects to their CDN, cacheable),
+              so no API call is needed at build/runtime. */}
+          <a
+            href={GITHUB_ORG}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-3 rounded-full border border-silver-hp/15 bg-slate-hp/40 px-3 py-1.5 hover:border-cyan-hp/50 hover:text-cyan-hp transition"
+            aria-label="HexaFalls on GitHub — open source"
+            title="HexaFalls on GitHub"
+          >
+            <span className="text-silver-hp/60 group-hover:text-cyan-hp transition normal-case tracking-[0.25em] text-[10px]">
+              built by
+            </span>
+            <span className="flex -space-x-2">
+              {CONTRIBUTORS.map((c) => (
+                <img
+                  key={c.username}
+                  src={`https://github.com/${c.username}.png?size=80`}
+                  alt={c.name}
+                  width="24"
+                  height="24"
+                  loading="lazy"
+                  decoding="async"
+                  className="inline-block h-6 w-6 rounded-full border-2 border-midnight bg-slate-hp object-cover"
+                />
+              ))}
+            </span>
+            <svg
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+              className="h-3.5 w-3.5 opacity-70 group-hover:opacity-100 transition"
+            >
+              <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.05c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.27-1.69-1.27-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.74.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.21-1.49 3.18-1.18 3.18-1.18.63 1.58.23 2.75.11 3.04.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.41.35.78 1.05.78 2.11v3.13c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/>
+            </svg>
+          </a>
         </div>
       </div>
     </footer>

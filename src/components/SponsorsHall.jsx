@@ -125,17 +125,17 @@ export default function SponsorsHall() {
         className="mx-auto mb-6 flex max-w-3xl items-center justify-center gap-3 text-[11px] uppercase tracking-[0.5em] text-cyan-hp/70 font-display text-center"
       >
         <RoughDivider width={48} height={20} color="#66FCF1" seed={3} />
-        Patrons of the craft
+        Sponsors of the craft
         <RoughDivider width={48} height={20} color="#66FCF1" seed={5} />
       </motion.div>
 
       {/* Headline */}
       <h1
-        aria-label="Our Patrons"
+        aria-label="Our Sponsors"
         className="font-display font-black tracking-tight text-silver-hp leading-[1.05] text-balance text-center text-[9vw] sm:text-[6vw] md:text-[4.5vw] hp-glow"
         style={{ perspective: 800 }}
       >
-        {splitLetters("Our")}<span style={{whiteSpace: "pre"}}> </span><span className="text-gold-hp hp-glow-gold text-[9vw] sm:text-[5vw] md:text-[4vw]">{splitLetters("Patrons")}</span>
+        {splitLetters("Our")}<span style={{whiteSpace: "pre"}}> </span><span className="text-gold-hp hp-glow-gold text-[9vw] sm:text-[5vw] md:text-[4vw]">{splitLetters("Sponsors")}</span>
       </h1>
 
       <p className="mx-auto mt-8 max-w-2xl text-center font-wizard italic text-silver-hp/60 text-sm">
@@ -245,7 +245,7 @@ export default function SponsorsHall() {
           glow="rgba(212,175,55,0.30)"
           shimmer
           seed={43}
-          className="px-7 py-3 text-[12px]"
+          className="px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.35em]"
         >
           BECOME A PATRON <span>↗</span>
         </RoughButton>

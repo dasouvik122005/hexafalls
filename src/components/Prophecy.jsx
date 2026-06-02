@@ -326,7 +326,7 @@ export default function Prophecy() {
             color="#C5C6C7"
             fill={false}
             seed={59}
-            className="px-8 py-3 text-[12px]"
+            className="px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.35em]"
           >
             ← BACK TO THE HALL
           </RoughButton>

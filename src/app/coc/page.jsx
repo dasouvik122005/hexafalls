@@ -105,7 +105,7 @@ export default function CodeOfConductPage() {
             glow="rgba(212,175,55,0.30)"
             shimmer
             seed={43}
-            className="px-7 py-3 text-[12px]"
+            className="px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.35em]"
           >
             REPORT AN INCIDENT <span>↗</span>
           </RoughButton>

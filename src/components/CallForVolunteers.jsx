@@ -220,7 +220,7 @@ export default function CallForVolunteers() {
             glow="rgba(212,175,55,0.30)"
             shimmer
             seed={37}
-            className="px-8 py-3 text-[12px]"
+            className="px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.35em]"
           >
             <span>SIGN THE SCROLL</span>
             <span>↗</span>
@@ -232,7 +232,7 @@ export default function CallForVolunteers() {
             color="#C5C6C7"
             fill={false}
             seed={41}
-            className="px-8 py-3 text-[12px]"
+            className="px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.35em]"
           >
             ← BACK TO THE HALL
           </RoughButton>
