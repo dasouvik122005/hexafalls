@@ -14,7 +14,7 @@ export async function generateMetadata({ params }) {
   if (!event) return { title: "Prizes · HexaFalls Techfest" };
   return {
     title: `${event.name} · Prizes · HexaFalls Techfest`,
-    description: `Prize pool and tiers for ${event.name} — coming soon.`,
+    description: `Prize pool and tiers for ${event.name}. Coming soon at HexaFalls.`,
   };
 }
 

@@ -34,8 +34,8 @@ export default async function EventPage({ params }) {
         accent={event.name.replace(/^The\s+/i, "")}
         lede={
           isHackathon
-            ? `${event.blurb} The full brief — rules, schedule, judging — is yet to come. Registrations are open on Devfolio.`
-            : `${event.blurb} The full brief — rules, schedule, judging — is being inked. Return soon, or peek at the prizes already.`
+            ? `${event.blurb} The full brief (rules, schedule, judging) is yet to come. Registrations are open on Devfolio.`
+            : `${event.blurb} The full brief is being inked: rules, schedule, judging. Return soon, or peek at the prizes already.`
         }
         whisper="“Every contest is a small spell, and every spell needs its rules.”"
         accentColor={event.color}

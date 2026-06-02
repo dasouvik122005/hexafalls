@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 export const metadata = {
   title: "FAQ · HexaFalls Techfest",
   description:
-    "Everything you need to know about HexaFalls — registration, teams, tracks, food, judging, and more. Break the seal to find your answer.",
+    "Frequently asked questions about HexaFalls: registration, teams, tracks, food, judging and more. Find your answer in one scroll.",
 };
 
 export default function FaqPage() {

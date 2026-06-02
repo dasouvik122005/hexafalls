@@ -5,7 +5,7 @@ import SponsorsHall from "@/components/SponsorsHall";
 export const metadata = {
   title: "Call for Sponsors · HexaFalls Techfest",
   description:
-    "Sponsors of HexaFalls — Devfolio joins as Gold, with more scrolls being inked.",
+    "Sponsor HexaFalls 2026. Devfolio joins as Gold with more sponsors being inked. Tiers, benefits and reach inside.",
 };
 
 export default function SponsorsPage() {

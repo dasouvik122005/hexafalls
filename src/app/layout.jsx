@@ -25,7 +25,7 @@ const body = Inter({
 const SITE_NAME = "HexaFalls Techfest";
 const SITE_TAGLINE = "A Wizarding Hackathon";
 const SITE_DESCRIPTION =
-  "HexaFalls techfest — a 58-hour wizarding hackathon at JIS University, summoned at the edge of the magical and the mundane. Pack your wand, sharpen your code.";
+  "HexaFalls is a 58-hour wizarding-themed hackathon at JIS University, Kolkata. Build, ship and conjure with hundreds of student wizards from across India. Pack your wand, sharpen your code.";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://hexafalls.org";
@@ -37,7 +37,7 @@ const OG_IMAGE = "/banners/og-banner.png";
 export const metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    default: `${SITE_NAME} · ${SITE_TAGLINE}`,
     template: `%s · ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
@@ -62,7 +62,7 @@ export const metadata = {
   openGraph: {
     type: "website",
     siteName: SITE_NAME,
-    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    title: `${SITE_NAME} · ${SITE_TAGLINE}`,
     description: SITE_DESCRIPTION,
     url: SITE_URL,
     locale: "en_IN",
@@ -71,13 +71,13 @@ export const metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: `${SITE_NAME} — ${SITE_TAGLINE}`,
+        alt: `${SITE_NAME} · ${SITE_TAGLINE}`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    title: `${SITE_NAME} · ${SITE_TAGLINE}`,
     description: SITE_DESCRIPTION,
     images: [OG_IMAGE],
     creator: "@hexafalls",

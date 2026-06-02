@@ -84,7 +84,7 @@ export const TEAMS = [
     slug: "evangelists",
     name: "Evangelists",
     rune: "✶",
-    blurb: "The voice of the order — outreach, partners, the world beyond the walls.",
+    blurb: "The voice of the order: outreach, partners and the world beyond the walls.",
     color: TEAM_COLOR,
     glow:  TEAM_GLOW,
     open:  true,
@@ -94,7 +94,7 @@ export const TEAMS = [
     slug: "core-team",
     name: "Core Team",
     rune: "❖",
-    blurb: "The architects on the floor — execution, ops, the spine of HexaFalls.",
+    blurb: "The architects on the floor: execution, ops and the spine of HexaFalls.",
     color: TEAM_COLOR,
     glow:  TEAM_GLOW,
     open:  true,
@@ -121,7 +121,7 @@ export const EVENTS = [
     slug: "hackathon",
     name: "The Hackathon",
     rune: "✦",
-    blurb: "Fifty-eight hours of pure spellwork — full-stack, AI, anything that ships.",
+    blurb: "Fifty-eight hours of pure spellwork: full-stack, AI, anything that ships.",
     color: "#D4AF37", // gold
     glow:  "rgba(212,175,55,0.35)",
   },
@@ -137,7 +137,7 @@ export const EVENTS = [
     slug: "gaming",
     name: "Gaming Arena",
     rune: "✶",
-    blurb: "Stadium of charms — controller in hand, glory on the line.",
+    blurb: "Stadium of charms. Controller in hand, glory on the line.",
     color: "#EF4444", // gryffindor red
     glow:  "rgba(239,68,68,0.40)",
   },
@@ -159,7 +159,7 @@ export const CALLS = [
     short: "Core Team",
     accent: "gold",
     open: true,
-    blurb: "Open now — shape every spell from the inner circle.",
+    blurb: "Open now. Shape every spell from the inner circle.",
   },
   {
     href: "/judges",
@@ -181,6 +181,6 @@ export const CALLS = [
     short: "Volunteers",
     accent: "gold",
     open: true,
-    blurb: "Open now — sign the scroll, join the order.",
+    blurb: "Open now. Sign the scroll, join the order.",
   },
 ];

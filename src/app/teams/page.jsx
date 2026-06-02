@@ -5,7 +5,7 @@ import Teams from "@/components/Teams";
 export const metadata = {
   title: "The Teams · HexaFalls Techfest",
   description:
-    "The four orders behind HexaFalls — organising team, evangelists, core team, and volunteers.",
+    "The four orders behind HexaFalls: organising team, evangelists, core team and volunteers. Apply to join the hall.",
 };
 
 export default function TeamsPage() {

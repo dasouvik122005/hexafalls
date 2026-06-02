@@ -11,7 +11,7 @@ import CodeOfConductBody from "@/components/CodeOfConductBody";
 export const metadata = {
   title: "Code of Conduct · HexaFalls Techfest",
   description:
-    "How we behave at HexaFalls — pledge, expected standards, scope, reporting, and enforcement.",
+    "Our code of conduct at HexaFalls: the pledge, expected standards, scope, reporting and enforcement.",
 };
 
 export const dynamic = "force-static";
