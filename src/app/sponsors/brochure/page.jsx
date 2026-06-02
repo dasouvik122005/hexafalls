@@ -8,7 +8,7 @@ import Sparkles from "@/components/Sparkles";
 import HeroVideoBg from "@/components/HeroVideoBg";
 
 // Drop your brochure PDF at this path under /public to make it live.
-const BROCHURE_PATH = "/brochures/hexafalls-sponsorship.pdf";
+const BROCHURE_PATH = "/brochures/brochure_sponsor.pdf";
 const BROCHURE_FILENAME = "hexafalls-sponsorship.pdf";
 // The brochure's marquee content (tiers, benefits) starts on page 9, so the
 // in-browser preview jumps there by default. Download / open-in-new-tab
