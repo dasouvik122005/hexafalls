@@ -8,6 +8,7 @@ import Sparkles from "./Sparkles";
 import RoughFrame from "./RoughFrame";
 import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
+import HeroVideoBg from "./HeroVideoBg";
 import { TEAMS } from "@/lib/routes";
 
 export default function Teams() {
@@ -89,72 +90,72 @@ export default function Teams() {
         carry the lanterns through the corridors. Pick the one that calls.
       </motion.p>
 
-      {/* Team cards — 2x2 like /events */}
-      <div className="mx-auto mt-16 grid max-w-5xl gap-6 sm:grid-cols-2">
+      {/* Team cards — compact single row on desktop (4 abreast), 2x2 on
+          phones. Each card is intentionally small: rune + name + status +
+          one tap target. The detail page carries the prose. */}
+      <div className="mx-auto mt-12 grid max-w-6xl gap-4 grid-cols-2 lg:grid-cols-4">
         {TEAMS.map((t, i) => (
           <motion.div
             key={t.slug}
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.05 }}
-            transition={{ duration: 0.4, delay: i * 0.03, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.35, delay: i * 0.03, ease: [0.22, 1, 0.36, 1] }}
             className="h-full"
           >
-            <RoughFrame
-              seed={71 + i * 11}
-              stroke={t.color}
-              mistColor={t.color}
-              strokeWidth={1.5}
-              roughness={1.6}
-              bowing={1.2}
-              padding={24}
-              className="h-full bg-slate-hp/30 backdrop-blur-sm"
-              inner="flex h-full flex-col gap-3"
+            <Link
+              href={`/teams/${t.slug}`}
+              className="group block h-full"
+              aria-label={`${t.name} — ${t.open ? "apply now" : "details"}`}
             >
-              <div className="flex items-center justify-between">
+              <RoughFrame
+                seed={71 + i * 11}
+                stroke={t.color}
+                mistColor={t.color}
+                strokeWidth={1.4}
+                roughness={1.5}
+                bowing={1.2}
+                padding={16}
+                className="h-full bg-slate-hp/30 backdrop-blur-sm transition group-hover:bg-slate-hp/40"
+                inner="flex h-full flex-col items-center text-center gap-2"
+              >
                 <span
-                  className="font-wizard text-3xl"
-                  style={{ color: t.color, textShadow: `0 0 14px ${t.glow}` }}
+                  className="font-wizard text-2xl"
+                  style={{ color: t.color, textShadow: `0 0 12px ${t.glow}` }}
                   aria-hidden="true"
                 >
                   {t.rune}
                 </span>
-                <span
-                  className="rounded-full border px-2 py-0.5 font-display text-[8px] uppercase tracking-[0.3em]"
-                  style={{
-                    borderColor: `${t.color}55`,
-                    color: `${t.color}cc`,
-                    backgroundColor: `${t.color}1a`,
-                  }}
+                <h2
+                  className="font-display tracking-tight text-base sm:text-lg leading-tight"
+                  style={{ color: t.color, textShadow: `0 0 14px ${t.glow}` }}
                 >
-                  {t.open ? "open" : "soon"}
-                </span>
-              </div>
-              <h2
-                className="font-display tracking-tight text-2xl leading-tight"
-                style={{ color: t.color, textShadow: `0 0 18px ${t.glow}` }}
-              >
-                {t.name}
-              </h2>
-              <p className="font-wizard text-silver-hp/65 text-sm leading-relaxed">
-                {t.blurb}
-              </p>
-
-              <div className="mt-auto pt-2">
-                <Link
-                  href={`/teams/${t.slug}`}
-                  className="group inline-flex items-center gap-1.5 rounded-full border px-4 py-2 font-display text-[11px] uppercase tracking-[0.3em] transition"
+                  {t.name}
+                </h2>
+                <span
+                  className="mt-auto inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-display text-[9px] uppercase tracking-[0.3em]"
                   style={{
                     borderColor: `${t.color}80`,
                     color: t.color,
                     backgroundColor: `${t.color}1a`,
                   }}
                 >
-                  {t.open ? "Apply now" : "Read more"}
-                  <span className="group-hover:translate-x-0.5 transition">→</span>
-                </Link>
-              </div>
-            </RoughFrame>
+                  {t.open && (
+                    <span className="relative flex h-1.5 w-1.5">
+                      <span
+                        className="absolute inline-flex h-full w-full rounded-full opacity-70 animate-ping"
+                        style={{ backgroundColor: t.color }}
+                      />
+                      <span
+                        className="relative inline-flex h-1.5 w-1.5 rounded-full"
+                        style={{ backgroundColor: t.color }}
+                      />
+                    </span>
+                  )}
+                  {t.open ? "Apply" : "Soon"}
+                </span>
+              </RoughFrame>
+            </Link>
           </motion.div>
         ))}
       </div>

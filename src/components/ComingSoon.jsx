@@ -86,18 +86,25 @@ export default function ComingSoon({
       </span>
     ));
 
+  // Closed-scroll label — written in a way that reads naturally regardless
+  // of which order it is (organising team, evangelists, etc.).
+  const soonLabel = "Council reveals soon";
+
   return (
     <section
       ref={sectionRef}
-      className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6 flex flex-col items-center justify-center"
+      className="relative isolate overflow-hidden min-h-screen pt-28 pb-24 px-6 flex flex-col items-center"
     >
-      <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars pointer-events-none" />
+      <HeroVideoBg />
       <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
       <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
-        <Sparkles count={24} />
+        <Sparkles count={18} />
       </div>
 
-      {/* Eyebrow */}
+      {/* ── Above-the-fold: eyebrow → headline → call-to-action ───────────
+          The CTA (apply or coming-soon indicator) is the focal point and
+          sits high on the page. The descriptive lede/whisper moves to the
+          bottom of the section so the action is what hits the eye first. */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -109,8 +116,7 @@ export default function ComingSoon({
         <RoughDivider width={48} height={20} color="#66FCF1" seed={5} />
       </motion.div>
 
-      {/* Headline — clamp() sizing so the title never floods phones,
-          softer themed glow so cyan headlines don't burn the retina. */}
+      {/* Headline */}
       <div className="text-center">
         <h1
           aria-label={`${title} ${accent}`}
@@ -127,38 +133,13 @@ export default function ComingSoon({
         </h1>
       </div>
 
-      {/* Lede in a rough frame */}
-      <div className="mx-auto mt-14 w-full max-w-2xl">
-        <RoughFrame
-          seed={37}
-          stroke={accentColor || "#66FCF1"}
-          mistColor={accentColor || "#66FCF1"}
-          strokeWidth={1.4}
-          roughness={1.5}
-          bowing={1.2}
-          padding={26}
-          className="w-full bg-slate-hp/30 backdrop-blur-sm"
-          inner="flex flex-col items-center text-center gap-4"
-        >
-          <p className="font-wizard text-silver-hp/80 text-base sm:text-lg leading-relaxed">
-            {lede}
-          </p>
-          <p className="font-wizard italic text-silver-hp/55 text-sm">
-            {whisper}
-          </p>
-        </RoughFrame>
-      </div>
-
-      {/* Apply CTA — when the scroll is open, it sits as the visual focal
-          point directly under the lede with hero-sized chrome and a small
-          "live now" badge above it. When closed, falls back to the muted
-          "coming soon" pill below the inscription pulse. */}
+      {/* Primary CTA block */}
       {isOpen && apply ? (
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.25 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
           className="mt-10 flex flex-col items-center gap-4"
         >
           <span
@@ -195,28 +176,19 @@ export default function ComingSoon({
             <span>{apply.label || "APPLY NOW"}</span>
             <span aria-hidden="true">↗</span>
           </RoughButton>
-          <RoughButton
-            as={Link}
-            href={backHref}
-            color="#C5C6C7"
-            fill={false}
-            seed={31}
-            className="px-5 py-2 text-[10px] tracking-[0.35em] opacity-75 hover:opacity-100 transition"
-          >
-            {backLabel}
-          </RoughButton>
         </motion.div>
       ) : (
-        <>
-          {/* Pulsing "owl in flight" indicator (closed scrolls only) */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.4 }}
-            className="mt-12 flex items-center gap-3 font-display text-[10px] uppercase tracking-[0.5em]"
-            style={themed ? { color: accentColor } : undefined}
-          >
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+          className="mt-10 flex flex-col items-center gap-3"
+          style={themed ? { color: accentColor } : undefined}
+        >
+          {/* Closed scrolls show ONLY a pulse + label — no disabled apply
+              pill — so the page reads as informational, not "almost open". */}
+          <span className="inline-flex items-center gap-3 font-display text-[11px] uppercase tracking-[0.5em]">
             <span className="relative flex h-2 w-2">
               <span
                 className="absolute inline-flex h-full w-full rounded-full opacity-60 animate-ping"
@@ -227,47 +199,44 @@ export default function ComingSoon({
                 style={{ backgroundColor: accentColor || "#D4AF37" }}
               />
             </span>
-            <span className={themed ? "" : "text-gold-hp/80"}>Inscription in progress</span>
-          </motion.div>
-
-          {/* Disabled "coming soon" pill + back link */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.5 }}
-            className="mt-10 flex flex-row flex-wrap items-center justify-center gap-4"
-          >
-            {apply && (
-              <RoughButton
-                color={accentColor || "#66FCF1"}
-                glow={accentGlow || "rgba(102,252,241,0.25)"}
-                shimmer
-                disabled
-                aria-disabled="true"
-                seed={29}
-                className="px-7 py-3 text-[12px] hp-pulse"
-              >
-                <span>{apply.label || "APPLY NOW"}</span>
-                <span className="text-[9px] tracking-[0.25em] px-2 py-0.5 rounded-full border border-gold-hp/60 bg-gold-hp/10 text-gold-hp hp-glow-gold">
-                  COMING SOON
-                </span>
-              </RoughButton>
-            )}
-
-            <RoughButton
-              as={Link}
-              href={backHref}
-              color="#C5C6C7"
-              fill={false}
-              seed={31}
-              className="px-7 py-3 text-[11px]"
-            >
-              {backLabel}
-            </RoughButton>
-          </motion.div>
-        </>
+            <span className={themed ? "" : "text-gold-hp/80"}>{soonLabel}</span>
+          </span>
+        </motion.div>
       )}
+
+      <RoughButton
+        as={Link}
+        href={backHref}
+        color="#C5C6C7"
+        fill={false}
+        seed={31}
+        className="mt-5 px-5 py-2 text-[10px] tracking-[0.35em] opacity-75 hover:opacity-100 transition"
+      >
+        {backLabel}
+      </RoughButton>
+
+      {/* ── Below-the-fold: writeup (lede + whisper) ───────────────────────
+          Pushed down so the apply / status pill is what hits first. */}
+      <div className="mx-auto mt-20 sm:mt-24 w-full max-w-2xl">
+        <RoughFrame
+          seed={37}
+          stroke={accentColor || "#66FCF1"}
+          mistColor={accentColor || "#66FCF1"}
+          strokeWidth={1.4}
+          roughness={1.5}
+          bowing={1.2}
+          padding={26}
+          className="w-full bg-slate-hp/30 backdrop-blur-sm"
+          inner="flex flex-col items-center text-center gap-4"
+        >
+          <p className="font-wizard text-silver-hp/80 text-base sm:text-lg leading-relaxed">
+            {lede}
+          </p>
+          <p className="font-wizard italic text-silver-hp/55 text-sm">
+            {whisper}
+          </p>
+        </RoughFrame>
+      </div>
     </section>
   );
 }
