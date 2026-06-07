@@ -84,7 +84,7 @@ export const TEAMS = [
     slug: "evangelists",
     name: "Evangelists",
     rune: "✶",
-    blurb: "The voice of the order: outreach, partners and the world beyond the walls.",
+    blurb: "The voice of the order — outreach, partners, the world beyond the walls.",
     color: TEAM_COLOR,
     glow:  TEAM_GLOW,
     open:  true,
@@ -94,11 +94,12 @@ export const TEAMS = [
     slug: "core-team",
     name: "Core Team",
     rune: "❖",
-    blurb: "The architects on the floor: execution, ops and the spine of HexaFalls.",
+    blurb: "The architects on the floor — execution, ops, the spine of HexaFalls.",
     color: TEAM_COLOR,
     glow:  TEAM_GLOW,
-    open:  true,
-    formUrl: "https://forms.gle/VrZB4PVeDMzMRscz5",
+    open:  false,
+    // Entries closed — applications received are now under review.
+    processing: true,
   },
   {
     slug: "volunteers",
@@ -107,7 +108,9 @@ export const TEAMS = [
     blurb: "Hands that steady the wand. Sign the scroll, join the order.",
     color: TEAM_COLOR,
     glow:  TEAM_GLOW,
-    open:  true,
+    open:  false,
+    // Entries closed — applications received are now under review.
+    processing: true,
   },
 ];
 
@@ -154,12 +157,12 @@ export const EVENTS = [
 // "Call for…" CTA buttons surfaced from the Hero (and reusable elsewhere).
 export const CALLS = [
   {
-    href: "/teams/core-team",
-    label: "Call for Core Team",
-    short: "Core Team",
+    href: "/teams/evangelists",
+    label: "Call for Evangelists",
+    short: "Evangelists",
     accent: "gold",
     open: true,
-    blurb: "Open now. Shape every spell from the inner circle.",
+    blurb: "Open now. Be the voice of the order beyond the walls.",
   },
   {
     href: "/judges",
@@ -173,14 +176,14 @@ export const CALLS = [
     label: "Call for Sponsors",
     short: "Sponsors",
     accent: "cyan",
-    blurb: "Stand beside the hall. Fuel the magic.",
+    open: true,
+    blurb: "Open now. Stand beside the hall. Fuel the magic.",
   },
   {
     href: "/teams/volunteers",
     label: "Call for Volunteers",
     short: "Volunteers",
     accent: "gold",
-    open: true,
-    blurb: "Open now. Sign the scroll, join the order.",
+    blurb: "Entries closed — names under review. Watch the timeline.",
   },
 ];

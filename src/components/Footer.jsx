@@ -13,16 +13,6 @@ const EMAIL    = "support@hexafalls.org";
 const GDG_LINK = "https://gdg.community.dev/gdg-on-campus-jis-university-kolkata-india/";
 const GITHUB_ORG = "https://github.com/hexafest";
 
-// GitHub usernames who built the site. Their avatars are pulled from the
-// public GitHub avatar endpoint (no API call, no auth). Add new entries
-// here as more people commit — they'll appear in the stack automatically.
-const CONTRIBUTORS = [
-  { name: "@Circuit-Overtime",      username: "Circuit-Overtime" },
-  { name: "@elixpoo",      username: "elixpoo" },
-  { name: "@ez-vivek",     username: "ez-vivek" },
-  { name: "@dasouvik122005", username: "dasouvik122005" },
-];
-
 const SOCIALS = [
   {
     name: "LinkedIn",
@@ -50,6 +40,15 @@ const SOCIALS = [
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-4 w-4">
         <path d="M18.244 2H21.5l-7.5 8.57L23 22h-6.79l-5.32-6.96L4.8 22H1.54l8.02-9.16L1 2h6.96l4.81 6.36L18.244 2zm-1.19 18h1.88L7.04 4h-2L17.054 20z"/>
+      </svg>
+    ),
+  },
+  {
+    name: "Discord",
+    href: "https://discord.gg/U73N82FeNP",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-4 w-4">
+        <path d="M20.317 4.369A19.79 19.79 0 0 0 16.21 3.05a.07.07 0 0 0-.073.035c-.21.375-.444.864-.608 1.249a18.27 18.27 0 0 0-5.487 0 12.55 12.55 0 0 0-.617-1.25.072.072 0 0 0-.073-.034 19.74 19.74 0 0 0-4.107 1.32.066.066 0 0 0-.03.027C2.05 8.247 1.39 12.005 1.7 15.73a.082.082 0 0 0 .031.056 19.91 19.91 0 0 0 5.993 3.027.073.073 0 0 0 .079-.026 14.2 14.2 0 0 0 1.227-1.994.07.07 0 0 0-.038-.098 13.1 13.1 0 0 1-1.872-.892.07.07 0 0 1-.007-.117c.126-.094.252-.192.371-.291a.07.07 0 0 1 .074-.01c3.927 1.793 8.18 1.793 12.062 0a.07.07 0 0 1 .074.009c.12.099.246.198.372.292a.07.07 0 0 1-.006.117 12.3 12.3 0 0 1-1.873.892.07.07 0 0 0-.038.099 15.92 15.92 0 0 0 1.226 1.993.07.07 0 0 0 .079.027 19.84 19.84 0 0 0 6.002-3.027.07.07 0 0 0 .03-.055c.5-4.318-.838-8.043-3.549-11.336a.056.056 0 0 0-.028-.027zM8.02 13.46c-1.182 0-2.156-1.085-2.156-2.418 0-1.333.955-2.418 2.156-2.418 1.21 0 2.176 1.094 2.156 2.418 0 1.333-.955 2.418-2.156 2.418zm7.974 0c-1.182 0-2.157-1.085-2.157-2.418 0-1.333.955-2.418 2.157-2.418 1.21 0 2.175 1.094 2.156 2.418 0 1.333-.946 2.418-2.156 2.418z"/>
       </svg>
     ),
   },
@@ -265,43 +264,18 @@ export default function Footer() {
         <div className="mx-auto max-w-7xl px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] uppercase tracking-[0.3em] text-silver-hp/40 font-display">
           <span>© {new Date().getFullYear()} Hexafalls</span>
 
-          {/* Contributors — overlapping circular GitHub avatars next to a
-              link to the open-source org. Avatars come straight from
-              github.com/<user>.png (auto-redirects to their CDN, cacheable),
-              so no API call is needed at build/runtime. */}
+          {/* Backlink to the socials hub */}
           <a
-            href={GITHUB_ORG}
+            href="https://socials.hexafalls.org"
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center gap-3 rounded-full border border-silver-hp/15 bg-slate-hp/40 px-3 py-1.5 hover:border-cyan-hp/50 hover:text-cyan-hp transition"
-            aria-label="HexaFalls on GitHub — open source"
-            title="HexaFalls on GitHub"
+            className="inline-flex items-center gap-2 rounded-full border border-cyan-hp/30 bg-cyan-hp/5 px-4 py-1.5 text-cyan-hp/85 hover:border-cyan-hp/60 hover:bg-cyan-hp/10 hover:text-cyan-hp hover:shadow-[0_0_18px_rgba(102,252,241,0.25)] transition"
+            aria-label="All HexaFalls links — socials.hexafalls.org"
+            title="socials.hexafalls.org"
           >
-            <span className="text-silver-hp/60 group-hover:text-cyan-hp transition normal-case tracking-[0.25em] text-[10px]">
-              built by
-            </span>
-            <span className="flex -space-x-2">
-              {CONTRIBUTORS.map((c) => (
-                <img
-                  key={c.username}
-                  src={`https://github.com/${c.username}.png?size=80`}
-                  alt={c.name}
-                  width="24"
-                  height="24"
-                  loading="lazy"
-                  decoding="async"
-                  className="inline-block h-6 w-6 rounded-full border-2 border-midnight bg-slate-hp object-cover"
-                />
-              ))}
-            </span>
-            <svg
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              aria-hidden="true"
-              className="h-3.5 w-3.5 opacity-70 group-hover:opacity-100 transition"
-            >
-              <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.05c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.27-1.69-1.27-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.74.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.21-1.49 3.18-1.18 3.18-1.18.63 1.58.23 2.75.11 3.04.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.41.35.78 1.05.78 2.11v3.13c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/>
-            </svg>
+            all our links
+            <span className="normal-case tracking-normal text-silver-hp/55">socials.hexafalls.org</span>
+            <span aria-hidden="true">↗</span>
           </a>
         </div>
       </div>

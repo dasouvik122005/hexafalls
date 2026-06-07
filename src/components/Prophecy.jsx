@@ -8,7 +8,6 @@ import Sparkles from "./Sparkles";
 import RoughFrame from "./RoughFrame";
 import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
-import HeroVideoBg from "./HeroVideoBg";
 import RoughStar from "./RoughStar";
 
 const PILLARS = [
@@ -57,26 +56,48 @@ export default function Prophecy() {
     return () => ctx.revert();
   }, []);
 
-  const splitLetters = (text) =>
-    [...text].map((ch, i) => (
-      <span
-        key={i}
-        className="pr-letter inline-block"
-        style={{ whiteSpace: ch === " " ? "pre" : "normal" }}
-      >
-        {ch}
-      </span>
-    ));
+  const splitLetters = (text) => {
+    // Split on whitespace runs but keep the spaces as their own
+    // tokens so we can preserve word spacing.
+    const parts = text.split(/(\s+)/);
+    return parts.map((part, wi) => {
+      if (/^\s+$/.test(part)) {
+        return (
+          <span key={`w${wi}`} style={{ whiteSpace: "pre" }}>
+            {part}
+          </span>
+        );
+      }
+      // Each word is an atomic inline-block (nowrap), so the
+      // browser will only ever line-break BETWEEN words.
+      return (
+        <span
+          key={`w${wi}`}
+          className="inline-block"
+          style={{ whiteSpace: "nowrap" }}
+        >
+          {[...part].map((ch, ci) => (
+            <span
+              key={`${wi}-${ci}`}
+              className="pr-letter inline-block"
+            >
+              {ch}
+            </span>
+          ))}
+        </span>
+      );
+    });
+  };
 
   return (
     <section
       ref={sectionRef}
       className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6"
     >
-      <HeroVideoBg />
+      <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars pointer-events-none" />
       <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
       <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
-        <Sparkles count={18} />
+        <Sparkles count={24} />
       </div>
 
       {/* Eyebrow */}
@@ -111,10 +132,9 @@ export default function Prophecy() {
         className="mx-auto mt-12 max-w-3xl text-center"
       >
         <p className="font-wizard text-silver-hp/80 text-base sm:text-lg leading-relaxed">
-          When the moon hangs low above Agarpara and the owls grow restless, six
-          falls of light shall meet — code, chaos, conjuring, courage, craft and
-          curiosity. For fifty-eight hours the veil thins, and what is built
-          there will travel far beyond the hall.
+          We are planning a fifty-eight-hour techfest alongside our peers —
+          powered by GDG on Campus · JIS University, with the university itself
+          as our venue. The owls take wing this July.
         </p>
         <p className="mt-4 font-wizard italic text-silver-hp/55 text-sm">
           — fragment, anonymous, Hall of Records, JIS University
@@ -300,9 +320,6 @@ export default function Prophecy() {
         transition={{ duration: 1 }}
         className="mt-24 flex flex-col items-center gap-6"
       >
-        <span className="font-wizard italic text-silver-hp/60 text-sm text-center max-w-xl">
-          “The hall remembers every wand that was raised within it. Raise yours.”
-        </span>
 
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <RoughButton

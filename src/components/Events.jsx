@@ -8,7 +8,6 @@ import Sparkles from "./Sparkles";
 import RoughFrame from "./RoughFrame";
 import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
-import HeroVideoBg from "./HeroVideoBg";
 import { EVENTS } from "@/lib/routes";
 
 export default function Events() {
@@ -34,38 +33,49 @@ export default function Events() {
     return () => ctx.revert();
   }, []);
 
-  const splitLetters = (text) =>
-    [...text].map((ch, i) => (
-      <span
-        key={i}
-        className="ev-letter inline-block"
-        style={{ whiteSpace: ch === " " ? "pre" : "normal" }}
-      >
-        {ch}
-      </span>
-    ));
+  const splitLetters = (text) => {
+    // Split on whitespace runs but keep the spaces as their own
+    // tokens so we can preserve word spacing.
+    const parts = text.split(/(\s+)/);
+    return parts.map((part, wi) => {
+      if (/^\s+$/.test(part)) {
+        return (
+          <span key={`w${wi}`} style={{ whiteSpace: "pre" }}>
+            {part}
+          </span>
+        );
+      }
+      // Each word is an atomic inline-block (nowrap), so the
+      // browser will only ever line-break BETWEEN words.
+      return (
+        <span
+          key={`w${wi}`}
+          className="inline-block"
+          style={{ whiteSpace: "nowrap" }}
+        >
+          {[...part].map((ch, ci) => (
+            <span
+              key={`${wi}-${ci}`}
+              className="ev-letter inline-block"
+            >
+              {ch}
+            </span>
+          ))}
+        </span>
+      );
+    });
+  };
 
   return (
     <section
       ref={sectionRef}
       className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6"
     >
-      <HeroVideoBg />
+      <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars pointer-events-none" />
       <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
       <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
-        <Sparkles count={18} />
+        <Sparkles count={24} />
       </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="mx-auto mb-6 flex max-w-3xl items-center justify-center gap-3 text-[11px] uppercase tracking-[0.5em] text-cyan-hp/70 font-display"
-      >
-        <RoughDivider width={48} height={20} color="#66FCF1" seed={3} />
-        Tracks of the techfest
-        <RoughDivider width={48} height={20} color="#66FCF1" seed={5} />
-      </motion.div>
 
       <div className="text-center">
         <h1
@@ -76,17 +86,6 @@ export default function Events() {
           {splitLetters("The")}<span style={{whiteSpace: "pre"}}> </span><span className="text-gold-hp hp-glow-gold text-[14vw] sm:text-[9vw] md:text-[7vw]">{splitLetters("Events")}</span>
         </h1>
       </div>
-
-      <motion.p
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.05 }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="mx-auto mt-10 max-w-2xl text-center font-wizard text-silver-hp/85 text-base sm:text-lg leading-relaxed"
-      >
-        Five tracks. One night that breaks into fifty-eight hours. Each has its
-        own scrolls, its own duels, and its own gold to be won.
-      </motion.p>
 
       {/* coming-soon ribbon */}
       <motion.div

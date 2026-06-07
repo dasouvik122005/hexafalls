@@ -14,9 +14,6 @@ import RoughTape from "./RoughTape";
 import { CALLS } from "@/lib/routes";
 import MysticalTicker from "./MysticalTicker";
 
-// ── Scroll card accent colours keyed to each call ──────────────────────────
-// Gradients lightened (~+40% L on each stop) so cards stand out against the
-// blurred parchment scrim behind them. Borders + glows raised in opacity too.
 const SCROLL_THEMES = {
   0: {
     bg: "linear-gradient(160deg, #2f6b4c 0%, #1a4329 60%, #133523 100%)",
@@ -119,7 +116,6 @@ function ScrollRoller({ position = "top", color }) {
 export default function Hero() {
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
-  const subRef = useRef(null);
   const stripRef = useRef(null);
   const cursorRef = useRef(null);
 
@@ -139,7 +135,7 @@ export default function Hero() {
     ).matches;
     const ctx = gsap.context(() => {
       if (reduce) {
-        gsap.set([".hp-letter", subRef.current, stripRef.current], {
+        gsap.set([".hp-letter", stripRef.current], {
           opacity: 1,
           y: 0,
         });
@@ -154,13 +150,6 @@ export default function Hero() {
         ease: "power3.out",
         stagger: { each: 0.045, from: "start" },
         delay: 0.2,
-      });
-      gsap.from(subRef.current, {
-        opacity: 0,
-        y: 20,
-        duration: 0.45,
-        delay: 0.25,
-        ease: "power2.out",
       });
       gsap.from(stripRef.current, {
         opacity: 0,
@@ -262,16 +251,38 @@ export default function Hero() {
     };
   }, []);
 
-  const splitLetters = (text) =>
-    [...text].map((ch, i) => (
-      <span
-        key={i}
-        className="hp-letter inline-block"
-        style={{ whiteSpace: ch === " " ? "pre" : "normal" }}
-      >
-        {ch}
-      </span>
-    ));
+  const splitLetters = (text) => {
+    // Split on whitespace runs but keep the spaces as their own
+    // tokens so we can preserve word spacing.
+    const parts = text.split(/(\s+)/);
+    return parts.map((part, wi) => {
+      if (/^\s+$/.test(part)) {
+        return (
+          <span key={`w${wi}`} style={{ whiteSpace: "pre" }}>
+            {part}
+          </span>
+        );
+      }
+      // Each word is an atomic inline-block (nowrap), so the
+      // browser will only ever line-break BETWEEN words.
+      return (
+        <span
+          key={`w${wi}`}
+          className="inline-block"
+          style={{ whiteSpace: "nowrap" }}
+        >
+          {[...part].map((ch, ci) => (
+            <span
+              key={`${wi}-${ci}`}
+              className="hp-letter inline-block"
+            >
+              {ch}
+            </span>
+          ))}
+        </span>
+      );
+    });
+  };
 
   return (
     <>
@@ -408,19 +419,23 @@ export default function Hero() {
           aria-label="Presented by"
         >
           {[
-            { id: "gdg", label: "", logo: "/logos/gdg_jisu.png" },
-            { id: "jisu", label: "", logo: "/logos/jisu.png" },
-            { id: "cse", label: "", logo: "/logos/cse_jisu.png" },
+            { id: "jisu", label: "", logo: "/logos/jisu.png", url: "https://www.jisuniversity.ac.in/" },
+            { id: "gdg", label: "", logo: "/logos/gdg_jisu.png", url: "https://gdg.community.dev/gdg-on-campus-jis-university-kolkata-india/" },
+            { id: "cse", label: "", logo: "/logos/cse_jisu.png", url: "https://www.jisuniversity.ac.in/faculty-of-engineering-and-technology.php" },
           ].map((l, i, arr) => (
-            <div key={l.id} className="flex items-center gap-3 group">
-              <div
+            <div key={l.id} className="flex items-center gap-3">
+              <a
+                href={l.url}
+                target="_blank"
+                rel="noopener noreferrer"
                 title={l.id.toUpperCase()}
-                className="relative h-10 w-10 sm:h-12 sm:w-12 shrink-0 overflow-hidden rounded-md border border-silver-hp/25 bg-slate-hp/50 backdrop-blur flex items-center justify-center group-hover:border-cyan-hp/60 transition"
+                aria-label={l.id.toUpperCase()}
+                className="group relative h-10 w-10 sm:h-12 sm:w-12 shrink-0 overflow-hidden rounded-md border border-silver-hp/25 bg-slate-hp/50 backdrop-blur flex items-center justify-center transition hover:border-cyan-hp/60 hover:shadow-[0_0_18px_rgba(102,252,241,0.25)]"
               >
                 <img
                   src={l.logo}
                   alt={l.id.toUpperCase()}
-                  className="block h-full w-full object-contain p-1.5 transition duration-300"
+                  className="block h-full w-full object-contain p-1.5 transition duration-300 group-hover:scale-105"
                   style={{
                     filter:
                       "brightness(1.05) contrast(1.05) saturate(0.85) drop-shadow(0 0 6px rgba(102,252,241,0.18))",
@@ -430,12 +445,14 @@ export default function Hero() {
                   aria-hidden="true"
                   className="pointer-events-none absolute inset-0 bg-cyan-hp/0 group-hover:bg-cyan-hp/10 transition mix-blend-screen"
                 />
-              </div>
-              <span className="text-[11px] sm:text-xs uppercase tracking-[0.3em] text-silver-hp/70 group-hover:text-silver-hp transition font-display">
-                {l.label}
-              </span>
+              </a>
+              {l.label && (
+                <span className="text-[11px] sm:text-xs uppercase tracking-[0.3em] text-silver-hp/70 transition font-display">
+                  {l.label}
+                </span>
+              )}
               {i < arr.length - 1 && (
-                <span className="text-silver-hp/20">·</span>
+                <span aria-hidden="true" className="text-silver-hp/20">·</span>
               )}
             </div>
           ))}
@@ -495,15 +512,6 @@ export default function Hero() {
               {splitLetters("Techfest")}
             </span>
           </h1>
-
-          <p
-            ref={subRef}
-            className="mt-8 max-w-2xl mx-auto text-base sm:text-lg font-wizard text-silver-hp/80"
-          >
-            Owls have been dispatched. Robes pressed, wands tuned. A 58-hour
-            gathering of code, chaos and conjuring at the edge of the magical
-            and the mundane.
-          </p>
         </motion.div>
 
         {/* CTAs */}
@@ -521,7 +529,7 @@ export default function Hero() {
             glow="rgba(212,175,55,0.30)"
             shimmer
             seed={7}
-            className="px-10 sm:px-14 py-4 sm:py-5 text-[14px] sm:text-[15px] tracking-[0.4em]"
+            className="px-8 py-3 text-[12px]"
           >
             REGISTER NOW <span>↗</span>
           </RoughButton>
@@ -531,7 +539,7 @@ export default function Hero() {
             color="#C9A84C"
             fill={false}
             seed={11}
-            className="px-10 sm:px-14 py-4 sm:py-5 text-[13px] sm:text-[14px] tracking-[0.4em] transition-all duration-200 active:scale-95"
+            className="px-8 py-3 text-[12px] tracking-[0.3em] transition-all duration-200 active:scale-95"
             style={{
               color: "#C9A84C",
               textShadow: "0 0 8px rgba(201,168,76,0.4)",
@@ -637,18 +645,6 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* ── Lede — short writeup explaining the scrolls ── */}
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            className="mx-auto mb-10 max-w-2xl text-center font-wizard text-silver-hp/70 text-sm sm:text-base leading-relaxed"
-          >
-            Four scrolls leave the keep on owl-wing — one for each order of
-            the night. Sign the one that finds your hand, and your name joins
-            the procession of HexaFalls.
-          </motion.p>
 
           {/* ── Scroll Cards Grid ──
               Each card is tilted slightly off-axis ("scattered on a desk"),

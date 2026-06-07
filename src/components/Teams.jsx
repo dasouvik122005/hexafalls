@@ -8,7 +8,6 @@ import Sparkles from "./Sparkles";
 import RoughFrame from "./RoughFrame";
 import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
-import HeroVideoBg from "./HeroVideoBg";
 import { TEAMS } from "@/lib/routes";
 
 export default function Teams() {
@@ -34,26 +33,48 @@ export default function Teams() {
     return () => ctx.revert();
   }, []);
 
-  const splitLetters = (text) =>
-    [...text].map((ch, i) => (
-      <span
-        key={i}
-        className="tm-letter inline-block"
-        style={{ whiteSpace: ch === " " ? "pre" : "normal" }}
-      >
-        {ch}
-      </span>
-    ));
+  const splitLetters = (text) => {
+    // Split on whitespace runs but keep the spaces as their own
+    // tokens so we can preserve word spacing.
+    const parts = text.split(/(\s+)/);
+    return parts.map((part, wi) => {
+      if (/^\s+$/.test(part)) {
+        return (
+          <span key={`w${wi}`} style={{ whiteSpace: "pre" }}>
+            {part}
+          </span>
+        );
+      }
+      // Each word is an atomic inline-block (nowrap), so the
+      // browser will only ever line-break BETWEEN words.
+      return (
+        <span
+          key={`w${wi}`}
+          className="inline-block"
+          style={{ whiteSpace: "nowrap" }}
+        >
+          {[...part].map((ch, ci) => (
+            <span
+              key={`${wi}-${ci}`}
+              className="tm-letter inline-block"
+            >
+              {ch}
+            </span>
+          ))}
+        </span>
+      );
+    });
+  };
 
   return (
     <section
       ref={sectionRef}
       className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6"
     >
-      <HeroVideoBg />
+      <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars pointer-events-none" />
       <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
       <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
-        <Sparkles count={18} />
+        <Sparkles count={24} />
       </div>
 
       <motion.div
@@ -76,17 +97,6 @@ export default function Teams() {
         </h1>
       </div>
 
-      <motion.p
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.05 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        className="mx-auto mt-10 max-w-2xl text-center font-wizard text-silver-hp/85 text-base sm:text-lg leading-relaxed"
-      >
-        Four orders make HexaFalls run. Some shape it from the high seats, some
-        carry the lanterns through the corridors. Pick the one that calls.
-      </motion.p>
-
       {/* Team cards — compact single row on desktop (4 abreast), 2x2 on
           phones. Each card is intentionally small: rune + name + status +
           one tap target. The detail page carries the prose. */}
@@ -97,7 +107,7 @@ export default function Teams() {
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.05 }}
-            transition={{ duration: 0.35, delay: i * 0.03, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.4, delay: i * 0.03, ease: [0.22, 1, 0.36, 1] }}
             className="h-full"
           >
             <Link

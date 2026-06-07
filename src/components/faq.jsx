@@ -330,18 +330,6 @@ export default function FAQ() {
         </h1>
       </div>
 
-      {/* ── Lede ────────────────────────────────────────────────────────── */}
-      <motion.p
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="mx-auto mt-8 mb-16 max-w-2xl text-center font-wizard text-silver-hp/85 text-base sm:text-lg leading-relaxed"
-      >
-        Break the seal on any scroll below to reveal its contents.
-        The Room only shows what you truly need to know.
-      </motion.p>
-
       {/* ── FAQ Scrolls ─────────────────────────────────────────────────── */}
       <div className="mx-auto max-w-3xl flex flex-col gap-4">
         {FAQS.map((faq, i) => (
@@ -363,10 +351,6 @@ export default function FAQ() {
         transition={{ duration: 0.6 }}
         className="mt-20 flex flex-col items-center gap-6"
       >
-        <span className="font-wizard italic text-silver-hp/55 text-sm text-center max-w-xl">
-          &ldquo;Some scrolls speak only when asked. If your question
-          isn&apos;t here, send an owl.&rdquo;
-        </span>
 
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <RoughButton
