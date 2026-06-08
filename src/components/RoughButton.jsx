@@ -76,12 +76,8 @@ export default function RoughButton({
           roughness,
           bowing,
           seed,
-          // 20% alpha hachure so the fill is a soft wash, strokes stay vivid
-          fill: fill ? `${color}33` : undefined,
-          fillStyle: "hachure",
-          fillWeight: 1.4,
-          hachureGap,
-          hachureAngle,
+          // No fill — stroke-only outline keeps the label crisp and legible.
+          fill: undefined,
         }
       );
       svgRef.current.appendChild(rect);
