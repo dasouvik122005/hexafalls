@@ -10,6 +10,9 @@ import RoughStar from "./RoughStar";
 export default function TopBar() {
   const [open, setOpen] = useState(false);
 
+  // Available routes first, "soon" ones last (stable within each group).
+  const nav = [...SITEMAP].sort((a, b) => (a.soon ? 1 : 0) - (b.soon ? 1 : 0));
+
   // Close on Escape
   useEffect(() => {
     if (!open) return;
@@ -75,7 +78,7 @@ export default function TopBar() {
           aria-label="Primary"
           className="hidden md:flex items-center gap-4 lg:gap-5"
         >
-          {SITEMAP.map((s) => (
+          {nav.map((s) => (
             <div key={s.href} className="relative group">
               <Link
                 href={s.href}
@@ -172,7 +175,7 @@ export default function TopBar() {
             >
               <nav aria-label="Mobile" className="mx-auto max-w-7xl px-5 py-4">
                 <ul className="flex flex-col gap-1.5">
-                  {SITEMAP.map((s, i) => (
+                  {nav.map((s, i) => (
                     <motion.li
                       key={s.href}
                       initial={{ opacity: 0, x: -10 }}

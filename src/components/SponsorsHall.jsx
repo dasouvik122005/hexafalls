@@ -21,6 +21,14 @@ const TIERS = [
         logo: "/sponsors/miro.png",
         logoAlt: "MIRO LOGO",
       },
+      {
+        name: "OWASP",
+        href: "https://owasp.org",
+        logo: "/sponsors/owasp.png",
+        logoAlt: "OWASP LOGO",
+        invert: true,
+        scale: 1.3,
+      },
     ],
   },
   {
@@ -31,6 +39,29 @@ const TIERS = [
         href: "https://devfolio.co",
         logo: "/sponsors/devfolio.png",
         logoAlt: "DEVFOLIO LOGO",
+      },
+      {
+        name: "GitHub",
+        href: "https://github.com",
+        logo: "/sponsors/github.png",
+        logoAlt: "GITHUB LOGO",
+      },
+      {
+        name: "Orkes",
+        href: "https://orkes.io",
+        logo: "/sponsors/orkes.png",
+        logoAlt: "ORKES LOGO",
+      },
+    ],
+  },
+  {
+    label: "Silver",
+    sponsors: [
+      {
+        name: "Elixpo",
+        href: "https://elixpo.com",
+        logo: "/sponsors/elixpo.jpeg",
+        logoAlt: "ELIXPO LOGO",
       },
     ],
   },
@@ -231,6 +262,10 @@ export default function SponsorsHall() {
                           loading={ti === 0 ? "eager" : "lazy"}
                           decoding="async"
                           className="max-h-full max-w-full object-contain"
+                          style={{
+                            filter: s.invert ? "invert(1)" : undefined,
+                            transform: s.scale ? `scale(${s.scale})` : undefined,
+                          }}
                         />
                         <RoughTape
                           color="#D4AF37"

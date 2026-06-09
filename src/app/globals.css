@@ -33,6 +33,22 @@ html, body {
   scroll-behavior: smooth;
 }
 
+/* ── Wand cursor ────────────────────────────────────────────────────────────
+   Default = an unlit wand; interactive elements = a lit wand. The trailing
+   keyword (auto / pointer) is the fallback if the PNG fails to load. Hotspot
+   set near the wand tip (top-left-ish). Coarse-pointer (touch) devices skip
+   custom cursors entirely. */
+@media (hover: hover) and (pointer: fine) {
+  html, body {
+    cursor: url('/cursor/wand_no_lit.png') 6 6, auto;
+  }
+  a, button, [role="button"], label, summary, select,
+  input[type="checkbox"], input[type="radio"], input[type="submit"],
+  input[type="button"], .cursor-pointer, [data-wand-lit] {
+    cursor: url('/cursor/wand_lit.png') 6 6, pointer;
+  }
+}
+
 /* Soft animated star/sparkle background — pure CSS, no JS cost */
 .hp-stars {
   background-image:
@@ -161,6 +177,27 @@ html, body {
 @keyframes hp-shimmer {
   0%   { transform: translateX(0); }
   100% { transform: translateX(500%); }
+}
+
+/* Seamless partner-logo marquee. The track holds two copies of the logo set;
+   translating it by -50% lands copy #2 exactly where copy #1 started, so the
+   loop is invisible. Pure transform → compositor-only. */
+@keyframes hp-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.hp-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: hp-marquee var(--hp-marquee-duration, 38s) linear infinite;
+}
+.hp-marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}
+.hp-marquee:hover .hp-marquee-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .hp-marquee-track { animation: none; }
 }
 
 /* Sparkle drift — pure CSS, compositor-only (transform + opacity).

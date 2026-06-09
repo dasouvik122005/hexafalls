@@ -7,12 +7,14 @@ import Link from "next/link";
 import Sparkles from "./Sparkles";
 import LocationMap from "./LocationMap";
 import RoughButton from "./RoughButton";
+import RoughFrame from "./RoughFrame";
 import RoughDivider from "./RoughDivider";
 import RoughStar from "./RoughStar";
 import RoughCorners from "./RoughCorners";
 import RoughTape from "./RoughTape";
 import { CALLS } from "@/lib/routes";
 import MysticalTicker from "./MysticalTicker";
+import PartnerMarquee from "./PartnerMarquee";
 
 const SCROLL_THEMES = {
   0: {
@@ -290,15 +292,6 @@ export default function Hero() {
         ref={sectionRef}
         className="relative isolate overflow-hidden h-screen flex flex-col items-center justify-start pt-32 pb-24 px-6"
       >
-        {/* ── Cinematic Background Video ──
-            - Cloudinary transforms: f_auto (h264/webm/av1 by browser),
-              q_auto (perceptual quality), w_1920 (cap width — most users
-              don't need 4K behind a darkened scrim).
-            - Poster: first-frame JPG from the same asset → instant first
-              paint while the video downloads.
-            - preload="metadata" lets the browser fetch the manifest only,
-              not the bytes, until the page is interactive.
-            - aria-hidden + tabIndex=-1: it's pure decoration. */}
         <video
           autoPlay
           muted
@@ -360,11 +353,19 @@ export default function Hero() {
           style={{ y: yMid }}
           className="absolute inset-0 -z-20 hp-scrim opacity-10"
         />
+        {/* Two sparkle layers — a deeper parallax wash plus a denser, brighter
+            foreground field so the hero never reads as dead space. */}
         <motion.div
           style={{ y: yMid }}
-          className="absolute inset-0 -z-10 opacity-60"
+          className="absolute inset-0 -z-10 opacity-70"
         >
-          <Sparkles count={16} />
+          <Sparkles count={44} />
+        </motion.div>
+        <motion.div
+          style={{ y: yStars }}
+          className="absolute inset-0 -z-10 opacity-50"
+        >
+          <Sparkles count={28} />
         </motion.div>
 
         <RoughStar
@@ -389,6 +390,28 @@ export default function Hero() {
           className="absolute bottom-32 left-12 opacity-60 hp-float"
           style={{ animationDuration: "10s", animationDelay: "2s" }}
         />
+        <RoughStar
+          size={16}
+          color="#66FCF1"
+          seed={91}
+          className="absolute top-1/3 right-1/4 opacity-50 hp-float"
+          style={{ animationDuration: "11s", animationDelay: "0.5s" }}
+        />
+        <RoughStar
+          size={22}
+          color="#A78BFA"
+          fill
+          seed={93}
+          className="absolute bottom-44 right-10 sm:right-24 opacity-55 hp-float"
+          style={{ animationDuration: "13s", animationDelay: "2.5s" }}
+        />
+        <RoughStar
+          size={14}
+          color="#D4AF37"
+          seed={95}
+          className="absolute top-1/2 left-1/4 opacity-50 hp-float"
+          style={{ animationDuration: "9s", animationDelay: "1s" }}
+        />
 
         <span
           aria-hidden="true"
@@ -406,9 +429,6 @@ export default function Hero() {
           </span>
         </span>
 
-        <div className="absolute top-24 left-1/2 -translate-x-1/2 opacity-60 pointer-events-none">
-          <RoughDivider width={140} height={20} color="#C5C6C7" seed={97} />
-        </div>
 
         {/* partner logos */}
         <motion.div
@@ -458,15 +478,6 @@ export default function Hero() {
           ))}
         </motion.div>
 
-        {/* tagline strip */}
-        <motion.div
-          ref={stripRef}
-          className="mb-6 flex items-center gap-3 text-[11px] sm:text-xs uppercase tracking-[0.5em] text-cyan-hp/70 font-display"
-        >
-          <RoughDivider width={48} height={20} color="#66FCF1" seed={3} />
-          A Wizarding Hackathon
-          <RoughDivider width={48} height={20} color="#66FCF1" seed={5} />
-        </motion.div>
 
         {/* HEADLINE */}
         <motion.div
@@ -512,6 +523,12 @@ export default function Hero() {
               {splitLetters("Techfest")}
             </span>
           </h1>
+
+          <p className="mx-auto mt-6 max-w-2xl text-center font-wizard text-silver-hp/75 text-sm sm:text-base leading-relaxed">
+            A 58-hour wizarding hackathon at JIS University, Kolkata — build,
+            ship and conjure across web, AI, hardware and games with hundreds of
+            student wizards this July.
+          </p>
         </motion.div>
 
         {/* CTAs */}
@@ -560,6 +577,31 @@ export default function Hero() {
           >
             THE PROPHECY
           </RoughButton>
+          <RoughButton
+            as="a"
+            href="https://discord.com/invite/FdgCkrmrG"
+            target="_blank"
+            rel="noopener noreferrer"
+            color="#A78BFA"
+            glow="rgba(167,139,250,0.30)"
+            seed={13}
+            className="px-8 py-3 text-[12px] tracking-[0.3em]"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-4 w-4">
+              <path d="M20.317 4.369A19.79 19.79 0 0 0 16.21 3.05a.07.07 0 0 0-.073.035c-.21.375-.444.864-.608 1.249a18.27 18.27 0 0 0-5.487 0 12.55 12.55 0 0 0-.617-1.25.072.072 0 0 0-.073-.034 19.74 19.74 0 0 0-4.107 1.32.066.066 0 0 0-.03.027C2.05 8.247 1.39 12.005 1.7 15.73a.082.082 0 0 0 .031.056 19.91 19.91 0 0 0 5.993 3.027.073.073 0 0 0 .079-.026 14.2 14.2 0 0 0 1.227-1.994.07.07 0 0 0-.038-.098 13.1 13.1 0 0 1-1.872-.892.07.07 0 0 1-.007-.117c.126-.094.252-.192.371-.291a.07.07 0 0 1 .074-.01c3.927 1.793 8.18 1.793 12.062 0a.07.07 0 0 1 .074.009c.12.099.246.198.372.292a.07.07 0 0 1-.006.117 12.3 12.3 0 0 1-1.873.892.07.07 0 0 0-.038.099 15.92 15.92 0 0 0 1.226 1.993.07.07 0 0 0 .079.027 19.84 19.84 0 0 0 6.002-3.027.07.07 0 0 0 .03-.055c.5-4.318-.838-8.043-3.549-11.336a.056.056 0 0 0-.028-.027zM8.02 13.46c-1.182 0-2.156-1.085-2.156-2.418 0-1.333.955-2.418 2.156-2.418 1.21 0 2.176 1.094 2.156 2.418 0 1.333-.955 2.418-2.156 2.418zm7.974 0c-1.182 0-2.157-1.085-2.157-2.418 0-1.333.955-2.418 2.157-2.418 1.21 0 2.175 1.094 2.156 2.418 0 1.333-.946 2.418-2.156 2.418z"/>
+            </svg>
+            JOIN OUR DISCORD <span>↗</span>
+          </RoughButton>
+        </motion.div>
+
+        {/* Sepia partner marquee — renders only when partners are listed */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.7 }}
+          className="mt-12 flex w-full flex-col items-center gap-3"
+        >
+          <PartnerMarquee />
         </motion.div>
       </section>
 
@@ -734,6 +776,17 @@ export default function Hero() {
                               >
                                 Open
                               </span>
+                            ) : c.closed ? (
+                              <span
+                                className="rounded-sm px-2 py-0.5 font-display text-[8px] uppercase tracking-[0.35em]"
+                                style={{
+                                  border: `1px solid rgba(197,198,199,0.4)`,
+                                  background: "rgba(197,198,199,0.08)",
+                                  color: "rgba(197,198,199,0.75)",
+                                }}
+                              >
+                                Closed
+                              </span>
                             ) : (
                               <span
                                 className="rounded-sm px-2 py-0.5 font-display text-[8px] uppercase tracking-[0.35em]"
@@ -788,7 +841,7 @@ export default function Hero() {
                               width: "fit-content",
                             }}
                           >
-                            {c.open ? "Apply now" : "Read more"}
+                            {c.open ? "Apply now" : c.closed ? "Watch timeline" : "Read more"}
                             <span className="transition-transform group-hover:translate-x-0.5">
                               →
                             </span>
@@ -899,6 +952,52 @@ export default function Hero() {
               ↗
             </span>
           </RoughButton>
+        </motion.div>
+
+        {/* ── Claim your house — teaser that routes to the Sorting at /house ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.45, ease: "easeOut" }}
+          className="mt-28 w-full max-w-3xl"
+        >
+          <RoughFrame
+            seed={131}
+            stroke="#D4AF37"
+            mistColor="#D4AF37"
+            strokeWidth={1.5}
+            roughness={1.6}
+            bowing={1.2}
+            padding={28}
+            className="w-full bg-slate-hp/30 backdrop-blur-sm"
+            inner="flex flex-col items-center text-center gap-4"
+          >
+            <span className="font-display text-[11px] uppercase tracking-[0.5em] text-gold-hp/80">
+              The Sorting
+            </span>
+            <h3
+              className="font-display font-black tracking-tight text-silver-hp hp-glow"
+              style={{ fontSize: "clamp(1.5rem, 4vw, 2.4rem)" }}
+            >
+              Claim your <span className="text-gold-hp hp-glow-gold">House</span>
+            </h3>
+            <p className="max-w-md font-wizard text-silver-hp/70 text-sm sm:text-base leading-relaxed">
+              The hat is waiting. Answer its questions, let it read your wand-hand,
+              and receive the crest you were always meant to carry.
+            </p>
+            <RoughButton
+              as={Link}
+              href="/house"
+              color="#D4AF37"
+              glow="rgba(212,175,55,0.30)"
+              shimmer
+              seed={133}
+              className="mt-1 px-9 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.4em]"
+            >
+              ENTER THE SORTING <span>↗</span>
+            </RoughButton>
+          </RoughFrame>
         </motion.div>
 
         {/* footnote */}
