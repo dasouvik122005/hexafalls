@@ -10,7 +10,6 @@
 export const PARTNERS = [
   { src: "/partners/owasp.png", alt: "OWASP", invert: false, scale: 1.3 },
   { src: "/partners/miro.png", alt: "Miro" },
-  { src: "/partners/elixpo.jpeg", alt: "Elixpo" },
   { src: "/partners/jis_university.png", alt: "JISU" },
   { src: "/partners/devfolio.png", alt: "devfolio" }
 ];
