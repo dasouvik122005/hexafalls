@@ -45,13 +45,7 @@ const TIERS = [
         href: "https://github.com",
         logo: "/sponsors/github.png",
         logoAlt: "GITHUB LOGO",
-      },
-      {
-        name: "Orkes",
-        href: "https://orkes.io",
-        logo: "/sponsors/orkes.png",
-        logoAlt: "ORKES LOGO",
-      },
+      }
     ],
   },
   {
