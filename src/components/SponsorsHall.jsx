@@ -55,17 +55,6 @@ const TIERS = [
     ],
   },
   {
-    label: "Silver",
-    sponsors: [
-      {
-        name: "Elixpo",
-        href: "https://elixpo.com",
-        logo: "/sponsors/elixpo.jpeg",
-        logoAlt: "ELIXPO LOGO",
-      },
-    ],
-  },
-  {
     label: "In Kind",
     sponsors: [
       {
