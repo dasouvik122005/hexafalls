@@ -46,11 +46,27 @@ export const REGISTRATION_EVENTS = {
   },
 };
 
-// Canonical URL for a team profile. Squad id is stored uppercase in the DB
-// (Crockford alphabet) — we lowercase it for URLs and re-uppercase on read.
-export function teamUrl(eventKey, squadId) {
-  const parent = REGISTRATION_EVENTS[eventKey]?.parentEvent ?? eventKey;
-  return `/events/${parent}/teams/${squadId.toLowerCase()}`;
+// Canonical URL for a team profile — root-level `/t/<slug>`. Squad id is
+// stored uppercase in the DB (Crockford alphabet); we lowercase it for URLs
+// and re-uppercase on read. (eventKey kept for signature compatibility.)
+export function teamUrl(_eventKey, squadId) {
+  return `/t/${squadId.toLowerCase()}`;
+}
+
+// Canonical URL for a public user profile — root-level `/u/<username>`.
+export function userUrl(username) {
+  return `/u/${username}`;
+}
+
+// Map an /events parent slug (+ optional mode) → the registration event key.
+// Hardware splits into two modes under the single /events/hardware page.
+export function registrationKeyFor(eventSlug, mode) {
+  if (eventSlug === "hardware") {
+    if (mode === "competition") return "hardware-competition";
+    if (mode === "exhibition") return "hardware-exhibition";
+    return null; // caller renders a mode chooser
+  }
+  return REGISTRATION_EVENTS[eventSlug] ? eventSlug : null;
 }
 
 export function isSquadEvent(eventKey) {
