@@ -133,7 +133,7 @@ function AlreadyInSquad({ href, eventLabel }) {
         Already signed on
       </h2>
       <RoughButton
-        as={Link}
+        as="link"
         href={href}
         color="#D4AF37"
         glow="rgba(212,175,55,0.40)"

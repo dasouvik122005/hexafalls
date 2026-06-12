@@ -7,7 +7,6 @@
 // renders two CTAs side by side.
 
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import TopBar from "@/components/TopBar";
 import Footer from "@/components/Footer";
 import HeroVideoBg from "@/components/HeroVideoBg";
@@ -139,7 +138,7 @@ export default async function EventPage({ params }) {
             p.primary ? (
               <RoughButton
                 key={p.href}
-                as={Link}
+                as="link"
                 href={p.href}
                 color={event.color}
                 glow={event.glow}
@@ -152,7 +151,7 @@ export default async function EventPage({ params }) {
             ) : (
               <RoughButton
                 key={p.href}
-                as={Link}
+                as="link"
                 href={p.href}
                 color={event.color}
                 fill={false}
@@ -168,7 +167,7 @@ export default async function EventPage({ params }) {
         {/* Quick links */}
         <div className="mt-10 flex flex-row flex-wrap items-center justify-center gap-3">
           <RoughButton
-            as={Link}
+            as="link"
             href={`/events/${event.slug}/prizes`}
             color="#C5C6C7"
             fill={false}
@@ -178,7 +177,7 @@ export default async function EventPage({ params }) {
             SEE THE PRIZES
           </RoughButton>
           <RoughButton
-            as={Link}
+            as="link"
             href="/events"
             color="#C5C6C7"
             fill={false}

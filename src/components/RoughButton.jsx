@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { loadRough } from "@/lib/loadRough";
 
 /**
@@ -16,7 +17,7 @@ import { loadRough } from "@/lib/loadRough";
  */
 export default function RoughButton({
   children,
-  as: Tag = "button",
+  as: asTag = "button",
   color = "#66FCF1",
   glow,
   fill = true,
@@ -92,9 +93,15 @@ export default function RoughButton({
     return () => { cancelled = true; };
   }, [size.w, size.h, color, fill, seed, roughness, bowing, strokeWidth, hachureGap, hachureAngle]);
 
+  // Resolve `as="link"` to Next's <Link> internally. This lets server
+  // components pass a string (not the Link function) across the client
+  // boundary — passing the function directly throws "Functions cannot be
+  // passed directly to Client Components".
+  const Tag = asTag === "link" ? Link : asTag;
+
   // `disabled` only valid on <button>; ignore on Link / <a>.
   const tagProps =
-    Tag === "button"
+    asTag === "button"
       ? { disabled: disabled || undefined, type: rest.type || "button" }
       : {};
 
