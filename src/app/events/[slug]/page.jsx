@@ -16,31 +16,31 @@ import RoughButton from "@/components/RoughButton";
 import RoughDivider from "@/components/RoughDivider";
 import { EVENTS } from "@/lib/routes";
 
-// Map an /events slug → one or more internal /register slugs.
+// Map an /events slug → one or more register CTAs (now events-scoped).
 // Each entry: { label, href, primary? } — only one entry is "primary"
 // (rendered as the big gold shimmer button).
 const REGISTRATION_PATHS = {
   hackathon: [
-    { label: "REGISTER · HACKATHON", href: "/register/hackathon", primary: true },
+    { label: "REGISTER · HACKATHON", href: "/events/hackathon/register", primary: true },
   ],
   hardware: [
-    { label: "EXHIBITION (TEAM)",  href: "/register/hardware-exhibition", primary: true },
-    { label: "COMPETITION (SOLO)", href: "/register/hardware-competition" },
+    { label: "COMPETITION (TEAM 2–5)", href: "/events/hardware/register?mode=competition", primary: true },
+    { label: "EXHIBITION (SCHOOL · SOLO)", href: "/events/hardware/register?mode=exhibition" },
   ],
   cp: [
-    { label: "REGISTER · COMPETITIVE PROGRAMMING", href: "/register/cp", primary: true },
+    { label: "REGISTER · COMPETITIVE PROGRAMMING", href: "/events/cp/register", primary: true },
   ],
   gaming: [
-    { label: "REGISTER · GAMING ARENA", href: "/register/gaming", primary: true },
+    { label: "REGISTER · GAMING ARENA", href: "/events/gaming/register", primary: true },
   ],
 };
 
 // One-line context strings — that's the entire writeup.
 const CONTEXT = {
   hackathon: "58 hours of pure spellwork. Squads of 2–4.",
-  hardware:  "Build the magic you can hold. Exhibit as a squad of 2–5, or duel solo.",
+  hardware:  "Build the magic you can hold. Compete as a team of 2–5, or exhibit solo (high-school).",
   cp:        "Duels of logic. Solo entry, fastest hand wins.",
-  gaming:    "Controller in hand, glory on the line. Solo entry.",
+  gaming:    "Controller in hand, glory on the line. Squads of 2–4.",
 };
 
 export function generateStaticParams() {

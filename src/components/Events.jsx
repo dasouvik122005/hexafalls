@@ -169,34 +169,30 @@ export default function Events() {
               </p>
 
               <div className="mt-auto flex flex-wrap gap-2 pt-2">
+                {/* Details — outline; full info + prizes live on the detail page */}
                 <Link
                   href={`/events/${e.slug}`}
-                  className="group inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] transition"
+                  className="group inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] transition hover:brightness-110"
                   style={{
-                    borderColor: `${e.color}80`,
-                    color: e.color,
-                    backgroundColor: `${e.color}1a`,
+                    borderColor: `${e.color}66`,
+                    color: `${e.color}cc`,
+                    backgroundColor: `${e.color}12`,
                   }}
                 >
                   Details
                   <span className="group-hover:translate-x-0.5 transition">→</span>
                 </Link>
+                {/* Register — filled accent, the primary action */}
                 <Link
-                  href={`/events/${e.slug}/prizes`}
-                  className="group inline-flex items-center gap-1.5 rounded-full border border-silver-hp/25 bg-slate-hp/40 px-3 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] text-silver-hp/85 transition"
+                  href={`/events/${e.slug}/register`}
+                  className="group inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] text-midnight transition hover:brightness-110"
                   style={{
-                    /* hover handled inline via CSS variables */
-                  }}
-                  onMouseEnter={(ev) => {
-                    ev.currentTarget.style.borderColor = `${e.color}aa`;
-                    ev.currentTarget.style.color = e.color;
-                  }}
-                  onMouseLeave={(ev) => {
-                    ev.currentTarget.style.borderColor = "";
-                    ev.currentTarget.style.color = "";
+                    borderColor: e.color,
+                    backgroundColor: e.color,
+                    boxShadow: `0 0 16px ${e.glow}`,
                   }}
                 >
-                  Prizes
+                  Register
                   <span className="group-hover:translate-x-0.5 transition">↗</span>
                 </Link>
               </div>
