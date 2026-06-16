@@ -24,6 +24,10 @@
   --font-display: var(--font-display);
   --font-wizard:  var(--font-wizard);
   --font-body:    var(--font-body);
+  --font-crimson: var(--font-crimson);
+  --font-cormorant: var(--font-cormorant);
+  --font-belina:   var(--font-belina);
+  --font-montserrat: var(--font-montserrat);
 }
 
 html, body {

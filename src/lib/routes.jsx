@@ -18,6 +18,18 @@ export const SITEMAP = [
     ),
   },
   {
+    href: "/brand", label: "Brand Kit",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.7255 3.09032 17.1962 4.85857 19C5.34211 19.5 5.58388 19.75 5.58388 20.0882C5.58388 20.4265 5.25055 20.5 4.58388 20.5C3.5 20.5 3 21 3 21.5C3 21.7761 3.22386 22 3.5 22H12Z" />
+        <circle cx="7.5" cy="10.5" r="1" fill="currentColor" />
+        <circle cx="11.5" cy="7.5" r="1" fill="currentColor" />
+        <circle cx="16.5" cy="9.5" r="1" fill="currentColor" />
+        <circle cx="15.5" cy="14.5" r="1" fill="currentColor" />
+      </svg>
+    ),
+  },
+  {
     href: "/sponsors", label: "Sponsors",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
