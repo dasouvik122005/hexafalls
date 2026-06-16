@@ -11,6 +11,8 @@ import RoughDivider from "./RoughDivider";
 import RoughStar from "./RoughStar";
 import RoughTape from "./RoughTape";
 
+const BROCHURE_PDF = "/brochures/HexaFalls_2_Brochure.pdf";
+
 const TIERS = [
   {
     label: "Collaborative Partner",
@@ -24,10 +26,8 @@ const TIERS = [
       {
         name: "OWASP",
         href: "https://owasp.org",
-        logo: "/sponsors/owasp.png",
+        logo: "/sponsors/owasp-jisu.png",
         logoAlt: "OWASP LOGO",
-        invert: true,
-        scale: 1.3,
       },
     ],
   },
@@ -49,6 +49,23 @@ const TIERS = [
     ],
   },
   {
+    label: "Silver",
+    sponsors: [
+      {
+        name: "Corsair",
+        href: "https://corsair.dev/",
+        logo: "/sponsors/corsair.png",
+        logoAlt: "CORSAIR LOGO",
+      },
+      {
+        name: "SuperPlane",
+        href: "https://superplane.com/",
+        logo: "/sponsors/superplane.png",
+        logoAlt: "SUPERPLANE LOGO",
+      }
+    ],
+  },
+  {
     label: "In Kind",
     sponsors: [
       {
@@ -62,6 +79,12 @@ const TIERS = [
         href: "https://n8n.io",
         logo: "/sponsors/n8n.png",
         logoAlt: "N8N LOGO",
+      },
+      {
+        name: "mastra",
+        href: "https://mastra.ai/",
+        logo: "/sponsors/mastra.png",
+        logoAlt: "MASTRA LOGO",
       },
     ],
   },
@@ -190,14 +213,15 @@ export default function SponsorsHall() {
           return (
             <div key={tier.label}>
               {/* Bold tier header */}
-              <div className="flex items-center justify-center gap-5 mb-8">
+              <div className="mb-8 flex flex-col items-center justify-center gap-2 sm:flex-row sm:gap-5">
                 <RoughDivider
                   width={120}
                   height={24}
                   color="#D4AF37"
                   seed={11 + ti * 4}
+                  className="hidden sm:inline-flex"
                 />
-                <span className="font-display font-black text-base sm:text-lg uppercase tracking-[0.55em] text-gold-hp hp-glow-gold whitespace-nowrap drop-shadow-[0_0_18px_rgba(212,175,55,0.45)]">
+                <span className="max-w-full text-center font-display font-black text-[clamp(0.72rem,3vw,1.125rem)] leading-none uppercase tracking-[0.18em] sm:tracking-[0.55em] text-gold-hp hp-glow-gold whitespace-nowrap drop-shadow-[0_0_18px_rgba(212,175,55,0.45)]">
                   {tier.label}
                 </span>
                 <RoughDivider
@@ -205,6 +229,7 @@ export default function SponsorsHall() {
                   height={24}
                   color="#D4AF37"
                   seed={13 + ti * 4}
+                  className="hidden sm:inline-flex"
                 />
               </div>
 
@@ -306,7 +331,9 @@ export default function SponsorsHall() {
       >
         <RoughButton
           as="a"
-          href="mailto:support@hexafalls.org"
+          href={BROCHURE_PDF}
+          target="_blank"
+          rel="noopener noreferrer"
           color="#D4AF37"
           glow="rgba(212,175,55,0.40)"
           shimmer
