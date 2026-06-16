@@ -1,6 +1,6 @@
 {
   "name": "hexafalls",
-  "version": "1.0.33",
+  "version": "1.0.34",
   "private": true,
   "description": "HexaFalls — a 58-hour wizarding-themed hackathon at JIS University, Kolkata. Next.js + Tailwind app deployed on Cloudflare via OpenNext.",
   "keywords": [
