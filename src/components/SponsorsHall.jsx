@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import gsap from "gsap";
@@ -92,6 +92,33 @@ const TIERS = [
 
 export default function SponsorsHall() {
   const sectionRef = useRef(null);
+  const [downloadStatus, setDownloadStatus] = useState("idle"); // 'idle' | 'downloading' | 'success' | 'error'
+
+  const handleDownload = async () => {
+    if (downloadStatus === "downloading") return;
+    setDownloadStatus("downloading");
+
+    try {
+      const response = await fetch("/brochures/brochure_sponsor.pdf");
+      if (!response.ok) throw new Error("Failed to fetch file");
+      
+      const blob = await response.blob();
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "hexafalls-sponsorship-brochure.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(link.href);
+      
+      setDownloadStatus("success");
+      setTimeout(() => setDownloadStatus("idle"), 2500);
+    } catch (err) {
+      console.error("Download failed:", err);
+      setDownloadStatus("error");
+      setTimeout(() => setDownloadStatus("idle"), 3000);
+    }
+  };
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -330,17 +357,30 @@ export default function SponsorsHall() {
         className="mx-auto mt-14 flex max-w-3xl flex-row flex-wrap items-center justify-center gap-4"
       >
         <RoughButton
-          as="a"
-          href={BROCHURE_PDF}
-          target="_blank"
-          rel="noopener noreferrer"
+          as="button"
+          onClick={handleDownload}
+          disabled={downloadStatus === "downloading"}
           color="#D4AF37"
           glow="rgba(212,175,55,0.40)"
-          shimmer
+          shimmer={downloadStatus === "idle"}
           seed={43}
-          className="px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.35em]"
+          className={`px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.35em] ${downloadStatus === "downloading" ? "opacity-75 cursor-wait" : ""}`}
         >
-          VIEW SPONSORSHIP BROCHURE <span>↗</span>
+          {downloadStatus === "downloading" ? (
+            <div className="flex items-center gap-3">
+              <svg className="animate-spin h-4 w-4 text-gold-hp" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+              </svg>
+              DOWNLOADING...
+            </div>
+          ) : downloadStatus === "success" ? (
+            "DOWNLOADED ✓"
+          ) : downloadStatus === "error" ? (
+            "FAILED ✕"
+          ) : (
+            <>DOWNLOAD SPONSORSHIP BROCHURE <span>↓</span></>
+          )}
         </RoughButton>
         <RoughButton
           as="a"
