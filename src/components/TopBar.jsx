@@ -125,7 +125,7 @@ export default function TopBar() {
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
           aria-controls="mobile-menu"
-          className="md:hidden relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-cyan-hp/40 bg-cyan-hp/10 text-cyan-hp hover:border-cyan-hp/70 hover:bg-cyan-hp/15 transition hp-glow"
+          className="md:hidden relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-cyan-hp/40 bg-cyan-hp/10 text-cyan-hp hover:border-cyan-hp/70 hover:bg-cyan-hp/15 transition hp-glow mr-14 sm:mr-16"
         >
           <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
           {/* animated bars */}
@@ -148,6 +148,21 @@ export default function TopBar() {
           </span>
         </button>
       </div>
+
+      <a
+        id="mlh-trust-badge"
+        href="https://mlh.io/na?utm_source=na-hackathon&utm_medium=TrustBadge&utm_campaign=2026-season&utm_content=yellow"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Major League Hacking 2026 Hackathon Season"
+        className="fixed right-3 top-0 z-100 block w-14 shrink-0 sm:right-4 sm:top-0 sm:w-16 md:w-20 md:right-6 lg:right-6 lg:top-0"
+      >
+        <img
+          src="https://logged-assets.s3.amazonaws.com/trust-badge/2027/mlh-trust-badge-2027-yellow.svg"
+          alt="Major League Hacking 2026 Hackathon Season"
+          className="block h-auto w-full"
+        />
+      </a>
 
       {/* Mobile menu */}
       <AnimatePresence>

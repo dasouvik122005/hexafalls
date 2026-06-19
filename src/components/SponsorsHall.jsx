@@ -32,6 +32,17 @@ const TIERS = [
     ],
   },
   {
+    label: "Title",
+    sponsors: [
+      {
+        name: "MLH",
+        href: "https://www.mlh.com/",
+        logo: "/sponsors/mlh.png",
+        logoAlt: "MLH LOGO",
+      },
+    ],
+  },
+  {
     label: "Gold",
     sponsors: [
       {

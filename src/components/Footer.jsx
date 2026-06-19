@@ -309,8 +309,16 @@ export default function Footer() {
 
       {/* Bottom strip */}
       <div className="relative border-t border-cyan-hp/10">
-        <div className="mx-auto max-w-7xl px-6 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] uppercase tracking-[0.3em] text-silver-hp/40 font-display">
+        <div className="mx-auto max-w-7xl px-6 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] uppercase tracking-[0.3em] text-silver-hp/40 font-display">
           <span>© {new Date().getFullYear()} Hexafalls</span>
+          <a
+            href="https://mlh.io/code-of-conduct"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-silver-hp/70 hover:text-white transition-colors duration-200"
+          >
+            MLH Code of Conduct
+          </a>
         </div>
       </div>
     </footer>
