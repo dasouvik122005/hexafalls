@@ -110,13 +110,13 @@ export default function SponsorsHall() {
     setDownloadStatus("downloading");
 
     try {
-      const response = await fetch("/brochures/brochure_sponsor.pdf");
+      const response = await fetch("/brochures/HexaFalls_2_Brochure.pdf");
       if (!response.ok) throw new Error("Failed to fetch file");
       
       const blob = await response.blob();
       const link = document.createElement("a");
       link.href = window.URL.createObjectURL(blob);
-      link.download = "hexafalls-sponsorship-brochure.pdf";
+      link.download = "HexaFalls_2_Brochure.pdf";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

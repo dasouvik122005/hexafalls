@@ -105,7 +105,7 @@ function PdfPageRenderer({ url, pageNum, onDocumentLoad }) {
 }
 
 // Brochure and doc paths
-const BROCHURE_PDF = "/brochures/brochure_sponsor.pdf";
+const BROCHURE_PDF = "/brochures/HexaFalls_2_Brochure.pdf";
 const GUIDE_PDF = "/brand/brand.pdf";
 const BRAND_ZIP = "/logos/main_logo.png"; // Fallback download target for brand kit
 

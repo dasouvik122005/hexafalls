@@ -10,13 +10,11 @@ import RoughTape from "./RoughTape";
 
 
 const EMAIL    = "support@hexafalls.org";
-const GDG_LINK = "https://gdg.community.dev/gdg-on-campus-jis-university-kolkata-india/";
 const GITHUB_ORG = "https://github.com/hexafest";
 const DISCORD_INVITE = "https://discord.com/invite/FdgCkrmrG";
 
 // Human points of contact — rendered as tap-to-call links.
 const CONTACTS = [
-  { name: "Ayushman Bhattacharya", role: "GDGoC Lead", tel: "+918617755083", display: "+91 86177 55083" },
   { name: "Abhishek Kumar Gupta",  role: "SPOC",       tel: "+919831710167", display: "+91 98317 10167" },
   { name: "Kritika Chakraborty",   role: "SPOC",       tel: "+917562047877", display: "+91 75620 47877" },
 ];
@@ -131,7 +129,7 @@ export default function Footer() {
           </span>
         </div>
         <p className="font-wizard text-sm text-silver-hp/60 max-w-md leading-relaxed">
-          A wizarding hackathon, conjured by GDG on Campus · JIS University.
+          A wizarding hackathon, Conjuring by JIS University.
         </p>
 
         {/* Socials */}
@@ -179,18 +177,9 @@ export default function Footer() {
           <div className="font-display text-[11px] uppercase tracking-[0.4em] text-cyan-hp/70">
             The Order
           </div>
-          <a
-            href={GDG_LINK}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hp-underline group inline-flex items-center gap-2 text-sm text-silver-hp/85 hover:text-cyan-hp transition"
-          >
-            GDG on Campus · JIS University
-            <span className="text-cyan-hp/70 group-hover:translate-x-0.5 transition">↗</span>
-          </a>
-          <span className="font-wizard text-[11px] text-silver-hp/40 italic">
-            join the chapter
-          </span>
+          <div className="hp-underline group inline-flex items-center gap-2 text-sm text-silver-hp/85 hover:text-cyan-hp transition cursor-default">
+            Dept. of CSE • JIS University
+          </div>
 
           <div className="mt-4 font-display text-[11px] uppercase tracking-[0.4em] text-cyan-hp/70">
             Send an Owl
