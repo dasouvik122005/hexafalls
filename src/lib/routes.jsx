@@ -30,7 +30,7 @@ export const SITEMAP = [
     ),
   },
   {
-    href: "/sponsors", label: "Sponsors",
+    href: "/sponsors", label: "Sponsors", red: true,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
         <path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10z" />

@@ -6,6 +6,7 @@
   --hx-cyan:     #66FCF1;
   --hx-silver:   #C5C6C7;
   --hx-gold:     #D4AF37;
+  --hx-red:      #EF4444;   /* gryffindor accent */
   --hx-violet:   #A78BFA;   /* third accent for fog / aurora */
 
   --background: var(--hx-midnight);
@@ -20,6 +21,7 @@
   --color-cyan-hp:    var(--hx-cyan);
   --color-silver-hp:  var(--hx-silver);
   --color-gold-hp:    var(--hx-gold);
+  --color-red-hp:     var(--hx-red);
 
   --font-display: var(--font-display);
   --font-wizard:  var(--font-wizard);
@@ -86,6 +88,12 @@ html, body {
     0 0 10px rgba(212, 175, 55, 0.70),
     0 0 28px rgba(212, 175, 55, 0.45),
     0 0 56px rgba(212, 175, 55, 0.20);
+}
+.hp-glow-red {
+  text-shadow:
+    0 0 10px rgba(239, 68, 68, 0.70),
+    0 0 28px rgba(239, 68, 68, 0.45),
+    0 0 56px rgba(239, 68, 68, 0.20);
 }
 
 /* Magical underline used on CTAs */

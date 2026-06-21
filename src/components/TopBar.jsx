@@ -84,7 +84,9 @@ export default function TopBar() {
                 href={s.href}
                 aria-label={s.label}
                 className={`relative inline-flex h-9 w-9 items-center justify-center rounded-full border transition ${
-                  s.soon
+                  s.red
+                    ? "border-red-hp/40 bg-red-hp/10 text-red-hp hover:bg-red-hp/15 hover:border-red-hp/70 hover:shadow-[0_0_18px_rgba(239,68,68,0.3)] hp-glow-red"
+                    : s.soon
                     ? "border-gold-hp/40 bg-gold-hp/10 text-gold-hp hover:bg-gold-hp/15 hover:border-gold-hp/70 hover:shadow-[0_0_18px_rgba(212,175,55,0.3)] hp-glow-gold"
                     : "border-cyan-hp/40 bg-cyan-hp/10 text-cyan-hp hover:bg-cyan-hp/15 hover:border-cyan-hp/70 hover:shadow-[0_0_18px_rgba(102,252,241,0.3)] hp-glow"
                 }`}
@@ -99,7 +101,9 @@ export default function TopBar() {
               >
                 <div
                   className={`relative whitespace-nowrap rounded-md border bg-midnight/95 backdrop-blur-sm px-2.5 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] shadow-[0_4px_24px_rgba(0,0,0,0.6)] ${
-                    s.soon
+                    s.red
+                      ? "border-red-hp/50 text-red-hp hp-glow-red"
+                      : s.soon
                       ? "border-gold-hp/50 text-gold-hp hp-glow-gold"
                       : "border-cyan-hp/50 text-cyan-hp hp-glow"
                   }`}
@@ -109,7 +113,7 @@ export default function TopBar() {
                   <span
                     aria-hidden="true"
                     className={`absolute -top-1 left-1/2 -translate-x-1/2 h-2 w-2 rotate-45 border-l border-t bg-midnight/95 ${
-                      s.soon ? "border-gold-hp/50" : "border-cyan-hp/50"
+                      s.red ? "border-red-hp/50" : s.soon ? "border-gold-hp/50" : "border-cyan-hp/50"
                     }`}
                   />
                 </div>
@@ -201,14 +205,16 @@ export default function TopBar() {
                         href={s.href}
                         onClick={() => setOpen(false)}
                         className={`group flex items-center gap-3 rounded-lg border px-3 py-3 transition ${
-                          s.soon
+                          s.red
+                            ? "border-red-hp/30 bg-red-hp/5 text-red-hp/90 hover:bg-red-hp/10 hover:border-red-hp/60"
+                            : s.soon
                             ? "border-gold-hp/30 bg-gold-hp/5 text-gold-hp/90 hover:bg-gold-hp/10 hover:border-gold-hp/60"
                             : "border-cyan-hp/30 bg-cyan-hp/5 text-cyan-hp hover:bg-cyan-hp/10 hover:border-cyan-hp/60"
                         }`}
                       >
                         <span
                           className={`relative inline-flex h-9 w-9 items-center justify-center rounded-full border ${
-                            s.soon ? "border-gold-hp/40" : "border-cyan-hp/40"
+                            s.red ? "border-red-hp/40" : s.soon ? "border-gold-hp/40" : "border-cyan-hp/40"
                           }`}
                         >
                           {s.icon}
@@ -221,7 +227,7 @@ export default function TopBar() {
                             soon
                           </span>
                         )}
-                        <span className={`${s.soon ? "text-gold-hp/60" : "text-cyan-hp/60"} group-hover:translate-x-0.5 transition`}>→</span>
+                        <span className={`${s.red ? "text-red-hp/60" : s.soon ? "text-gold-hp/60" : "text-cyan-hp/60"} group-hover:translate-x-0.5 transition`}>→</span>
                       </Link>
                     </motion.li>
                   ))}
