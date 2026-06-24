@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import TopBar from "@/components/TopBar";
 import Footer from "@/components/Footer";
 import ComingSoon from "@/components/ComingSoon";
+import HackathonDetails from "@/components/HackathonDetails";
+import HardwareDetails from "@/components/HardwareDetails";
 import { EVENTS } from "@/lib/routes";
 
 export function generateStaticParams() {
@@ -12,6 +14,20 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
   const event = EVENTS.find((e) => e.slug === slug);
   if (!event) return { title: "Event · HexaFalls Techfest" };
+  if (event.slug === "hackathon") {
+    return {
+      title: "Software Hackathon — Judging Rubric · HexaFalls Techfest",
+      description:
+        "58-hour software hackathon judging rubric, scoring criteria, hackathon tracks, bonus points, and submission requirements at HexaFalls.",
+    };
+  }
+  if (event.slug === "hardware") {
+    return {
+      title: "Hardware Hack — Tracks · HexaFalls Techfest",
+      description:
+        "Hardware hackathon tracks including Exhibition, Robo Sumo, Robo Soccer, Robo Terrence, and Line Follower at HexaFalls.",
+    };
+  }
   return {
     title: `${event.name} · HexaFalls Techfest`,
     description: `${event.blurb} Full brief and prizes coming soon.`,
@@ -24,39 +40,33 @@ export default async function EventPage({ params }) {
   if (!event) notFound();
 
   const isHackathon = event.slug === "hackathon";
+  const isHardware = event.slug === "hardware";
 
   return (
     <main className="flex-1">
       <TopBar />
-      <ComingSoon
-        eyebrow={`Track · ${event.name}`}
-        title="The"
-        accent={event.name.replace(/^The\s+/i, "")}
-        lede={
-          isHackathon
-            ? `${event.blurb} The full brief (rules, schedule, judging) is yet to come. Registrations are open on Devfolio.`
-            : `${event.blurb} The full brief is being inked: rules, schedule, judging. Return soon, or peek at the prizes already.`
-        }
-        whisper="“Every contest is a small spell, and every spell needs its rules.”"
-        accentColor={event.color}
-        accentGlow={event.glow}
-        apply={
-          isHackathon
-            ? {
-                open: true,
-                label: "REGISTER ON DEVFOLIO",
-                href: "https://hexafalls2.devfolio.co",
-                external: true,
-              }
-            : {
-                open: true,
-                label: "SEE THE PRIZES",
-                href: `/events/${event.slug}/prizes`,
-              }
-        }
-        backHref="/events"
-        backLabel="← ALL EVENTS"
-      />
+      {isHackathon ? (
+        <HackathonDetails />
+      ) : isHardware ? (
+        <HardwareDetails />
+      ) : (
+        <ComingSoon
+          eyebrow={`Track · ${event.name}`}
+          title="The"
+          accent={event.name.replace(/^The\s+/i, "")}
+          lede={`${event.blurb} The full brief is being inked: rules, schedule, judging. Return soon, or peek at the prizes already.`}
+          whisper={`"Every contest is a small spell, and every spell needs its rules."`}
+          accentColor={event.color}
+          accentGlow={event.glow}
+          apply={{
+            open: true,
+            label: "SEE THE PRIZES",
+            href: `/events/${event.slug}/prizes`,
+          }}
+          backHref="/events"
+          backLabel="← ALL EVENTS"
+        />
+      )}
       <Footer />
     </main>
   );
