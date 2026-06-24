@@ -12,9 +12,10 @@ import RoughFrame from "@/components/RoughFrame";
 import RegisterShell from "@/components/register/RegisterShell";
 import InviteLink from "@/components/register/InviteLink";
 import SubmitForReview from "@/components/register/SubmitForReview";
+import TeamSettings from "@/components/team/TeamSettings";
 import { getDB } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth/server";
-import { REGISTRATION_EVENTS, userUrl } from "@/lib/registration/events";
+import { REGISTRATION_EVENTS, userUrl, isPaidEvent } from "@/lib/registration/events";
 
 export const dynamic = "force-dynamic";
 
@@ -35,11 +36,16 @@ export async function generateMetadata({ params }) {
 }
 
 const STATUS_COLOR = {
-  forming:   "#66FCF1",
-  submitted: "#D4AF37",
-  approved:  "#4ade80",
-  rejected:  "#EF4444",
-  locked:    "#A78BFA",
+  // canonical machine: registered → under_review → fees_settled → approved
+  registered:   "#66FCF1",
+  under_review: "#D4AF37",
+  fees_settled: "#A78BFA",
+  approved:     "#4ade80",
+  rejected:     "#EF4444",
+  // legacy synonyms (back-compat with existing rows)
+  forming:      "#66FCF1",
+  submitted:    "#D4AF37",
+  locked:       "#A78BFA",
 };
 
 export default async function TeamProfilePage({ params }) {
@@ -51,7 +57,7 @@ export default async function TeamProfilePage({ params }) {
   const squad = await db
     .prepare(
       `SELECT id, event, name, tagline, description, leader_id,
-              invite_token, min_members, max_members, status,
+              invite_token, min_members, max_members, status, paid,
               submitted_at, reviewed_at, review_notes, created_at
          FROM squads WHERE id = ?`,
     )
@@ -75,10 +81,46 @@ export default async function TeamProfilePage({ params }) {
   const seatsLeft   = squad.max_members - memberRows.length;
   const isLeader    = me?.id === squad.leader_id;
   const cfg         = REGISTRATION_EVENTS[squad.event];
-  const canInvite   = squad.status === "forming" && seatsLeft > 0;
+  const paidEvent   = isPaidEvent(squad.event);
+
+  // Payment progress (paid events only): how many members have a 'paid' row.
+  let collected = 0;
+  if (paidEvent) {
+    const payRes = await db
+      .prepare(
+        `SELECT COUNT(*) AS n FROM payments
+          WHERE squad_id = ? AND status = 'paid'`,
+      )
+      .bind(squadId)
+      .first();
+    collected = payRes?.n ?? 0;
+  }
+  const totalMembers = memberRows.length;
+  const feesSettled  = squad.status === "fees_settled" || squad.paid === 1;
+
+  // Pending join requests (leader sees these in TeamSettings).
+  let pendingRequests = [];
+  if (isLeader) {
+    const reqRes = await db
+      .prepare(
+        `SELECT jr.id, jr.user_id, jr.message,
+                u.username, u.display_name, u.elixpo_id
+           FROM join_requests jr
+           JOIN users u ON u.id = jr.user_id
+          WHERE jr.squad_id = ? AND jr.status = 'pending'
+          ORDER BY jr.created_at`,
+      )
+      .bind(squadId)
+      .all();
+    pendingRequests = reqRes.results ?? [];
+  }
+  // Normalize legacy ↔ canonical status synonyms.
+  const isForming   = squad.status === "registered" || squad.status === "forming";
+  const isUnderRev  = squad.status === "under_review" || squad.status === "submitted";
+  const canInvite   = isForming && seatsLeft > 0;
   const canSubmit   =
     isLeader &&
-    (squad.status === "forming" || squad.status === "rejected") &&
+    (isForming || squad.status === "rejected") &&
     memberRows.length >= squad.min_members;
 
   return (
@@ -105,6 +147,15 @@ export default async function TeamProfilePage({ params }) {
             </p>
           )}
 
+          {/* Payment progress (paid events only) */}
+          {paidEvent && (
+            <PaymentProgress
+              collected={collected}
+              total={totalMembers}
+              feesSettled={feesSettled}
+            />
+          )}
+
           {/* Leader actions: invite + submit */}
           {isLeader && (
             <RoughFrame
@@ -122,7 +173,7 @@ export default async function TeamProfilePage({ params }) {
                   remainingSeats={seatsLeft}
                 />
               )}
-              {(squad.status === "forming" || squad.status === "rejected") && (
+              {(isForming || squad.status === "rejected") && (
                 <SubmitForReview
                   squadId={squad.id}
                   canSubmit={canSubmit}
@@ -133,9 +184,14 @@ export default async function TeamProfilePage({ params }) {
                   }
                 />
               )}
-              {squad.status === "submitted" && (
+              {isUnderRev && (
                 <p className="font-wizard italic text-silver-hp/75 text-sm">
                   Submitted for review. Admins will get back within 48 hours.
+                </p>
+              )}
+              {squad.status === "fees_settled" && (
+                <p className="font-wizard italic text-violet-300/85 text-sm">
+                  Fees settled — awaiting final approval.
                 </p>
               )}
               {squad.status === "approved" && (
@@ -145,6 +201,17 @@ export default async function TeamProfilePage({ params }) {
               )}
             </RoughFrame>
           )}
+
+          {/* Team settings — roster management, requests, invite (leader). */}
+          <TeamSettings
+            squadId={squad.id}
+            event={squad.event}
+            inviteToken={squad.invite_token}
+            isLeader={isLeader}
+            members={memberRows}
+            requests={pendingRequests}
+            maxMembers={squad.max_members}
+          />
 
           {/* Members */}
           <div>
@@ -202,6 +269,42 @@ export default async function TeamProfilePage({ params }) {
       </RegisterShell>
       <Footer />
     </main>
+  );
+}
+
+function PaymentProgress({ collected, total, feesSettled }) {
+  const safeTotal = Math.max(total, 1);
+  const pct = feesSettled ? 100 : Math.round((collected / safeTotal) * 100);
+  const rupees = (total * 10000) / 100; // members × ₹100 (paise → ₹)
+  const c = feesSettled ? "#4ade80" : "#D4AF37";
+  return (
+    <RoughFrame
+      seed={89}
+      stroke={feesSettled ? "#4ade80" : "#D4AF37"}
+      mistColor={feesSettled ? "#4ade80" : "#D4AF37"}
+      strokeWidth={1.3}
+      padding={18}
+      className="w-full bg-slate-hp/30 backdrop-blur-sm"
+      inner="flex flex-col gap-3"
+    >
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <span className="font-display text-[10px] uppercase tracking-[0.4em] text-gold-hp/80">
+          {feesSettled ? "Fees settled ✓" : "Entry fees"}
+        </span>
+        <span className="font-display text-[11px] tracking-[0.3em] text-silver-hp">
+          {feesSettled
+            ? `${total}/${total} members paid`
+            : `${collected}/${total} members paid`}
+          <span className="text-silver-hp/55"> · ₹{rupees}</span>
+        </span>
+      </div>
+      <div className="h-2 w-full overflow-hidden rounded-full bg-slate-hp/60">
+        <div
+          className="h-full rounded-full transition-all"
+          style={{ width: `${pct}%`, backgroundColor: c }}
+        />
+      </div>
+    </RoughFrame>
   );
 }
 

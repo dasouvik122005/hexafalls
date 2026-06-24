@@ -15,12 +15,14 @@ import RoughFrame from "@/components/RoughFrame";
 import RoughButton from "@/components/RoughButton";
 import RegisterShell from "@/components/register/RegisterShell";
 import SquadCreateForm from "@/components/register/SquadCreateForm";
+import SoloRegisterForm from "@/components/register/SoloRegisterForm";
 import GdgGate from "@/components/register/GdgGate";
 import { getSessionUser } from "@/lib/auth/server";
 import { EVENTS } from "@/lib/routes";
 import {
   REGISTRATION_EVENTS,
   isSquadEvent,
+  isSoloEvent,
   teamUrl,
   registrationKeyFor,
 } from "@/lib/registration/events";
@@ -80,6 +82,20 @@ export default async function EventRegisterPage({ params, searchParams }) {
     existingSquadId = row?.id ?? null;
   }
 
+  // If a solo event and the caller is already registered, show a short-circuit
+  // scroll instead of the form.
+  let existingSoloReg = false;
+  if (user && user.gdg_verified && isSoloEvent(regKey)) {
+    const row = await getDB()
+      .prepare(
+        `SELECT id FROM solo_registrations
+          WHERE user_id = ? AND event = ? LIMIT 1`,
+      )
+      .bind(user.id, regKey)
+      .first();
+    existingSoloReg = Boolean(row);
+  }
+
   return (
     <ShellWrap eyebrow={`Sign on · ${cfg.label}`} accent={cfg.label}>
       {!user && <SignInPanel returnTo={returnTo} />}
@@ -87,7 +103,10 @@ export default async function EventRegisterPage({ params, searchParams }) {
       {user && user.gdg_verified && existingSquadId && (
         <AlreadyInSquad href={teamUrl(regKey, existingSquadId)} />
       )}
-      {user && user.gdg_verified && !existingSquadId &&
+      {user && user.gdg_verified && existingSoloReg && (
+        <AlreadyRegisteredSolo href={`/u/${user.elixpo_id}`} />
+      )}
+      {user && user.gdg_verified && !existingSquadId && !existingSoloReg &&
         (isSquadEvent(regKey) ? (
           <SquadCreateForm
             event={regKey}
@@ -95,7 +114,12 @@ export default async function EventRegisterPage({ params, searchParams }) {
             hasUsername={Boolean(user.username)}
           />
         ) : (
-          <SoloStub eventLabel={cfg.label} backHref={`/events/${slug}`} />
+          <SoloRegisterForm
+            event={regKey}
+            eventLabel={cfg.label}
+            hasUsername={Boolean(user.username)}
+            backHref={`/events/${slug}`}
+          />
         ))}
     </ShellWrap>
   );
@@ -207,32 +231,30 @@ function AlreadyInSquad({ href }) {
   );
 }
 
-function SoloStub({ eventLabel, backHref }) {
+function AlreadyRegisteredSolo({ href }) {
   return (
     <RoughFrame
-      seed={41}
-      stroke="#66FCF1"
-      mistColor="#66FCF1"
+      seed={61}
+      stroke="#D4AF37"
+      mistColor="#D4AF37"
       padding={22}
       className="w-full bg-slate-hp/35 backdrop-blur-sm"
       inner="flex flex-col gap-4 items-center text-center"
     >
-      <span className="font-display tracking-[0.3em] uppercase text-[10px] text-gold-hp/80">
-        Solo · {eventLabel}
-      </span>
-      <h2 className="font-display tracking-tight text-xl text-silver-hp">
-        Form coming soon
+      <h2 className="font-display tracking-[0.3em] uppercase text-sm text-gold-hp hp-glow-gold">
+        Already registered
       </h2>
-      <p className="font-wizard text-silver-hp/75 text-base">
-        The solo registration form is being inked. You are signed in and
-        GDG-verified — you will register here when it opens.
-      </p>
-      <Link
-        href={backHref}
-        className="font-display text-[10px] uppercase tracking-[0.35em] text-cyan-hp/85 hover:text-cyan-hp underline underline-offset-4"
+      <RoughButton
+        as="link"
+        href={href}
+        color="#D4AF37"
+        glow="rgba(212,175,55,0.40)"
+        shimmer
+        seed={23}
+        className="px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.4em]"
       >
-        ← back to the event
-      </Link>
+        VIEW YOUR SCROLL ↗
+      </RoughButton>
     </RoughFrame>
   );
 }
