@@ -17,6 +17,7 @@ const DISCORD_INVITE = "https://discord.com/invite/FdgCkrmrG";
 const CONTACTS = [
   { name: "Abhishek Kumar Gupta",  role: "SPOC",       tel: "+919831710167", display: "+91 98317 10167" },
   { name: "Kritika Chakraborty",   role: "SPOC",       tel: "+917562047877", display: "+91 75620 47877" },
+  { name: "Ayushman Bhattacharya", role: "GDGoC JISU", tel: "+918617755083", display: "+91 86177 55083" },
 ];
 
 const SOCIALS = [

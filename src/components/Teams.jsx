@@ -101,7 +101,7 @@ export default function Teams() {
       {/* Team cards — compact single row on desktop (4 abreast), 2x2 on
           phones. Each card is intentionally small: rune + name + status +
           one tap target. The detail page carries the prose. */}
-      <div className="mx-auto mt-12 grid max-w-6xl gap-4 grid-cols-2 lg:grid-cols-4">
+      <div className="mx-auto mt-12 grid max-w-4xl gap-4 grid-cols-1 sm:grid-cols-3">
         {TEAMS.map((t, i) => (
           <motion.div
             key={t.slug}

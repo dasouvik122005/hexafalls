@@ -8,16 +8,9 @@ import RoughDivider from "./RoughDivider";
 import RoughCorners from "./RoughCorners";
 import RoughButton from "./RoughButton";
 
-// The people who run HexaFalls. Ayushman carries the GDGoC JISU lead
-// designation + a contact number.
+// The people who run HexaFalls.
 const ORGS = [
-  {
-    name: "Ayushman Bhattacharya",
-    img: "/people/orgs/ayushman.webp",
-    role: "GDGoC JISU",
-    phone: "+91 86177 55083",
-    tel: "+918617755083",
-  },
+  { name: "Ayushman Bhattacharya", img: "/people/orgs/ayushman.webp" },
   { name: "Sourav Singh", img: "/people/orgs/sourav.webp" },
   { name: "Amit Paul", img: "/people/orgs/amit.webp" },
   { name: "Kritika Chakraborty", img: "/people/orgs/kritika.webp" },
