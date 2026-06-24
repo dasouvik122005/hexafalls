@@ -106,15 +106,16 @@ export async function POST(req) {
   const origin = new URL(req.url).origin;
   const team = teamUrl(event, squadId);
 
+  // Amount is NOT sent to Pay — it resolves the price from our catalog (the
+  // buyer can't tamper with it). We keep `amount` locally only for our payments
+  // row + the team's progress bar.
   const session = await createCheckoutSession({
-    uid: user.id,
+    userId: user.id,
     event,
     squadId,
-    amount,
+    email: user.email,
     currency: CURRENCY,
     successUrl: `${origin}${team}?paid=1`,
-    cancelUrl: `${origin}${team}?paid=0`,
-    idempotencyKey,
   });
 
   if (session.error || !session.checkoutUrl) {

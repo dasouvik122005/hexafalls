@@ -18,11 +18,26 @@ import { env } from "@/lib/db";
 
 const PAY_BASE = "https://payouts.elixpo.com";
 
-// Product tier we sell for event fees.
-const PRODUCT = "member";
+// We sell a single catalog tier for every paid event. The buyer is namespaced
+// per (user, event) via the `uid` we send, so one tier covers all events while
+// each fee stays a distinct entitlement. See payouts.catalog.json.
+const TIER = "member";
 
 // Reject webhooks whose timestamp is older than this (replay window).
 const SIGNATURE_TOLERANCE_SECONDS = 5 * 60;
+
+// Buyer id in OUR namespace = `${userId}:${event}`. Encodes which event the
+// payment is for, since Elixpo entitlements key on (app, uid, tier) and our
+// tier is constant. `userId` (PART-…) and `event` keys never contain ':'.
+export function payUid(userId, event) {
+  return `${userId}:${event}`;
+}
+
+export function parsePayUid(uid) {
+  const s = String(uid ?? "");
+  const i = s.indexOf(":");
+  return i === -1 ? { userId: s, event: null } : { userId: s.slice(0, i), event: s.slice(i + 1) };
+}
 
 function isPlaceholder(v) {
   return !v || String(v).startsWith("PLACEHOLDER");
@@ -55,45 +70,38 @@ function timingSafeEqualHex(a, b) {
   return diff === 0;
 }
 
-// Create a hosted checkout session.
+// Create a hosted checkout session (docs: Checkout sessions).
 //
-// ASSUMPTION: the docs describe "your server creates a checkout session" but do
-// not pin the exact path. Best guess per the docs' REST style (matching the
-// /v1/entitlements pull endpoint) is POST https://payouts.elixpo.com/v1/checkout/sessions.
-// Body field names mirror the documented vocabulary (app / product / uid /
-// amount / currency / success_url / cancel_url / metadata / idempotency_key).
-// Response is assumed to carry the hosted-checkout URL and an order id; we read
-// several plausible field names so a minor naming difference still works.
+//   POST /v1/checkout/sessions
+//   { tier, currency, customer: { uid, email }, success_url, metadata }
+//
+// We NEVER send the amount — Elixpo Pay resolves the active price for
+// (tier, currency) from our catalog, so the buyer can't tamper with it. The
+// `uid` is namespaced per (user, event). Response (201):
+//   { id: "cs_…", url, amount, currency, tier, expires_at }
 //
 // Returns { checkoutUrl, orderId } or { error }.
 export async function createCheckoutSession({
-  uid,
+  userId,
   event,
   squadId,
-  amount,
+  email,
   currency,
   successUrl,
-  cancelUrl,
-  idempotencyKey,
 } = {}) {
   const apiKey = env("ELIXPO_PAY_API_KEY");
-  const app = env("ELIXPO_PAY_APP_ID");
 
-  if (isPlaceholder(apiKey) || isPlaceholder(app)) {
+  if (isPlaceholder(apiKey)) {
     console.warn("[pay] checkout skipped (placeholder/missing keys)");
     return { error: "missing_keys" };
   }
 
   const body = JSON.stringify({
-    app,
-    product: PRODUCT,
-    uid,
-    amount, // minor units (paise)
+    tier: TIER,
     currency,
+    customer: { uid: payUid(userId, event), email: email ?? undefined },
     success_url: successUrl,
-    cancel_url: cancelUrl,
     metadata: { event, squadId },
-    idempotency_key: idempotencyKey,
   });
 
   try {
@@ -110,10 +118,8 @@ export async function createCheckoutSession({
       console.warn(`[pay] checkout not ok: status=${res.status} err=${json?.error ?? ""}`);
       return { error: json?.error ?? `http_${res.status}` };
     }
-    const checkoutUrl =
-      json.checkout_url ?? json.url ?? json.checkoutUrl ?? json.hosted_url ?? null;
-    const orderId =
-      json.order_id ?? json.id ?? json.session_id ?? json.orderId ?? null;
+    const checkoutUrl = json.url ?? json.checkout_url ?? null;
+    const orderId = json.id ?? json.session_id ?? null;
     if (!checkoutUrl) {
       console.warn("[pay] checkout response missing url");
       return { error: "no_checkout_url" };
@@ -125,99 +131,33 @@ export async function createCheckoutSession({
   }
 }
 
-// Verify an inbound webhook signature.
+// Verify an inbound webhook signature (docs: Webhooks).
 //
-// ASSUMPTION: Elixpo Pay signs webhooks the same way Elixpo Mails does —
-// header `t=<unix>,v1=<hex>` where the signed string is `${t}.${rawBody}`,
-// HMAC-SHA256 with ELIXPO_PAY_WEBHOOK_SECRET. As a fallback we also accept a
-// bare hex signature (HMAC over the raw body alone) when no `t=`/`v1=` parts
-// are present.
+//   X-Elixpo-Pay-Timestamp: <unix seconds>
+//   X-Elixpo-Pay-Signature: sha256=<hex HMAC of `${timestamp}.${rawBody}`>
+//   HMAC-SHA256 with ELIXPO_PAY_WEBHOOK_SECRET.
 //
 // MUST be called on the RAW body before parsing/acting on it. Returns true only
-// when the signature matches AND (for the timestamped form) the timestamp is
-// within SIGNATURE_TOLERANCE_SECONDS.
-export async function verifyWebhookSignature(rawBody, signatureHeader) {
+// when the signature matches AND the timestamp is within the replay window.
+export async function verifyWebhookSignature(rawBody, signatureHeader, timestampHeader) {
   const secret = env("ELIXPO_PAY_WEBHOOK_SECRET");
   if (isPlaceholder(secret) || !signatureHeader || rawBody == null) return false;
 
-  // Parse `t=<unix>,v1=<hex>` (order/extra-part tolerant).
-  let t = null;
-  let v1 = null;
-  for (const part of String(signatureHeader).split(",")) {
-    const idx = part.indexOf("=");
-    if (idx === -1) continue;
-    const k = part.slice(0, idx).trim();
-    const val = part.slice(idx + 1).trim();
-    if (k === "t") t = val;
-    else if (k === "v1") v1 = val;
-  }
+  const ts = Number(timestampHeader);
+  if (!Number.isFinite(ts)) return false;
+  // Reject replays / stale deliveries outside the tolerance window.
+  const ageSeconds = Math.abs(Math.floor(Date.now() / 1000) - ts);
+  if (ageSeconds > SIGNATURE_TOLERANCE_SECONDS) return false;
 
-  if (t != null && v1 != null) {
-    // Reject replays / stale deliveries outside the tolerance window.
-    const ts = Number(t);
-    if (!Number.isFinite(ts)) return false;
-    const ageSeconds = Math.abs(Math.floor(Date.now() / 1000) - ts);
-    if (ageSeconds > SIGNATURE_TOLERANCE_SECONDS) return false;
+  // Signature header is `sha256=<hex>`; tolerate a bare hex too.
+  const sig = String(signatureHeader).trim().replace(/^sha256=/i, "").toLowerCase();
+  if (!/^[0-9a-f]+$/.test(sig)) return false;
 
-    const expected = await hmacHex(secret, `${t}.${rawBody}`);
-    return timingSafeEqualHex(expected, v1);
-  }
-
-  // Fallback: bare hex signature over the raw body. No timestamp to bound, so
-  // idempotent processing downstream is what guards against replays here.
-  const bare = String(signatureHeader).trim();
-  if (/^[0-9a-f]+$/i.test(bare)) {
-    const expected = await hmacHex(secret, rawBody);
-    return timingSafeEqualHex(expected, bare.toLowerCase());
-  }
-
-  return false;
+  const expected = await hmacHex(secret, `${timestampHeader}.${rawBody}`);
+  return timingSafeEqualHex(expected, sig);
 }
 
-// Bulk reconciliation pull: every entitlement Elixpo Pay holds for our app.
-// Used by the GitHub-Actions cron (api/cron/sync-payments) to catch any payment
-// whose webhook we missed.
-//
-// ASSUMPTION: `GET /v1/sync?app=<app>` returns the full entitlement/order list
-// for the app. The response shape isn't pinned in the docs, so we read several
-// plausible containers (`entitlements` | `data` | `results` | a bare array);
-// each row is normalized tolerantly by the caller. An optional `since` (unix
-// seconds) is forwarded if the endpoint supports incremental sync.
-//
-// Returns { entitlements: [...] } or { error }.
-export async function fetchSyncEntitlements({ since } = {}) {
-  const apiKey = env("ELIXPO_PAY_API_KEY");
-  const app = env("ELIXPO_PAY_APP_ID");
-
-  if (isPlaceholder(apiKey) || isPlaceholder(app)) {
-    console.warn("[pay] sync skipped (placeholder/missing keys)");
-    return { error: "missing_keys" };
-  }
-
-  let url = `${PAY_BASE}/v1/sync?app=${encodeURIComponent(app)}`;
-  if (since != null) url += `&since=${encodeURIComponent(since)}`;
-
-  try {
-    const res = await fetch(url, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${apiKey}` },
-    });
-    const json = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      console.warn(`[pay] sync not ok: status=${res.status}`);
-      return { error: json?.error ?? `http_${res.status}` };
-    }
-    const list = Array.isArray(json)
-      ? json
-      : json.entitlements ?? json.data ?? json.results ?? json.items ?? [];
-    return { entitlements: Array.isArray(list) ? list : [] };
-  } catch (e) {
-    console.warn(`[pay] sync threw: ${e?.message ?? e}`);
-    return { error: "request_failed" };
-  }
-}
-
-// Pull endpoint: current entitlements for a uid in our app.
+// Pull endpoint: current entitlement for a uid in our app.
 // GET /v1/entitlements?app=&uid=  → returns parsed JSON or { error }.
 export async function fetchEntitlements({ uid } = {}) {
   const apiKey = env("ELIXPO_PAY_API_KEY");
