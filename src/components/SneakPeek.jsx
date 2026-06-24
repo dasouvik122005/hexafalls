@@ -35,6 +35,32 @@ export default function SneakPeek() {
           </p>
         </div>
 
+        {/* At-a-glance summary band — shorthand when / where / scope */}
+        <div className="mx-auto mb-8 max-w-3xl">
+          <div className="grid grid-cols-2 gap-px overflow-hidden rounded-sm border border-cyan-hp/20 bg-cyan-hp/10 sm:grid-cols-4">
+            {[
+              { k: "When", v: "Jul 24–26, 2026" },
+              { k: "Where", v: "JIS University · Kolkata" },
+              { k: "Format", v: "58-hr hackathon + 4 arenas" },
+              { k: "Entry", v: "₹100/member · CP & school-exhibition free" },
+            ].map((f) => (
+              <div key={f.k} className="bg-midnight/80 px-4 py-3 text-center sm:text-left">
+                <div className="font-display text-[9px] uppercase tracking-[0.35em] text-cyan-hp/70">
+                  {f.k}
+                </div>
+                <div className="mt-1 font-display text-[12px] text-silver-hp leading-snug">
+                  {f.v}
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="mt-4 text-center font-wizard text-silver-hp/65 text-sm leading-relaxed">
+            HexaFalls is JIS University&apos;s wizarding techfest — three days of building,
+            competing and celebrating across a flagship hackathon, hardware, gaming and
+            competitive programming.
+          </p>
+        </div>
+
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {EVENTS.map((e) => {
             const accent = e.name.replace(/^The\s+/i, "");
