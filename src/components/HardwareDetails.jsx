@@ -13,6 +13,30 @@ import { HARDWARE_TRACKS } from "@/lib/routes";
 const GREEN = "#22C55E";
 const GREEN_GLOW = "rgba(34,197,94,0.35)";
 
+/* ── "already registered" badge — shown when the viewer is already in a
+      hardware squad/entry. ───────────────────────────────────────────── */
+function RegisteredBadge({ href, label = "VIEW MY REGISTRATION" }) {
+  return (
+    <>
+      <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/50 bg-emerald-400/10 px-3 py-1 font-display text-[10px] uppercase tracking-[0.4em] text-emerald-300">
+        <span aria-hidden="true">✓</span> You&apos;re registered
+      </span>
+      <RoughButton
+        as={Link}
+        href={href}
+        color="#4ade80"
+        glow="rgba(74,222,128,0.3)"
+        fill={false}
+        seed={23}
+        className="px-10 sm:px-12 py-4 leading-none text-[12px] sm:text-[13px] tracking-[0.35em]"
+      >
+        <span>{label}</span>
+        <span aria-hidden="true">↗</span>
+      </RoughButton>
+    </>
+  );
+}
+
 /* ── reusable section eyebrow ────────────────────────────────────────── */
 function Eyebrow({ children, color = GREEN }) {
   return (
@@ -137,7 +161,7 @@ function TrackCard({ track: t, index: i }) {
 }
 
 /* ══════════════════════════════════════════════════════════════════════ */
-export default function HardwareDetails() {
+export default function HardwareDetails({ registered = null }) {
   const sectionRef = useRef(null);
 
   /* GSAP letter-stagger on the hero headline */
@@ -235,42 +259,48 @@ export default function HardwareDetails() {
 
         {/* CTA */}
         <Reveal delay={0.25} className="mt-8 flex flex-col items-center gap-3">
-          <span
-            className="inline-flex items-center gap-2 rounded-full border px-3 py-1 font-display text-[10px] uppercase tracking-[0.4em]"
-            style={{ borderColor: `${GREEN}80`, color: GREEN, backgroundColor: `${GREEN}1a` }}
-          >
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full rounded-full opacity-70 animate-ping" style={{ backgroundColor: GREEN }} />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full" style={{ backgroundColor: GREEN }} />
-            </span>
-            Registrations Open
-          </span>
-          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
-            <RoughButton
-              as={Link}
-              href="/events/hardware/register?mode=competition"
-              color={GREEN}
-              glow={GREEN_GLOW}
-              fill={false}
-              shimmer
-              seed={23}
-              className="px-10 sm:px-12 py-4 sm:py-5 leading-none text-[13px] sm:text-[14px] tracking-[0.4em]"
-            >
-              <span>COMPETITION · TEAM 2–4</span>
-              <span aria-hidden="true">↗</span>
-            </RoughButton>
-            <RoughButton
-              as={Link}
-              href="/events/hardware/register?mode=exhibition"
-              color={GREEN}
-              fill={false}
-              seed={29}
-              className="px-8 sm:px-10 py-3 sm:py-4 leading-none text-[12px] sm:text-[13px] tracking-[0.35em]"
-            >
-              <span>EXHIBITION · SCHOOL SOLO</span>
-              <span aria-hidden="true">↗</span>
-            </RoughButton>
-          </div>
+          {registered ? (
+            <RegisteredBadge href={registered.href} label={registered.label} />
+          ) : (
+            <>
+              <span
+                className="inline-flex items-center gap-2 rounded-full border px-3 py-1 font-display text-[10px] uppercase tracking-[0.4em]"
+                style={{ borderColor: `${GREEN}80`, color: GREEN, backgroundColor: `${GREEN}1a` }}
+              >
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full rounded-full opacity-70 animate-ping" style={{ backgroundColor: GREEN }} />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full" style={{ backgroundColor: GREEN }} />
+                </span>
+                Registrations Open
+              </span>
+              <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
+                <RoughButton
+                  as={Link}
+                  href="/events/hardware/register?mode=competition"
+                  color={GREEN}
+                  glow={GREEN_GLOW}
+                  fill={false}
+                  shimmer
+                  seed={23}
+                  className="px-10 sm:px-12 py-4 sm:py-5 leading-none text-[13px] sm:text-[14px] tracking-[0.4em]"
+                >
+                  <span>COMPETITION · TEAM 2–4</span>
+                  <span aria-hidden="true">↗</span>
+                </RoughButton>
+                <RoughButton
+                  as={Link}
+                  href="/events/hardware/register?mode=exhibition"
+                  color={GREEN}
+                  fill={false}
+                  seed={29}
+                  className="px-8 sm:px-10 py-3 sm:py-4 leading-none text-[12px] sm:text-[13px] tracking-[0.35em]"
+                >
+                  <span>EXHIBITION · SCHOOL SOLO</span>
+                  <span aria-hidden="true">↗</span>
+                </RoughButton>
+              </div>
+            </>
+          )}
         </Reveal>
       </div>
 

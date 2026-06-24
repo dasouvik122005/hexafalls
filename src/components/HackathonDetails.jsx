@@ -14,6 +14,30 @@ const GOLD = "#D4AF37";
 const GOLD_GLOW = "rgba(212,175,55,0.35)";
 const CYAN = "#66FCF1";
 
+/* ── "already registered" badge — shown in place of the register CTA when
+      the signed-in viewer is already in this event. ──────────────────── */
+function RegisteredBadge({ href, label = "VIEW MY TEAM" }) {
+  return (
+    <>
+      <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/50 bg-emerald-400/10 px-3 py-1 font-display text-[10px] uppercase tracking-[0.4em] text-emerald-300">
+        <span aria-hidden="true">✓</span> You&apos;re registered
+      </span>
+      <RoughButton
+        as={Link}
+        href={href}
+        color="#4ade80"
+        glow="rgba(74,222,128,0.3)"
+        fill={false}
+        seed={23}
+        className="px-10 sm:px-12 py-4 leading-none text-[13px] sm:text-[14px] tracking-[0.4em]"
+      >
+        <span>{label}</span>
+        <span aria-hidden="true">↗</span>
+      </RoughButton>
+    </>
+  );
+}
+
 /* ── reusable section eyebrow ────────────────────────────────────────── */
 function Eyebrow({ children, color = GOLD }) {
   return (
@@ -590,19 +614,34 @@ export default function HackathonDetails({ registered = null }) {
 
       {/* ═══ FOOTER CTAs ═════════════════════════════════════════════════ */}
       <Reveal delay={0.1} className="mt-20 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
-        <RoughButton
-          as={Link}
-          href="/events/hackathon/register"
-          color={GOLD}
-          glow={GOLD_GLOW}
-          fill={false}
-          shimmer
-          seed={23}
-          className="px-8 py-3 leading-none text-[12px]"
-        >
-          <span>REGISTER · HACKATHON</span>
-          <span aria-hidden="true">↗</span>
-        </RoughButton>
+        {registered ? (
+          <RoughButton
+            as={Link}
+            href={registered.href}
+            color="#4ade80"
+            glow="rgba(74,222,128,0.3)"
+            fill={false}
+            seed={23}
+            className="px-8 py-3 leading-none text-[12px]"
+          >
+            <span>{registered.label ?? "VIEW MY TEAM"}</span>
+            <span aria-hidden="true">↗</span>
+          </RoughButton>
+        ) : (
+          <RoughButton
+            as={Link}
+            href="/events/hackathon/register"
+            color={GOLD}
+            glow={GOLD_GLOW}
+            fill={false}
+            shimmer
+            seed={23}
+            className="px-8 py-3 leading-none text-[12px]"
+          >
+            <span>REGISTER · HACKATHON</span>
+            <span aria-hidden="true">↗</span>
+          </RoughButton>
+        )}
         <RoughButton
           as={Link}
           href="/events"
