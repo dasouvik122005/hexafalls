@@ -9,7 +9,7 @@
 import { env } from "@/lib/db";
 
 const COOKIE_NAME = "hf_session";
-const MAX_AGE_SECONDS = 60 * 60 * 24 * 14; // 14 days
+const MAX_AGE_SECONDS = 60 * 60 * 24 * 15; // 15 days
 
 function need(name) {
   const v = env(name);

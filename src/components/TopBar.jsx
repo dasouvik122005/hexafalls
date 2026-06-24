@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SITEMAP } from "@/lib/routes";
 import RoughDivider from "./RoughDivider";
 import RoughStar from "./RoughStar";
+import UserMenu from "./UserMenu";
 
 export default function TopBar() {
   const [open, setOpen] = useState(false);
@@ -70,6 +71,8 @@ export default function TopBar() {
           </Link>
         </motion.div>
 
+        {/* Right cluster: icon nav + account chip + mobile hamburger */}
+        <div className="flex items-center gap-3 sm:gap-4 md:gap-5">
         {/* Right: desktop icon nav */}
         <motion.nav
           initial={{ opacity: 0, x: 10 }}
@@ -122,6 +125,11 @@ export default function TopBar() {
           ))}
         </motion.nav>
 
+        {/* Account chip (margin clears the fixed MLH badge on desktop) */}
+        <div className="md:mr-20 lg:mr-4">
+          <UserMenu />
+        </div>
+
         {/* Right: mobile hamburger */}
         <button
           type="button"
@@ -151,6 +159,7 @@ export default function TopBar() {
             />
           </span>
         </button>
+        </div>
       </div>
 
       <a

@@ -97,6 +97,32 @@ export default async function EventRegisterPage({ params, searchParams }) {
     existingSoloReg = Boolean(row);
   }
 
+  // Open squads the caller could request to join (squad events, not already in
+  // one). Public roster info only — team profiles are public anyway.
+  let openSquads = [];
+  if (user && user.gdg_verified && isSquadEvent(regKey) && !existingSquadId) {
+    const rows = await getDB()
+      .prepare(
+        `SELECT s.id, s.name, s.tagline, s.max_members AS maxMembers,
+                (SELECT COUNT(*) FROM squad_members sm WHERE sm.squad_id = s.id) AS members
+           FROM squads s
+          WHERE s.event = ? AND s.status IN ('forming','registered')
+          ORDER BY s.created_at DESC
+          LIMIT 40`,
+      )
+      .bind(regKey)
+      .all();
+    openSquads = (rows.results ?? [])
+      .map((s) => ({
+        id: s.id,
+        name: s.name,
+        tagline: s.tagline,
+        members: Number(s.members),
+        maxMembers: Number(s.maxMembers),
+      }))
+      .filter((s) => s.members < s.maxMembers);
+  }
+
   return (
     <ShellWrap eyebrow={`Sign on · ${cfg.label}`} accent={cfg.label}>
       {!user && <SignInPanel returnTo={returnTo} />}
