@@ -26,7 +26,7 @@ const REGISTRATION_PATHS = {
     { label: "REGISTER · HACKATHON", href: "/events/hackathon/register", primary: true },
   ],
   hardware: [
-    { label: "COMPETITION (TEAM 2–5)", href: "/events/hardware/register?mode=competition", primary: true },
+    { label: "COMPETITION (TEAM 2–4)", href: "/events/hardware/register?mode=competition", primary: true },
     { label: "EXHIBITION (SCHOOL · SOLO)", href: "/events/hardware/register?mode=exhibition" },
   ],
   cp: [
@@ -40,7 +40,7 @@ const REGISTRATION_PATHS = {
 // One-line context strings — that's the entire writeup.
 const CONTEXT = {
   hackathon: "58 hours of pure spellwork. Squads of 2–4.",
-  hardware:  "Build the magic you can hold. Compete as a team of 2–5, or exhibit solo (high-school).",
+  hardware:  "Build the magic you can hold. Compete as a team of 2–4, or exhibit solo (high-school).",
   cp:        "Duels of logic. Solo entry, fastest hand wins.",
   gaming:    "Controller in hand, glory on the line. Squads of 2–4.",
 };

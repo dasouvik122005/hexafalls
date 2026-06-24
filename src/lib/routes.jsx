@@ -212,7 +212,7 @@ export const EXHIBITION_RULES = {
   overview: "The Project Exhibition is a platform for innovators, makers, researchers, and technology enthusiasts to showcase their ideas, prototypes, and engineering solutions. Participants will demonstrate their projects before a panel of judges, industry experts, and fellow innovators, highlighting creativity, technical excellence, and real-world impact. Whether your project focuses on Artificial Intelligence, IoT, Robotics, Healthcare, Sustainability, Automation, Software Development, or Open Innovation, this event provides an opportunity to present your work, gain valuable feedback, and compete for recognition.",
   registration: {
     fee: "₹400 per Team",
-    teamSize: "2–5 Members"
+    teamSize: "2–4 Members"
   },
   projectCategories: [
     "Artificial Intelligence & Machine Learning",
@@ -230,7 +230,7 @@ export const EXHIBITION_RULES = {
   eligibility: [
     "Open to students from schools, colleges, universities, and technical institutions.",
     "Individual and team participation are allowed.",
-    "Teams can consist of 2–5 members.",
+    "Teams can consist of 2–4 members.",
     "Projects may be hardware-based, software-based, or a combination of both."
   ],
   exhibitionRules: [
@@ -277,7 +277,7 @@ export const LINE_FOLLOWER_RULES = {
   overview: "Put your programming, electronics, and robotics skills to the ultimate test in the Line Follower Challenge. Participants must design and build an autonomous robot capable of accurately following a predefined path while navigating curves, intersections, checkpoints, gaps, and complex track layouts without any human intervention. The competition rewards speed, precision, reliability, and intelligent navigation as robots race to achieve the fastest completion time while successfully handling every challenge on the course.",
   registration: {
     fee: "₹400 per Team",
-    teamSize: "2–5 Members"
+    teamSize: "2–4 Members"
   },
   botSpecs: [
     "Maximum Dimensions: 20 cm × 20 cm × 20 cm",
@@ -299,7 +299,7 @@ export const LINE_FOLLOWER_RULES = {
     "Special challenge sections in final rounds"
   ],
   generalRules: [
-    "Teams may consist of 2–5 participants.",
+    "Teams may consist of 2–4 participants.",
     "All participants must carry a valid College ID card.",
     "Robots must operate completely autonomously throughout the run.",
     "No external control, wireless control, or manual intervention is allowed.",
@@ -347,7 +347,7 @@ export const ROBO_TERRENCE_RULES = {
   overview: "Robo Terrence is an off-road robotic challenge designed to test the endurance, stability, and maneuverability of robots across a variety of challenging terrains. Participants must build and control robots capable of overcoming obstacles such as sand pits, bumpers, water sections, net bridges, and complex pathways while maintaining speed and precision. The competition evaluates a robot's ability to adapt to difficult environments, complete mandatory tasks, and navigate unpredictable terrain efficiently.",
   registration: {
     fee: "₹400 per Team",
-    teamSize: "2–5 Members"
+    teamSize: "2–4 Members"
   },
   botSpecs: [
     "Maximum Dimensions: 25 cm (Width) × 30 cm (Length)",
@@ -417,7 +417,7 @@ export const ROBO_SOCCER_RULES = {
   overview: "Experience the excitement of robotic football where innovation, strategy, and precision come together on the arena floor. Robo Soccer challenges teams to design and control robots capable of dribbling, defending, and scoring goals against their opponents in an intense battle of engineering and teamwork. Compete in preliminary rounds, knockout stages, and the grand finale to prove your robot's speed, control, and tactical superiority.",
   registration: {
     fee: "₹400 per Team",
-    teamSize: "2–5 Members"
+    teamSize: "2–4 Members"
   },
   botSpecs: [
     "Maximum Dimensions: 30 cm × 30 cm (including wheels).",
@@ -432,7 +432,7 @@ export const ROBO_SOCCER_RULES = {
   generalRules: [
     "Participants are not allowed to enter the arena.",
     "Teams without a robot may use a wired robot provided by the organizers.",
-    "Each team must consist of 2–5 members.",
+    "Each team must consist of 2–4 members.",
     "A participant cannot join multiple teams.",
     "One robot cannot be shared between multiple teams.",
     "Team members may belong to different institutions.",
@@ -483,7 +483,7 @@ export const ROBO_SUMO_RULES = {
   overview: "Enter the ultimate robotic battleground where engineering meets strategy. Robo Sumo challenges participants to design and build powerful combat robots capable of pushing, lifting, pinning, or immobilizing their opponents inside the arena. Victory belongs to the team that demonstrates superior control, aggression, durability, and tactical excellence. Whether you're a robotics enthusiast or a competitive builder, Robo Sumo offers an electrifying platform to showcase your engineering skills and battle against the best.",
   registration: {
     fee: "₹400 per Team",
-    teamSize: "2–5 Members"
+    teamSize: "2–4 Members"
   },
   botSpecs: [
     "Maximum robot weight: 3 kg (100 g margin allowed).",
@@ -502,7 +502,7 @@ export const ROBO_SUMO_RULES = {
     "Battery replacement during a match is not allowed."
   ],
   teamRules: [
-    "Each team must consist of 2–5 members.",
+    "Each team must consist of 2–4 members.",
     "Team members may belong to the same or different institutions.",
     "Every team must register with a unique team name.",
     "Each team must appoint a team leader as the official representative.",
