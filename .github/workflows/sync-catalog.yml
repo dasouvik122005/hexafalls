@@ -1,0 +1,43 @@
+name: Sync Catalog
+
+# Push payouts.catalog.json to Elixpo Pay (/v1/sync). Products/prices are
+# managed from code, so this keeps the live catalog in lock-step with the repo.
+#
+# Required repo secret:
+#   ELIXPO_PAY_API_KEY
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "payouts.catalog.json"
+      - "scripts/sync-catalog.mjs"
+      - ".github/workflows/sync-catalog.yml"
+  # Daily safety re-push + manual trigger from the Actions tab.
+  schedule:
+    - cron: "0 4 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: sync-catalog
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Push catalog
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Push catalog to Elixpo Pay
+        env:
+          ELIXPO_PAY_API_KEY: ${{ secrets.ELIXPO_PAY_API_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${ELIXPO_PAY_API_KEY:-}" ]; then
+            echo "::error::ELIXPO_PAY_API_KEY repo secret is not set"; exit 1
+          fi
+          node scripts/sync-catalog.mjs
