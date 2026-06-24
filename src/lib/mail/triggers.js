@@ -1,15 +1,24 @@
 // The ONLY four events that send email (everything else → in-profile
-// notifications). Each maps to an Elixpo Mails template webhook. Templates
-// share one endpoint key today (ELIXPO_MAILS_ENDPOINT_KEY); when each template
-// gets its own webhook, set ELIXPO_MAILS_ENDPOINT_KEY_<NAME> and they are
-// picked up below. See docs/email_templates.md for the variable contracts.
+// notifications). Each maps to its own Elixpo Mails template webhook, set in
+// .env.local. A blank per-template key falls back to the shared
+// ELIXPO_MAILS_ENDPOINT_KEY; blank everywhere → the send is skipped (logged).
+// See docs/email_templates.md for the variable contracts.
 
 import { env } from "@/lib/db";
 import { sendMail } from "./elixpo.js";
 
+// Template name → its dedicated webhook env var.
+const WEBHOOK_ENV = {
+  team_created: "ELIXPO_MAILS_WEBHOOK_TEAM_CREATED",
+  team_approved: "ELIXPO_MAILS_WEBHOOK_TEAM_APPROVED",
+  team_deleted: "ELIXPO_MAILS_WEBHOOK_TEAM_DELETED",
+  payment_complete: "ELIXPO_MAILS_WEBHOOK_PAYMENT_COMPLETE",
+};
+
 // Resolve a per-template endpoint key, falling back to the shared one.
 function endpointFor(name) {
-  return env(`ELIXPO_MAILS_ENDPOINT_KEY_${name.toUpperCase()}`) ?? env("ELIXPO_MAILS_ENDPOINT_KEY");
+  const v = env(WEBHOOK_ENV[name]);
+  return (v && v.trim()) || env("ELIXPO_MAILS_ENDPOINT_KEY");
 }
 
 // team_created — sent to the leader when a squad is created.

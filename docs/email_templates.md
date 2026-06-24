@@ -36,7 +36,7 @@ Configured server-side (e.g. `.env.local` / Worker secrets). Read by
 | `ELIXPO_MAILS_ENDPOINT_KEY_PAYMENT_COMPLETE` | optional | Per-template override for `payment_complete`. |
 
 Resolution (`endpointFor(name)` in `triggers.js`):
-`ELIXPO_MAILS_ENDPOINT_KEY_<NAME-UPPERCASED>` if set, otherwise the shared
+`ELIXPO_MAILS_ENDPOINT_KEY_<NAME-UPPERCASED` if set, otherwise the shared
 `ELIXPO_MAILS_ENDPOINT_KEY`. So you can ship all four through one webhook now and
 split them onto dedicated webhooks later just by setting the per-template keys —
 no code change.
@@ -51,8 +51,8 @@ flows never break.
 
 Every trigger POST is HMAC-SHA256 signed with the **product secret**.
 
-- **Endpoint**: `POST https://mails.elixpo.com/v1/hooks/<endpoint_key>`
-- **Header**: `X-Elixpo-Signature: t=<unix_seconds>,v1=<hex HMAC-SHA256>`
+- **Endpoint**: `POST https://mails.elixpo.com/v1/hooks/<endpoint_key`
+- **Header**: `X-Elixpo-Signature: t=<unix_seconds,v1=<hex HMAC-SHA256`
 - **Signed string**: `` `${t}.${rawBody}` `` — the unix timestamp, a literal dot,
   then the **exact JSON body bytes** that are sent. Build the JSON once and sign
   those same bytes; re-serializing breaks the signature.
@@ -94,16 +94,16 @@ Implementation reference: `src/lib/mail/elixpo.js` (`sendMail`).
 
 - **Suggested subject**: `Your squad "{{team_name}}" is registered for {{event}}`
 - **Suggested body**:
-  > Hi {{name}},
-  >
-  > Your squad **{{team_name}}** has been created for **{{event}}**. It's now
-  > awaiting organiser approval — we'll send another owl the moment it's
-  > approved.
-  >
-  > In the meantime, share your invite link from your team page and gather your
-  > crew: {{team_url}}
-  >
-  > See you at the castle gates.
+   Hi {{name}},
+  
+   Your squad **{{team_name}}** has been created for **{{event}}**. It's now
+   awaiting organiser approval — we'll send another owl the moment it's
+   approved.
+  
+   In the meantime, share your invite link from your team page and gather your
+   crew: {{team_url}}
+  
+   See you at the castle gates.
 
 ---
 
@@ -124,15 +124,15 @@ Implementation reference: `src/lib/mail/elixpo.js` (`sendMail`).
 
 - **Suggested subject**: `"{{team_name}}" is approved for {{event}} 🎉`
 - **Suggested body**:
-  > Hi {{name}},
-  >
-  > Great news — **{{team_name}}** has been approved for **{{event}}**. Your
-  > spot is locked in.
-  >
-  > Manage your squad, confirm your roster, and settle fees from your team page:
-  > {{team_url}}
-  >
-  > Onward.
+   Hi {{name}},
+  
+   Great news — **{{team_name}}** has been approved for **{{event}}**. Your
+   spot is locked in.
+  
+   Manage your squad, confirm your roster, and settle fees from your team page:
+   {{team_url}}
+  
+   Onward.
 
 ---
 
@@ -149,17 +149,17 @@ Implementation reference: `src/lib/mail/elixpo.js` (`sendMail`).
   | `{{team_name}}` | `The Phoenix Coders` |
   | `{{event}}` | `HexaFalls 2026` |
 
-  > Note: this template has **no** `{{team_url}}` — the team no longer exists.
+   Note: this template has **no** `{{team_url}}` — the team no longer exists.
 
 - **Suggested subject**: `"{{team_name}}" has been disbanded`
 - **Suggested body**:
-  > Hi {{name}},
-  >
-  > The squad **{{team_name}}** for **{{event}}** has been dismantled by its
-  > leader, so you're no longer a member.
-  >
-  > No worries — you can still join another squad or start your own before
-  > registration closes. We'd love to see you there.
+   Hi {{name}},
+  
+   The squad **{{team_name}}** for **{{event}}** has been dismantled by its
+   leader, so you're no longer a member.
+  
+   No worries — you can still join another squad or start your own before
+   registration closes. We'd love to see you there.
 
 ---
 
@@ -182,14 +182,14 @@ Implementation reference: `src/lib/mail/elixpo.js` (`sendMail`).
 
 - **Suggested subject**: `Payment complete — {{team_name}} is all set for {{event}}`
 - **Suggested body**:
-  > Hi {{name}},
-  >
-  > Every member of **{{team_name}}** has paid — your registration fee of
-  > **{{amount}}** for **{{event}}** is fully settled. You're 100% locked in.
-  >
-  > Review your squad and event details any time: {{team_url}}
-  >
-  > Thank you — see you at HexaFalls.
+   Hi {{name}},
+  
+   Every member of **{{team_name}}** has paid — your registration fee of
+   **{{amount}}** for **{{event}}** is fully settled. You're 100% locked in.
+  
+   Review your squad and event details any time: {{team_url}}
+  
+   Thank you — see you at HexaFalls.
 
 ---
 
@@ -202,6 +202,6 @@ For each of the four templates:
 2. **Turn the `transactional` flag ON.** Do not add `{{unsubscribe_url}}`.
 3. Attach a webhook → copy its `endpoint_key`.
 4. Wire the key: use the shared `ELIXPO_MAILS_ENDPOINT_KEY` for all four, or set
-   the per-template `ELIXPO_MAILS_ENDPOINT_KEY_<NAME>` to split them onto
+   the per-template `ELIXPO_MAILS_ENDPOINT_KEY_<NAME` to split them onto
    dedicated webhooks.
 5. Confirm `ELIXPO_MAILS_PRODUCT_SECRET` is set so triggers can sign requests.

@@ -13,6 +13,15 @@ import { env } from "@/lib/db";
 
 const MAILS_BASE = "https://mails.elixpo.com";
 
+// Allow .env.local to hold either the bare endpoint_key or the full hook URL
+// (…/v1/hooks/<endpoint_key>) — return just the key segment, trimmed.
+function normalizeEndpointKey(raw) {
+  if (!raw) return raw;
+  const v = String(raw).trim().replace(/\/+$/, "");
+  if (!v) return "";
+  return v.includes("/") ? v.slice(v.lastIndexOf("/") + 1) : v;
+}
+
 async function hmacHex(secret, message) {
   // Web Crypto (Workers + Node 19+). Returns lowercase hex.
   const key = await crypto.subtle.importKey(
@@ -30,10 +39,12 @@ async function hmacHex(secret, message) {
 // fill the template. Returns { ok, status, id?, error? } and never throws.
 export async function sendMail({ endpointKey, to, variables = {}, idempotencyKey } = {}) {
   const secret = env("ELIXPO_MAILS_PRODUCT_SECRET");
-  const key = endpointKey ?? env("ELIXPO_MAILS_ENDPOINT_KEY");
+  // Accept either a bare endpoint_key or a full hook URL pasted into .env.local —
+  // normalize to just the trailing key segment.
+  const key = normalizeEndpointKey(endpointKey ?? env("ELIXPO_MAILS_ENDPOINT_KEY"));
 
   if (!secret || !key || String(secret).startsWith("PLACEHOLDER") || String(key).startsWith("PLACEHOLDER")) {
-    console.warn(`[mail] skipped (placeholder/missing keys): to=${to} key=${key}`);
+    console.warn(`[mail] skipped (placeholder/missing keys): to=${to} key=${key ?? ""}`);
     return { ok: false, status: "skipped", error: "missing_keys" };
   }
   if (!to) return { ok: false, status: "skipped", error: "missing_recipient" };
