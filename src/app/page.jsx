@@ -1,5 +1,6 @@
 import TopBar from "@/components/TopBar";
 import Hero from "@/components/Hero";
+import LocationMap from "@/components/LocationMap";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -7,6 +8,12 @@ export default function Home() {
     <main className="flex-1">
       <TopBar />
       <Hero />
+      <section className="relative isolate overflow-hidden px-6 py-16 sm:py-20">
+        <div aria-hidden="true" className="absolute inset-0 -z-10 hp-scrim pointer-events-none" />
+        <div className="mx-auto max-w-5xl">
+          <LocationMap />
+        </div>
+      </section>
       <Footer />
     </main>
   );
