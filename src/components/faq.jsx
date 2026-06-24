@@ -342,7 +342,7 @@ export default function FAQ() {
       </motion.div>
 
       {/* ── Headline ────────────────────────────────────────────────────── */}
-      <div className="text-center">
+      <div className="text-center mb-10">
         <h1
           aria-label="Frequently Asked Questions"
           className="font-display font-black tracking-tight text-silver-hp leading-[1.05] text-balance text-[12vw] sm:text-[8vw] md:text-[6.5vw] hp-glow"
@@ -377,7 +377,7 @@ export default function FAQ() {
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <RoughButton
             as={Link}
-            href="/events/hackathon"
+            href="/events"
             color="#D4AF37"
             glow="rgba(212,175,55,0.30)"
             shimmer
