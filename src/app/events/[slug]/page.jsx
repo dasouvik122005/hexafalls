@@ -79,19 +79,15 @@ export default async function EventPage({ params }) {
   const event = EVENTS.find((e) => e.slug === slug);
   if (!event) notFound();
 
-<<<<<<< HEAD
   const paths = REGISTRATION_PATHS[slug] ?? [];
   const context = CONTEXT[slug] ?? "";
   const accent = event.name.replace(/^The\s+/i, "");
-=======
   const isHackathon = event.slug === "hackathon";
   const isHardware = event.slug === "hardware";
->>>>>>> 1cfce0da7c63833615727b57e59bf4ef2c0915f4
 
   return (
     <main className="flex-1">
       <TopBar />
-<<<<<<< HEAD
       <section className="relative isolate overflow-hidden min-h-screen pt-28 pb-24 px-6 flex flex-col items-center">
         <HeroVideoBg />
         <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
@@ -231,7 +227,6 @@ export default async function EventPage({ params }) {
           </RoughFrame>
         </div>
       </section>
-=======
       {isHackathon ? (
         <HackathonDetails />
       ) : isHardware ? (
@@ -254,7 +249,6 @@ export default async function EventPage({ params }) {
           backLabel="← ALL EVENTS"
         />
       )}
->>>>>>> 1cfce0da7c63833615727b57e59bf4ef2c0915f4
       <Footer />
     </main>
   );
