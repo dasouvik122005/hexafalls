@@ -1,6 +1,7 @@
-// POST /api/pay/webhook
+// POST /api/callback/payouts
 //
 // Inbound Elixpo Pay webhook (entitlement.updated / successful payment).
+// This path matches ELIXPO_PAY_WEBHOOK_URL configured in the Pay dashboard.
 //
 // SECURITY: the raw body is read and its signature verified BEFORE we parse or
 // act on anything. We NEVER trust the payload before the HMAC check. Processing

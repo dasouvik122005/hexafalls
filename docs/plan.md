@@ -106,8 +106,10 @@ Finish the **entire** registration system. Auth/SSO + basic squad create/join/su
 - **Verified-correct:** webhook sig verified on raw body pre-parse + constant-time + replay window + idempotent; amounts server-derived; IDOR/ownership re-derived from DB everywhere; SQL fully parameterized; cookie httpOnly+SameSite=Lax; no secret leakage; emails to DB-derived addresses with idempotency keys.
 
 ## Known follow-ups (not blocking)
-- Replace `ELIXPO_MAILS_*` placeholders + confirm Elixpo Pay checkout endpoint path (assumed `/v1/checkout/sessions`) and webhook signing scheme (assumed Mails-style) once the Pay dashboard is available.
-- Build the 4 email templates in lixeditor per `docs/email_templates.md`.
+- ✅ Elixpo Mails keys + 4 per-template webhooks set live in `.env.local`; mail trigger reads `ELIXPO_MAILS_WEBHOOK_TEAM_CREATED/_APPROVED/_DELETED/_PAYMENT_COMPLETE`.
+- ✅ Elixpo Pay creds + `ELIXPO_PAY_WEBHOOK_SECRET` set live; webhook handler moved to **`/api/callback/payouts`** to match the dashboard's `ELIXPO_PAY_WEBHOOK_URL`.
+- Confirm the Elixpo Pay **checkout** endpoint path (assumed `POST /v1/checkout/sessions`) + that its webhook signing matches the Mails `t=,v1=` HMAC scheme — verify on first real charge.
+- Build the 4 email templates in lixeditor per `docs/email_templates.md` (vars must match exactly).
 - Optional: gate `pay/checkout` to require `submitted/under_review` so payment can't precede review (currently payment allowed any time after joining).
 - Set a real `ZEALEY_URL` for the evangelist button.
 
