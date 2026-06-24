@@ -7,8 +7,7 @@ name: Sync Payments
 #
 # Required repo secret:
 #   ELIXPO_PAY_API_KEY — also used as the bearer to authenticate to the endpoint
-# Optional repo variable (override if the endpoint lives elsewhere):
-#   SYNC_ENDPOINT_URL  — defaults to https://hexafalls.org/api/cron/sync-payments
+# Endpoint URL is hardcoded below (production).
 
 on:
   schedule:
@@ -30,13 +29,12 @@ jobs:
       - name: Call reconcile endpoint
         env:
           ELIXPO_PAY_API_KEY: ${{ secrets.ELIXPO_PAY_API_KEY }}
-          SYNC_ENDPOINT_URL: ${{ vars.SYNC_ENDPOINT_URL }}
         run: |
           set -euo pipefail
           if [ -z "${ELIXPO_PAY_API_KEY:-}" ]; then
             echo "::error::ELIXPO_PAY_API_KEY repo secret is not set"; exit 1
           fi
-          URL="${SYNC_ENDPOINT_URL:-https://hexafalls.org/api/cron/sync-payments}"
+          URL="https://hexafalls.org/api/cron/sync-payments"
           echo "POST $URL"
           # Capture body + status; fail the job on a non-2xx so a broken sync is visible.
           HTTP_CODE=$(curl -sS -o /tmp/sync_body.json -w "%{http_code}" \

@@ -109,7 +109,7 @@ Finish the **entire** registration system. Auth/SSO + basic squad create/join/su
 ## Payment reconciliation (cron)
 - **Webhook** `POST /api/callback/payouts` is the primary path (settles in real time).
 - **Safety net:** `POST /api/cron/sync-payments` pulls Elixpo Pay `GET /v1/sync?app=`, marks any missed `pending→paid`, rolls squads to `fees_settled`. Shared `settleSquadIfComplete` (`src/lib/pay/settle.js`) so webhook + cron settle identically and idempotently.
-- **Schedule:** `.github/workflows/sync-payments.yml` — every 15 min + manual dispatch. Auths with `Authorization: Bearer ${{ secrets.ELIXPO_PAY_API_KEY }}` (constant-time compared against `CRON_SECRET` if set, else `ELIXPO_PAY_API_KEY`). Optional `vars.SYNC_ENDPOINT_URL` override.
+- **Schedule:** `.github/workflows/sync-payments.yml` — every 15 min + manual dispatch. Hits the hardcoded `https://hexafalls.org/api/cron/sync-payments`. Auths with `Authorization: Bearer ${{ secrets.ELIXPO_PAY_API_KEY }}` (constant-time compared against `CRON_SECRET` if set, else `ELIXPO_PAY_API_KEY`).
 - **Prod secrets needed:** `wrangler secret put ELIXPO_PAY_API_KEY` (+ `ELIXPO_PAY_APP_ID`, `ELIXPO_PAY_WEBHOOK_SECRET`, mails keys, optional `CRON_SECRET`) — `.env.local` is local-only.
 
 ## Known follow-ups (not blocking)
