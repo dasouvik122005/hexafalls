@@ -14,6 +14,9 @@ import Sparkles from "@/components/Sparkles";
 import RoughFrame from "@/components/RoughFrame";
 import RoughButton from "@/components/RoughButton";
 import RoughDivider from "@/components/RoughDivider";
+import ComingSoon from "@/components/ComingSoon";
+import HackathonDetails from "@/components/HackathonDetails";
+import HardwareDetails from "@/components/HardwareDetails";
 import { EVENTS } from "@/lib/routes";
 
 // Map an /events slug → one or more register CTAs (now events-scoped).
@@ -51,6 +54,20 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
   const event = EVENTS.find((e) => e.slug === slug);
   if (!event) return { title: "Event · HexaFalls Techfest" };
+  if (event.slug === "hackathon") {
+    return {
+      title: "Software Hackathon — Judging Rubric · HexaFalls Techfest",
+      description:
+        "58-hour software hackathon judging rubric, scoring criteria, hackathon tracks, bonus points, and submission requirements at HexaFalls.",
+    };
+  }
+  if (event.slug === "hardware") {
+    return {
+      title: "Hardware Hack — Tracks · HexaFalls Techfest",
+      description:
+        "Hardware hackathon tracks including Exhibition, Robo Sumo, Robo Soccer, Robo Terrence, and Line Follower at HexaFalls.",
+    };
+  }
   return {
     title: `${event.name} · HexaFalls Techfest`,
     description: `${event.name} at HexaFalls 2026, JIS University. ${CONTEXT[slug] ?? ""} Register now.`,
@@ -62,13 +79,19 @@ export default async function EventPage({ params }) {
   const event = EVENTS.find((e) => e.slug === slug);
   if (!event) notFound();
 
+<<<<<<< HEAD
   const paths = REGISTRATION_PATHS[slug] ?? [];
   const context = CONTEXT[slug] ?? "";
   const accent = event.name.replace(/^The\s+/i, "");
+=======
+  const isHackathon = event.slug === "hackathon";
+  const isHardware = event.slug === "hardware";
+>>>>>>> 1cfce0da7c63833615727b57e59bf4ef2c0915f4
 
   return (
     <main className="flex-1">
       <TopBar />
+<<<<<<< HEAD
       <section className="relative isolate overflow-hidden min-h-screen pt-28 pb-24 px-6 flex flex-col items-center">
         <HeroVideoBg />
         <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
@@ -208,6 +231,30 @@ export default async function EventPage({ params }) {
           </RoughFrame>
         </div>
       </section>
+=======
+      {isHackathon ? (
+        <HackathonDetails />
+      ) : isHardware ? (
+        <HardwareDetails />
+      ) : (
+        <ComingSoon
+          eyebrow={`Track · ${event.name}`}
+          title="The"
+          accent={event.name.replace(/^The\s+/i, "")}
+          lede={`${event.blurb} The full brief is being inked: rules, schedule, judging. Return soon, or peek at the prizes already.`}
+          whisper={`"Every contest is a small spell, and every spell needs its rules."`}
+          accentColor={event.color}
+          accentGlow={event.glow}
+          apply={{
+            open: true,
+            label: "SEE THE PRIZES",
+            href: `/events/${event.slug}/prizes`,
+          }}
+          backHref="/events"
+          backLabel="← ALL EVENTS"
+        />
+      )}
+>>>>>>> 1cfce0da7c63833615727b57e59bf4ef2c0915f4
       <Footer />
     </main>
   );

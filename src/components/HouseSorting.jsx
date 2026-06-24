@@ -108,22 +108,25 @@ export default function HouseSorting() {
 
   // On mount, restore a prior sorting so returning wizards skip the quiz.
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (parsed?.houseKey && HOUSES.some((h) => h.key === parsed.houseKey)) {
-          setHouseKey(parsed.houseKey);
-          setName(parsed.name || "");
-          setSavedName(parsed.name || "");
-          setPhase("result");
-          return;
+    const timer = setTimeout(() => {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed?.houseKey && HOUSES.some((h) => h.key === parsed.houseKey)) {
+            setHouseKey(parsed.houseKey);
+            setName(parsed.name || "");
+            setSavedName(parsed.name || "");
+            setPhase("result");
+            return;
+          }
         }
+      } catch {
+        /* ignore corrupt storage */
       }
-    } catch {
-      /* ignore corrupt storage */
-    }
-    setPhase("intro");
+      setPhase("intro");
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const house = houseKey ? houseByKey(houseKey) : null;

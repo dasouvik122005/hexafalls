@@ -87,7 +87,7 @@ function PdfPageRenderer({ url, pageNum, onDocumentLoad }) {
 
     render();
     return () => { active = false; };
-  }, [url, pageNum, containerSize]);
+  }, [url, pageNum, containerSize, onDocumentLoad]);
 
   return (
     <div ref={containerRef} className="w-full h-full flex items-center justify-center p-2 relative">
@@ -261,7 +261,7 @@ export default function BrandKit() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (window.JSZip) {
-      setJsZipLoaded(true);
+      setTimeout(() => setJsZipLoaded(true), 0);
       return;
     }
     const script = document.createElement("script");
@@ -276,7 +276,7 @@ export default function BrandKit() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (window.pdfjsLib) {
-      setPdfJsLoaded(true);
+      setTimeout(() => setPdfJsLoaded(true), 0);
       return;
     }
     const script = document.createElement("script");
