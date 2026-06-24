@@ -12,12 +12,9 @@ import Footer from "@/components/Footer";
 import RoughFrame from "@/components/RoughFrame";
 import RegisterShell from "@/components/register/RegisterShell";
 import ProfileEditor from "@/components/register/ProfileEditor";
-import NotificationsPanel from "@/components/profile/NotificationsPanel";
-import PayButton from "@/components/profile/PayButton";
 import RoughButton from "@/components/RoughButton";
 import { getDB } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth/server";
-import { REGISTRATION_EVENTS, teamUrl, isPaidEvent, isPayableNow } from "@/lib/registration/events";
 
 export const dynamic = "force-dynamic";
 
@@ -78,9 +75,6 @@ export default async function UserProfilePage({ params }) {
         accent={user.username ? `@${user.username}` : user.display_name ?? "Wizard"}
       >
         <div className="flex flex-col gap-6">
-          {/* Owner-only notifications */}
-          {isOwner && <NotificationsPanel />}
-
           {/* Evangelist → Zealey */}
           {isEvangelist && (
             <div className="flex justify-center">
@@ -164,76 +158,21 @@ export default async function UserProfilePage({ params }) {
             </div>
           )}
 
-          {/* Squads / teams */}
-          {squadRows.length > 0 && (
-            <div>
-              <h2 className="mb-3 font-display tracking-[0.3em] uppercase text-sm text-gold-hp hp-glow-gold">
-                Teams
-              </h2>
-              <ul className="flex flex-col gap-2">
-                {squadRows.map((s) => {
-                  const paid = isPaidEvent(s.event);
-                  const hasPaid = paidSquadIds.has(s.id);
-                  return (
-                    <li
-                      key={s.id}
-                      className="flex flex-wrap items-center justify-between gap-3 rounded-sm border border-cyan-hp/20 bg-slate-hp/30 px-4 py-3"
-                    >
-                      <Link
-                        href={teamUrl(s.event, s.id)}
-                        className="flex flex-1 items-center gap-3 min-w-0 transition hover:opacity-80"
-                      >
-                        <span className="font-display text-[9px] uppercase tracking-[0.35em] text-gold-hp/80 rounded-full border border-gold-hp/50 bg-gold-hp/10 px-2 py-0.5">
-                          {s.role}
-                        </span>
-                        <span className="font-display text-sm text-silver-hp">{s.name}</span>
-                        <span className="font-wizard text-xs text-silver-hp/55">
-                          · {REGISTRATION_EVENTS[s.event]?.label ?? s.event}
-                        </span>
-                      </Link>
-                      <span className="flex items-center gap-2">
-                        {paid && (
-                          hasPaid ? (
-                            <PaidChip />
-                          ) : (
-                            <>
-                              <FeesDueChip />
-                              {isOwner && isPayableNow(s.event, s.status) && (
-                                <PayButton event={s.event} squadId={s.id} />
-                              )}
-                            </>
-                          )
-                        )}
-                        <StatusPill status={s.status} />
-                      </span>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          )}
-
-          {/* Solo entries */}
-          {soloRows.length > 0 && (
-            <div>
-              <h2 className="mb-3 font-display tracking-[0.3em] uppercase text-sm text-gold-hp hp-glow-gold">
-                Entries
-              </h2>
-              <ul className="flex flex-col gap-2">
-                {soloRows.map((e) => (
-                  <li
-                    key={e.id}
-                    className="flex items-center justify-between gap-3 rounded-sm border border-cyan-hp/20 bg-slate-hp/30 px-4 py-3"
-                  >
-                    <span className="font-display text-sm text-silver-hp">
-                      {REGISTRATION_EVENTS[e.event]?.label ?? e.event}
-                    </span>
-                    <StatusPill status={e.status} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+          {/* Quick links to the sub-pages */}
+          <div className="grid sm:grid-cols-2 gap-3">
+            <NavCard
+              href={`/u/${user.elixpo_id}/teams`}
+              title="Teams & Entries"
+              note="Your squads, solo entries, statuses and fees."
+            />
+            {isOwner && (
+              <NavCard
+                href={`/u/${user.elixpo_id}/notifications`}
+                title="Notifications"
+                note="Owl post — requests, approvals and payment updates."
+              />
+            )}
+          </div>
         </div>
       </RegisterShell>
       <Footer />
@@ -267,43 +206,19 @@ function ExtLink({ href, label }) {
   );
 }
 
-function PaidChip() {
+function NavCard({ href, title, note }) {
   return (
-    <span className="rounded-full border border-emerald-400/50 bg-emerald-400/10 px-2.5 py-0.5 font-display text-[9px] uppercase tracking-[0.35em] text-emerald-300">
-      Paid ✓
-    </span>
-  );
-}
-
-function FeesDueChip() {
-  return (
-    <span className="rounded-full border border-gold-hp/50 bg-gold-hp/10 px-2.5 py-0.5 font-display text-[9px] uppercase tracking-[0.35em] text-gold-hp">
-      Fees due
-    </span>
-  );
-}
-
-const STATUS_COLOR = {
-  // canonical machine: registered → under_review → fees_settled → approved
-  registered:   "#66FCF1",
-  under_review: "#D4AF37",
-  fees_settled: "#A78BFA",
-  approved:     "#4ade80",
-  rejected:     "#EF4444",
-  // legacy synonyms (back-compat with existing rows)
-  forming:      "#66FCF1",
-  submitted:    "#D4AF37",
-  locked:       "#A78BFA",
-};
-
-function StatusPill({ status }) {
-  const c = STATUS_COLOR[status] ?? "#C5C6C7";
-  return (
-    <span
-      className="rounded-full border px-2.5 py-0.5 font-display text-[9px] uppercase tracking-[0.35em]"
-      style={{ borderColor: `${c}80`, color: c, backgroundColor: `${c}1a` }}
+    <Link
+      href={href}
+      className="group flex flex-col gap-1 rounded-sm border border-cyan-hp/25 bg-slate-hp/30 px-5 py-4 transition hover:border-cyan-hp/55 hover:bg-slate-hp/50"
     >
-      {status}
-    </span>
+      <span className="flex items-center justify-between font-display tracking-[0.2em] uppercase text-sm text-silver-hp">
+        {title}
+        <span aria-hidden="true" className="text-cyan-hp/70 transition group-hover:translate-x-0.5">
+          →
+        </span>
+      </span>
+      <span className="font-wizard text-xs text-silver-hp/60">{note}</span>
+    </Link>
   );
 }
