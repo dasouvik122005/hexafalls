@@ -5,7 +5,7 @@ import ComingSoon from "@/components/ComingSoon";
 export const metadata = {
   title: "Call for Judges & Mentors · HexaFalls Techfest",
   description:
-    "Judges and mentors join the council of HexaFalls, a 58-hour wizarding hackathon at JIS University. Applications open soon.",
+    "Judges and mentors join the council of HexaFalls, a 58-hour wizarding hackathon at JIS University. Applications open soon. Co-developed by Ayushman Bhattacharya.",
 };
 
 export default function JudgesPage() {

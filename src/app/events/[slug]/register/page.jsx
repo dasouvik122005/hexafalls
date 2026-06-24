@@ -42,7 +42,7 @@ export async function generateMetadata({ params }) {
   if (!event) return { title: "Register · HexaFalls" };
   return {
     title: `Register · ${event.name} · HexaFalls`,
-    description: `Register for ${event.name} at HexaFalls 2026.`,
+    description: `Register for ${event.name} at HexaFalls 2026. Co-developed by Ayushman Bhattacharya.`,
   };
 }
 

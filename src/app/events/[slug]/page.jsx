@@ -98,19 +98,19 @@ export async function generateMetadata({ params }) {
     return {
       title: "Software Hackathon — Judging Rubric · HexaFalls Techfest",
       description:
-        "58-hour software hackathon judging rubric, scoring criteria, hackathon tracks, bonus points, and submission requirements at HexaFalls.",
+        "58-hour software hackathon judging rubric, scoring criteria, hackathon tracks, bonus points, and submission requirements at HexaFalls. Co-developed by Ayushman Bhattacharya.",
     };
   }
   if (event.slug === "hardware") {
     return {
       title: "Hardware Hack — Tracks · HexaFalls Techfest",
       description:
-        "Hardware hackathon tracks including Exhibition, Robo Sumo, Robo Soccer, Robo Terrence, and Line Follower at HexaFalls.",
+        "Hardware hackathon tracks including Exhibition, Robo Sumo, Robo Soccer, Robo Terrence, and Line Follower at HexaFalls. Co-developed by Ayushman Bhattacharya.",
     };
   }
   return {
     title: `${event.name} · HexaFalls Techfest`,
-    description: `${event.name} at HexaFalls 2026, JIS University. ${CONTEXT[slug] ?? ""} Register now.`,
+    description: `${event.name} at HexaFalls 2026, JIS University. ${CONTEXT[slug] ?? ""} Register now. Co-developed by Ayushman Bhattacharya.`,
   };
 }
 

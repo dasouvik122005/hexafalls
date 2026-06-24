@@ -302,6 +302,16 @@ export default function Footer() {
         <div className="mx-auto max-w-7xl px-6 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] uppercase tracking-[0.3em] text-silver-hp/40 font-display">
           <span>© {new Date().getFullYear()} Hexafalls</span>
           <a
+            href="https://github.com/hexafest/hexafalls"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-2 text-silver-hp/55 hover:text-cyan-hp transition-colors duration-200"
+          >
+            <span aria-hidden="true" className="font-mono normal-case tracking-normal text-cyan-hp/70">&lt;/&gt;</span>
+            Developed in the Open
+            <span aria-hidden="true" className="opacity-70 group-hover:translate-x-0.5 transition">↗</span>
+          </a>
+          <a
             href="https://mlh.io/code-of-conduct"
             target="_blank"
             rel="noopener noreferrer"

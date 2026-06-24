@@ -5,7 +5,7 @@ import Events from "@/components/Events";
 export const metadata = {
   title: "The Events · HexaFalls Techfest",
   description:
-    "Five tracks at HexaFalls: hackathon, competitive programming, gaming, hardware and software. Briefs and prizes coming soon.",
+    "Five tracks at HexaFalls: hackathon, competitive programming, gaming, hardware and software. Briefs and prizes coming soon. Co-developed by Ayushman Bhattacharya.",
 };
 
 export default function EventsPage() {

@@ -26,7 +26,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Join Squad · HexaFalls",
   description:
-    "Accept your invite to a HexaFalls squad. Sign in with Elixpo and lock your seat.",
+    "Accept your invite to a HexaFalls squad. Sign in with Elixpo and lock your seat. Co-developed by Ayushman Bhattacharya.",
   robots: { index: false, follow: false },
 };
 

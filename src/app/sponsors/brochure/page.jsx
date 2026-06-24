@@ -36,11 +36,11 @@ const BROCHURE_PAGES = [
 export const metadata = {
   title: "Sponsorship Brochure · HexaFalls Techfest",
   description:
-    "The HexaFalls sponsorship brochure: tiers, benefits, audience and reach. Preview in the browser or download the PDF.",
+    "The HexaFalls sponsorship brochure: tiers, benefits, audience and reach. Preview in the browser or download the PDF. Co-developed by Ayushman Bhattacharya.",
   openGraph: {
     title: "Sponsorship Brochure · HexaFalls Techfest",
     description:
-      "Tiers, benefits, audience and reach. Everything you need to back HexaFalls.",
+      "Tiers, benefits, audience and reach. Everything you need to back HexaFalls. Co-developed by Ayushman Bhattacharya.",
   },
 };
 

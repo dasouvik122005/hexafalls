@@ -5,7 +5,7 @@ import HouseSorting from "@/components/HouseSorting";
 export const metadata = {
   title: "The Sorting · Claim Your House",
   description:
-    "Sit before the Sorting Hat. Answer its questions and receive the HexaFalls house crest you were always meant to carry.",
+    "Sit before the Sorting Hat. Answer its questions and receive the HexaFalls house crest you were always meant to carry. Co-developed by Ayushman Bhattacharya.",
 };
 
 export default function HousePage() {

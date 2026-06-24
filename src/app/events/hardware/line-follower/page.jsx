@@ -4,7 +4,7 @@ import LineFollowerDetails from "@/components/LineFollowerDetails";
 
 export const metadata = {
   title: "Line Follower Rulebook · HexaFalls Techfest",
-  description: "Line Follower rules, bot specifications, track details, registration, and judging criteria at HexaFalls hardware hackathon.",
+  description: "Line Follower rules, bot specifications, track details, registration, and judging criteria at HexaFalls hardware hackathon. Co-developed by Ayushman Bhattacharya.",
 };
 
 export default function LineFollowerPage() {

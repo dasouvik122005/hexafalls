@@ -4,7 +4,7 @@ import RoboTerrenceDetails from "@/components/RoboTerrenceDetails";
 
 export const metadata = {
   title: "Robo Terrence Rulebook · HexaFalls Techfest",
-  description: "Robo Terrence rules, bot specifications, registration details, and judging criteria at HexaFalls hardware hackathon.",
+  description: "Robo Terrence rules, bot specifications, registration details, and judging criteria at HexaFalls hardware hackathon. Co-developed by Ayushman Bhattacharya.",
 };
 
 export default function RoboTerrencePage() {
