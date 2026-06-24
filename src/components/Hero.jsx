@@ -441,7 +441,7 @@ export default function Hero() {
           {/* Register — routes to /events/hackathon which then sends to Devfolio */}
           <RoughButton
             as={Link}
-            href="/events/hackathon"
+            href="/events"
             color="#D4AF37"
             glow="rgba(212,175,55,0.30)"
             shimmer

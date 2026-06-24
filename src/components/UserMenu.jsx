@@ -1,9 +1,9 @@
 "use client";
 
-// Signed-in user chip for the navbar: name + email pill that expands into a
-// dropdown of account actions. Fetches /api/me on mount (TopBar is a shared
-// client component, so we can't pass the session user as a prop). Crisp, not
-// rough-themed — per the visual conventions, small nav chrome stays clean.
+// Signed-in user chip for the navbar: avatar + name + email pill that expands
+// into a dropdown of account actions, with an unread-notification badge.
+// Fetches /api/me on mount (TopBar is a shared client component), then the
+// unread count from /api/notifications.
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -14,18 +14,21 @@ function initialOf(user) {
   return s.trim().charAt(0).toUpperCase();
 }
 
-// Avatar: Elixpo profile picture when available, else a lettered fallback.
-function Avatar({ user, size = 28, text = "12px" }) {
+// Avatar: Gravatar (real photo or identicon); falls back to a lettered tile if
+// the image fails to load.
+function Avatar({ user, size = 30, text = "13px" }) {
+  const [broken, setBroken] = useState(false);
   const cls =
     "shrink-0 grid place-items-center rounded-full bg-cyan-hp/15 font-display text-cyan-hp ring-1 ring-cyan-hp/40 overflow-hidden";
   const style = { height: size, width: size, fontSize: text };
-  if (user?.avatarUrl) {
+  if (user?.avatarUrl && !broken) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img
         src={user.avatarUrl}
         alt=""
         referrerPolicy="no-referrer"
+        onError={() => setBroken(true)}
         className={cls}
         style={style}
       />
@@ -39,7 +42,8 @@ function Avatar({ user, size = 28, text = "12px" }) {
 }
 
 export default function UserMenu() {
-  const [user, setUser] = useState(undefined); // undefined = loading, null = signed out
+  const [user, setUser] = useState(undefined); // undefined=loading, null=signed out
+  const [unread, setUnread] = useState(0);
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -47,7 +51,16 @@ export default function UserMenu() {
     let alive = true;
     fetch("/api/me", { headers: { Accept: "application/json" } })
       .then((r) => r.json())
-      .then((d) => alive && setUser(d.user ?? null))
+      .then((d) => {
+        if (!alive) return;
+        setUser(d.user ?? null);
+        if (d.user) {
+          fetch("/api/notifications", { headers: { Accept: "application/json" } })
+            .then((r) => r.json())
+            .then((n) => alive && setUnread(n.unread ?? 0))
+            .catch(() => {});
+        }
+      })
       .catch(() => alive && setUser(null));
     return () => {
       alive = false;
@@ -56,9 +69,7 @@ export default function UserMenu() {
 
   useEffect(() => {
     if (!open) return;
-    const onDown = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
-    };
+    const onDown = (e) => ref.current && !ref.current.contains(e.target) && setOpen(false);
     const onKey = (e) => e.key === "Escape" && setOpen(false);
     window.addEventListener("mousedown", onDown);
     window.addEventListener("keydown", onKey);
@@ -68,17 +79,14 @@ export default function UserMenu() {
     };
   }, [open]);
 
-  // Loading: reserve nothing (avoid layout shift / SSR mismatch).
   if (user === undefined) return null;
 
-  // Signed out → a compact sign-in link.
   if (user === null) {
-    const returnTo =
-      typeof window !== "undefined" ? window.location.pathname : "/";
+    const returnTo = typeof window !== "undefined" ? window.location.pathname : "/";
     return (
       <a
         href={`/api/auth/login?return_to=${encodeURIComponent(returnTo)}`}
-        className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-gold-hp/40 bg-gold-hp/10 px-3.5 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] text-gold-hp transition hover:bg-gold-hp/20"
+        className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-gold-hp/40 bg-gold-hp/10 px-4 py-2 font-display text-[11px] uppercase tracking-[0.3em] text-gold-hp transition hover:bg-gold-hp/20"
       >
         Sign in <span aria-hidden="true">↗</span>
       </a>
@@ -89,9 +97,9 @@ export default function UserMenu() {
   const name = user.displayName || (user.username ? `@${user.username}` : "Wizard");
 
   const items = [
-    { label: "My Scroll · Profile", href: profileHref },
-    { label: "Teams & Entries", href: profileHref },
-    { label: "Notifications", href: profileHref },
+    { label: "My Profile", href: profileHref },
+    { label: "Teams & Entries", href: `${profileHref}/teams` },
+    { label: "Notifications", href: `${profileHref}/notifications`, badge: unread },
     { label: "Browse Events", href: "/events" },
   ];
 
@@ -102,20 +110,27 @@ export default function UserMenu() {
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="menu"
         aria-expanded={open}
-        className="group inline-flex items-center gap-2.5 rounded-full border border-cyan-hp/30 bg-slate-hp/40 py-1 pl-1 pr-2.5 sm:pr-3 backdrop-blur-sm transition hover:border-cyan-hp/55 hover:bg-slate-hp/60"
+        className="group relative inline-flex items-center gap-2.5 rounded-full border border-cyan-hp/30 bg-slate-hp/40 py-1 pl-1 pr-2.5 sm:pr-3 backdrop-blur-sm transition hover:border-cyan-hp/55 hover:bg-slate-hp/60"
       >
-        <Avatar user={user} size={28} text="12px" />
+        <span className="relative">
+          <Avatar user={user} size={30} text="13px" />
+          {unread > 0 && (
+            <span className="absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center rounded-full bg-gold-hp px-1 font-display text-[9px] font-bold text-midnight">
+              {unread > 9 ? "9+" : unread}
+            </span>
+          )}
+        </span>
         <span className="hidden sm:flex flex-col items-start leading-tight max-w-[12rem]">
-          <span className="font-display text-[11px] tracking-[0.06em] text-silver-hp truncate w-full">
+          <span className="font-display text-[12px] tracking-[0.06em] text-silver-hp truncate w-full">
             {name}
           </span>
-          <span className="font-mono text-[9px] text-silver-hp/55 truncate w-full">
+          <span className="font-mono text-[10px] text-silver-hp/55 truncate w-full">
             {user.email}
           </span>
         </span>
         <svg
           viewBox="0 0 24 24"
-          className={`h-3.5 w-3.5 text-silver-hp/60 transition-transform ${open ? "rotate-180" : ""}`}
+          className={`h-4 w-4 text-silver-hp/60 transition-transform ${open ? "rotate-180" : ""}`}
           fill="none"
           stroke="currentColor"
           strokeWidth="2.2"
@@ -134,44 +149,45 @@ export default function UserMenu() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -8, scale: 0.98 }}
             transition={{ duration: 0.16, ease: "easeOut" }}
-            className="absolute right-0 mt-2 w-60 overflow-hidden rounded-lg border border-cyan-hp/25 bg-midnight/95 backdrop-blur-md shadow-[0_18px_50px_rgba(0,0,0,0.6)]"
+            className="absolute right-0 mt-2 w-72 overflow-hidden rounded-lg border border-cyan-hp/25 bg-midnight/95 backdrop-blur-md shadow-[0_18px_50px_rgba(0,0,0,0.6)]"
           >
-            {/* header */}
-            <div className="flex items-center gap-3 border-b border-silver-hp/10 px-4 py-3">
-              <Avatar user={user} size={36} text="14px" />
+            <div className="flex items-center gap-3 border-b border-silver-hp/10 px-4 py-3.5">
+              <Avatar user={user} size={42} text="16px" />
               <div className="min-w-0">
-                <p className="font-display text-[12px] text-silver-hp truncate">{name}</p>
-                <p className="font-mono text-[10px] text-silver-hp/55 truncate">{user.email}</p>
+                <p className="font-display text-sm text-silver-hp truncate">{name}</p>
+                <p className="font-mono text-[11px] text-silver-hp/55 truncate">{user.email}</p>
               </div>
             </div>
 
-            {/* role chip */}
-            <div className="px-4 pt-2">
-              <span className="inline-flex items-center rounded-full border border-gold-hp/40 bg-gold-hp/10 px-2 py-0.5 font-display text-[8px] uppercase tracking-[0.3em] text-gold-hp/90">
+            <div className="px-4 pt-2.5">
+              <span className="inline-flex items-center rounded-full border border-gold-hp/40 bg-gold-hp/10 px-2.5 py-0.5 font-display text-[9px] uppercase tracking-[0.3em] text-gold-hp/90">
                 {user.role}
               </span>
             </div>
 
-            {/* links */}
-            <nav className="flex flex-col py-1.5">
+            <nav className="flex flex-col py-2">
               {items.map((it) => (
                 <Link
                   key={it.label}
                   href={it.href}
                   role="menuitem"
                   onClick={() => setOpen(false)}
-                  className="px-4 py-2 font-display text-[11px] tracking-[0.05em] text-silver-hp/85 transition hover:bg-cyan-hp/10 hover:text-cyan-hp"
+                  className="flex items-center justify-between px-4 py-2.5 font-display text-[13px] tracking-[0.04em] text-silver-hp/85 transition hover:bg-cyan-hp/10 hover:text-cyan-hp"
                 >
-                  {it.label}
+                  <span>{it.label}</span>
+                  {it.badge > 0 && (
+                    <span className="grid h-5 min-w-5 place-items-center rounded-full bg-gold-hp px-1.5 font-display text-[10px] font-bold text-midnight">
+                      {it.badge > 9 ? "9+" : it.badge}
+                    </span>
+                  )}
                 </Link>
               ))}
             </nav>
 
-            {/* sign out */}
             <a
               href="/api/auth/logout"
               role="menuitem"
-              className="block border-t border-silver-hp/10 px-4 py-2.5 font-display text-[11px] tracking-[0.05em] text-red-300/85 transition hover:bg-red-500/10 hover:text-red-300"
+              className="block border-t border-silver-hp/10 px-4 py-3 font-display text-[13px] tracking-[0.04em] text-red-300/85 transition hover:bg-red-500/10 hover:text-red-300"
             >
               Sign out ↪
             </a>

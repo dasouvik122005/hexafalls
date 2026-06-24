@@ -14,6 +14,16 @@ import { generateId } from "@/lib/ids";
 
 export const runtime = "edge";
 
+// Gravatar URL from an email (SHA-256 hex of the trimmed, lowercased address).
+// d=identicon → a unique generated avatar when the user has no Gravatar.
+async function gravatarUrl(email) {
+  if (!email) return null;
+  const norm = String(email).trim().toLowerCase();
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(norm));
+  const hash = [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+  return `https://www.gravatar.com/avatar/${hash}?s=128&d=identicon`;
+}
+
 export async function GET(req) {
   const url = new URL(req.url);
   const code = url.searchParams.get("code");
@@ -80,10 +90,11 @@ export async function GET(req) {
     Date.now() + (tokens.expires_in ?? 900) * 1000,
   ).toISOString();
 
-  // Elixpo profile picture — field name isn't pinned in the docs, so read the
-  // common variants.
-  const avatarUrl =
-    me.avatarUrl ?? me.avatar ?? me.picture ?? me.image ?? me.photo ?? null;
+  // Elixpo Accounts does not expose a profile picture (userinfo is only
+  // id/email/displayName/provider/emailVerified). Derive a Gravatar from the
+  // email instead — a real photo if the user has one, else a deterministic
+  // identicon. SHA-256 is the modern Gravatar hash.
+  const avatarUrl = await gravatarUrl(me.email);
 
   let userId;
   if (existing) {
