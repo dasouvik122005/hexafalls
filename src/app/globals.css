@@ -115,13 +115,14 @@ html, body {
 }
 .hp-pulse { animation: hp-pulse 4.5s ease-in-out infinite; }
 
-/* Parchment-style scrim — multi-light wash that suggests stained glass */
+/* Multi-light wash — kept subtle/matte (halved from the old stained-glass
+   intensity) so backgrounds stay calm and professional. */
 .hp-scrim {
   background:
-    radial-gradient(ellipse at top left,     rgba(102,252,241,.16), transparent 55%),
-    radial-gradient(ellipse at top right,    rgba(167,139,250,.12), transparent 55%),
-    radial-gradient(ellipse at bottom left,  rgba(212,175,55,.10),  transparent 55%),
-    radial-gradient(ellipse at bottom right, rgba(102,252,241,.08), transparent 55%);
+    radial-gradient(ellipse at top left,     rgba(102,252,241,.08), transparent 55%),
+    radial-gradient(ellipse at top right,    rgba(167,139,250,.06), transparent 55%),
+    radial-gradient(ellipse at bottom left,  rgba(212,175,55,.05),  transparent 55%),
+    radial-gradient(ellipse at bottom right, rgba(102,252,241,.04), transparent 55%);
 }
 
 .scrolls-section-bg {
@@ -300,19 +301,19 @@ html, body {
 .hp-fog__cloud--a {
   top: 8%;  left: -12%;
   width: 65%; height: 55%;
-  background: radial-gradient(circle, rgba(102,252,241,0.30), transparent 70%);
+  background: radial-gradient(circle, rgba(102,252,241,0.15), transparent 70%);
   animation: hp-fog-drift-a 28s ease-in-out infinite;
 }
 .hp-fog__cloud--b {
   top: -10%; right: -12%;
   width: 60%; height: 50%;
-  background: radial-gradient(circle, rgba(212,175,55,0.22), transparent 70%);
+  background: radial-gradient(circle, rgba(212,175,55,0.11), transparent 70%);
   animation: hp-fog-drift-b 32s ease-in-out infinite;
 }
 .hp-fog__cloud--c {
   top: 45%; left: 15%;
   width: 75%; height: 55%;
-  background: radial-gradient(circle, rgba(167,139,250,0.22), transparent 70%);
+  background: radial-gradient(circle, rgba(167,139,250,0.11), transparent 70%);
   animation: hp-fog-drift-c 36s ease-in-out infinite;
 }
 .hp-fog__cloud--d {
