@@ -304,8 +304,8 @@ export default function HardwareDetails() {
               textShadow: "0 0 10px rgba(212,175,55,.3)",
             }}
           >
-            "The finest witches and wizards are not born.
-            They are forged through innovation."
+            &quot;The finest witches and wizards are not born.
+            They are forged through innovation.&quot;
           </p>
 
           <p className="mt-4 text-silver-hp/70">
