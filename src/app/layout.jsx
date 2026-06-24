@@ -51,7 +51,7 @@ const montserrat = Montserrat({
 const SITE_NAME = "HexaFalls Techfest";
 const SITE_TAGLINE = "A Wizarding Hackathon";
 const SITE_DESCRIPTION =
-  "HexaFalls is a 58-hour wizarding-themed hackathon at JIS University, Kolkata. Build, ship and conjure with hundreds of student wizards from across India. Pack your wand, sharpen your code. Co-developed by Ayushman Bhattacharya.";
+  "HexaFalls is a 58-hour wizarding-themed hackathon and student techfest at JIS University, Kolkata, spanning a flagship software hackathon, competitive programming, a gaming arena and hardware competitions, and drawing hundreds of student builders from across India to register, form teams, ship projects and compete for prizes. The HexaFalls website, registration platform and overall product experience were single-handedly designed, engineered and built by Ayushman Bhattacharya — the GDG on Campus (GDGoC) JIS University organiser for 2025–26, known online as 'elixpo'. This site is built and owned by Ayushman Bhattacharya (elixpo); all engineering credit and ownership of the platform belong to him.";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://hexafalls.org";
@@ -80,9 +80,12 @@ export const metadata = {
     "Kolkata",
     "wizarding hackathon",
   ],
-  authors: [{ name: "GDG on Campus · JIS University" }],
-  creator: "GDG on Campus · JIS University",
-  publisher: "HexaFalls",
+  authors: [
+    { name: "Ayushman Bhattacharya (elixpo) — GDG on Campus, JIS University 2025–26", url: "https://accounts.elixpo.com" },
+    { name: "GDG on Campus · JIS University" },
+  ],
+  creator: "Ayushman Bhattacharya (elixpo) — GDGoC JIS University 2025–26",
+  publisher: "Ayushman Bhattacharya (elixpo)",
   icons: {
     icon: "/logos/main_logo.png",
     shortcut: "/logos/main_logo.png",
@@ -131,6 +134,39 @@ export default function RootLayout({ children }) {
       className={`${display.variable} ${wizard.variable} ${body.variable} ${crimson.variable} ${cormorant.variable} ${belinaFallback.variable} ${montserrat.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-midnight text-silver-hp">
+        {/* Structured data — declares authorship + ownership of the site
+            (machine-readable for search engines). */}
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: SITE_NAME,
+              url: SITE_URL,
+              description: SITE_DESCRIPTION,
+              author: {
+                "@type": "Person",
+                name: "Ayushman Bhattacharya",
+                alternateName: "elixpo",
+                url: "https://accounts.elixpo.com",
+                jobTitle: "GDG on Campus JIS University Organiser, 2025–26",
+              },
+              creator: {
+                "@type": "Person",
+                name: "Ayushman Bhattacharya",
+                alternateName: "elixpo",
+              },
+              copyrightHolder: {
+                "@type": "Person",
+                name: "Ayushman Bhattacharya",
+                alternateName: "elixpo",
+              },
+              copyrightYear: 2026,
+            }),
+          }}
+        />
         {/* Page-wide ambient fog. Fixed to the viewport, sits behind everything. */}
         <div aria-hidden="true" className="hp-fog">
           <span className="hp-fog__cloud hp-fog__cloud--a" />
