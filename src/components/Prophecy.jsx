@@ -241,18 +241,17 @@ export default function Prophecy() {
 
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <RoughButton
+            as={Link}
+            href="/events"
             color="#66FCF1"
             glow="rgba(102,252,241,0.25)"
+            fill={false}
             shimmer
-            disabled
-            aria-disabled="true"
             seed={53}
-            className="px-7 py-3 text-[12px] hp-pulse"
+            className="px-9 sm:px-11 py-3.5 leading-none text-[12px] sm:text-[13px] tracking-[0.35em]"
           >
-            <span>REGISTER</span>
-            <span className="text-[10px] tracking-[0.25em] px-2 py-0.5 rounded-full border border-gold-hp/60 bg-gold-hp/10 text-gold-hp hp-glow-gold">
-              COMING SOON
-            </span>
+            <span>REGISTER NOW</span>
+            <span aria-hidden="true">↗</span>
           </RoughButton>
 
           <RoughButton

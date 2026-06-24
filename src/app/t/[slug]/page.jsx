@@ -10,7 +10,6 @@ import TopBar from "@/components/TopBar";
 import Footer from "@/components/Footer";
 import RoughFrame from "@/components/RoughFrame";
 import RegisterShell from "@/components/register/RegisterShell";
-import InviteLink from "@/components/register/InviteLink";
 import SubmitForReview from "@/components/register/SubmitForReview";
 import TeamSettings from "@/components/team/TeamSettings";
 import { getDB } from "@/lib/db";
@@ -130,92 +129,62 @@ export default async function TeamProfilePage({ params }) {
         eyebrow={`${cfg?.label ?? squad.event} · Team`}
         title=""
         accent={squad.name}
+        wide
       >
-        <div className="flex flex-col gap-6">
-          {/* Status + meta in one tight strip */}
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <StatusPill status={squad.status} />
-            <span className="font-mono text-xs text-silver-hp/70">{squad.id}</span>
-            <span className="font-display text-[10px] uppercase tracking-[0.4em] text-silver-hp/60">
-              {memberRows.length} / {squad.max_members} seats
-            </span>
-          </div>
+        {/* Bento grid — full width, matte cards */}
+        <div className="grid gap-4 lg:grid-cols-3">
+          {/* Overview (wide) */}
+          <Card className="lg:col-span-2 flex flex-col gap-4">
+            <div className="flex flex-wrap items-center gap-3">
+              <StatusPill status={squad.status} />
+              <span className="font-mono text-xs text-silver-hp/60">{squad.id}</span>
+              <span className="font-display text-[10px] uppercase tracking-[0.4em] text-silver-hp/55">
+                {memberRows.length} / {squad.max_members} seats
+              </span>
+            </div>
+            {squad.tagline && (
+              <p className="font-wizard italic text-silver-hp/80 text-base">{squad.tagline}</p>
+            )}
+            {paidEvent && (
+              <PaymentProgress collected={collected} total={totalMembers} feesSettled={feesSettled} />
+            )}
+          </Card>
 
-          {squad.tagline && (
-            <p className="font-wizard italic text-silver-hp/85 text-base sm:text-lg text-center">
-              {squad.tagline}
-            </p>
-          )}
+          {/* Status / leader submit (sidebar) */}
+          <Card className="flex flex-col gap-3">
+            <h3 className="font-display text-[11px] uppercase tracking-[0.3em] text-gold-hp/80">
+              Review
+            </h3>
+            {isLeader && (isForming || squad.status === "rejected") ? (
+              <SubmitForReview
+                squadId={squad.id}
+                canSubmit={canSubmit}
+                minMembers={squad.min_members}
+                currentCount={memberRows.length}
+                rejectedNotes={squad.status === "rejected" ? squad.review_notes : null}
+              />
+            ) : isUnderRev ? (
+              <p className="font-wizard italic text-silver-hp/75 text-sm">
+                Submitted for review — admins reply within 48 hours.
+              </p>
+            ) : squad.status === "fees_settled" ? (
+              <p className="font-wizard italic text-violet-300/85 text-sm">
+                Fees settled — awaiting final approval.
+              </p>
+            ) : squad.status === "approved" ? (
+              <p className="font-wizard italic text-emerald-300/85 text-sm">
+                Approved — your seat is locked in.
+              </p>
+            ) : (
+              <p className="font-wizard italic text-silver-hp/55 text-sm">
+                This team is {squad.status}.
+              </p>
+            )}
+          </Card>
 
-          {/* Payment progress (paid events only) */}
-          {paidEvent && (
-            <PaymentProgress
-              collected={collected}
-              total={totalMembers}
-              feesSettled={feesSettled}
-            />
-          )}
-
-          {/* Leader actions: invite + submit */}
-          {isLeader && (
-            <RoughFrame
-              seed={73}
-              stroke="#D4AF37"
-              mistColor="#D4AF37"
-              strokeWidth={1.4}
-              padding={20}
-              className="w-full bg-slate-hp/35 backdrop-blur-sm"
-              inner="flex flex-col gap-5"
-            >
-              {canInvite && (
-                <InviteLink
-                  url={absoluteUrl(`/register/join/${squad.invite_token}`)}
-                  remainingSeats={seatsLeft}
-                />
-              )}
-              {(isForming || squad.status === "rejected") && (
-                <SubmitForReview
-                  squadId={squad.id}
-                  canSubmit={canSubmit}
-                  minMembers={squad.min_members}
-                  currentCount={memberRows.length}
-                  rejectedNotes={
-                    squad.status === "rejected" ? squad.review_notes : null
-                  }
-                />
-              )}
-              {isUnderRev && (
-                <p className="font-wizard italic text-silver-hp/75 text-sm">
-                  Submitted for review. Admins will get back within 48 hours.
-                </p>
-              )}
-              {squad.status === "fees_settled" && (
-                <p className="font-wizard italic text-violet-300/85 text-sm">
-                  Fees settled — awaiting final approval.
-                </p>
-              )}
-              {squad.status === "approved" && (
-                <p className="font-wizard italic text-emerald-300/85 text-sm">
-                  Approved — your seat is locked in.
-                </p>
-              )}
-            </RoughFrame>
-          )}
-
-          {/* Team settings — roster management, requests, invite (leader). */}
-          <TeamSettings
-            squadId={squad.id}
-            event={squad.event}
-            inviteToken={squad.invite_token}
-            isLeader={isLeader}
-            members={memberRows}
-            requests={pendingRequests}
-            maxMembers={squad.max_members}
-          />
-
-          {/* Members */}
-          <div>
-            <h2 className="mb-3 font-display tracking-[0.3em] uppercase text-sm text-gold-hp hp-glow-gold">
+          {/* Members (wide) */}
+          <Card className="lg:col-span-2">
+            <h2 className="mb-3 font-display tracking-[0.3em] uppercase text-sm text-gold-hp">
               Members
             </h2>
             <ul className="flex flex-col gap-2">
@@ -223,7 +192,7 @@ export default async function TeamProfilePage({ params }) {
                 <li key={m.id}>
                   <Link
                     href={m.elixpo_id ? userUrl(m.elixpo_id) : "#"}
-                    className="flex items-center justify-between gap-3 rounded-sm border border-cyan-hp/20 bg-slate-hp/30 px-4 py-3 transition hover:bg-slate-hp/50"
+                    className="flex items-center justify-between gap-3 rounded-sm border border-cyan-hp/15 bg-midnight/40 px-4 py-3 transition hover:bg-slate-hp/40"
                   >
                     <span className="flex items-center gap-3 min-w-0">
                       <span className="font-display text-[9px] uppercase tracking-[0.35em] text-gold-hp/80 rounded-full border border-gold-hp/50 bg-gold-hp/10 px-2 py-0.5">
@@ -234,43 +203,48 @@ export default async function TeamProfilePage({ params }) {
                           {m.display_name ?? (m.username ? `@${m.username}` : "(pending)")}
                         </span>
                         {m.display_name && m.username && (
-                          <span className="font-mono text-[11px] text-silver-hp/55 truncate">
-                            @{m.username}
-                          </span>
+                          <span className="font-mono text-[11px] text-silver-hp/55 truncate">@{m.username}</span>
                         )}
                       </span>
                     </span>
-                    <span className="font-mono text-xs text-silver-hp/55 shrink-0">
-                      {m.id}
-                    </span>
+                    <span className="font-mono text-xs text-silver-hp/55 shrink-0">{m.id}</span>
                   </Link>
                 </li>
               ))}
               {Array.from({ length: seatsLeft }).map((_, i) => (
                 <li
                   key={`seat-${i}`}
-                  className="flex items-center gap-3 rounded-sm border border-dashed border-silver-hp/15 bg-slate-hp/15 px-4 py-3 font-wizard italic text-silver-hp/40 text-sm"
+                  className="flex items-center gap-3 rounded-sm border border-dashed border-silver-hp/15 bg-midnight/20 px-4 py-3 font-wizard italic text-silver-hp/40 text-sm"
                 >
                   open seat
                 </li>
               ))}
             </ul>
-          </div>
+          </Card>
 
-          {/* Description (if leader wrote one) */}
-          {squad.description && (
-            <RoughFrame
-              seed={67}
-              stroke="#66FCF1"
-              mistColor="#66FCF1"
-              strokeWidth={1.3}
-              padding={20}
-              className="w-full bg-slate-hp/30 backdrop-blur-sm"
-            >
-              <p className="font-wizard text-silver-hp/85 text-base leading-relaxed whitespace-pre-wrap">
-                {squad.description}
-              </p>
-            </RoughFrame>
+          {/* About (sidebar) */}
+          <Card>
+            <h3 className="mb-2 font-display text-[11px] uppercase tracking-[0.3em] text-cyan-hp/80">
+              About
+            </h3>
+            <p className="font-wizard text-silver-hp/80 text-sm leading-relaxed whitespace-pre-wrap">
+              {squad.description || "No description yet."}
+            </p>
+          </Card>
+
+          {/* Team settings — full width (leader: roster, requests, invite, danger) */}
+          {isLeader && (
+            <div className="lg:col-span-3">
+              <TeamSettings
+                squadId={squad.id}
+                event={squad.event}
+                inviteToken={squad.invite_token}
+                isLeader={isLeader}
+                members={memberRows}
+                requests={pendingRequests}
+                maxMembers={squad.max_members}
+              />
+            </div>
           )}
         </div>
       </RegisterShell>
@@ -341,7 +315,10 @@ function StatusPill({ status }) {
   );
 }
 
-function absoluteUrl(path) {
-  const base = process.env.NEXT_PUBLIC_SITE_URL || "https://hexafalls.org";
-  return `${base}${path}`;
+function Card({ children, className = "" }) {
+  return (
+    <section className={`rounded-sm border border-cyan-hp/20 bg-slate-hp/30 p-5 sm:p-6 ${className}`}>
+      {children}
+    </section>
+  );
 }

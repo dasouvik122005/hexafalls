@@ -9,7 +9,6 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import TopBar from "@/components/TopBar";
 import Footer from "@/components/Footer";
-import RoughFrame from "@/components/RoughFrame";
 import RegisterShell from "@/components/register/RegisterShell";
 import ProfileEditor from "@/components/register/ProfileEditor";
 import RoughButton from "@/components/RoughButton";
@@ -73,106 +72,89 @@ export default async function UserProfilePage({ params }) {
         eyebrow={isOwner ? "Welcome back" : "Hacker scroll"}
         title={isOwner ? "Hello" : ""}
         accent={user.username ? `@${user.username}` : user.display_name ?? "Wizard"}
+        wide
       >
-        <div className="flex flex-col gap-6">
+        {/* Bento grid — full width, matte cards */}
+        <div className="grid gap-4 lg:grid-cols-3">
+          {/* Identity */}
+          <Card className="lg:col-span-1 flex flex-col gap-3">
+            <h3 className="font-display text-[11px] uppercase tracking-[0.3em] text-cyan-hp/80">
+              Identity
+            </h3>
+            <Stat label="Display name" value={user.display_name ?? "—"} />
+            <Stat label="ID" value={user.id} mono />
+            <Stat label="College" value={user.college ?? "—"} />
+            <Stat label="Year" value={user.year ?? "—"} />
+            <Stat label="Role" value={user.role} />
+          </Card>
+
+          {/* About + links */}
+          <Card className="lg:col-span-2 flex flex-col gap-4">
+            <h3 className="font-display text-[11px] uppercase tracking-[0.3em] text-gold-hp/80">
+              About
+            </h3>
+            <p className="font-wizard text-silver-hp/85 text-base leading-relaxed whitespace-pre-wrap wrap-break-word">
+              {user.bio || "No bio yet."}
+            </p>
+            {(user.github || user.linkedin || user.portfolio) && (
+              <div className="flex flex-wrap gap-2">
+                {user.github && <ExtLink href={`https://github.com/${user.github}`} label={`GitHub · @${user.github}`} />}
+                {user.linkedin && <ExtLink href={`https://linkedin.com/in/${user.linkedin}`} label={`LinkedIn · @${user.linkedin}`} />}
+                {user.portfolio && <ExtLink href={user.portfolio} label="Portfolio" />}
+              </div>
+            )}
+          </Card>
+
           {/* Evangelist → Zealey */}
           {isEvangelist && (
-            <div className="flex justify-center">
+            <Card className="lg:col-span-3 flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <h3 className="font-display text-[11px] uppercase tracking-[0.3em] text-violet-300/90">
+                  Evangelist
+                </h3>
+                <p className="font-wizard text-silver-hp/70 text-sm">Track your outreach on Zealey.</p>
+              </div>
               <RoughButton
                 as="a"
                 href={ZEALEY_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 color="#A78BFA"
-                glow="rgba(167,139,250,0.40)"
-                shimmer
+                glow="rgba(167,139,250,0.35)"
+                fill={false}
                 seed={97}
-                className="px-8 py-3 text-[12px] tracking-[0.4em]"
+                className="px-8 py-3 leading-none text-[12px] tracking-[0.35em]"
               >
                 OPEN ZEALEY ↗
               </RoughButton>
-            </div>
+            </Card>
           )}
 
-          {/* Owner-only inline editor */}
+          {/* Owner-only editor (full width) */}
           {isOwner && (
-            <RoughFrame
-              seed={151}
-              stroke="#D4AF37"
-              mistColor="#D4AF37"
-              strokeWidth={1.4}
-              padding={22}
-              className="w-full bg-slate-hp/35 backdrop-blur-sm"
-              inner="flex flex-col gap-4"
-            >
+            <Card className="lg:col-span-3 flex flex-col gap-4">
               <span className="font-display tracking-[0.3em] uppercase text-[10px] text-gold-hp/80">
                 This is you · edit your scroll
               </span>
               <ProfileEditor user={me} />
-            </RoughFrame>
-          )}
-
-          {/* Identity */}
-          <RoughFrame
-            seed={139}
-            stroke="#66FCF1"
-            mistColor="#66FCF1"
-            strokeWidth={1.4}
-            padding={22}
-            className="w-full bg-slate-hp/35 backdrop-blur-sm"
-            inner="grid sm:grid-cols-2 gap-4"
-          >
-            <Stat label="Display name" value={user.display_name ?? "—"} />
-            <Stat label="ID" value={user.id} mono />
-            <Stat label="College" value={user.college ?? "—"} />
-            <Stat label="Year" value={user.year ?? "—"} />
-            <Stat label="Role" value={user.role} />
-          </RoughFrame>
-
-          {/* Bio */}
-          {user.bio && (
-            <RoughFrame
-              seed={143}
-              stroke="#D4AF37"
-              mistColor="#D4AF37"
-              strokeWidth={1.3}
-              padding={20}
-              className="w-full bg-slate-hp/30 backdrop-blur-sm"
-            >
-              <p className="font-wizard text-silver-hp/90 text-base leading-relaxed whitespace-pre-wrap">
-                {user.bio}
-              </p>
-            </RoughFrame>
-          )}
-
-          {/* Links */}
-          {(user.github || user.linkedin || user.portfolio) && (
-            <div className="flex flex-wrap gap-2">
-              {user.github && (
-                <ExtLink href={`https://github.com/${user.github}`} label={`GitHub · @${user.github}`} />
-              )}
-              {user.linkedin && (
-                <ExtLink href={`https://linkedin.com/in/${user.linkedin}`} label={`LinkedIn · @${user.linkedin}`} />
-              )}
-              {user.portfolio && <ExtLink href={user.portfolio} label="Portfolio" />}
-            </div>
+            </Card>
           )}
 
           {/* Quick links to the sub-pages */}
-          <div className="grid sm:grid-cols-2 gap-3">
+          <NavCard
+            href={`/u/${user.elixpo_id}/teams`}
+            title="Teams & Entries"
+            note="Your squads, solo entries, statuses and fees."
+            className={isOwner ? "lg:col-span-2" : "lg:col-span-3"}
+          />
+          {isOwner && (
             <NavCard
-              href={`/u/${user.elixpo_id}/teams`}
-              title="Teams & Entries"
-              note="Your squads, solo entries, statuses and fees."
+              href={`/u/${user.elixpo_id}/notifications`}
+              title="Notifications"
+              note="Owl post — requests, approvals and updates."
+              className="lg:col-span-1"
             />
-            {isOwner && (
-              <NavCard
-                href={`/u/${user.elixpo_id}/notifications`}
-                title="Notifications"
-                note="Owl post — requests, approvals and payment updates."
-              />
-            )}
-          </div>
+          )}
         </div>
       </RegisterShell>
       <Footer />
@@ -206,11 +188,19 @@ function ExtLink({ href, label }) {
   );
 }
 
-function NavCard({ href, title, note }) {
+function Card({ children, className = "" }) {
+  return (
+    <section className={`rounded-sm border border-cyan-hp/20 bg-slate-hp/30 p-5 sm:p-6 ${className}`}>
+      {children}
+    </section>
+  );
+}
+
+function NavCard({ href, title, note, className = "" }) {
   return (
     <Link
       href={href}
-      className="group flex flex-col gap-1 rounded-sm border border-cyan-hp/25 bg-slate-hp/30 px-5 py-4 transition hover:border-cyan-hp/55 hover:bg-slate-hp/50"
+      className={`group flex flex-col gap-1 rounded-sm border border-cyan-hp/25 bg-slate-hp/30 px-5 py-4 transition hover:border-cyan-hp/55 hover:bg-slate-hp/50 ${className}`}
     >
       <span className="flex items-center justify-between font-display tracking-[0.2em] uppercase text-sm text-silver-hp">
         {title}
