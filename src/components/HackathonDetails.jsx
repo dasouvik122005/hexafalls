@@ -107,7 +107,7 @@ function TrackCard({ track: t, index: i }) {
 }
 
 /* ══════════════════════════════════════════════════════════════════════ */
-export default function HackathonDetails() {
+export default function HackathonDetails({ registered = null }) {
   const sectionRef = useRef(null);
 
   /* GSAP letter-stagger on the hero headline */
@@ -204,29 +204,35 @@ export default function HackathonDetails() {
 
         {/* CTA */}
         <Reveal delay={0.25} className="mt-8 flex flex-col items-center gap-3">
-          <span
-            className="inline-flex items-center gap-2 rounded-full border px-3 py-1 font-display text-[10px] uppercase tracking-[0.4em]"
-            style={{ borderColor: `${GOLD}80`, color: GOLD, backgroundColor: `${GOLD}1a` }}
-          >
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full rounded-full opacity-70 animate-ping" style={{ backgroundColor: GOLD }} />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full" style={{ backgroundColor: GOLD }} />
-            </span>
-            Registrations Open
-          </span>
-          <RoughButton
-            as={Link}
-            href="/events/hackathon/register"
-            color={GOLD}
-            glow={GOLD_GLOW}
-            fill={false}
-            shimmer
-            seed={23}
-            className="px-10 sm:px-12 py-4 sm:py-5 leading-none text-[13px] sm:text-[14px] tracking-[0.4em]"
-          >
-            <span>REGISTER · HACKATHON</span>
-            <span aria-hidden="true">↗</span>
-          </RoughButton>
+          {registered ? (
+            <RegisteredBadge href={registered.href} label={registered.label} />
+          ) : (
+            <>
+              <span
+                className="inline-flex items-center gap-2 rounded-full border px-3 py-1 font-display text-[10px] uppercase tracking-[0.4em]"
+                style={{ borderColor: `${GOLD}80`, color: GOLD, backgroundColor: `${GOLD}1a` }}
+              >
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full rounded-full opacity-70 animate-ping" style={{ backgroundColor: GOLD }} />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full" style={{ backgroundColor: GOLD }} />
+                </span>
+                Registrations Open
+              </span>
+              <RoughButton
+                as={Link}
+                href="/events/hackathon/register"
+                color={GOLD}
+                glow={GOLD_GLOW}
+                fill={false}
+                shimmer
+                seed={23}
+                className="px-10 sm:px-12 py-4 sm:py-5 leading-none text-[13px] sm:text-[14px] tracking-[0.4em]"
+              >
+                <span>REGISTER · HACKATHON</span>
+                <span aria-hidden="true">↗</span>
+              </RoughButton>
+            </>
+          )}
         </Reveal>
       </div>
 
