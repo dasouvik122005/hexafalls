@@ -13,6 +13,7 @@ import TopBar from "@/components/TopBar";
 import Footer from "@/components/Footer";
 import RoughFrame from "@/components/RoughFrame";
 import RoughButton from "@/components/RoughButton";
+import RoughStar from "@/components/RoughStar";
 import RegisterShell from "@/components/register/RegisterShell";
 import SquadCreateForm from "@/components/register/SquadCreateForm";
 import SoloRegisterForm from "@/components/register/SoloRegisterForm";
@@ -180,14 +181,54 @@ function HardwareModeChooser() {
 
 function SignInPanel({ returnTo }) {
   return (
-    <RoughFrame
-      seed={47}
-      stroke="#66FCF1"
-      mistColor="#66FCF1"
-      padding={22}
-      className="w-full bg-slate-hp/40 backdrop-blur-sm"
-      inner="flex flex-col gap-4 items-center text-center"
-    >
+    <div className="relative mx-auto flex w-full max-w-xl flex-col items-center gap-7 px-4 py-6 text-center">
+      {/* floating hand-drawn artifacts */}
+      <RoughStar size={26} color="#66FCF1" className="absolute -left-1 top-3 hp-float opacity-70" style={{ animationDelay: "0.3s" }} />
+      <RoughStar size={16} color="#D4AF37" className="absolute right-4 top-10 hp-float opacity-60" style={{ animationDelay: "1.2s" }} />
+      <RoughStar size={20} color="#A78BFA" className="absolute left-8 bottom-6 hp-float opacity-50" style={{ animationDelay: "0.8s" }} />
+      <RoughStar size={14} color="#66FCF1" className="absolute right-1 bottom-10 hp-float opacity-50" style={{ animationDelay: "1.7s" }} />
+
+      {/* animated sigil — a glowing key in a pulsing aura */}
+      <div className="relative grid place-items-center">
+        <span
+          aria-hidden="true"
+          className="absolute h-28 w-28 rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(212,175,55,0.22), transparent 70%)" }}
+        />
+        <span
+          aria-hidden="true"
+          className="absolute h-20 w-20 rounded-full border border-gold-hp/40 animate-ping"
+          style={{ animationDuration: "2.8s" }}
+        />
+        <div className="relative grid h-20 w-20 place-items-center rounded-full border border-gold-hp/50 bg-midnight/60 backdrop-blur-sm hp-float">
+          <svg
+            viewBox="0 0 24 24"
+            className="h-8 w-8 text-gold-hp"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ filter: "drop-shadow(0 0 8px rgba(212,175,55,0.55))" }}
+          >
+            <circle cx="9" cy="9" r="5.5" />
+            <path d="M12.8 12.8 L21 21" />
+            <path d="M18.5 18.5 l2.2 -2.2" />
+            <path d="M15.8 15.8 l2.2 -2.2" />
+          </svg>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <h2 className="font-display tracking-[0.28em] uppercase text-base sm:text-lg text-gold-hp hp-glow-gold">
+          One key, every gate
+        </h2>
+        <p className="mx-auto max-w-md font-wizard text-silver-hp/80 text-sm sm:text-base leading-relaxed">
+          Sign on with Elixpo to register. A single account assembles your team,
+          settles entry fees, and keeps every HexaFalls scroll in one place.
+        </p>
+      </div>
+
       <RoughButton
         as="a"
         href={`/api/auth/login?return_to=${encodeURIComponent(returnTo)}`}
@@ -200,7 +241,12 @@ function SignInPanel({ returnTo }) {
       >
         SIGN IN WITH ELIXPO ↗
       </RoughButton>
-    </RoughFrame>
+
+      <span className="inline-flex items-center gap-2 font-display text-[10px] uppercase tracking-[0.35em] text-cyan-hp/55">
+        <span className="h-1.5 w-1.5 rounded-full bg-cyan-hp/80 animate-pulse" />
+        Secure Elixpo SSO · takes a few seconds
+      </span>
+    </div>
   );
 }
 
