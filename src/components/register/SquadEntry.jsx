@@ -151,7 +151,7 @@ export default function SquadEntry({ event, eventLabel, hasUsername, openSquads 
   const [tab, setTab] = useState("create");
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="mt-6 sm:mt-8 flex flex-col gap-6">
       <div className="mx-auto inline-flex rounded-full border border-cyan-hp/25 bg-slate-hp/40 p-1 backdrop-blur-sm">
         <TabButton active={tab === "create"} onClick={() => setTab("create")}>
           Create a squad

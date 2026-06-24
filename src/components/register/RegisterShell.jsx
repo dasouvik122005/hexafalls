@@ -9,9 +9,11 @@ export default function RegisterShell({ eyebrow, title, accent, children, stack 
   return (
     <section className="relative isolate overflow-hidden min-h-screen pt-28 pb-24 px-6 flex flex-col items-center">
       <HeroVideoBg />
-      <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
+      {/* Matte veil — mutes the video so registration reads calm/professional */}
+      <div aria-hidden="true" className="absolute inset-0 -z-20 bg-midnight/55 pointer-events-none" />
+      <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none opacity-60" />
       <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
-        <Sparkles count={18} />
+        <Sparkles count={9} />
       </div>
 
       <div className="mb-6 flex items-center justify-center gap-3 text-[11px] uppercase tracking-[0.5em] text-cyan-hp/70 font-display text-center">

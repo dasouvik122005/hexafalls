@@ -231,24 +231,48 @@ export default async function EventPage({ params }) {
           </RoughButton>
         </div>
 
-        {/* Full brief stub — kept tiny per "no extra writeup". */}
-        <div className="mx-auto mt-20 w-full max-w-xl">
-          <RoughFrame
-            seed={59}
-            stroke="#66FCF1"
-            mistColor="#66FCF1"
-            strokeWidth={1.3}
-            padding={18}
-            className="w-full bg-slate-hp/25 backdrop-blur-sm"
-            inner="flex flex-col items-center text-center gap-2"
-          >
-            <span className="font-display text-[9px] uppercase tracking-[0.5em] text-cyan-hp/75">
-              Rules · schedule · judging
-            </span>
-            <span className="font-wizard italic text-silver-hp/60 text-sm">
-              Full brief unfurling soon.
-            </span>
-          </RoughFrame>
+        {/* Coming-soon brief — mirrors the structure of the full event pages
+            (hackathon/hardware) so every /events/[slug] reads consistently. */}
+        <div className="mx-auto mt-24 w-full max-w-4xl">
+          <div className="mb-8 flex flex-col items-center gap-2 text-center">
+            <div className="flex items-center gap-3">
+              <RoughDivider width={48} height={20} color={event.color} seed={7} />
+              <span className="font-display text-[11px] uppercase tracking-[0.5em]" style={{ color: `${event.color}cc` }}>
+                The full brief is being inked
+              </span>
+              <RoughDivider width={48} height={20} color={event.color} seed={9} />
+            </div>
+            <p className="max-w-xl font-wizard italic text-silver-hp/60 text-sm">
+              Rules, schedule and prizes for {event.name} are unfurling soon. Sign on
+              now so you’re first through the gates.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {[
+              { t: "The Rules", n: "Format, eligibility & scoring" },
+              { t: "The Schedule", n: "Rounds, breaks & the finale" },
+              { t: "The Prizes", n: "What glory awaits the victors" },
+            ].map((c, i) => (
+              <RoughFrame
+                key={c.t}
+                seed={57 + i * 4}
+                stroke={event.color}
+                mistColor={event.color}
+                strokeWidth={1.3}
+                padding={18}
+                className="w-full bg-slate-hp/25 backdrop-blur-sm"
+                inner="flex flex-col items-center text-center gap-2 min-h-[120px] justify-center"
+              >
+                <span className="font-display text-sm tracking-[0.2em] uppercase text-silver-hp">
+                  {c.t}
+                </span>
+                <span className="font-wizard text-xs text-silver-hp/55">{c.n}</span>
+                <span className="mt-1 font-display text-[9px] uppercase tracking-[0.4em] text-gold-hp/70">
+                  Soon
+                </span>
+              </RoughFrame>
+            ))}
+          </div>
         </div>
       </section>
       )}
