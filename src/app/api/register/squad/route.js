@@ -15,6 +15,8 @@ import {
   isSquadEvent,
   teamUrl,
 } from "@/lib/registration/events";
+import { grantEventRole } from "@/lib/roles";
+import { sendTeamCreated } from "@/lib/mail/triggers";
 
 export const runtime = "edge";
 
@@ -116,10 +118,29 @@ export async function POST(req) {
   }
 
   const url = new URL(req.url);
+  const teamPath = teamUrl(event, squadId);
+
+  // Grant the dynamic team_<event> role; team creation is a "big event" → email
+  // the leader. Side-effects are best-effort: never fail the registration if a
+  // role grant / email hiccups.
+  try {
+    await grantEventRole(user.id, event, { db });
+    await sendTeamCreated({
+      to: user.email,
+      leaderName: user.display_name ?? user.username,
+      teamName: squadName.trim(),
+      event: config.label,
+      teamUrl: `${url.origin}${teamPath}`,
+      idempotencyKey: `team_created:${squadId}`,
+    });
+  } catch (e) {
+    console.warn(`[register/squad] post-create side-effect failed: ${e?.message ?? e}`);
+  }
+
   return NextResponse.json({
     squadId,
     inviteToken,
     inviteUrl: `${url.origin}/register/join/${inviteToken}`,
-    teamUrl: teamUrl(event, squadId),
+    teamUrl: teamPath,
   });
 }

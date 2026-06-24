@@ -36,7 +36,11 @@ export async function POST(req, { params }) {
   if (squad.leader_id !== user.id) {
     return NextResponse.json({ error: "not_leader" }, { status: 403 });
   }
-  if (squad.status !== "forming" && squad.status !== "rejected") {
+  if (
+    squad.status !== "forming" &&
+    squad.status !== "registered" &&
+    squad.status !== "rejected"
+  ) {
     return NextResponse.json(
       { error: "wrong_status", status: squad.status },
       { status: 409 },

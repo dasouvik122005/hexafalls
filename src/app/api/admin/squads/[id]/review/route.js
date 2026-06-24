@@ -8,10 +8,16 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/auth/server";
 import { getDB } from "@/lib/db";
+import { notifyMany } from "@/lib/notifications";
+import { sendTeamApproved } from "@/lib/mail/triggers";
+import { REGISTRATION_EVENTS, teamUrl } from "@/lib/registration/events";
 
 export const runtime = "edge";
 
 const ADMIN_ROLES = new Set(["admin", "organizer"]);
+// Statuses an admin may act on (canonical + legacy synonyms). fees_settled is
+// included so a team that has paid can be given final approval.
+const REVIEWABLE = new Set(["submitted", "under_review", "fees_settled"]);
 
 export async function POST(req, { params }) {
   const { id: squadId } = await params;
@@ -35,11 +41,11 @@ export async function POST(req, { params }) {
 
   const db = getDB();
   const squad = await db
-    .prepare(`SELECT id, status FROM squads WHERE id = ?`)
+    .prepare(`SELECT id, event, name, leader_id, status FROM squads WHERE id = ?`)
     .bind(squadId)
     .first();
   if (!squad) return NextResponse.json({ error: "not_found" }, { status: 404 });
-  if (squad.status !== "submitted") {
+  if (!REVIEWABLE.has(squad.status)) {
     return NextResponse.json(
       { error: "wrong_status", status: squad.status },
       { status: 409 },
@@ -64,5 +70,59 @@ export async function POST(req, { params }) {
   if (!r.success) {
     return NextResponse.json({ error: "db_failure" }, { status: 500 });
   }
+
+  // Notify the team. Approval is a "big event" → email the leader; rejection is
+  // in-profile only. Best-effort, never fails the review write.
+  try {
+    const memRes = await db
+      .prepare(
+        `SELECT u.id, u.email, u.display_name, u.username, sm.role
+           FROM squad_members sm JOIN users u ON u.id = sm.user_id
+          WHERE sm.squad_id = ?`,
+      )
+      .bind(squadId)
+      .all();
+    const members = memRes.results ?? [];
+    const eventLabel = REGISTRATION_EVENTS[squad.event]?.label ?? squad.event;
+    const teamPath = teamUrl(squad.event, squadId);
+
+    if (decision === "approve") {
+      await notifyMany(
+        members.map((m) => m.id),
+        {
+          kind: "team_approved",
+          title: `${squad.name} is approved`,
+          body: `Your ${eventLabel} team has been approved. Your seat is locked in.`,
+          link: teamPath,
+        },
+        { db },
+      );
+      const leader = members.find((m) => m.role === "leader");
+      if (leader?.email) {
+        await sendTeamApproved({
+          to: leader.email,
+          name: leader.display_name ?? leader.username,
+          teamName: squad.name,
+          event: eventLabel,
+          teamUrl: teamPath,
+          idempotencyKey: `team_approved:${squadId}`,
+        });
+      }
+    } else {
+      await notifyMany(
+        members.map((m) => m.id),
+        {
+          kind: "team_rejected",
+          title: `${squad.name} needs changes`,
+          body: notes ? `Reviewer notes: ${notes}` : "Your team was sent back for changes.",
+          link: teamPath,
+        },
+        { db },
+      );
+    }
+  } catch (e) {
+    console.warn(`[admin/review] notify side-effect failed: ${e?.message ?? e}`);
+  }
+
   return NextResponse.json({ ok: true, status: nextStatus });
 }

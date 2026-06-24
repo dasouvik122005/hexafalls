@@ -8,6 +8,8 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/auth/server";
 import { getDB } from "@/lib/db";
 import { teamUrl } from "@/lib/registration/events";
+import { grantEventRole } from "@/lib/roles";
+import { notify } from "@/lib/notifications";
 
 export const runtime = "edge";
 
@@ -35,7 +37,7 @@ export async function POST(req, { params }) {
   const db = getDB();
   const squad = await db
     .prepare(
-      `SELECT id, event, invite_token, max_members, status FROM squads
+      `SELECT id, event, leader_id, invite_token, max_members, status FROM squads
         WHERE id = ?`,
     )
     .bind(squadId)
@@ -43,7 +45,9 @@ export async function POST(req, { params }) {
   if (!squad || squad.invite_token !== inviteToken) {
     return NextResponse.json({ error: "invalid_invite" }, { status: 404 });
   }
-  if (squad.status !== "forming") {
+  // Open to new members only while the team is still forming (canonical
+  // `registered`, legacy `forming`).
+  if (squad.status !== "forming" && squad.status !== "registered") {
     return NextResponse.json({ error: "squad_locked" }, { status: 409 });
   }
 
@@ -103,6 +107,25 @@ export async function POST(req, { params }) {
   if (!r.success) {
     return NextResponse.json({ error: "db_failure" }, { status: 500 });
   }
+
+  // Grant the dynamic team_<event> role + notify the leader in-profile (a member
+  // joining is not a "big event", so no email). Best-effort.
+  try {
+    await grantEventRole(user.id, squad.event, { db });
+    await notify(
+      squad.leader_id,
+      {
+        kind: "member_joined",
+        title: "A new member joined your team",
+        body: `@${user.username ?? user.display_name ?? "someone"} accepted your invite.`,
+        link: teamUrl(squad.event, squadId),
+      },
+      { db },
+    );
+  } catch (e) {
+    console.warn(`[register/squad/join] post-join side-effect failed: ${e?.message ?? e}`);
+  }
+
   return NextResponse.json({
     ok: true,
     squadId,
