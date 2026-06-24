@@ -10,11 +10,12 @@ import RoughDivider from "./RoughDivider";
 import RoughCorners from "./RoughCorners";
 import { HARDWARE_TRACKS } from "@/lib/routes";
 
-const GREEN = "#22C55E";
-const GREEN_GLOW = "rgba(34,197,94,0.35)";
+const GOLD = "#D4AF37";
+const MAROON = "#740001";
+const GOLD_GLOW = "rgba(212,175,55,0.45)";
 
 /* ── reusable section eyebrow ────────────────────────────────────────── */
-function Eyebrow({ children, color = GREEN }) {
+function Eyebrow({ children, color = GOLD }) {
   return (
     <div className="flex items-center justify-center gap-3 text-[11px] uppercase tracking-[0.5em] font-display text-center"
          style={{ color: `${color}cc` }}>
@@ -40,10 +41,8 @@ function Reveal({ children, delay = 0, className = "" }) {
   );
 }
 
-/* ── interactive track card with hover description reveal ────────────── */
+/* ── interactive track card with permanently visible description ────────────── */
 function TrackCard({ track: t, index: i }) {
-  const [hovered, setHovered] = useState(false);
-
   const cardContent = (
     <>
       <RoughCorners color={t.color} length={16} strokeWidth={1.5} seed={10 + i} inset={-1} />
@@ -51,67 +50,58 @@ function TrackCard({ track: t, index: i }) {
       <div className="flex items-center justify-between relative z-10 w-full">
         <div className="flex items-center gap-3">
           <span
-            className="text-2xl select-none transition-transform duration-300 font-mono"
-            style={{
-              textShadow: `0 0 12px ${t.color}66`,
-              transform: hovered ? "scale(1.15)" : "scale(1)",
-            }}
+            className="text-2xl select-none transition-transform duration-300 font-mono group-hover:scale-110"
+            style={{ textShadow: `0 0 12px ${t.color}66` }}
             aria-hidden="true"
           >
             {t.rune}
           </span>
           <span
-            className="font-mono text-sm tracking-widest uppercase font-bold"
-            style={{ color: t.color, textShadow: hovered ? `0 0 8px ${t.color}66` : "none" }}
+            className="font-mono text-sm tracking-widest uppercase font-bold transition-all duration-300 group-hover:drop-shadow-[0_0_8px_currentColor]"
+            style={{ color: t.color }}
           >
             {t.name}
           </span>
         </div>
         {t.slug && (
-          <span className={`font-mono text-[10px] uppercase tracking-widest transition-opacity duration-300 ${hovered ? "opacity-100" : "opacity-70"}`} style={{ color: t.color }}>
+          <span className="font-mono text-[10px] uppercase tracking-widest opacity-70 group-hover:opacity-100 transition-opacity duration-300" style={{ color: t.color }}>
             View details ↗
           </span>
         )}
       </div>
-      {/* description — smoothly revealed on hover/focus */}
-      <div
-        className="grid transition-all duration-300 ease-out relative z-10"
-        style={{ gridTemplateRows: hovered ? "1fr" : "0fr" }}
-      >
-        <div className="overflow-hidden">
-          <p
-            className="font-mono text-xs leading-relaxed pt-2 transition-opacity duration-300"
-            style={{
-              color: `${t.color}cc`,
-              opacity: hovered ? 1 : 0,
-            }}
-          >
-            {t.desc}
-          </p>
-        </div>
+      
+      {/* description — always visible */}
+      <div className="relative z-10 mt-3 flex-1">
+        <p
+          className="font-mono text-xs leading-relaxed text-silver-hp/80"
+        >
+          {t.desc}
+        </p>
       </div>
       
-      {/* Optional decorative "circuit" or "blueprint" lines in background on hover */}
-      <div className={`absolute right-4 top-4 font-mono text-[8px] text-silver-hp/20 transition-opacity duration-300 ${hovered ? "opacity-100" : "opacity-0"}`}>
+      {/* Optional decorative "circuit" or "blueprint" lines in background */}
+      <div className="absolute right-4 top-4 font-mono text-[8px] text-silver-hp/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         SYS.OK
       </div>
     </>
   );
 
-  const containerClasses = `relative h-full flex flex-col gap-2 p-5 bg-midnight-hp/60 backdrop-blur-sm transition-all duration-300 outline-none ${
-    hovered ? "bg-midnight-hp/90 shadow-[inset_0_0_20px_rgba(34,197,94,0.15)]" : "shadow-[inset_0_0_0px_rgba(34,197,94,0)]"
-  } ${t.slug ? "cursor-pointer" : "cursor-default"}`;
+  const containerClasses = `group relative h-full flex flex-col p-6 backdrop-blur-sm transition-all duration-300 outline-none hover:-translate-y-1 ${
+    t.slug ? "cursor-pointer" : "cursor-default"
+  }`;
+
+  const cardStyle = {
+    background: "linear-gradient(180deg, rgba(44,27,15,.95), rgba(20,12,8,.95))",
+    border: "1px solid rgba(212,175,55,.4)",
+    boxShadow: "0 0 20px rgba(212,175,55,.15)",
+  };
 
   if (t.slug) {
     return (
       <Link
         href={`/events/hardware/${t.slug}`}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        onFocus={() => setHovered(true)}
-        onBlur={() => setHovered(false)}
         className={containerClasses}
-        style={{ border: `1px solid ${t.color}33`, display: "block" }}
+        style={{ ...cardStyle, display: "flex" }}
         aria-label={`View details for ${t.name} track`}
       >
         {cardContent}
@@ -121,15 +111,11 @@ function TrackCard({ track: t, index: i }) {
 
   return (
     <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onFocus={() => setHovered(true)}
-      onBlur={() => setHovered(false)}
       tabIndex={0}
       role="group"
       aria-label={`${t.name} track`}
       className={containerClasses}
-      style={{ border: `1px solid ${t.color}33` }}
+      style={{ ...cardStyle, display: "flex" }}
     >
       {cardContent}
     </div>
@@ -183,12 +169,18 @@ export default function HardwareDetails() {
       className="relative isolate overflow-hidden pt-32 pb-24 px-6"
     >
       {/* Hardware / Blueprint Background */}
-      <div 
-        aria-hidden="true" 
-        className="absolute inset-0 -z-40 pointer-events-none opacity-20 mix-blend-screen"
+      <div
+        className="absolute inset-0 -z-40"
         style={{
-          backgroundImage: `linear-gradient(${GREEN}22 1px, transparent 1px), linear-gradient(90deg, ${GREEN}22 1px, transparent 1px)`,
-          backgroundSize: "40px 40px",
+          background: `
+            radial-gradient(circle at top,
+            rgba(212,175,55,.15),
+            transparent 40%),
+            linear-gradient(
+            180deg,
+            #0B1020 0%,
+            #140B08 100%)
+          `,
         }}
       />
       <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars pointer-events-none opacity-50" />
@@ -198,38 +190,56 @@ export default function HardwareDetails() {
       </div>
 
       {/* ═══ HERO ═══════════════════════════════════════════════════════ */}
-      <div className="mx-auto max-w-4xl text-center">
+      <div className="mx-auto max-w-4xl text-center relative">
+        <div className="absolute top-20 left-20 text-4xl animate-bounce">
+          ⚡
+        </div>
+        <div
+          className="absolute right-20 top-40 text-3xl"
+          style={{
+            animation: "float 6s ease-in-out infinite"
+          }}
+        >
+          ✨
+        </div>
+        <div
+          className="absolute left-1/4 bottom-20 text-4xl"
+          style={{
+            animation: "float 8s ease-in-out infinite"
+          }}
+        >
+          🦉
+        </div>
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <Eyebrow>Track · Hardware Hack</Eyebrow>
+          <Eyebrow color={GOLD}>
+            Department of Magical Engineering
+          </Eyebrow>
         </motion.div>
 
         <h1
-          aria-label="Hardware Hack"
-          className="mt-6 font-display font-black tracking-tight text-silver-hp leading-[1.05] hp-glow text-balance"
-          style={{ perspective: 800, fontSize: "clamp(2.2rem, 9vw, 5.5rem)" }}
+          className="mt-6 font-display font-black tracking-tight leading-[1.05]"
+          style={{
+            fontSize: "clamp(2.5rem, 8vw, 6rem)",
+            color: GOLD,
+            textShadow: `
+              0 0 10px rgba(212,175,55,.8),
+              0 0 30px rgba(212,175,55,.4)
+            `,
+          }}
         >
-          {splitLetters("Hardware")}
-          <span style={{ whiteSpace: "pre" }}> </span>
-          <span
-            className="font-mono tracking-widest uppercase"
-            style={{
-              color: GREEN,
-              textShadow: `0 0 8px ${GREEN}b3, 0 0 22px ${GREEN_GLOW}`,
-              fontSize: "clamp(2.4rem, 10vw, 6rem)",
-            }}
-          >
-            {splitLetters("Hack")}
-          </span>
+          ⚡ Wizarding Hardware Trials ⚡
         </h1>
 
         <Reveal delay={0.15}>
-          <p className="mt-6 font-mono text-silver-hp/85 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto tracking-wide">
-            <span className="text-green-500">{`>_ `}</span>
-            Solder, sparks, sensors. Magic that you can hold. Bring your custom bots, rovers, and embedded systems to life in our dedicated hardware arenas.
+          <p className="mt-6 font-mono text-silver-hp/90 text-sm sm:text-base leading-relaxed max-w-3xl mx-auto">
+            Where enchanted circuits meet modern engineering.
+            Build magical machines, autonomous creatures,
+            and spell-powered inventions to compete for glory
+            in the grand halls of HexaFalls.
           </p>
         </Reveal>
 
@@ -237,25 +247,25 @@ export default function HardwareDetails() {
         <Reveal delay={0.25} className="mt-8 flex flex-col items-center gap-3">
           <span
             className="inline-flex items-center gap-2 rounded-full border px-3 py-1 font-display text-[10px] uppercase tracking-[0.4em]"
-            style={{ borderColor: `${GREEN}80`, color: GREEN, backgroundColor: `${GREEN}1a` }}
+            style={{ borderColor: `${GOLD}80`, color: GOLD, backgroundColor: `${GOLD}1a` }}
           >
             <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full rounded-full opacity-70 animate-ping" style={{ backgroundColor: GREEN }} />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full" style={{ backgroundColor: GREEN }} />
+              <span className="absolute inline-flex h-full w-full rounded-full opacity-70 animate-ping" style={{ backgroundColor: GOLD }} />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full" style={{ backgroundColor: GOLD }} />
             </span>
             Registrations Open
           </span>
           <RoughButton
             as={Link}
             href="#"
-            color={GREEN}
-            glow={GREEN_GLOW}
+            color={GOLD}
+            glow={GOLD_GLOW}
             shimmer
             seed={23}
-            className="px-10 sm:px-12 py-4 sm:py-5 text-[13px] sm:text-[14px] tracking-[0.4em]"
+            className="px-12 py-5 tracking-[0.4em]"
           >
-            <span>REGISTER NOW</span>
-            <span aria-hidden="true">↗</span>
+            <span>ENTER THE TOURNAMENT</span>
+            <span>⚡</span>
           </RoughButton>
         </Reveal>
       </div>
@@ -263,18 +273,19 @@ export default function HardwareDetails() {
       {/* ═══ HARDWARE TRACKS ═══════════════════════════════════════════ */}
       <div className="mx-auto mt-28 max-w-5xl">
         <Reveal>
-          <Eyebrow>Hardware Tracks</Eyebrow>
-          <h2 className="mt-4 text-center font-display font-bold text-2xl sm:text-3xl tracking-tight" style={{ color: GREEN, textShadow: `0 0 14px ${GREEN_GLOW}` }}>
-            Choose Your Arena
+          <Eyebrow color={GOLD}>Hardware Tracks</Eyebrow>
+          <h2 className="mt-4 text-center font-display font-bold text-2xl sm:text-3xl tracking-tight" style={{ color: GOLD, textShadow: `0 0 14px ${GOLD_GLOW}` }}>
+            Select Your Magical Trial
           </h2>
           <p className="mt-3 text-center font-mono text-silver-hp/75 text-sm max-w-xl mx-auto">
-            Pick the track that matches your robot&apos;s capabilities. Or bring a custom project for the exhibition.
+            Choose your challenge, showcase your creation,
+            and prove your mastery of magical engineering.
           </p>
         </Reveal>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 justify-center">
+        <div className="mt-10 flex flex-wrap justify-center gap-4">
           {HARDWARE_TRACKS.map((t, i) => (
-            <Reveal key={t.name} delay={i * 0.04} className="h-full">
+            <Reveal key={t.name} delay={i * 0.04} className="w-full sm:w-[calc(50%-8px)] lg:w-[calc(33.333%-11px)] flex-shrink-0">
               <TrackCard track={t} index={i} />
             </Reveal>
           ))}
@@ -284,29 +295,48 @@ export default function HardwareDetails() {
 
 
       {/* ═══ FOOTER CTAs ═════════════════════════════════════════════════ */}
-      <Reveal delay={0.1} className="mt-28 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
-        <RoughButton
-          as={Link}
-          href="#"
-          color={GREEN}
-          glow={GREEN_GLOW}
-          shimmer
-          seed={23}
-          className="px-8 py-3 text-[12px]"
-        >
-          <span>REGISTER NOW</span>
-          <span aria-hidden="true">↗</span>
-        </RoughButton>
-        <RoughButton
-          as={Link}
-          href="/events"
-          color="#C5C6C7"
-          fill={false}
-          seed={31}
-          className="px-8 py-3 text-[11px]"
-        >
-          ← ALL EVENTS
-        </RoughButton>
+      <Reveal delay={0.1} className="mt-28 flex flex-col items-center justify-center">
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <p
+            className="italic text-lg"
+            style={{
+              color: GOLD,
+              textShadow: "0 0 10px rgba(212,175,55,.3)",
+            }}
+          >
+            "The finest witches and wizards are not born.
+            They are forged through innovation."
+          </p>
+
+          <p className="mt-4 text-silver-hp/70">
+            — HexaFalls II
+          </p>
+        </div>
+
+        <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
+          <RoughButton
+            as={Link}
+            href="#"
+            color={GOLD}
+            glow={GOLD_GLOW}
+            shimmer
+            seed={23}
+            className="px-8 py-3 text-[12px]"
+          >
+            <span>REGISTER NOW</span>
+            <span aria-hidden="true">↗</span>
+          </RoughButton>
+          <RoughButton
+            as={Link}
+            href="/events"
+            color="#C5C6C7"
+            fill={false}
+            seed={31}
+            className="px-8 py-3 text-[11px]"
+          >
+            ← ALL EVENTS
+          </RoughButton>
+        </div>
       </Reveal>
     </section>
   );

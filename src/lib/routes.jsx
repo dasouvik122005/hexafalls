@@ -201,11 +201,45 @@ export const HACKATHON_TRACKS = [
 
 // ── Hardware Tracks ─────────────────────────────────────────────────────
 export const HARDWARE_TRACKS = [
-  { name: "Exhibition", slug: "exhibition", rune: "👁", color: "#22C55E", desc: "Showcase your hardware projects, embedded systems, and innovative prototypes." },
-  { name: "Robo Sumo", slug: "robo-sumo", rune: "⚔", color: "#EF4444", desc: "Build an autonomous robot to push the opponent out of the ring." },
-  { name: "Robo Soccer", slug: "robo-soccer", rune: "⚽", color: "#3B82F6", desc: "Design remotely controlled bots to compete in a fast-paced football match." },
-  { name: "Robo Terrence", slug: "robo-terrence", rune: "🏎", color: "#F59E0B", desc: "Navigate rough terrains and overcome physical obstacles with your custom rover." },
-  { name: "Line Follower", slug: "line-follower", rune: "〰", color: "#06B6D4", desc: "Create an autonomous bot that can follow a complex path precisely and quickly." },
+  {
+    name: "Robo Terrence",
+    rune: "🧹",
+    color: "#D4AF37",
+    desc: "Race your magical machine through enchanted obstacles.",
+    slug: "robo-terrence",
+  },
+
+  {
+    name: "Robo Soccer",
+    rune: "⚽",
+    color: "#4A90E2",
+    desc: "Strategic robotic gameplay inspired by the wizarding world.",
+    slug: "robo-soccer",
+  },
+
+  {
+    name: "Robo Sumo",
+    rune: "🐉",
+    color: "#FF6B35",
+    desc: "Push, battle and dominate the magical combat arena.",
+    slug: "robo-sumo",
+  },
+
+  {
+    name: "Line Follower",
+    rune: "🪄",
+    color: "#8B5CF6",
+    desc: "Follow mystical trails with precision and intelligence.",
+    slug: "line-follower",
+  },
+
+  {
+    name: "Exhibition",
+    rune: "📜",
+    color: "#22C55E",
+    desc: "Present groundbreaking innovations and magical creations.",
+    slug: "exhibition",
+  },
 ];
 
 export const EXHIBITION_RULES = {
