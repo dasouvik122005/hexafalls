@@ -6,6 +6,7 @@
   --hx-cyan:     #66FCF1;
   --hx-silver:   #C5C6C7;
   --hx-gold:     #D4AF37;
+  --hx-red:      #EF4444;   /* gryffindor accent */
   --hx-violet:   #A78BFA;   /* third accent for fog / aurora */
 
   --background: var(--hx-midnight);
@@ -20,10 +21,15 @@
   --color-cyan-hp:    var(--hx-cyan);
   --color-silver-hp:  var(--hx-silver);
   --color-gold-hp:    var(--hx-gold);
+  --color-red-hp:     var(--hx-red);
 
   --font-display: var(--font-display);
   --font-wizard:  var(--font-wizard);
   --font-body:    var(--font-body);
+  --font-crimson: var(--font-crimson);
+  --font-cormorant: var(--font-cormorant);
+  --font-belina:   var(--font-belina);
+  --font-montserrat: var(--font-montserrat);
 }
 
 html, body {
@@ -31,6 +37,22 @@ html, body {
   color: var(--foreground);
   font-family: var(--font-body), system-ui, sans-serif;
   scroll-behavior: smooth;
+}
+
+/* ── Wand cursor ────────────────────────────────────────────────────────────
+   Default = an unlit wand; interactive elements = a lit wand. The trailing
+   keyword (auto / pointer) is the fallback if the PNG fails to load. Hotspot
+   set near the wand tip (top-left-ish). Coarse-pointer (touch) devices skip
+   custom cursors entirely. */
+@media (hover: hover) and (pointer: fine) {
+  html, body {
+    cursor: url('/cursor/wand_no_lit.png') 6 6, auto;
+  }
+  a, button, [role="button"], label, summary, select,
+  input[type="checkbox"], input[type="radio"], input[type="submit"],
+  input[type="button"], .cursor-pointer, [data-wand-lit] {
+    cursor: url('/cursor/wand_lit.png') 6 6, pointer;
+  }
 }
 
 /* Soft animated star/sparkle background — pure CSS, no JS cost */
@@ -66,6 +88,12 @@ html, body {
     0 0 10px rgba(212, 175, 55, 0.70),
     0 0 28px rgba(212, 175, 55, 0.45),
     0 0 56px rgba(212, 175, 55, 0.20);
+}
+.hp-glow-red {
+  text-shadow:
+    0 0 10px rgba(239, 68, 68, 0.70),
+    0 0 28px rgba(239, 68, 68, 0.45),
+    0 0 56px rgba(239, 68, 68, 0.20);
 }
 
 /* Magical underline used on CTAs */
@@ -161,6 +189,27 @@ html, body {
 @keyframes hp-shimmer {
   0%   { transform: translateX(0); }
   100% { transform: translateX(500%); }
+}
+
+/* Seamless partner-logo marquee. The track holds two copies of the logo set;
+   translating it by -50% lands copy #2 exactly where copy #1 started, so the
+   loop is invisible. Pure transform → compositor-only. */
+@keyframes hp-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.hp-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: hp-marquee var(--hp-marquee-duration, 38s) linear infinite;
+}
+.hp-marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}
+.hp-marquee:hover .hp-marquee-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .hp-marquee-track { animation: none; }
 }
 
 /* Sparkle drift — pure CSS, compositor-only (transform + opacity).

@@ -1,6 +1,6 @@
 {
   "name": "hexafalls",
-  "version": "1.0.25",
+  "version": "1.0.42",
   "private": true,
   "description": "HexaFalls — a 58-hour wizarding-themed hackathon at JIS University, Kolkata. Next.js + Tailwind app deployed on Cloudflare via OpenNext.",
   "keywords": [
@@ -34,7 +34,7 @@
       "url": "https://gdg.community.dev/gdg-on-campus-jis-university-kolkata-india/"
     }
   ],
-  "license": "UNLICENSED",
+  "license": "SEE LICENSE IN LICENSE",
   "engines": {
     "node": ">=20"
   },

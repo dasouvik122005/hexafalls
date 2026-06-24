@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import gsap from "gsap";
@@ -8,9 +8,10 @@ import Sparkles from "./Sparkles";
 import RoughFrame from "./RoughFrame";
 import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
-import HeroVideoBg from "./HeroVideoBg";
 import RoughStar from "./RoughStar";
 import RoughTape from "./RoughTape";
+
+const BROCHURE_PDF = "/brochures/HexaFalls_2_Brochure.pdf";
 
 const TIERS = [
   {
@@ -21,6 +22,23 @@ const TIERS = [
         href: "https://miro.com",
         logo: "/sponsors/miro.png",
         logoAlt: "MIRO LOGO",
+      },
+      {
+        name: "OWASP",
+        href: "https://owasp.org",
+        logo: "/sponsors/owasp-jisu.png",
+        logoAlt: "OWASP LOGO",
+      },
+    ],
+  },
+  {
+    label: "Title",
+    sponsors: [
+      {
+        name: "MLH",
+        href: "https://www.mlh.com/",
+        logo: "/sponsors/mlh.png",
+        logoAlt: "MLH LOGO",
       },
     ],
   },
@@ -33,6 +51,29 @@ const TIERS = [
         logo: "/sponsors/devfolio.png",
         logoAlt: "DEVFOLIO LOGO",
       },
+      {
+        name: "GitHub",
+        href: "https://github.com",
+        logo: "/sponsors/github.png",
+        logoAlt: "GITHUB LOGO",
+      }
+    ],
+  },
+  {
+    label: "Silver",
+    sponsors: [
+      {
+        name: "Corsair",
+        href: "https://corsair.dev/",
+        logo: "/sponsors/corsair.png",
+        logoAlt: "CORSAIR LOGO",
+      },
+      {
+        name: "SuperPlane",
+        href: "https://superplane.com/",
+        logo: "/sponsors/superplane.png",
+        logoAlt: "SUPERPLANE LOGO",
+      }
     ],
   },
   {
@@ -50,12 +91,45 @@ const TIERS = [
         logo: "/sponsors/n8n.png",
         logoAlt: "N8N LOGO",
       },
+      {
+        name: "mastra",
+        href: "https://mastra.ai/",
+        logo: "/sponsors/mastra.png",
+        logoAlt: "MASTRA LOGO",
+      },
     ],
   },
 ];
 
 export default function SponsorsHall() {
   const sectionRef = useRef(null);
+  const [downloadStatus, setDownloadStatus] = useState("idle"); // 'idle' | 'downloading' | 'success' | 'error'
+
+  const handleDownload = async () => {
+    if (downloadStatus === "downloading") return;
+    setDownloadStatus("downloading");
+
+    try {
+      const response = await fetch("/brochures/HexaFalls_2_Brochure.pdf");
+      if (!response.ok) throw new Error("Failed to fetch file");
+      
+      const blob = await response.blob();
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "HexaFalls_2_Brochure.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(link.href);
+      
+      setDownloadStatus("success");
+      setTimeout(() => setDownloadStatus("idle"), 2500);
+    } catch (err) {
+      console.error("Download failed:", err);
+      setDownloadStatus("error");
+      setTimeout(() => setDownloadStatus("idle"), 3000);
+    }
+  };
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -116,10 +190,10 @@ export default function SponsorsHall() {
       ref={sectionRef}
       className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6"
     >
-      <HeroVideoBg />
+      <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars pointer-events-none" />
       <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
       <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
-        <Sparkles count={18} />
+        <Sparkles count={24} />
       </div>
 
       {/* margin scribbles */}
@@ -160,9 +234,6 @@ export default function SponsorsHall() {
         {splitLetters("Our")}<span style={{whiteSpace: "pre"}}> </span><span className="text-gold-hp hp-glow-gold text-[9vw] sm:text-[5vw] md:text-[4vw]">{splitLetters("Sponsors")}</span>
       </h1>
 
-      <p className="mx-auto mt-8 max-w-2xl text-center font-wizard italic text-silver-hp/60 text-sm">
-        The hands that carry the wood, the lanterns that light the long halls.
-      </p>
 
       {/* ── Tiered sponsors ────────────────────────────────────────────────
           One bold category header per tier with a row of logos beneath.
@@ -171,26 +242,24 @@ export default function SponsorsHall() {
       <div className="mt-14 mx-auto max-w-5xl flex flex-col gap-14">
         {TIERS.map((tier, ti) => {
           if (!tier.sponsors?.length) return null;
-          // First tier is the headline; gives it a bigger plate. Subsequent
-          // tiers shrink one notch so visual weight tracks importance.
-          const plateClass =
-            ti === 0
-              ? "h-24 w-56 sm:h-28 sm:w-72"
-              : "h-16 w-40 sm:h-20 sm:w-48";
-          const framePad = ti === 0 ? 14 : 10;
-          const tapeWidth = ti === 0 ? 60 : 44;
+          // Every sponsor plate is the SAME size regardless of tier — only the
+          // section header distinguishes ranks, so all logos read as equals.
+          const plateClass = "h-20 w-48 sm:h-24 sm:w-56";
+          const framePad = 12;
+          const tapeWidth = 52;
 
           return (
             <div key={tier.label}>
               {/* Bold tier header */}
-              <div className="flex items-center justify-center gap-5 mb-8">
+              <div className="mb-8 flex flex-col items-center justify-center gap-2 sm:flex-row sm:gap-5">
                 <RoughDivider
                   width={120}
                   height={24}
                   color="#D4AF37"
                   seed={11 + ti * 4}
+                  className="hidden sm:inline-flex"
                 />
-                <span className="font-display font-black text-base sm:text-lg uppercase tracking-[0.55em] text-gold-hp hp-glow-gold whitespace-nowrap drop-shadow-[0_0_18px_rgba(212,175,55,0.45)]">
+                <span className="max-w-full text-center font-display font-black text-[clamp(0.72rem,3vw,1.125rem)] leading-none uppercase tracking-[0.18em] sm:tracking-[0.55em] text-gold-hp hp-glow-gold whitespace-nowrap drop-shadow-[0_0_18px_rgba(212,175,55,0.45)]">
                   {tier.label}
                 </span>
                 <RoughDivider
@@ -198,6 +267,7 @@ export default function SponsorsHall() {
                   height={24}
                   color="#D4AF37"
                   seed={13 + ti * 4}
+                  className="hidden sm:inline-flex"
                 />
               </div>
 
@@ -223,7 +293,7 @@ export default function SponsorsHall() {
                       seed={41 + ti * 13 + i * 5}
                       stroke="#D4AF37"
                       mist={false}
-                      strokeWidth={ti === 0 ? 1.5 : 1.3}
+                      strokeWidth={1.4}
                       roughness={1.6}
                       bowing={1.2}
                       padding={framePad}
@@ -238,12 +308,16 @@ export default function SponsorsHall() {
                           loading={ti === 0 ? "eager" : "lazy"}
                           decoding="async"
                           className="max-h-full max-w-full object-contain"
+                          style={{
+                            filter: s.invert ? "invert(1)" : undefined,
+                            transform: s.scale ? `scale(${s.scale})` : undefined,
+                          }}
                         />
                         <RoughTape
                           color="#D4AF37"
                           seed={73 + ti * 7 + i}
                           width={tapeWidth}
-                          height={ti === 0 ? 14 : 11}
+                          height={12}
                         />
                       </div>
                     </RoughFrame>
@@ -294,15 +368,30 @@ export default function SponsorsHall() {
         className="mx-auto mt-14 flex max-w-3xl flex-row flex-wrap items-center justify-center gap-4"
       >
         <RoughButton
-          as={Link}
-          href="/sponsors/brochure"
+          as="button"
+          onClick={handleDownload}
+          disabled={downloadStatus === "downloading"}
           color="#D4AF37"
           glow="rgba(212,175,55,0.40)"
-          shimmer
+          shimmer={downloadStatus === "idle"}
           seed={43}
-          className="px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.35em]"
+          className={`px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.35em] ${downloadStatus === "downloading" ? "opacity-75 cursor-wait" : ""}`}
         >
-          VIEW SPONSORSHIP BROCHURE <span>↗</span>
+          {downloadStatus === "downloading" ? (
+            <div className="flex items-center gap-3">
+              <svg className="animate-spin h-4 w-4 text-gold-hp" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+              </svg>
+              DOWNLOADING...
+            </div>
+          ) : downloadStatus === "success" ? (
+            "DOWNLOADED ✓"
+          ) : downloadStatus === "error" ? (
+            "FAILED ✕"
+          ) : (
+            <>DOWNLOAD SPONSORSHIP BROCHURE <span>↓</span></>
+          )}
         </RoughButton>
         <RoughButton
           as="a"
@@ -312,21 +401,7 @@ export default function SponsorsHall() {
           seed={45}
           className="px-9 sm:px-10 py-4 text-[12px] sm:text-[13px] tracking-[0.35em]"
         >
-          TALK TO ORGANIZER <span>↗</span>
-        </RoughButton>
-        <RoughButton
-          color="#66FCF1"
-          glow="rgba(102,252,241,0.25)"
-          shimmer
-          disabled
-          aria-disabled="true"
-          seed={46}
-          className="px-9 sm:px-10 py-4 text-[12px] sm:text-[13px] tracking-[0.35em] hp-pulse"
-        >
-          <span>APPLY FOR SPONSOR</span>
-          <span className="text-[9px] tracking-[0.25em] px-2 py-0.5 rounded-full border border-gold-hp/60 bg-gold-hp/10 text-gold-hp hp-glow-gold">
-            COMING SOON
-          </span>
+          MAIL US TO BE A SPONSOR <span>↗</span>
         </RoughButton>
         <RoughButton
           as={Link}

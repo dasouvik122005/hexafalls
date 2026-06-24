@@ -7,7 +7,7 @@ import Sparkles from "@/components/Sparkles";
 import HeroVideoBg from "@/components/HeroVideoBg";
 
 // Drop your brochure PDF at this path under /public for the download link.
-const BROCHURE_PATH = "/brochures/brochure_sponsor.pdf";
+const BROCHURE_PATH = "/brochures/HexaFalls_2_Brochure.pdf";
 const BROCHURE_FILENAME = "hexafalls-sponsorship.pdf";
 
 // One image per PDF page — rendered inside our own themed frames so the

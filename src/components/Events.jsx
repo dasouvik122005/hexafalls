@@ -8,7 +8,6 @@ import Sparkles from "./Sparkles";
 import RoughFrame from "./RoughFrame";
 import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
-import HeroVideoBg from "./HeroVideoBg";
 import { EVENTS } from "@/lib/routes";
 
 export default function Events() {
@@ -72,10 +71,10 @@ export default function Events() {
       ref={sectionRef}
       className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6"
     >
-      <HeroVideoBg />
+      <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars pointer-events-none" />
       <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
       <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
-        <Sparkles count={18} />
+        <Sparkles count={24} />
       </div>
 
       <div className="text-center">
@@ -87,17 +86,6 @@ export default function Events() {
           {splitLetters("The")}<span style={{whiteSpace: "pre"}}> </span><span className="text-gold-hp hp-glow-gold text-[14vw] sm:text-[9vw] md:text-[7vw]">{splitLetters("Events")}</span>
         </h1>
       </div>
-
-      <motion.p
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.05 }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="mx-auto mt-10 max-w-2xl text-center font-wizard text-silver-hp/85 text-base sm:text-lg leading-relaxed"
-      >
-        Five tracks. One night that breaks into fifty-eight hours. Each has its
-        own scrolls, its own duels, and its own gold to be won.
-      </motion.p>
 
       {/* coming-soon ribbon */}
       <motion.div

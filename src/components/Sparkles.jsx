@@ -9,11 +9,11 @@ export default function Sparkles({ count = 24 }) {
   };
   const sparks = Array.from({ length: count }, (_, i) => ({
     id: i,
-    left: seeded(i + 1) * 100,
-    top: seeded(i + 2) * 100,
-    size: 1 + seeded(i + 3) * 2.5,
-    delay: seeded(i + 4) * 6,
-    dur: 4 + seeded(i + 5) * 6,
+    left: Number((seeded(i + 1) * 100).toFixed(3)),
+    top: Number((seeded(i + 2) * 100).toFixed(3)),
+    size: Number((1 + seeded(i + 3) * 2.5).toFixed(3)),
+    delay: Number((seeded(i + 4) * 6).toFixed(3)),
+    dur: Number((4 + seeded(i + 5) * 6).toFixed(3)),
     gold: seeded(i + 6) > 0.78,
   }));
 

@@ -10,6 +10,9 @@ import RoughStar from "./RoughStar";
 export default function TopBar() {
   const [open, setOpen] = useState(false);
 
+  // Available routes first, "soon" ones last (stable within each group).
+  const nav = [...SITEMAP].sort((a, b) => (a.soon ? 1 : 0) - (b.soon ? 1 : 0));
+
   // Close on Escape
   useEffect(() => {
     if (!open) return;
@@ -75,13 +78,15 @@ export default function TopBar() {
           aria-label="Primary"
           className="hidden md:flex items-center gap-4 lg:gap-5"
         >
-          {SITEMAP.map((s) => (
+          {nav.map((s) => (
             <div key={s.href} className="relative group">
               <Link
                 href={s.href}
                 aria-label={s.label}
                 className={`relative inline-flex h-9 w-9 items-center justify-center rounded-full border transition ${
-                  s.soon
+                  s.red
+                    ? "border-red-hp/40 bg-red-hp/10 text-red-hp hover:bg-red-hp/15 hover:border-red-hp/70 hover:shadow-[0_0_18px_rgba(239,68,68,0.3)] hp-glow-red"
+                    : s.soon
                     ? "border-gold-hp/40 bg-gold-hp/10 text-gold-hp hover:bg-gold-hp/15 hover:border-gold-hp/70 hover:shadow-[0_0_18px_rgba(212,175,55,0.3)] hp-glow-gold"
                     : "border-cyan-hp/40 bg-cyan-hp/10 text-cyan-hp hover:bg-cyan-hp/15 hover:border-cyan-hp/70 hover:shadow-[0_0_18px_rgba(102,252,241,0.3)] hp-glow"
                 }`}
@@ -96,7 +101,9 @@ export default function TopBar() {
               >
                 <div
                   className={`relative whitespace-nowrap rounded-md border bg-midnight/95 backdrop-blur-sm px-2.5 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] shadow-[0_4px_24px_rgba(0,0,0,0.6)] ${
-                    s.soon
+                    s.red
+                      ? "border-red-hp/50 text-red-hp hp-glow-red"
+                      : s.soon
                       ? "border-gold-hp/50 text-gold-hp hp-glow-gold"
                       : "border-cyan-hp/50 text-cyan-hp hp-glow"
                   }`}
@@ -106,7 +113,7 @@ export default function TopBar() {
                   <span
                     aria-hidden="true"
                     className={`absolute -top-1 left-1/2 -translate-x-1/2 h-2 w-2 rotate-45 border-l border-t bg-midnight/95 ${
-                      s.soon ? "border-gold-hp/50" : "border-cyan-hp/50"
+                      s.red ? "border-red-hp/50" : s.soon ? "border-gold-hp/50" : "border-cyan-hp/50"
                     }`}
                   />
                 </div>
@@ -122,7 +129,7 @@ export default function TopBar() {
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
           aria-controls="mobile-menu"
-          className="md:hidden relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-cyan-hp/40 bg-cyan-hp/10 text-cyan-hp hover:border-cyan-hp/70 hover:bg-cyan-hp/15 transition hp-glow"
+          className="md:hidden relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-cyan-hp/40 bg-cyan-hp/10 text-cyan-hp hover:border-cyan-hp/70 hover:bg-cyan-hp/15 transition hp-glow mr-14 sm:mr-16"
         >
           <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
           {/* animated bars */}
@@ -145,6 +152,21 @@ export default function TopBar() {
           </span>
         </button>
       </div>
+
+      <a
+        id="mlh-trust-badge"
+        href="https://mlh.io/na?utm_source=na-hackathon&utm_medium=TrustBadge&utm_campaign=2026-season&utm_content=yellow"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Major League Hacking 2026 Hackathon Season"
+        className="fixed right-3 top-0 z-100 block w-14 shrink-0 sm:right-4 sm:top-0 sm:w-16 md:w-20 md:right-6 lg:right-6 lg:top-0"
+      >
+        <img
+          src="https://logged-assets.s3.amazonaws.com/trust-badge/2027/mlh-trust-badge-2027-yellow.svg"
+          alt="Major League Hacking 2026 Hackathon Season"
+          className="block h-auto w-full"
+        />
+      </a>
 
       {/* Mobile menu */}
       <AnimatePresence>
@@ -172,7 +194,7 @@ export default function TopBar() {
             >
               <nav aria-label="Mobile" className="mx-auto max-w-7xl px-5 py-4">
                 <ul className="flex flex-col gap-1.5">
-                  {SITEMAP.map((s, i) => (
+                  {nav.map((s, i) => (
                     <motion.li
                       key={s.href}
                       initial={{ opacity: 0, x: -10 }}
@@ -183,14 +205,16 @@ export default function TopBar() {
                         href={s.href}
                         onClick={() => setOpen(false)}
                         className={`group flex items-center gap-3 rounded-lg border px-3 py-3 transition ${
-                          s.soon
+                          s.red
+                            ? "border-red-hp/30 bg-red-hp/5 text-red-hp/90 hover:bg-red-hp/10 hover:border-red-hp/60"
+                            : s.soon
                             ? "border-gold-hp/30 bg-gold-hp/5 text-gold-hp/90 hover:bg-gold-hp/10 hover:border-gold-hp/60"
                             : "border-cyan-hp/30 bg-cyan-hp/5 text-cyan-hp hover:bg-cyan-hp/10 hover:border-cyan-hp/60"
                         }`}
                       >
                         <span
                           className={`relative inline-flex h-9 w-9 items-center justify-center rounded-full border ${
-                            s.soon ? "border-gold-hp/40" : "border-cyan-hp/40"
+                            s.red ? "border-red-hp/40" : s.soon ? "border-gold-hp/40" : "border-cyan-hp/40"
                           }`}
                         >
                           {s.icon}
@@ -203,7 +227,7 @@ export default function TopBar() {
                             soon
                           </span>
                         )}
-                        <span className={`${s.soon ? "text-gold-hp/60" : "text-cyan-hp/60"} group-hover:translate-x-0.5 transition`}>→</span>
+                        <span className={`${s.red ? "text-red-hp/60" : s.soon ? "text-gold-hp/60" : "text-cyan-hp/60"} group-hover:translate-x-0.5 transition`}>→</span>
                       </Link>
                     </motion.li>
                   ))}

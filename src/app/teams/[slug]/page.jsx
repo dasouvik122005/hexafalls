@@ -2,11 +2,11 @@ import { notFound } from "next/navigation";
 import TopBar from "@/components/TopBar";
 import Footer from "@/components/Footer";
 import ComingSoon from "@/components/ComingSoon";
-import CallForVolunteers from "@/components/CallForVolunteers";
 import { TEAMS } from "@/lib/routes";
 
 export function generateStaticParams() {
-  return TEAMS.map((t) => ({ slug: t.slug }));
+  // `orgs` is served by the dedicated /teams/orgs page.
+  return TEAMS.filter((t) => t.slug !== "orgs").map((t) => ({ slug: t.slug }));
 }
 
 export async function generateMetadata({ params }) {
@@ -24,18 +24,27 @@ export default async function TeamSlugPage({ params }) {
   const team = TEAMS.find((t) => t.slug === slug);
   if (!team) notFound();
 
-  // Volunteers is the only open scroll — render the full apply page.
-  if (team.slug === "volunteers") {
-    return (
-      <main className="flex-1">
-        <TopBar />
-        <CallForVolunteers />
-        <Footer />
-      </main>
-    );
-  }
+  // Three states:
+  //   open       → scroll is open, apply (evangelists).
+  //   processing → entries closed, applications under review — point to the
+  //                timeline for when the chosen names are revealed (core team,
+  //                volunteers).
+  //   soon       → not opened yet (organising team).
+  const isOpen = Boolean(team.open && team.formUrl);
+  const isProcessing = Boolean(team.processing);
 
-  // The other three orders: themed coming-soon with a disabled apply button.
+  const lede = isOpen
+    ? `${team.blurb} The scroll is open — sign on to join the order.`
+    : isProcessing
+      ? `${team.blurb} Entries for the ${team.name} have closed and the names are now under review. Follow the timeline to learn when the chosen are revealed.`
+      : `${team.blurb} The roster, the duties, and the call to apply will be inscribed soon.`;
+
+  const apply = isOpen
+    ? { open: true, href: team.formUrl, external: true, label: "APPLY NOW" }
+    : isProcessing
+      ? { open: false, label: "ENTRIES CLOSED" }
+      : { open: false, label: "APPLY NOW" };
+
   return (
     <main className="flex-1">
       <TopBar />
@@ -43,21 +52,15 @@ export default async function TeamSlugPage({ params }) {
         eyebrow={`Order · ${team.name}`}
         title="The"
         accent={team.name}
-        lede={
-          team.formUrl
-            ? `${team.blurb} The scroll is open — sign on to join the order.`
-            : `${team.blurb} The roster, the duties, and the call to apply will be inscribed soon.`
-        }
+        lede={lede}
         whisper="“Behind every great gathering, a quiet council steadies the wand.”"
         accentColor={team.color}
         accentGlow={team.glow}
-        apply={
-          team.formUrl
-            ? { open: true, href: team.formUrl, external: true, label: "APPLY NOW" }
-            : { open: false, label: "APPLY NOW" }
-        }
-        backHref="/teams"
-        backLabel="← ALL TEAMS"
+        apply={apply}
+        statusLabel={isProcessing ? "Entries closed · under review" : undefined}
+        applyBadge={isProcessing ? "UNDER REVIEW" : "COMING SOON"}
+        backHref={isProcessing ? "/timeline" : "/teams"}
+        backLabel={isProcessing ? "VIEW THE TIMELINE →" : "← ALL TEAMS"}
       />
       <Footer />
     </main>

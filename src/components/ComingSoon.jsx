@@ -8,7 +8,6 @@ import Sparkles from "./Sparkles";
 import RoughFrame from "./RoughFrame";
 import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
-import HeroVideoBg from "./HeroVideoBg";
 
 /**
  * Generic "Coming Soon" page in the wizarding theme.
@@ -30,6 +29,9 @@ export default function ComingSoon({
   // theme overrides — when set, replace the default cyan/gold palette
   accentColor,           // hex e.g. "#E879F9"
   accentGlow,            // rgba e.g. "rgba(232,121,249,0.30)"
+  // closed-state copy overrides
+  statusLabel,           // pulse label when apply is closed (default: "Council reveals soon")
+  applyBadge = "COMING SOON", // badge inside the disabled apply pill
   // back button
   backHref  = "/",
   backLabel = "← BACK TO THE HALL",
@@ -113,18 +115,19 @@ export default function ComingSoon({
   };
 
   // Closed-scroll label — written in a way that reads naturally regardless
-  // of which order it is (organising team, evangelists, etc.).
-  const soonLabel = "Council reveals soon";
+  // of which order it is (organising team, evangelists, etc.). Callers can
+  // override via `statusLabel` (e.g. "Entries closed · under review").
+  const soonLabel = statusLabel || "Council reveals soon";
 
   return (
     <section
       ref={sectionRef}
       className="relative isolate overflow-hidden min-h-screen pt-28 pb-24 px-6 flex flex-col items-center"
     >
-      <HeroVideoBg />
+      <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars pointer-events-none" />
       <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
       <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
-        <Sparkles count={18} />
+        <Sparkles count={24} />
       </div>
 
       {/* ── Above-the-fold: eyebrow → headline → call-to-action ───────────
@@ -264,6 +267,80 @@ export default function ComingSoon({
           </p>
         </RoughFrame>
       </div>
+
+      {/* Pulsing "owl in flight" indicator */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4, delay: 0.4 }}
+        className="mt-12 flex items-center gap-3 font-display text-[10px] uppercase tracking-[0.5em]"
+        style={themed ? { color: accentColor } : undefined}
+      >
+        <span className="relative flex h-2 w-2">
+          <span
+            className="absolute inline-flex h-full w-full rounded-full opacity-60 animate-ping"
+            style={{ backgroundColor: accentColor || "#D4AF37" }}
+          />
+          <span
+            className="relative inline-flex h-2 w-2 rounded-full"
+            style={{ backgroundColor: accentColor || "#D4AF37" }}
+          />
+        </span>
+        <span className={themed ? "" : "text-gold-hp/80"}>Inscription in progress</span>
+      </motion.div>
+
+      {/* Apply CTA + Back — sits side-by-side on every breakpoint */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4, delay: 0.5 }}
+        className="mt-12 flex flex-row flex-wrap items-center justify-center gap-4"
+      >
+        {apply && (apply.open ? (
+          <RoughButton
+            as="a"
+            href={apply.href}
+            target={apply.external ? "_blank" : undefined}
+            rel={apply.external ? "noopener noreferrer" : undefined}
+            color={accentColor || "#D4AF37"}
+            glow={accentGlow || (themed ? `${accentColor}55` : "rgba(212,175,55,0.30)")}
+            shimmer
+            seed={23}
+            className="px-7 py-3 text-[12px]"
+          >
+            <span>{apply.label || "APPLY NOW"}</span>
+            <span>↗</span>
+          </RoughButton>
+        ) : (
+          <RoughButton
+            color={accentColor || "#66FCF1"}
+            glow={accentGlow || "rgba(102,252,241,0.25)"}
+            shimmer
+            disabled
+            aria-disabled="true"
+            seed={29}
+            className="px-7 py-3 text-[12px] hp-pulse"
+          >
+            <span>{apply.label || "APPLY NOW"}</span>
+            <span className="text-[9px] tracking-[0.25em] px-2 py-0.5 rounded-full border border-gold-hp/60 bg-gold-hp/10 text-gold-hp hp-glow-gold">
+              {applyBadge}
+            </span>
+          </RoughButton>
+        ))}
+
+        <RoughButton
+          as={Link}
+          href={backHref}
+          color="#C5C6C7"
+          fill={false}
+          seed={31}
+          className="px-7 py-3 text-[11px]"
+        >
+          {backLabel}
+        </RoughButton>
+      </motion.div>
     </section>
   );
 }

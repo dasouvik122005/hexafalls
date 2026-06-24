@@ -1,0 +1,85 @@
+==============================================================================
+                            THE HEXAFALLS LICENSE
+==============================================================================
+
+This repository holds the source code and creative assets for the HexaFalls
+Techfest project (the "Project"), maintained by HexaFalls / GDG on Campus ·
+JIS University (the "Maintainers").
+
+The Project uses a split licensing model — inspired by the way the Linux
+kernel organises its licensing. The full text of every license referenced
+below lives in the `LICENSES/` directory. This file is the preamble that tells
+you which terms apply to what.
+
+------------------------------------------------------------------------------
+1. SOURCE CODE  —  GNU GPL v3 (or later)
+------------------------------------------------------------------------------
+
+Unless a file states otherwise, all SOURCE CODE in this repository is licensed
+under the GNU General Public License, version 3, or (at your option) any later
+version:
+
+        SPDX-License-Identifier: GPL-3.0-or-later
+
+The complete text is in `LICENSES/GPL-3.0.txt`.
+
+You may copy, study, modify, and redistribute the source code under those
+terms. Anything you distribute that incorporates this code must itself stay
+under the GPL and keep its notices intact. No restriction beyond the GPL is
+placed on the code itself.
+
+------------------------------------------------------------------------------
+2. BRAND, IDENTITY & CREATIVE CONTENT  —  All Rights Reserved (NOT GPL)
+------------------------------------------------------------------------------
+
+The GPL covers code — it does NOT cover the Project's identity or its creative
+works. The following are NOT licensed under the GPL and remain the exclusive
+property of the Maintainers, ALL RIGHTS RESERVED:
+
+  • The names, marks and wordmarks "HexaFalls", "HexaFalls Techfest" and
+    "HexaFalls 2", together with all logos, crests, seals and house emblems.
+  • The mascot, the house-card artwork, banners, posters, and every
+    illustration or rendered artwork — including, without limitation, the
+    contents of `public/house_card/`, `public/logos/`, `public/mascot/`,
+    `public/banners/`, and `public/video/`.
+  • Photographs, video, audio and other media produced for the Project.
+  • Written editorial copy, lore, event descriptions, and the overall visual
+    design, layout and "look and feel" of the website.
+  • Third-party sponsor and partner logos (e.g. under `public/sponsors/` and
+    `public/partners/`), which remain the property of their respective owners
+    and may be used only with that owner's permission.
+
+You may NOT use, reproduce, distribute, publicly display, or make derivative
+works of anything in this Section 2 — for any purpose, including within a fork
+or redistribution of the code — without the Maintainers' prior written
+permission. Your rights to the CODE under the GPL are unaffected by this
+reservation: simply remove or replace the reserved assets.
+
+Applying the GPL to the code grants NO trademark, branding, or content
+license. If you fork the Project you must replace the reserved brand and
+creative assets with your own, and you may not present your fork as an official
+HexaFalls work or imply HexaFalls endorsement.
+
+------------------------------------------------------------------------------
+3. SPDX TAGS & PER-FILE NOTICES
+------------------------------------------------------------------------------
+
+Individual files may carry an `SPDX-License-Identifier:` tag. Where present,
+that tag is authoritative for that file. Where absent, Section 1 governs code
+and Section 2 governs assets and content, according to the nature of the file.
+
+------------------------------------------------------------------------------
+4. NO WARRANTY
+------------------------------------------------------------------------------
+
+The Project is provided "AS IS", without warranty of any kind, to the fullest
+extent permitted by applicable law. See the warranty and liability disclaimers
+in `LICENSES/GPL-3.0.txt`.
+
+------------------------------------------------------------------------------
+
+Licensing questions or permission requests:  support@hexafalls.org
+
+© 2026 HexaFalls · GDG on Campus · JIS University.
+Source code: GPL-3.0-or-later.  Name, logos and creative assets: reserved.
+==============================================================================
