@@ -1,0 +1,23 @@
+{
+  "app": {
+    "homepage_url": "https://hexafalls.org",
+    "pricing_url": "https://hexafalls.org/events"
+  },
+  "products": [
+    {
+      "tier": "member",
+      "name": "HexaFalls Entry",
+      "description": "Per-member event entry fee for HexaFalls 2026. One-time payment, full access for the season.",
+      "prices": [
+        {
+          "nickname": "India",
+          "currency": "INR",
+          "unit_amount": 10000,
+          "interval": "year",
+          "region": "IN",
+          "type": "one_time"
+        }
+      ]
+    }
+  ]
+}
