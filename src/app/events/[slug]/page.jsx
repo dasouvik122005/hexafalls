@@ -14,7 +14,6 @@ import Sparkles from "@/components/Sparkles";
 import RoughFrame from "@/components/RoughFrame";
 import RoughButton from "@/components/RoughButton";
 import RoughDivider from "@/components/RoughDivider";
-import ComingSoon from "@/components/ComingSoon";
 import HackathonDetails from "@/components/HackathonDetails";
 import HardwareDetails from "@/components/HardwareDetails";
 import { EVENTS } from "@/lib/routes";
@@ -34,7 +33,7 @@ const REGISTRATION_PATHS = {
     { label: "REGISTER · COMPETITIVE PROGRAMMING", href: "/events/cp/register", primary: true },
   ],
   gaming: [
-    { label: "REGISTER · GAMING ARENA", href: "/events/gaming/register", primary: true },
+    { label: "REGISTER · GAMING ARENA", href: "/events/gaming/register", primary: true, soon: true },
   ],
 };
 
@@ -84,10 +83,16 @@ export default async function EventPage({ params }) {
   const accent = event.name.replace(/^The\s+/i, "");
   const isHackathon = event.slug === "hackathon";
   const isHardware = event.slug === "hardware";
+  const comingSoon = paths.some((p) => p.soon);
 
   return (
     <main className="flex-1">
       <TopBar />
+      {isHackathon ? (
+        <HackathonDetails />
+      ) : isHardware ? (
+        <HardwareDetails />
+      ) : (
       <section className="relative isolate overflow-hidden min-h-screen pt-28 pb-24 px-6 flex flex-col items-center">
         <HeroVideoBg />
         <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
@@ -138,32 +143,51 @@ export default async function EventPage({ params }) {
             backgroundColor: `${event.color}1a`,
           }}
         >
-          <span className="relative flex h-1.5 w-1.5">
-            <span
-              className="absolute inline-flex h-full w-full rounded-full opacity-70 animate-ping"
-              style={{ backgroundColor: event.color }}
-            />
-            <span
-              className="relative inline-flex h-1.5 w-1.5 rounded-full"
-              style={{ backgroundColor: event.color }}
-            />
-          </span>
-          Registrations open
+          {comingSoon ? (
+            <>Registrations opening soon</>
+          ) : (
+            <>
+              <span className="relative flex h-1.5 w-1.5">
+                <span
+                  className="absolute inline-flex h-full w-full rounded-full opacity-70 animate-ping"
+                  style={{ backgroundColor: event.color }}
+                />
+                <span
+                  className="relative inline-flex h-1.5 w-1.5 rounded-full"
+                  style={{ backgroundColor: event.color }}
+                />
+              </span>
+              Registrations open
+            </>
+          )}
         </span>
 
         {/* CTA stack */}
         <div className="mt-8 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
           {paths.map((p) =>
-            p.primary ? (
+            p.soon ? (
+              <RoughButton
+                key={p.href}
+                as="button"
+                disabled
+                color={event.color}
+                fill={false}
+                seed={23}
+                className="px-10 sm:px-12 py-4 leading-none text-[13px] sm:text-[14px] tracking-[0.4em]"
+              >
+                REGISTRATION · COMING SOON
+              </RoughButton>
+            ) : p.primary ? (
               <RoughButton
                 key={p.href}
                 as="link"
                 href={p.href}
                 color={event.color}
                 glow={event.glow}
+                fill={false}
                 shimmer
                 seed={23}
-                className="px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.4em]"
+                className="px-10 sm:px-12 py-4 leading-none text-[13px] sm:text-[14px] tracking-[0.4em]"
               >
                 {p.label} <span aria-hidden="true">↗</span>
               </RoughButton>
@@ -227,27 +251,6 @@ export default async function EventPage({ params }) {
           </RoughFrame>
         </div>
       </section>
-      {isHackathon ? (
-        <HackathonDetails />
-      ) : isHardware ? (
-        <HardwareDetails />
-      ) : (
-        <ComingSoon
-          eyebrow={`Track · ${event.name}`}
-          title="The"
-          accent={event.name.replace(/^The\s+/i, "")}
-          lede={`${event.blurb} The full brief is being inked: rules, schedule, judging. Return soon, or peek at the prizes already.`}
-          whisper={`"Every contest is a small spell, and every spell needs its rules."`}
-          accentColor={event.color}
-          accentGlow={event.glow}
-          apply={{
-            open: true,
-            label: "SEE THE PRIZES",
-            href: `/events/${event.slug}/prizes`,
-          }}
-          backHref="/events"
-          backLabel="← ALL EVENTS"
-        />
       )}
       <Footer />
     </main>

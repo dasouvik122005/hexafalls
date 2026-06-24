@@ -215,17 +215,16 @@ export default function HackathonDetails() {
             Registrations Open
           </span>
           <RoughButton
-            as="a"
-            href="https://hexafalls2.devfolio.co"
-            target="_blank"
-            rel="noopener noreferrer"
+            as={Link}
+            href="/events/hackathon/register"
             color={GOLD}
             glow={GOLD_GLOW}
+            fill={false}
             shimmer
             seed={23}
-            className="px-10 sm:px-12 py-4 sm:py-5 text-[13px] sm:text-[14px] tracking-[0.4em]"
+            className="px-10 sm:px-12 py-4 sm:py-5 leading-none text-[13px] sm:text-[14px] tracking-[0.4em]"
           >
-            <span>REGISTER ON DEVFOLIO</span>
+            <span>REGISTER · HACKATHON</span>
             <span aria-hidden="true">↗</span>
           </RoughButton>
         </Reveal>
@@ -586,17 +585,16 @@ export default function HackathonDetails() {
       {/* ═══ FOOTER CTAs ═════════════════════════════════════════════════ */}
       <Reveal delay={0.1} className="mt-20 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
         <RoughButton
-          as="a"
-          href="https://hexafalls2.devfolio.co"
-          target="_blank"
-          rel="noopener noreferrer"
+          as={Link}
+          href="/events/hackathon/register"
           color={GOLD}
           glow={GOLD_GLOW}
+          fill={false}
           shimmer
           seed={23}
-          className="px-8 py-3 text-[12px]"
+          className="px-8 py-3 leading-none text-[12px]"
         >
-          <span>REGISTER ON DEVFOLIO</span>
+          <span>REGISTER · HACKATHON</span>
           <span aria-hidden="true">↗</span>
         </RoughButton>
         <RoughButton

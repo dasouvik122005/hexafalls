@@ -245,18 +245,32 @@ export default function HardwareDetails() {
             </span>
             Registrations Open
           </span>
-          <RoughButton
-            as={Link}
-            href="#"
-            color={GREEN}
-            glow={GREEN_GLOW}
-            shimmer
-            seed={23}
-            className="px-10 sm:px-12 py-4 sm:py-5 text-[13px] sm:text-[14px] tracking-[0.4em]"
-          >
-            <span>REGISTER NOW</span>
-            <span aria-hidden="true">↗</span>
-          </RoughButton>
+          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
+            <RoughButton
+              as={Link}
+              href="/events/hardware/register?mode=competition"
+              color={GREEN}
+              glow={GREEN_GLOW}
+              fill={false}
+              shimmer
+              seed={23}
+              className="px-10 sm:px-12 py-4 sm:py-5 leading-none text-[13px] sm:text-[14px] tracking-[0.4em]"
+            >
+              <span>COMPETITION · TEAM 2–5</span>
+              <span aria-hidden="true">↗</span>
+            </RoughButton>
+            <RoughButton
+              as={Link}
+              href="/events/hardware/register?mode=exhibition"
+              color={GREEN}
+              fill={false}
+              seed={29}
+              className="px-8 sm:px-10 py-3 sm:py-4 leading-none text-[12px] sm:text-[13px] tracking-[0.35em]"
+            >
+              <span>EXHIBITION · SCHOOL SOLO</span>
+              <span aria-hidden="true">↗</span>
+            </RoughButton>
+          </div>
         </Reveal>
       </div>
 
@@ -287,15 +301,25 @@ export default function HardwareDetails() {
       <Reveal delay={0.1} className="mt-28 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
         <RoughButton
           as={Link}
-          href="#"
+          href="/events/hardware/register?mode=competition"
           color={GREEN}
           glow={GREEN_GLOW}
+          fill={false}
           shimmer
           seed={23}
-          className="px-8 py-3 text-[12px]"
+          className="px-8 py-3 leading-none text-[12px]"
         >
-          <span>REGISTER NOW</span>
-          <span aria-hidden="true">↗</span>
+          <span>COMPETITION ↗</span>
+        </RoughButton>
+        <RoughButton
+          as={Link}
+          href="/events/hardware/register?mode=exhibition"
+          color={GREEN}
+          fill={false}
+          seed={29}
+          className="px-8 py-3 leading-none text-[12px]"
+        >
+          <span>EXHIBITION ↗</span>
         </RoughButton>
         <RoughButton
           as={Link}
@@ -303,7 +327,7 @@ export default function HardwareDetails() {
           color="#C5C6C7"
           fill={false}
           seed={31}
-          className="px-8 py-3 text-[11px]"
+          className="px-8 py-3 leading-none text-[11px]"
         >
           ← ALL EVENTS
         </RoughButton>
