@@ -96,16 +96,27 @@ export async function POST(req, { params }) {
       .run();
   }
 
+  // Atomic insert: re-checks capacity AND same-event uniqueness inside the
+  // single statement so two concurrent joins can't both slip past the earlier
+  // SELECT checks (TOCTOU). changes===0 means it lost the race.
   const r = await db
     .prepare(
       `INSERT INTO squad_members (squad_id, user_id, role)
-       VALUES (?, ?, 'member')`,
+       SELECT ?, ?, 'member'
+        WHERE (SELECT COUNT(*) FROM squad_members WHERE squad_id = ?) < ?
+          AND NOT EXISTS (
+            SELECT 1 FROM squad_members sm JOIN squads s ON s.id = sm.squad_id
+             WHERE sm.user_id = ? AND s.event = ?
+          )`,
     )
-    .bind(squadId, user.id)
+    .bind(squadId, user.id, squadId, squad.max_members, user.id, squad.event)
     .run();
 
   if (!r.success) {
     return NextResponse.json({ error: "db_failure" }, { status: 500 });
+  }
+  if ((r.meta?.changes ?? 0) === 0) {
+    return NextResponse.json({ error: "squad_full" }, { status: 409 });
   }
 
   // Grant the dynamic team_<event> role + notify the leader in-profile (a member

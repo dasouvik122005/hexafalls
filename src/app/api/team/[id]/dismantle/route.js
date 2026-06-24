@@ -26,7 +26,7 @@ export async function POST(req, { params }) {
 
   const db = getDB();
   const squad = await db
-    .prepare(`SELECT id, event, name, leader_id FROM squads WHERE id = ?`)
+    .prepare(`SELECT id, event, name, leader_id, status, paid FROM squads WHERE id = ?`)
     .bind(squadId)
     .first();
   if (!squad) return NextResponse.json({ error: "not_found" }, { status: 404 });
@@ -35,6 +35,13 @@ export async function POST(req, { params }) {
   // from the client.
   if (squad.leader_id !== user.id) {
     return NextResponse.json({ error: "forbidden" }, { status: 403 });
+  }
+
+  // Once fees are settled or the team is approved, dismantling would cascade-
+  // delete paid `payments` rows and orphan co-members who paid. Block it — these
+  // teams must be unwound by an admin (with refund handling).
+  if (squad.status === "fees_settled" || squad.status === "approved" || squad.paid === 1) {
+    return NextResponse.json({ error: "team_locked" }, { status: 409 });
   }
 
   // Snapshot members BEFORE deletion (cascade will wipe squad_members).

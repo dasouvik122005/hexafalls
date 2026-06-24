@@ -13,13 +13,16 @@ import { generateId } from "@/lib/ids";
 export async function notify(userId, { kind, title, body = null, link = null } = {}, { db = getDB() } = {}) {
   if (!userId || !kind || !title) return null;
   const id = generateId("notification");
+  // Cap every stored field so a long upstream value can't bloat the row.
+  const safeBody = body == null ? null : String(body).slice(0, 1000);
+  const safeLink = link == null ? null : String(link).slice(0, 512);
   try {
     await db
       .prepare(
         `INSERT INTO notifications (id, user_id, kind, title, body, link)
          VALUES (?, ?, ?, ?, ?, ?)`,
       )
-      .bind(id, userId, kind, String(title).slice(0, 200), body, link)
+      .bind(id, userId, kind, String(title).slice(0, 200), safeBody, safeLink)
       .run();
     return id;
   } catch {

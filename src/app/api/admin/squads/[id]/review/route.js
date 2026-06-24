@@ -10,7 +10,7 @@ import { getSessionUser } from "@/lib/auth/server";
 import { getDB } from "@/lib/db";
 import { notifyMany } from "@/lib/notifications";
 import { sendTeamApproved } from "@/lib/mail/triggers";
-import { REGISTRATION_EVENTS, teamUrl } from "@/lib/registration/events";
+import { REGISTRATION_EVENTS, teamUrl, isPaidEvent } from "@/lib/registration/events";
 
 export const runtime = "edge";
 
@@ -41,7 +41,7 @@ export async function POST(req, { params }) {
 
   const db = getDB();
   const squad = await db
-    .prepare(`SELECT id, event, name, leader_id, status FROM squads WHERE id = ?`)
+    .prepare(`SELECT id, event, name, leader_id, status, paid FROM squads WHERE id = ?`)
     .bind(squadId)
     .first();
   if (!squad) return NextResponse.json({ error: "not_found" }, { status: 404 });
@@ -50,6 +50,17 @@ export async function POST(req, { params }) {
       { error: "wrong_status", status: squad.status },
       { status: 409 },
     );
+  }
+
+  // A paid event must have its fees settled before final approval — a paid team
+  // cannot be confirmed for free. (Free events skip the payment step.)
+  if (
+    decision === "approve" &&
+    isPaidEvent(squad.event) &&
+    squad.status !== "fees_settled" &&
+    squad.paid !== 1
+  ) {
+    return NextResponse.json({ error: "fees_not_settled" }, { status: 409 });
   }
 
   const nextStatus = decision === "approve" ? "approved" : "rejected";

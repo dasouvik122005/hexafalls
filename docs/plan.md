@@ -67,31 +67,49 @@ Finish the **entire** registration system. Auth/SSO + basic squad create/join/su
 
 ## KANBAN
 
-### 🅿️ Phase 0 — Foundation (must land before fan-out)
-- [ ] **F0.1** `src/lib/ids.js` — add `gaming_squad` (`GAME-T-XXXXX`) + `hardware_competition_squad` (`HW-C-T-XXXXX`) (currently missing → squad create crashes).
-- [ ] **F0.2** `src/lib/registration/events.js` — `gaming.pricePerPerson = 100`; add `paid/free` flags; `FIXED_ROLES` + `teamRoleFor(eventKey)`; commented `schedule` placeholder.
-- [ ] **F0.3** `worker/migrations/0003_payments_roles_notifications.sql` — `payments`, `join_requests`, `notifications`, roles, extend `squads.status` machine.
-- [ ] **F0.4** hexaID alignment — route `/u/[slug]` by `elixpo_id` (hexaID); `username` display-only.
-- [ ] **F0.5** apply migrations locally (`wrangler d1 migrations apply hexafalls --local`).
-- [ ] **F0.6** `.env.local` placeholders for the missing keys.
+### 🅿️ Phase 0 — Foundation ✅ DONE
+- [x] **F0.1** `src/lib/ids.js` — added `gaming_squad` (`GAME-T-`) + `hardware_competition_squad` (`HW-C-T-`) + `payment` (`PAY-`), `join_request` (`JR-`), `notification` (`NOTE-`).
+- [x] **F0.2** `src/lib/registration/events.js` — `gaming.pricePerPerson = 100`; `isPaidEvent()`; `FIXED_ROLES` + `teamRoleFor()`; commented `EVENT_SCHEDULE` placeholder.
+- [x] **F0.3** `worker/migrations/0003_payments_roles_notifications.sql` — `payments`, `join_requests`, `notifications`, `user_roles`; `squads.paid` + `fees_settled_at`; status synonyms.
+- [x] **F0.4** `/u/[slug]` re-keyed to `elixpo_id` (hexaID); `userUrl()` takes hexaID; `/t` member links use hexaID.
+- [x] **F0.5** migration applied locally; tables + columns verified present.
+- [x] **F0.6** `.env.local` — SSO/session/Pay/Mails keys (Pay creds real, Mails placeholder).
+- [x] **F0.7** shared libs: `src/lib/roles.js`, `src/lib/notifications.js`, `src/lib/mail/elixpo.js` (HMAC), `src/lib/mail/triggers.js`.
 
-### 🔀 Phase 1 — Parallel workstreams
-- [ ] **A. Team-leader controls** — `api/team/[id]/members/[uid]` (kick), `.../requests` (approve/deny), `.../dismantle`; team-settings UI on `/t/[slug]`.
-- [ ] **B. Payments (Elixpo Pay)** — `src/lib/pay/elixpo.js`, `api/pay/checkout`, `api/pay/webhook`; per-member `payments` rows → squad rollup → `fees_settled`; payout.
-- [ ] **C. Emails + notifications** — `src/lib/mail/elixpo.js` (HMAC), 4 templates, triggers; `notifications` table + UI on `/u`.
-- [ ] **D. Solo + event forms** — `api/register/solo`; CP, hardware-exhibition (school fields + HS gate), squad event fields; replace "coming soon" stubs.
-- [ ] **E. Profiles UI** — `/u/<hexaID>` per-event + team + payment status + notifications + evangelist→Zealey; `/t/<teamId>` payment progress bar + settings.
-- [ ] **F. Roles + security** — wire fixed + dynamic roles; authz guards on every endpoint; validation; idempotency.
+### 🔀 Phase 1 — Parallel workstreams ✅ DONE
+- [x] **A. Team-leader controls** — `api/team/[id]/members/[uid]` (kick), `.../requests` (GET list / approve-deny), `.../dismantle`, `api/register/squad/[id]/request` (request-to-join); `src/components/team/TeamSettings.jsx`.
+- [x] **B. Payments (Elixpo Pay)** — `src/lib/pay/elixpo.js`, `api/pay/checkout`, `api/pay/webhook`; per-member `payments` rows → squad rollup → `fees_settled` + email/notify.
+- [x] **C. Emails + notifications** — mail core + 4 triggers; `api/notifications` (GET/POST read); `src/components/profile/NotificationsPanel.jsx`; `docs/email_templates.md`.
+- [x] **D. Solo + event forms** — `api/register/solo` (CP handles, hardware-exhibition school fields + HS gate, whitelisted/capped); `SoloRegisterForm.jsx`; replaced the "coming soon" stub.
+- [x] **E. Profiles UI** — `/u/<hexaID>` notifications + entries + paid chips + `PayButton` + evangelist→Zealey; `/t/<teamId>` payment progress bar + `TeamSettings`.
 
-### 🔬 Phase 2 — Integration + security
-- [ ] **P2.1** wire status machine end-to-end (free events skip payment).
-- [ ] **P2.2** connect email/notification triggers.
-- [ ] **P2.3** adversarial security review (authz bypass, IDOR, webhook forgery, payment tampering, CSRF, rate-limits).
+### 🔬 Phase 2 — Integration + security ✅ DONE
+- [x] **P2.1** status machine wired (free events skip payment; paid events gated — see security notes).
+- [x] **P2.2** triggers wired: squad-create → `team_created` + role; join → role + leader notify; admin approve → `team_approved` + member notifies; reject → notify.
+- [x] **P2.3** adversarial security review run; HIGH/MED/LOW findings fixed (see below).
 
 ### ✅ Phase 3 — Verify
-- [ ] **V.1** migrations apply; tables present.
-- [ ] **V.2** `npm run build` + `npm run lint` clean.
-- [ ] **V.3** `next dev` walkthrough: event → SSO → `/u/<hexaID>` → team `/t/<teamId>` → invite/approve/remove → (paid) checkout → `fees_settled` → approve → email/notification.
+- [x] **V.1** migrations apply; `payments`/`join_requests`/`notifications`/`user_roles` + `squads.paid`/`fees_settled_at` present.
+- [x] **V.2** `eslint` clean on all new/changed files (pre-existing img/hook warnings elsewhere untouched). `npm run build` intentionally left to the dev-server owner.
+- [ ] **V.3** `next dev` end-to-end walkthrough — **pending real Elixpo Pay/Mails + a live SSO login** (placeholders make external calls no-op/log).
+
+---
+
+## Security review — findings & resolutions
+- **H1 (fixed)** paid team could be approved without paying → admin review now refuses `approve` on a paid event unless `fees_settled`/`paid=1`.
+- **H2 (fixed)** submit had no status guard (clobbered review audit, TOCTOU) → `UPDATE … WHERE status IN ('forming','registered','rejected')` + `changes` check.
+- **M1 (fixed)** submit persisted arbitrary client blob into `details_json` → bounded whitelist sanitizer (flat, typed, capped keys/length).
+- **M2/M3 (fixed)** capacity + same-event TOCTOU on join/approve → single atomic conditional `INSERT … SELECT … WHERE count<max AND NOT EXISTS(same-event)` + `changes` check.
+- **L1 (fixed)** dismantle could cascade-delete paid `payments` → blocked once `fees_settled`/`approved` (admin must unwind w/ refund).
+- **L3 (fixed)** notification `body`/`link` now length-capped.
+- **L2 (accepted/noted)** webhook metadata fallback could mis-attribute a settled fee across squads — low risk (requires valid signature); prefer order-id, documented.
+- **Verified-correct:** webhook sig verified on raw body pre-parse + constant-time + replay window + idempotent; amounts server-derived; IDOR/ownership re-derived from DB everywhere; SQL fully parameterized; cookie httpOnly+SameSite=Lax; no secret leakage; emails to DB-derived addresses with idempotency keys.
+
+## Known follow-ups (not blocking)
+- Replace `ELIXPO_MAILS_*` placeholders + confirm Elixpo Pay checkout endpoint path (assumed `/v1/checkout/sessions`) and webhook signing scheme (assumed Mails-style) once the Pay dashboard is available.
+- Build the 4 email templates in lixeditor per `docs/email_templates.md`.
+- Optional: gate `pay/checkout` to require `submitted/under_review` so payment can't precede review (currently payment allowed any time after joining).
+- Set a real `ZEALEY_URL` for the evangelist button.
 
 ---
 
