@@ -5,7 +5,7 @@ import Sparkles from "@/components/Sparkles";
 import HeroVideoBg from "@/components/HeroVideoBg";
 import RoughDivider from "@/components/RoughDivider";
 
-export default function RegisterShell({ eyebrow, title, accent, children }) {
+export default function RegisterShell({ eyebrow, title, accent, children, stack = false }) {
   return (
     <section className="relative isolate overflow-hidden min-h-screen pt-28 pb-24 px-6 flex flex-col items-center">
       <HeroVideoBg />
@@ -24,8 +24,17 @@ export default function RegisterShell({ eyebrow, title, accent, children }) {
         className="font-display font-black tracking-tight text-silver-hp leading-[1.05] text-balance text-center hp-glow"
         style={{ fontSize: "clamp(2.2rem, 8vw, 5rem)", letterSpacing: "0.01em" }}
       >
-        {title}{" "}
-        <span className="text-gold-hp hp-glow-gold">{accent}</span>
+        {stack ? (
+          <>
+            {title && <span className="block">{title}</span>}
+            <span className="block text-gold-hp hp-glow-gold">{accent}</span>
+          </>
+        ) : (
+          <>
+            {title}{" "}
+            <span className="text-gold-hp hp-glow-gold">{accent}</span>
+          </>
+        )}
       </h1>
 
       <div className="mt-10 w-full max-w-2xl">{children}</div>

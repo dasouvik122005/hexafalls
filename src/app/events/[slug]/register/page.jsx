@@ -129,7 +129,7 @@ function ShellWrap({ eyebrow, accent, children }) {
   return (
     <main className="flex-1">
       <TopBar />
-      <RegisterShell eyebrow={eyebrow} title="Register for" accent={accent}>
+      <RegisterShell stack eyebrow={eyebrow} title="Register for" accent={accent}>
         {children}
       </RegisterShell>
       <Footer />
@@ -193,9 +193,10 @@ function SignInPanel({ returnTo }) {
         href={`/api/auth/login?return_to=${encodeURIComponent(returnTo)}`}
         color="#D4AF37"
         glow="rgba(212,175,55,0.40)"
+        fill={false}
         shimmer
         seed={19}
-        className="px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.4em]"
+        className="px-10 sm:px-12 py-4 leading-none text-[13px] sm:text-[14px] tracking-[0.4em]"
       >
         SIGN IN WITH ELIXPO ↗
       </RoughButton>
@@ -221,9 +222,10 @@ function AlreadyInSquad({ href }) {
         href={href}
         color="#D4AF37"
         glow="rgba(212,175,55,0.40)"
+        fill={false}
         shimmer
         seed={21}
-        className="px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.4em]"
+        className="px-10 sm:px-12 py-4 leading-none text-[13px] sm:text-[14px] tracking-[0.4em]"
       >
         VISIT MY TEAM ↗
       </RoughButton>
@@ -249,9 +251,10 @@ function AlreadyRegisteredSolo({ href }) {
         href={href}
         color="#D4AF37"
         glow="rgba(212,175,55,0.40)"
+        fill={false}
         shimmer
         seed={23}
-        className="px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.4em]"
+        className="px-10 sm:px-12 py-4 leading-none text-[13px] sm:text-[14px] tracking-[0.4em]"
       >
         VIEW YOUR SCROLL ↗
       </RoughButton>

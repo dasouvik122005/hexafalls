@@ -106,18 +106,19 @@ Finish the **entire** registration system. Auth/SSO + basic squad create/join/su
 - **L2 (accepted/noted)** webhook metadata fallback could mis-attribute a settled fee across squads — low risk (requires valid signature); prefer order-id, documented.
 - **Verified-correct:** webhook sig verified on raw body pre-parse + constant-time + replay window + idempotent; amounts server-derived; IDOR/ownership re-derived from DB everywhere; SQL fully parameterized; cookie httpOnly+SameSite=Lax; no secret leakage; emails to DB-derived addresses with idempotency keys.
 
-## Payment reconciliation (cron)
-- **Webhook** `POST /api/callback/payouts` is the primary path (settles in real time).
-- **Safety net:** `POST /api/cron/sync-payments` pulls Elixpo Pay `GET /v1/sync?app=`, marks any missed `pending→paid`, rolls squads to `fees_settled`. Shared `settleSquadIfComplete` (`src/lib/pay/settle.js`) so webhook + cron settle identically and idempotently.
-- **Schedule:** `.github/workflows/sync-payments.yml` — every 15 min + manual dispatch. Hits the hardcoded `https://hexafalls.org/api/cron/sync-payments`. Auths with `Authorization: Bearer ${{ secrets.ELIXPO_PAY_API_KEY }}` (constant-time compared against `CRON_SECRET` if set, else `ELIXPO_PAY_API_KEY`).
+## Catalog + payments (verified against live docs)
+- **Catalog:** `payouts.catalog.json` (one `member` tier, ₹100 `one_time`, season-long) pushed via `POST /v1/sync` by `scripts/sync-catalog.mjs`. Synced live ✅. Cron: `.github/workflows/sync-catalog.yml` (on push to the catalog + daily + manual).
+- **Buyer namespacing:** checkout `uid = ${userId}:${event}` so one tier covers every paid event; the webhook/entitlement maps back to (user, event). Amount is never sent — Pay resolves it from the catalog.
+- **Webhook** `POST /api/callback/payouts` (matches dashboard `ELIXPO_PAY_WEBHOOK_URL`): verifies `X-Elixpo-Pay-Signature: sha256=<hmac of ${ts}.${body}>` (ts from `X-Elixpo-Pay-Timestamp`) on the raw body, acts only on `entitlement.updated` + `active`, idempotent.
+- **Reconcile safety net:** `POST /api/cron/sync-payments` → `reconcilePayments` reads `GET /v1/entitlements?uid=${userId}:${event}` for each non-paid payment, marks paid, rolls up. Shared `settleSquadIfComplete` (`src/lib/pay/settle.js`) so webhook + cron settle identically. Cron: `.github/workflows/sync-payments.yml` (every 15 min), bearer = `ELIXPO_PAY_API_KEY`.
 - **Prod secrets needed:** `wrangler secret put ELIXPO_PAY_API_KEY` (+ `ELIXPO_PAY_APP_ID`, `ELIXPO_PAY_WEBHOOK_SECRET`, mails keys, optional `CRON_SECRET`) — `.env.local` is local-only.
 
 ## Known follow-ups (not blocking)
-- ✅ Elixpo Mails keys + 4 per-template webhooks set live in `.env.local`; mail trigger reads `ELIXPO_MAILS_WEBHOOK_TEAM_CREATED/_APPROVED/_DELETED/_PAYMENT_COMPLETE`.
-- ✅ Elixpo Pay creds + `ELIXPO_PAY_WEBHOOK_SECRET` set live; webhook handler moved to **`/api/callback/payouts`** to match the dashboard's `ELIXPO_PAY_WEBHOOK_URL`.
-- Confirm the Elixpo Pay **checkout** endpoint path (assumed `POST /v1/checkout/sessions`) + that its webhook signing matches the Mails `t=,v1=` HMAC scheme — verify on first real charge.
+- ✅ Real Elixpo Pay API verified end-to-end against the live docs (catalog/checkout/webhook/entitlements) — earlier assumptions corrected; `docs/payments_elixpo.md` now carries the real schemas.
+- ✅ Elixpo Mails keys + 4 per-template webhooks live; ✅ Pay creds + webhook secret live; ✅ catalog synced.
 - Build the 4 email templates in lixeditor per `docs/email_templates.md` (vars must match exactly).
-- Optional: gate `pay/checkout` to require `submitted/under_review` so payment can't precede review (currently payment allowed any time after joining).
+- In the Pay dashboard: register the **entitlement webhook** → `https://hexafalls.org/api/callback/payouts` (subscribe `entitlement.updated`).
+- Optional: gate `pay/checkout` to require `submitted/under_review` so payment can't precede review.
 - Set a real `ZEALEY_URL` for the evangelist button.
 
 ---

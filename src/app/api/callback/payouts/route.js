@@ -11,28 +11,20 @@
 
 import { NextResponse } from "next/server";
 import { getDB } from "@/lib/db";
-import { verifyWebhookSignature } from "@/lib/pay/elixpo";
+import { verifyWebhookSignature, parsePayUid } from "@/lib/pay/elixpo";
 import { settleSquadIfComplete } from "@/lib/pay/settle";
 
 export const runtime = "edge";
 
-// Header Elixpo Pay sends the signature in. We accept the canonical name and a
-// couple of common variants so a minor naming difference still verifies.
-function readSignatureHeader(req) {
-  return (
-    req.headers.get("x-elixpo-signature") ??
-    req.headers.get("x-elixpo-pay-signature") ??
-    req.headers.get("elixpo-signature") ??
-    null
-  );
-}
-
 export async function POST(req) {
   // 1) Raw body + signature — verify before doing ANYTHING with the contents.
+  // Docs: X-Elixpo-Pay-Signature: sha256=<hmac of `${timestamp}.${rawBody}`>,
+  // timestamp in X-Elixpo-Pay-Timestamp.
   const rawBody = await req.text();
-  const signature = readSignatureHeader(req);
+  const signature = req.headers.get("x-elixpo-pay-signature");
+  const timestamp = req.headers.get("x-elixpo-pay-timestamp");
 
-  const ok = await verifyWebhookSignature(rawBody, signature);
+  const ok = await verifyWebhookSignature(rawBody, signature, timestamp);
   if (!ok) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
@@ -46,49 +38,37 @@ export async function POST(req) {
     return NextResponse.json({ ok: true });
   }
 
-  const type = evt?.type ?? evt?.event ?? null;
-  const data = evt?.data ?? evt?.object ?? evt ?? {};
+  const type = evt?.type ?? req.headers.get("x-elixpo-pay-event") ?? null;
+  const data = evt?.data ?? {};
 
-  // We only act on a granted entitlement / successful payment.
-  const active = data?.active ?? data?.entitlement?.active;
-  const isGrant =
-    type === "entitlement.updated" ||
-    type === "checkout.session.completed" ||
-    type === "payment.succeeded";
-  if (!isGrant || active === false) {
+  // We only fulfill on a granted entitlement. `entitlement.updated` is the
+  // required event; payment.captured is optional/analytics. `active` already
+  // accounts for expiry on Pay's side.
+  if (type !== "entitlement.updated" || data?.active === false) {
+    return NextResponse.json({ ok: true });
+  }
+  const statusOk = data?.active === true || data?.status === "active";
+  if (!statusOk) {
     return NextResponse.json({ ok: true });
   }
 
-  // Identifiers we can use to locate the payment row.
-  const orderId =
-    data?.order_id ?? data?.session_id ?? data?.checkout_session_id ?? data?.id ?? null;
-  const meta = data?.metadata ?? {};
-  const uid = data?.uid ?? data?.user_id ?? meta?.uid ?? null;
-  const metaEvent = meta?.event ?? data?.event ?? null;
-  const entitlementId =
-    data?.entitlement_id ?? data?.entitlement?.id ?? data?.id ?? null;
+  // The payload carries { app, uid, tier, status, active, expires_at }. Our uid
+  // is `${userId}:${event}` — parse it back to locate the exact payment row.
+  const { userId, event } = parsePayUid(data?.uid);
+  if (!userId || !event) {
+    return NextResponse.json({ ok: true });
+  }
+  const entitlementId = data?.version != null ? `${data.tier}:v${data.version}` : null;
 
   const db = getDB();
 
-  // 3) Locate the payment: prefer the provider order id, fall back to
-  // (uid, event) from metadata.
-  let payment = null;
-  if (orderId) {
-    payment = await db
-      .prepare(
-        `SELECT id, user_id, squad_id, event, status FROM payments WHERE elixpo_order_id = ? LIMIT 1`,
-      )
-      .bind(orderId)
-      .first();
-  }
-  if (!payment && uid && metaEvent) {
-    payment = await db
-      .prepare(
-        `SELECT id, user_id, squad_id, event, status FROM payments WHERE user_id = ? AND event = ? LIMIT 1`,
-      )
-      .bind(uid, metaEvent)
-      .first();
-  }
+  const payment = await db
+    .prepare(
+      `SELECT id, user_id, squad_id, event, status FROM payments
+        WHERE user_id = ? AND event = ? LIMIT 1`,
+    )
+    .bind(userId, event)
+    .first();
 
   // No matching payment — verified but nothing to reconcile. Ack.
   if (!payment) {
@@ -112,7 +92,6 @@ export async function POST(req) {
 
   // 5) Squad rollup → fees_settled when every member has paid.
   const squadId = payment.squad_id;
-  const event = payment.event;
   if (squadId) {
     try {
       const origin = (() => {
