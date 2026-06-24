@@ -55,19 +55,6 @@ export default async function UserProfilePage({ params }) {
 
   const isOwner = me?.id === user.id;
 
-  const squads = await db
-    .prepare(
-      `SELECT s.id, s.event, s.name, s.status, sm.role
-         FROM squad_members sm
-         JOIN squads s ON s.id = sm.squad_id
-        WHERE sm.user_id = ?
-        ORDER BY sm.joined_at DESC`,
-    )
-    .bind(user.id)
-    .all();
-
-  const squadRows = squads.results ?? [];
-
   // Is this profile an evangelist? Either the legacy users.role flag, or a
   // user_roles row granting the hexafalls_evangelists fixed role.
   let isEvangelist = user.role === "evangelist";
@@ -80,33 +67,6 @@ export default async function UserProfilePage({ params }) {
       .bind(user.id)
       .first();
     isEvangelist = !!ev;
-  }
-
-  // Solo registrations (CP, hardware-exhibition, …) for this user.
-  const soloRes = await db
-    .prepare(
-      `SELECT id, event, status FROM solo_registrations
-        WHERE user_id = ? ORDER BY created_at DESC`,
-    )
-    .bind(user.id)
-    .all();
-  const soloRows = soloRes.results ?? [];
-
-  // Which paid squads has THIS user already settled? Collect their paid
-  // (squad_id) set so each team row can show a Paid ✓ / Fees due chip.
-  const paidSquadIds = new Set();
-  const paidSquads = squadRows.filter((s) => isPaidEvent(s.event));
-  if (paidSquads.length > 0) {
-    const ph = paidSquads.map(() => "?").join(",");
-    const payRes = await db
-      .prepare(
-        `SELECT squad_id FROM payments
-          WHERE user_id = ? AND status = 'paid'
-            AND squad_id IN (${ph})`,
-      )
-      .bind(user.id, ...paidSquads.map((s) => s.id))
-      .all();
-    for (const p of payRes.results ?? []) paidSquadIds.add(p.squad_id);
   }
 
   return (

@@ -46,12 +46,12 @@ html, body {
    custom cursors entirely. */
 @media (hover: hover) and (pointer: fine) {
   html, body {
-    cursor: url('/cursors/wand_no_lit_cur.png') 8 4, auto;
+    cursor: url('/cursors/wand_no_lit_cur.png') 12 9, auto;
   }
   a, button, [role="button"], label, summary, select,
   input[type="checkbox"], input[type="radio"], input[type="submit"],
   input[type="button"], .cursor-pointer, [data-wand-lit] {
-    cursor: url('/cursors/want_lit_cur.png') 12 4, pointer;
+    cursor: url('/cursors/want_lit_cur.png') 17 11, pointer;
   }
 }
 
