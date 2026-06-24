@@ -17,6 +17,7 @@ Finish the **entire** registration system. Auth/SSO + basic squad create/join/su
 - **Profiles:** `/u/<hexaID>` keyed by the Elixpo hexaID (`hf_mlh_…`, 12 alnum, = `users.elixpo_id`). `/t/<teamId>` unchanged. `username` is a display handle only.
 - **Gaming is now PAID:** ₹100 / member (changed from free).
 - **Status term:** "entry fees paid" → **`fees_settled`**.
+- **Payments are ONE-TIME (no autopay):** a single ₹100/member charge grants full access for the season. The `member` price must be configured as `one_time` in the Elixpo Pay catalog. Reconciliation is strictly additive — never expires/downgrades a paid seat.
 - **Payments + Emails:** built against the documented Elixpo Pay / Mails APIs with **placeholder env keys**; verified live only once real keys land.
 - **Timeline conflict warning:** deferred — see note below.
 
@@ -104,6 +105,12 @@ Finish the **entire** registration system. Auth/SSO + basic squad create/join/su
 - **L3 (fixed)** notification `body`/`link` now length-capped.
 - **L2 (accepted/noted)** webhook metadata fallback could mis-attribute a settled fee across squads — low risk (requires valid signature); prefer order-id, documented.
 - **Verified-correct:** webhook sig verified on raw body pre-parse + constant-time + replay window + idempotent; amounts server-derived; IDOR/ownership re-derived from DB everywhere; SQL fully parameterized; cookie httpOnly+SameSite=Lax; no secret leakage; emails to DB-derived addresses with idempotency keys.
+
+## Payment reconciliation (cron)
+- **Webhook** `POST /api/callback/payouts` is the primary path (settles in real time).
+- **Safety net:** `POST /api/cron/sync-payments` pulls Elixpo Pay `GET /v1/sync?app=`, marks any missed `pending→paid`, rolls squads to `fees_settled`. Shared `settleSquadIfComplete` (`src/lib/pay/settle.js`) so webhook + cron settle identically and idempotently.
+- **Schedule:** `.github/workflows/sync-payments.yml` — every 15 min + manual dispatch. Auths with `Authorization: Bearer ${{ secrets.ELIXPO_PAY_API_KEY }}` (constant-time compared against `CRON_SECRET` if set, else `ELIXPO_PAY_API_KEY`). Optional `vars.SYNC_ENDPOINT_URL` override.
+- **Prod secrets needed:** `wrangler secret put ELIXPO_PAY_API_KEY` (+ `ELIXPO_PAY_APP_ID`, `ELIXPO_PAY_WEBHOOK_SECRET`, mails keys, optional `CRON_SECRET`) — `.env.local` is local-only.
 
 ## Known follow-ups (not blocking)
 - ✅ Elixpo Mails keys + 4 per-template webhooks set live in `.env.local`; mail trigger reads `ELIXPO_MAILS_WEBHOOK_TEAM_CREATED/_APPROVED/_DELETED/_PAYMENT_COMPLETE`.

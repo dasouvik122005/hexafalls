@@ -174,6 +174,49 @@ export async function verifyWebhookSignature(rawBody, signatureHeader) {
   return false;
 }
 
+// Bulk reconciliation pull: every entitlement Elixpo Pay holds for our app.
+// Used by the GitHub-Actions cron (api/cron/sync-payments) to catch any payment
+// whose webhook we missed.
+//
+// ASSUMPTION: `GET /v1/sync?app=<app>` returns the full entitlement/order list
+// for the app. The response shape isn't pinned in the docs, so we read several
+// plausible containers (`entitlements` | `data` | `results` | a bare array);
+// each row is normalized tolerantly by the caller. An optional `since` (unix
+// seconds) is forwarded if the endpoint supports incremental sync.
+//
+// Returns { entitlements: [...] } or { error }.
+export async function fetchSyncEntitlements({ since } = {}) {
+  const apiKey = env("ELIXPO_PAY_API_KEY");
+  const app = env("ELIXPO_PAY_APP_ID");
+
+  if (isPlaceholder(apiKey) || isPlaceholder(app)) {
+    console.warn("[pay] sync skipped (placeholder/missing keys)");
+    return { error: "missing_keys" };
+  }
+
+  let url = `${PAY_BASE}/v1/sync?app=${encodeURIComponent(app)}`;
+  if (since != null) url += `&since=${encodeURIComponent(since)}`;
+
+  try {
+    const res = await fetch(url, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${apiKey}` },
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      console.warn(`[pay] sync not ok: status=${res.status}`);
+      return { error: json?.error ?? `http_${res.status}` };
+    }
+    const list = Array.isArray(json)
+      ? json
+      : json.entitlements ?? json.data ?? json.results ?? json.items ?? [];
+    return { entitlements: Array.isArray(list) ? list : [] };
+  } catch (e) {
+    console.warn(`[pay] sync threw: ${e?.message ?? e}`);
+    return { error: "request_failed" };
+  }
+}
+
 // Pull endpoint: current entitlements for a uid in our app.
 // GET /v1/entitlements?app=&uid=  → returns parsed JSON or { error }.
 export async function fetchEntitlements({ uid } = {}) {

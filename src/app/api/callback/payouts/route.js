@@ -12,9 +12,7 @@
 import { NextResponse } from "next/server";
 import { getDB } from "@/lib/db";
 import { verifyWebhookSignature } from "@/lib/pay/elixpo";
-import { REGISTRATION_EVENTS, teamUrl } from "@/lib/registration/events";
-import { notifyMany } from "@/lib/notifications";
-import { sendPaymentComplete } from "@/lib/mail/triggers";
+import { settleSquadIfComplete } from "@/lib/pay/settle";
 
 export const runtime = "edge";
 
@@ -117,7 +115,14 @@ export async function POST(req) {
   const event = payment.event;
   if (squadId) {
     try {
-      await settleSquadIfComplete(db, { squadId, event, req });
+      const origin = (() => {
+        try {
+          return new URL(req.url).origin;
+        } catch {
+          return "";
+        }
+      })();
+      await settleSquadIfComplete(db, { squadId, event, origin });
     } catch (e) {
       // Rollup side-effects (notifications/email) are best-effort and must not
       // make the provider retry a payment we already recorded.
@@ -126,90 +131,4 @@ export async function POST(req) {
   }
 
   return NextResponse.json({ ok: true });
-}
-
-// Count members vs paid payments for the squad+event. If all members have paid
-// AND the squad isn't already settled, flip it to fees_settled and fire the
-// one-time notifications + leader email (idempotent via fees_settled_at guard
-// and a stable email idempotencyKey).
-async function settleSquadIfComplete(db, { squadId, event, req }) {
-  const counts = await db
-    .prepare(
-      `SELECT
-         (SELECT COUNT(*) FROM squad_members sm WHERE sm.squad_id = ?) AS members,
-         (SELECT COUNT(*) FROM payments p
-            WHERE p.squad_id = ? AND p.event = ? AND p.status = 'paid') AS paid`,
-    )
-    .bind(squadId, squadId, event)
-    .first();
-
-  const members = Number(counts?.members ?? 0);
-  const paid = Number(counts?.paid ?? 0);
-  if (members === 0 || paid < members) return;
-
-  // Flip to settled only if not already settled (idempotent guard).
-  const upd = await db
-    .prepare(
-      `UPDATE squads
-          SET status = 'fees_settled',
-              paid = 1,
-              fees_settled_at = datetime('now'),
-              updated_at = datetime('now')
-        WHERE id = ? AND (fees_settled_at IS NULL)`,
-    )
-    .bind(squadId)
-    .run();
-
-  // If nothing changed, another delivery already settled it — don't re-notify.
-  if (!upd.success || (upd.meta && upd.meta.changes === 0)) return;
-
-  // Squad + leader details for notifications / email.
-  const squad = await db
-    .prepare(`SELECT id, name, event, leader_id FROM squads WHERE id = ? LIMIT 1`)
-    .bind(squadId)
-    .first();
-  if (!squad) return;
-
-  const memberRows = await db
-    .prepare(`SELECT user_id FROM squad_members WHERE squad_id = ?`)
-    .bind(squadId)
-    .all();
-  const memberIds = (memberRows.results ?? []).map((r) => r.user_id);
-
-  const team = teamUrl(event, squadId);
-  const origin = (() => {
-    try {
-      return new URL(req.url).origin;
-    } catch {
-      return "";
-    }
-  })();
-  const teamLink = origin ? `${origin}${team}` : team;
-
-  // In-profile notifications to every member.
-  await notifyMany(memberIds, {
-    kind: "payment",
-    title: "Fees settled",
-    body: `All members of ${squad.name ?? "your team"} have paid. Your team is fees-settled.`,
-    link: team,
-  });
-
-  // Email the leader (one of the four "big events"). Stable idempotencyKey so
-  // webhook retries never double-send.
-  const leader = await db
-    .prepare(`SELECT email, display_name FROM users WHERE id = ? LIMIT 1`)
-    .bind(squad.leader_id)
-    .first();
-  if (leader?.email) {
-    const amount = (REGISTRATION_EVENTS[event]?.pricePerPerson ?? 0) * 100 * members;
-    await sendPaymentComplete({
-      to: leader.email,
-      name: leader.display_name,
-      teamName: squad.name,
-      event,
-      amount,
-      teamUrl: teamLink,
-      idempotencyKey: `fees_settled:${squadId}`,
-    });
-  }
 }
