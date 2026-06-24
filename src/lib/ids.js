@@ -15,10 +15,12 @@ function randomBlock(len) {
 
 // prefix → { regex, len }
 export const ID_SPECS = {
-  participant:           { prefix: "PART-",   len: 6 },
-  hackathon_squad:       { prefix: "HACK-T-", len: 6 },
-  hardware_exhibit_squad:{ prefix: "HW-X-T-", len: 6 },
-  solo_registration:     { prefix: "REG-",    len: 6 },
+  participant:               { prefix: "PART-",     len: 6 },
+  hackathon_squad:           { prefix: "HACK-T-",   len: 6 },
+  hardware_competition_squad:{ prefix: "HW-C-T-",   len: 6 },
+  hardware_exhibit_squad:    { prefix: "HW-X-T-",   len: 6 },
+  gaming_squad:              { prefix: "GAME-T-",   len: 6 },
+  solo_registration:         { prefix: "REG-",      len: 6 },
   core:                  { prefix: "CORE-",   len: 5 },
   volunteer:             { prefix: "VOL-",    len: 5 },
   evangelist:            { prefix: "EVA-",    len: 5 },

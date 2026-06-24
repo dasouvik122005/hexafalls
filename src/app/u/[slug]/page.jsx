@@ -21,7 +21,7 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const u = await getDB()
-    .prepare(`SELECT username, display_name, bio FROM users WHERE username = ?`)
+    .prepare(`SELECT username, display_name, bio FROM users WHERE elixpo_id = ?`)
     .bind(slug)
     .first();
   if (!u) return { title: "Hacker · HexaFalls" };
@@ -40,9 +40,9 @@ export default async function UserProfilePage({ params }) {
 
   const user = await db
     .prepare(
-      `SELECT id, username, display_name, bio, college, year,
+      `SELECT id, elixpo_id, username, display_name, bio, college, year,
               github, linkedin, portfolio, role, created_at
-         FROM users WHERE username = ?`,
+         FROM users WHERE elixpo_id = ?`,
     )
     .bind(slug)
     .first();
@@ -193,11 +193,16 @@ function ExtLink({ href, label }) {
 }
 
 const STATUS_COLOR = {
-  forming:   "#66FCF1",
-  submitted: "#D4AF37",
-  approved:  "#4ade80",
-  rejected:  "#EF4444",
-  locked:    "#A78BFA",
+  // canonical machine: registered → under_review → fees_settled → approved
+  registered:   "#66FCF1",
+  under_review: "#D4AF37",
+  fees_settled: "#A78BFA",
+  approved:     "#4ade80",
+  rejected:     "#EF4444",
+  // legacy synonyms (back-compat with existing rows)
+  forming:      "#66FCF1",
+  submitted:    "#D4AF37",
+  locked:       "#A78BFA",
 };
 
 function StatusPill({ status }) {

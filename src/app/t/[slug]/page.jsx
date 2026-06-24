@@ -61,7 +61,7 @@ export default async function TeamProfilePage({ params }) {
 
   const members = await db
     .prepare(
-      `SELECT sm.role, sm.joined_at, u.id, u.username, u.display_name
+      `SELECT sm.role, sm.joined_at, u.id, u.elixpo_id, u.username, u.display_name
          FROM squad_members sm
          JOIN users u ON u.id = sm.user_id
         WHERE sm.squad_id = ?
@@ -155,7 +155,7 @@ export default async function TeamProfilePage({ params }) {
               {memberRows.map((m) => (
                 <li key={m.id}>
                   <Link
-                    href={m.username ? userUrl(m.username) : "#"}
+                    href={m.elixpo_id ? userUrl(m.elixpo_id) : "#"}
                     className="flex items-center justify-between gap-3 rounded-sm border border-cyan-hp/20 bg-slate-hp/30 px-4 py-3 transition hover:bg-slate-hp/50"
                   >
                     <span className="flex items-center gap-3 min-w-0">

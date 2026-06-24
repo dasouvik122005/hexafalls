@@ -56,9 +56,42 @@ export const REGISTRATION_EVENTS = {
     parentEvent: "gaming",
     minMembers: 2,
     maxMembers: 4,
+    pricePerPerson: 100, // ₹, charged only after approval (gaming is now paid)
     fields: ["gameId", "discordHandle"],
   },
 };
+
+// Deferred — see docs/plan.md "timeline conflict warning". When a real
+// schedule lands, give each event a `{ day, start, end }` slot and check
+// overlap against the user's existing registrations at register time.
+// export const EVENT_SCHEDULE = {
+//   hackathon:              { day: "2026-XX-XX", start: "HH:MM", end: "HH:MM" },
+//   "hardware-competition": { day: "2026-XX-XX", start: "HH:MM", end: "HH:MM" },
+//   "hardware-exhibition":  { day: "2026-XX-XX", start: "HH:MM", end: "HH:MM" },
+//   cp:                     { day: "2026-XX-XX", start: "HH:MM", end: "HH:MM" },
+//   gaming:                 { day: "2026-XX-XX", start: "HH:MM", end: "HH:MM" },
+// };
+
+// Fixed roles — assigned manually by admins, never self-registered.
+export const FIXED_ROLES = [
+  "hexafalls_evangelists",
+  "hexafalls_teams",
+  "hexafalls_organisers",
+  "hexafalls_judges",
+  "hexafalls_mentors",
+];
+
+// Dynamic role granted to a user when they register for an event.
+// e.g. hackathon → team_hackathon, hardware-competition → team_hardware_competition.
+export function teamRoleFor(eventKey) {
+  if (!REGISTRATION_EVENTS[eventKey]) return null;
+  return `team_${eventKey.replace(/-/g, "_")}`;
+}
+
+// Whether an event charges an entry fee (drives the payment step + fees_settled).
+export function isPaidEvent(eventKey) {
+  return (REGISTRATION_EVENTS[eventKey]?.pricePerPerson ?? 0) > 0;
+}
 
 // Canonical URL for a team profile — root-level `/t/<slug>`. Squad id is
 // stored uppercase in the DB (Crockford alphabet); we lowercase it for URLs
@@ -67,9 +100,11 @@ export function teamUrl(_eventKey, squadId) {
   return `/t/${squadId.toLowerCase()}`;
 }
 
-// Canonical URL for a public user profile — root-level `/u/<username>`.
-export function userUrl(username) {
-  return `/u/${username}`;
+// Canonical URL for a public user profile — root-level `/u/<hexaID>`.
+// Keyed by the Elixpo hexaID (users.elixpo_id, e.g. hf_mlh_…), NOT the
+// username (which is a display handle only).
+export function userUrl(hexaId) {
+  return `/u/${hexaId}`;
 }
 
 // Map an /events parent slug (+ optional mode) → the registration event key.
