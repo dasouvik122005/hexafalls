@@ -311,7 +311,7 @@ export const LINE_FOLLOWER_RULES = {
   overview: "Put your programming, electronics, and robotics skills to the ultimate test in the Line Follower Challenge. Participants must design and build an autonomous robot capable of accurately following a predefined path while navigating curves, intersections, checkpoints, gaps, and complex track layouts without any human intervention. The competition rewards speed, precision, reliability, and intelligent navigation as robots race to achieve the fastest completion time while successfully handling every challenge on the course.",
   registration: {
     fee: "₹400 per Team",
-    teamSize: "2–5 Members"
+    teamSize: "2–4 Members"
   },
   botSpecs: [
     "Maximum Dimensions: 20 cm × 20 cm × 20 cm",
@@ -333,7 +333,7 @@ export const LINE_FOLLOWER_RULES = {
     "Special challenge sections in final rounds"
   ],
   generalRules: [
-    "Teams may consist of 2–5 participants.",
+    "Teams may consist of 2–4 participants.",
     "All participants must carry a valid College ID card.",
     "Robots must operate completely autonomously throughout the run.",
     "No external control, wireless control, or manual intervention is allowed.",
