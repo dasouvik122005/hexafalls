@@ -81,7 +81,7 @@ export const metadata = {
     "wizarding hackathon",
   ],
   authors: [
-    { name: "Ayushman Bhattacharya (elixpo) — GDG on Campus, JIS University 2025–26", url: "https://accounts.elixpo.com" },
+    { name: "Ayushman Bhattacharya (elixpo) — GDG on Campus, JIS University 2025–26", url: "https://elixpo.com" },
     { name: "GDG on Campus · JIS University" },
   ],
   creator: "Ayushman Bhattacharya (elixpo) — GDGoC JIS University 2025–26",
@@ -138,7 +138,6 @@ export default function RootLayout({ children }) {
             (machine-readable for search engines). */}
         <script
           type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
@@ -174,14 +173,6 @@ export default function RootLayout({ children }) {
           <span className="hp-fog__cloud hp-fog__cloud--c" />
           <span className="hp-fog__cloud hp-fog__cloud--d" />
         </div>
-        {children}
-        {/* Devfolio Apply-with-Devfolio SDK. Loaded site-wide via the layout
-            so the <script> tag is in the SSR HTML — Devfolio's verifier
-            scans the raw response and checks for apply.devfolio.co. */}
-        <Script
-          src="https://apply.devfolio.co/v2/sdk.js"
-          strategy="afterInteractive"
-        />
       </body>
     </html>
   );
