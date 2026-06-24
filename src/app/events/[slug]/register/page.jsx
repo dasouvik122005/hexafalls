@@ -15,7 +15,7 @@ import RoughFrame from "@/components/RoughFrame";
 import RoughButton from "@/components/RoughButton";
 import RoughStar from "@/components/RoughStar";
 import RegisterShell from "@/components/register/RegisterShell";
-import SquadCreateForm from "@/components/register/SquadCreateForm";
+import SquadEntry from "@/components/register/SquadEntry";
 import SoloRegisterForm from "@/components/register/SoloRegisterForm";
 import GdgGate from "@/components/register/GdgGate";
 import { getSessionUser } from "@/lib/auth/server";
@@ -135,10 +135,11 @@ export default async function EventRegisterPage({ params, searchParams }) {
       )}
       {user && user.gdg_verified && !existingSquadId && !existingSoloReg &&
         (isSquadEvent(regKey) ? (
-          <SquadCreateForm
+          <SquadEntry
             event={regKey}
             eventLabel={cfg.label}
             hasUsername={Boolean(user.username)}
+            openSquads={openSquads}
           />
         ) : (
           <SoloRegisterForm

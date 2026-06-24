@@ -5,7 +5,7 @@ import RoughButton from "@/components/RoughButton";
 import RoughFrame from "@/components/RoughFrame";
 
 const ERRORS = {
-  invalid_year:      "Year must be 1–6.",
+  invalid_year:      "Year must be 1–4.",
   invalid_github:    "Use just the handle, no URL.",
   invalid_linkedin:  "Use just the handle, no URL.",
   invalid_portfolio: "Portfolio must be a full https:// URL.",
@@ -77,12 +77,11 @@ export default function ProfileEditor({ user }) {
         />
         <Field
           label="Year"
-          type="number"
-          min={1}
-          max={6}
+          type="text"
+          inputMode="numeric"
           value={year}
           onChange={setYear}
-          placeholder="1–6"
+          placeholder="Year of study (1–4)"
         />
         <Field
           label="GitHub"

@@ -10,7 +10,7 @@ import { getSessionUser } from "@/lib/auth/server";
 import { getDB } from "@/lib/db";
 import { notifyMany } from "@/lib/notifications";
 import { sendTeamApproved } from "@/lib/mail/triggers";
-import { REGISTRATION_EVENTS, teamUrl, isPaidEvent } from "@/lib/registration/events";
+import { REGISTRATION_EVENTS, teamUrl, isPaidEvent, paymentTimingFor } from "@/lib/registration/events";
 
 export const runtime = "edge";
 
@@ -52,11 +52,13 @@ export async function POST(req, { params }) {
     );
   }
 
-  // A paid event must have its fees settled before final approval — a paid team
-  // cannot be confirmed for free. (Free events skip the payment step.)
+  // For events that pay AT REGISTRATION (hardware-competition), fees must be
+  // settled before approval. Events that pay ON APPROVAL (hackathon, gaming)
+  // are approved first and pay afterwards, so don't gate them here.
   if (
     decision === "approve" &&
     isPaidEvent(squad.event) &&
+    paymentTimingFor(squad.event) === "on_registration" &&
     squad.status !== "fees_settled" &&
     squad.paid !== 1
   ) {

@@ -34,11 +34,15 @@ export async function settleSquadIfComplete(db, { squadId, event, origin = "" } 
   const paid = Number(counts?.paid ?? 0);
   if (members === 0 || paid < members) return { settled: false };
 
-  // Flip to settled only if not already settled (idempotent guard).
+  // Mark paid (idempotent guard). Only move the REVIEW status to fees_settled
+  // when the team is still pre-approval — for on_approval events the team is
+  // already 'approved' when it pays, and must stay approved (don't go backward).
   const upd = await db
     .prepare(
       `UPDATE squads
-          SET status = 'fees_settled',
+          SET status = CASE
+                WHEN status IN ('registered','under_review','forming','submitted')
+                THEN 'fees_settled' ELSE status END,
               paid = 1,
               fees_settled_at = datetime('now'),
               updated_at = datetime('now')

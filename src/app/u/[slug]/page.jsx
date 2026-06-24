@@ -17,7 +17,7 @@ import PayButton from "@/components/profile/PayButton";
 import RoughButton from "@/components/RoughButton";
 import { getDB } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth/server";
-import { REGISTRATION_EVENTS, teamUrl, isPaidEvent } from "@/lib/registration/events";
+import { REGISTRATION_EVENTS, teamUrl, isPaidEvent, isPayableNow } from "@/lib/registration/events";
 
 export const dynamic = "force-dynamic";
 
@@ -112,7 +112,11 @@ export default async function UserProfilePage({ params }) {
   return (
     <main className="flex-1">
       <TopBar />
-      <RegisterShell eyebrow="Hacker scroll" title="@" accent={user.username}>
+      <RegisterShell
+        eyebrow={isOwner ? "Welcome back" : "Hacker scroll"}
+        title={isOwner ? "Hello" : ""}
+        accent={user.username ? `@${user.username}` : user.display_name ?? "Wizard"}
+      >
         <div className="flex flex-col gap-6">
           {/* Owner-only notifications */}
           {isOwner && <NotificationsPanel />}
@@ -234,7 +238,9 @@ export default async function UserProfilePage({ params }) {
                           ) : (
                             <>
                               <FeesDueChip />
-                              {isOwner && <PayButton event={s.event} squadId={s.id} />}
+                              {isOwner && isPayableNow(s.event, s.status) && (
+                                <PayButton event={s.event} squadId={s.id} />
+                              )}
                             </>
                           )
                         )}

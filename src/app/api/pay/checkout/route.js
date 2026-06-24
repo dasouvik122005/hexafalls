@@ -13,7 +13,7 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/auth/server";
 import { getDB } from "@/lib/db";
 import { generateId } from "@/lib/ids";
-import { REGISTRATION_EVENTS, isPaidEvent, teamUrl } from "@/lib/registration/events";
+import { REGISTRATION_EVENTS, isPaidEvent, isPayableNow, teamUrl } from "@/lib/registration/events";
 import { createCheckoutSession } from "@/lib/pay/elixpo";
 
 export const runtime = "edge";
@@ -49,7 +49,7 @@ export async function POST(req) {
   // claimed event. One query covers membership + event match.
   const membership = await db
     .prepare(
-      `SELECT s.id AS squad_id
+      `SELECT s.id AS squad_id, s.status AS status
          FROM squad_members sm
          JOIN squads s ON s.id = sm.squad_id
         WHERE sm.user_id = ? AND s.id = ? AND s.event = ?
@@ -59,6 +59,12 @@ export async function POST(req) {
     .first();
   if (!membership) {
     return NextResponse.json({ error: "forbidden" }, { status: 403 });
+  }
+
+  // Enforce payment timing: hackathon/gaming pay only after approval;
+  // hardware-competition pays at registration.
+  if (!isPayableNow(event, membership.status)) {
+    return NextResponse.json({ error: "not_payable_yet" }, { status: 409 });
   }
 
   // Idempotency on (user_id, event) — the payments table enforces it too.

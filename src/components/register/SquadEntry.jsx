@@ -113,9 +113,9 @@ function BrowseSquads({ eventLabel, openSquads, onCreate }) {
           Join an existing {eventLabel} squad
         </h2>
         <p className="font-wizard text-silver-hp/80 text-sm leading-relaxed">
-          Send a request and the squad leader approves or declines it — you'll be
-          notified either way. Got an invite link from a friend? Open it to join
-          instantly instead.
+          Send a request and the squad leader approves or declines it — you&apos;ll
+          be notified either way. Got an invite link from a friend? Open it to
+          join instantly instead.
         </p>
       </div>
 

@@ -93,6 +93,24 @@ export function isPaidEvent(eventKey) {
   return (REGISTRATION_EVENTS[eventKey]?.pricePerPerson ?? 0) > 0;
 }
 
+// When entry fees are collected for a paid event:
+//   'on_registration' — pay during registration, before review (hardware-competition)
+//   'on_approval'     — pay only after the team is approved (hackathon, gaming)
+export function paymentTimingFor(eventKey) {
+  if (eventKey === "hardware-competition") return "on_registration";
+  return "on_approval";
+}
+
+// Can a member pay for this event right now, given the squad's review status?
+// on_registration → payable as soon as registered; on_approval → only once approved.
+export function isPayableNow(eventKey, squadStatus) {
+  if (!isPaidEvent(eventKey)) return false;
+  if (paymentTimingFor(eventKey) === "on_registration") {
+    return squadStatus !== "rejected";
+  }
+  return squadStatus === "approved";
+}
+
 // Canonical URL for a team profile — root-level `/t/<slug>`. Squad id is
 // stored uppercase in the DB (Crockford alphabet); we lowercase it for URLs
 // and re-uppercase on read. (eventKey kept for signature compatibility.)
