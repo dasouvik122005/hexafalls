@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import Sparkles from "./Sparkles";
+import HeroVideoBg from "./HeroVideoBg";
 import RoughFrame from "./RoughFrame";
 import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
@@ -71,10 +72,10 @@ export default function Teams() {
       ref={sectionRef}
       className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6"
     >
-      <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars pointer-events-none" />
-      <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
+      <HeroVideoBg />
+      <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim opacity-60 pointer-events-none" />
       <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
-        <Sparkles count={24} />
+        <Sparkles count={20} />
       </div>
 
       <motion.div

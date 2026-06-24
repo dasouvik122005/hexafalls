@@ -5,7 +5,8 @@ import ComingSoon from "@/components/ComingSoon";
 import { TEAMS } from "@/lib/routes";
 
 export function generateStaticParams() {
-  return TEAMS.map((t) => ({ slug: t.slug }));
+  // `orgs` is served by the dedicated /teams/orgs page.
+  return TEAMS.filter((t) => t.slug !== "orgs").map((t) => ({ slug: t.slug }));
 }
 
 export async function generateMetadata({ params }) {

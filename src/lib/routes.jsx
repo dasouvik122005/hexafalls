@@ -85,7 +85,7 @@ const TEAM_GLOW  = "rgba(102,252,241,0.35)";
 
 export const TEAMS = [
   {
-    slug: "organising-team",
+    slug: "orgs",
     name: "Organising Team",
     rune: "✦",
     blurb: "The high council that shapes the entire night. Direction, scope, vision.",
@@ -104,21 +104,10 @@ export const TEAMS = [
     formUrl: "https://luma.com/vc0k1lcq",
   },
   {
-    slug: "core-team",
-    name: "Core Team",
+    slug: "team",
+    name: "Team",
     rune: "❖",
-    blurb: "The architects on the floor — execution, ops, the spine of HexaFalls.",
-    color: TEAM_COLOR,
-    glow:  TEAM_GLOW,
-    open:  false,
-    // Entries closed — applications received are now under review.
-    processing: true,
-  },
-  {
-    slug: "volunteers",
-    name: "Volunteers",
-    rune: "★",
-    blurb: "Hands that steady the wand. Sign the scroll, join the order.",
+    blurb: "The core team and volunteers — the architects and the steady hands that run HexaFalls.",
     color: TEAM_COLOR,
     glow:  TEAM_GLOW,
     open:  false,
@@ -188,19 +177,11 @@ export const CALLS = [
     blurb: "Wise hands. Sharp eyes. Guide the council — soon.",
   },
   {
-    href: "/teams/core-team",
-    label: "Call for Core Team",
-    short: "Core Team",
+    href: "/teams/team",
+    label: "Call for Team",
+    short: "Team",
     accent: "cyan",
     closed: true,
-    blurb: "Entries closed — names under review. Watch the timeline.",
-  },
-  {
-    href: "/teams/volunteers",
-    label: "Call for Volunteers",
-    short: "Volunteers",
-    accent: "gold",
-    closed: true,
-    blurb: "Entries closed — names under review. Watch the timeline.",
+    blurb: "Entries closed — core team & volunteers under review. Watch the timeline.",
   },
 ];
