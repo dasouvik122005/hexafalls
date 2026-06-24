@@ -17,6 +17,47 @@ import RoughDivider from "@/components/RoughDivider";
 import HackathonDetails from "@/components/HackathonDetails";
 import HardwareDetails from "@/components/HardwareDetails";
 import { EVENTS } from "@/lib/routes";
+import { getDB } from "@/lib/db";
+import { getSessionUser } from "@/lib/auth/server";
+import { teamUrl } from "@/lib/registration/events";
+
+export const dynamic = "force-dynamic";
+
+// /events slug → the registration event key(s) that count as "registered".
+const EVENT_KEYS = {
+  hackathon: ["hackathon"],
+  cp: ["cp"],
+  gaming: ["gaming"],
+  hardware: ["hardware-competition", "hardware-exhibition"],
+};
+
+// Returns { href, label } if the signed-in user is already registered for this
+// event (squad membership or solo entry), else null.
+async function getRegistration(slug) {
+  const keys = EVENT_KEYS[slug];
+  if (!keys) return null;
+  const user = await getSessionUser();
+  if (!user) return null;
+  const db = getDB();
+  const ph = keys.map(() => "?").join(",");
+
+  const squad = await db
+    .prepare(
+      `SELECT s.id, s.event FROM squad_members sm JOIN squads s ON s.id = sm.squad_id
+        WHERE sm.user_id = ? AND s.event IN (${ph}) LIMIT 1`,
+    )
+    .bind(user.id, ...keys)
+    .first();
+  if (squad) return { href: teamUrl(squad.event, squad.id), label: "VIEW MY TEAM" };
+
+  const solo = await db
+    .prepare(`SELECT id FROM solo_registrations WHERE user_id = ? AND event IN (${ph}) LIMIT 1`)
+    .bind(user.id, ...keys)
+    .first();
+  if (solo) return { href: `/u/${user.elixpo_id}`, label: "VIEW MY ENTRY" };
+
+  return null;
+}
 
 // Map an /events slug → one or more register CTAs (now events-scoped).
 // Each entry: { label, href, primary? } — only one entry is "primary"
@@ -84,14 +125,15 @@ export default async function EventPage({ params }) {
   const isHackathon = event.slug === "hackathon";
   const isHardware = event.slug === "hardware";
   const comingSoon = paths.some((p) => p.soon);
+  const registered = await getRegistration(slug);
 
   return (
     <main className="flex-1">
       <TopBar />
       {isHackathon ? (
-        <HackathonDetails />
+        <HackathonDetails registered={registered} />
       ) : isHardware ? (
-        <HardwareDetails />
+        <HardwareDetails registered={registered} />
       ) : (
       <section className="relative isolate overflow-hidden min-h-screen pt-28 pb-24 px-6 flex flex-col items-center">
         <HeroVideoBg />
@@ -134,37 +176,57 @@ export default async function EventPage({ params }) {
           </p>
         )}
 
-        {/* Live indicator */}
-        <span
-          className="mt-8 inline-flex items-center gap-2 rounded-full border px-3 py-1 font-display text-[10px] uppercase tracking-[0.4em]"
-          style={{
-            borderColor: `${event.color}80`,
-            color: event.color,
-            backgroundColor: `${event.color}1a`,
-          }}
-        >
-          {comingSoon ? (
-            <>Registrations opening soon</>
-          ) : (
-            <>
-              <span className="relative flex h-1.5 w-1.5">
-                <span
-                  className="absolute inline-flex h-full w-full rounded-full opacity-70 animate-ping"
-                  style={{ backgroundColor: event.color }}
-                />
-                <span
-                  className="relative inline-flex h-1.5 w-1.5 rounded-full"
-                  style={{ backgroundColor: event.color }}
-                />
-              </span>
-              Registrations open
-            </>
-          )}
-        </span>
+        {/* Live indicator / already-registered badge */}
+        {registered ? (
+          <span className="mt-8 inline-flex items-center gap-2 rounded-full border border-emerald-400/50 bg-emerald-400/10 px-3 py-1 font-display text-[10px] uppercase tracking-[0.4em] text-emerald-300">
+            <span aria-hidden="true">✓</span> You&apos;re registered
+          </span>
+        ) : (
+          <span
+            className="mt-8 inline-flex items-center gap-2 rounded-full border px-3 py-1 font-display text-[10px] uppercase tracking-[0.4em]"
+            style={{
+              borderColor: `${event.color}80`,
+              color: event.color,
+              backgroundColor: `${event.color}1a`,
+            }}
+          >
+            {comingSoon ? (
+              <>Registrations opening soon</>
+            ) : (
+              <>
+                <span className="relative flex h-1.5 w-1.5">
+                  <span
+                    className="absolute inline-flex h-full w-full rounded-full opacity-70 animate-ping"
+                    style={{ backgroundColor: event.color }}
+                  />
+                  <span
+                    className="relative inline-flex h-1.5 w-1.5 rounded-full"
+                    style={{ backgroundColor: event.color }}
+                  />
+                </span>
+                Registrations open
+              </>
+            )}
+          </span>
+        )}
 
         {/* CTA stack */}
         <div className="mt-8 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
-          {paths.map((p) =>
+          {registered ? (
+            <RoughButton
+              as="link"
+              href={registered.href}
+              color="#4ade80"
+              glow="rgba(74,222,128,0.3)"
+              fill={false}
+              shimmer
+              seed={23}
+              className="px-10 sm:px-12 py-4 leading-none text-[13px] sm:text-[14px] tracking-[0.4em]"
+            >
+              {registered.label} <span aria-hidden="true">↗</span>
+            </RoughButton>
+          ) : (
+            paths.map((p) =>
             p.soon ? (
               <RoughButton
                 key={p.href}
@@ -204,7 +266,7 @@ export default async function EventPage({ params }) {
                 {p.label} <span aria-hidden="true">↗</span>
               </RoughButton>
             ),
-          )}
+          ))}
         </div>
 
         {/* Quick links */}

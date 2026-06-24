@@ -329,28 +329,44 @@ export default function HardwareDetails({ registered = null }) {
 
       {/* ═══ FOOTER CTAs ═════════════════════════════════════════════════ */}
       <Reveal delay={0.1} className="mt-28 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
-        <RoughButton
-          as={Link}
-          href="/events/hardware/register?mode=competition"
-          color={GREEN}
-          glow={GREEN_GLOW}
-          fill={false}
-          shimmer
-          seed={23}
-          className="px-8 py-3 leading-none text-[12px]"
-        >
-          <span>COMPETITION ↗</span>
-        </RoughButton>
-        <RoughButton
-          as={Link}
-          href="/events/hardware/register?mode=exhibition"
-          color={GREEN}
-          fill={false}
-          seed={29}
-          className="px-8 py-3 leading-none text-[12px]"
-        >
-          <span>EXHIBITION ↗</span>
-        </RoughButton>
+        {registered ? (
+          <RoughButton
+            as={Link}
+            href={registered.href}
+            color="#4ade80"
+            glow="rgba(74,222,128,0.3)"
+            fill={false}
+            seed={23}
+            className="px-8 py-3 leading-none text-[12px]"
+          >
+            <span>{registered.label ?? "VIEW MY REGISTRATION"} ↗</span>
+          </RoughButton>
+        ) : (
+          <>
+            <RoughButton
+              as={Link}
+              href="/events/hardware/register?mode=competition"
+              color={GREEN}
+              glow={GREEN_GLOW}
+              fill={false}
+              shimmer
+              seed={23}
+              className="px-8 py-3 leading-none text-[12px]"
+            >
+              <span>COMPETITION ↗</span>
+            </RoughButton>
+            <RoughButton
+              as={Link}
+              href="/events/hardware/register?mode=exhibition"
+              color={GREEN}
+              fill={false}
+              seed={29}
+              className="px-8 py-3 leading-none text-[12px]"
+            >
+              <span>EXHIBITION ↗</span>
+            </RoughButton>
+          </>
+        )}
         <RoughButton
           as={Link}
           href="/events"

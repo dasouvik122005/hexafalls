@@ -5,7 +5,7 @@ import Sparkles from "@/components/Sparkles";
 import HeroVideoBg from "@/components/HeroVideoBg";
 import RoughDivider from "@/components/RoughDivider";
 
-export default function RegisterShell({ eyebrow, title, accent, children, stack = false }) {
+export default function RegisterShell({ eyebrow, title, accent, children, stack = false, wide = false }) {
   return (
     <section className="relative isolate overflow-hidden min-h-screen pt-28 pb-24 px-6 flex flex-col items-center">
       <HeroVideoBg />
@@ -39,7 +39,7 @@ export default function RegisterShell({ eyebrow, title, accent, children, stack 
         )}
       </h1>
 
-      <div className="mt-10 w-full max-w-2xl">{children}</div>
+      <div className={`mt-10 w-full ${wide ? "max-w-5xl" : "max-w-2xl"}`}>{children}</div>
     </section>
   );
 }
