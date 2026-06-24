@@ -19,7 +19,7 @@ export const HOUSES = [
     activeGlow: "0 0 18px rgba(150,12,5,0.35), inset 0 0 20px rgba(150,12,5,0.06)",
     labelColor: "#ffa091",
     nameColor: "#8b2020",
-    image: "/house_card/hexafallsHouse1.png",
+    image: "/house_card/hexafallsHouse1.webp",
     icon: (
       <svg viewBox="0 0 38 38" fill="none" width={36} height={36} aria-hidden="true">
         <path d="M19 4C19 4 9 11 9 20C9 27 14 32 19 35C24 32 29 27 29 20C29 11 19 4 19 4Z" stroke="#ffa091" strokeWidth="1.4" />
@@ -41,7 +41,7 @@ export const HOUSES = [
     activeGlow: "0 0 18px rgba(74,138,138,0.3), inset 0 0 20px rgba(47,79,79,0.08)",
     labelColor: "#9ec0bf",
     nameColor: "#2a6b6b",
-    image: "/house_card/hexafallsHouse2.png",
+    image: "/house_card/hexafallsHouse2.webp",
     icon: (
       <svg viewBox="0 0 38 38" fill="none" width={36} height={36} aria-hidden="true">
         <path d="M19 7C19 7 23 10 23 14C23 17 21 18.5 19 18.5" stroke="#9ec0bf" strokeWidth="1.4" strokeLinecap="round" />
@@ -63,7 +63,7 @@ export const HOUSES = [
     activeGlow: "0 0 18px rgba(24,95,165,0.3), inset 0 0 20px rgba(24,95,165,0.07)",
     labelColor: "#85b7eb",
     nameColor: "#2a5a8b",
-    image: "/house_card/hexafallsHouse3.png",
+    image: "/house_card/hexafallsHouse3.webp",
     icon: (
       <svg viewBox="0 0 38 38" fill="none" width={36} height={36} aria-hidden="true">
         <path d="M19 29L8 17L19 6L30 17L19 29Z" stroke="#85b7eb" strokeWidth="1.4" />
@@ -85,7 +85,7 @@ export const HOUSES = [
     activeGlow: "0 0 18px rgba(170,138,10,0.35), inset 0 0 20px rgba(170,138,10,0.07)",
     labelColor: "#fbbc00",
     nameColor: "#7a5a10",
-    image: "/house_card/hexafallsHouse4.png",
+    image: "/house_card/hexafallsHouse4.webp",
     icon: (
       <svg viewBox="0 0 38 38" fill="none" width={36} height={36} aria-hidden="true">
         <rect x="11" y="11" width="16" height="16" rx="8" stroke="#fbbc00" strokeWidth="1.4" />

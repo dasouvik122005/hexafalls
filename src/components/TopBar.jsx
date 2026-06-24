@@ -59,7 +59,7 @@ export default function TopBar() {
               aria-label="Hexafalls logo"
             >
               <img
-                src="/logos/main_logo.png"
+                src="/logos/main_logo.webp"
                 alt="HexaFalls"
                 className="h-full w-full object-contain p-1"
                 draggable={false}

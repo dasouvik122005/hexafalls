@@ -119,7 +119,7 @@ export default function Footer() {
         <div className="flex items-center gap-3">
           <span className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-md border border-cyan-hp/40 bg-slate-hp/60">
             <img
-              src="/logos/main_logo.png"
+              src="/logos/main_logo.webp"
               alt="HexaFalls"
               className="h-full w-full object-contain p-1"
               draggable={false}
