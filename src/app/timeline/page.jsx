@@ -14,6 +14,63 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
+const SnitchNode = ({ isImportant }) => {
+  const color = isImportant ? "#D4AF37" : "#66FCF1";
+  const dropShadow = isImportant ? "drop-shadow(0 0 6px #D4AF37)" : "";
+  return (
+    <div className="relative flex justify-center items-center w-8 h-6 shrink-0 z-20">
+      {/* Left Wing */}
+      <motion.svg
+        className="absolute right-1/2 top-0 w-5 h-4 origin-bottom-right"
+        animate={{ rotateZ: [-15, 15, -15] }}
+        transition={{ duration: 0.15, repeat: Infinity, ease: "easeInOut" }}
+        viewBox="0 0 24 24"
+        style={{ filter: dropShadow }}
+      >
+        <path d="M24 24C12 24 2 12 0 0C10 6 18 14 24 24Z" fill={color} fillOpacity="0.4" stroke={color} strokeWidth="0.5" />
+        <path d="M24 24C14 20 6 10 2 2" stroke={color} strokeWidth="0.5" fill="none" />
+      </motion.svg>
+      {/* Right Wing */}
+      <motion.svg
+        className="absolute left-1/2 top-0 w-5 h-4 origin-bottom-left"
+        animate={{ rotateZ: [15, -15, 15] }}
+        transition={{ duration: 0.15, repeat: Infinity, ease: "easeInOut" }}
+        viewBox="0 0 24 24"
+        style={{ filter: dropShadow }}
+      >
+        <path d="M0 24C12 24 22 12 24 0C14 6 6 14 0 24Z" fill={color} fillOpacity="0.4" stroke={color} strokeWidth="0.5" />
+        <path d="M0 24C10 20 18 10 22 2" stroke={color} strokeWidth="0.5" fill="none" />
+      </motion.svg>
+      {/* Snitch Body */}
+      <div 
+        className="w-3.5 h-3.5 rounded-full z-10 relative" 
+        style={{ 
+          background: `radial-gradient(circle at 35% 35%, #fff, ${color})`,
+          boxShadow: isImportant ? `0 0 10px ${color}, 0 0 20px ${color}` : `0 0 8px ${color}`
+        }} 
+      />
+    </div>
+  );
+};
+
+const WandLine = ({ isImportant }) => {
+  const color = isImportant ? "#D4AF37" : "#66FCF1";
+  return (
+    <div className="w-2 grow mt-1 -mb-10 relative z-0 flex flex-col">
+      <svg className="w-full h-full min-h-[40px]" preserveAspectRatio="none" viewBox="0 0 10 100">
+        <defs>
+          <linearGradient id={`wandGrad-${isImportant}`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={color} stopOpacity="0.8" />
+            <stop offset="100%" stopColor={color} stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path d="M 3 0 C 8 0 8 15 5 20 L 5 100 L 4 100 L 4 20 C 1 15 1 0 3 0 Z" fill={`url(#wandGrad-${isImportant})`} />
+        <path d="M 3 3 Q 5 5 7 3 M 3 8 Q 5 10 7 8 M 4 13 L 6 13" stroke="#0B0C10" strokeWidth="0.5" fill="none" opacity="0.6" />
+      </svg>
+    </div>
+  );
+};
+
 function EventCard({ event, index }) {
   const isImportant = event.important;
   return (
@@ -25,9 +82,9 @@ function EventCard({ event, index }) {
       className="relative flex items-start gap-2 sm:gap-4 mb-6 sm:mb-8 group"
     >
       {/* Timeline Node */}
-      <div className="relative z-10 flex flex-col items-center shrink-0 mt-2.5">
-        <div className={`w-3 h-3 rounded-full border ${isImportant ? "border-gold-hp bg-gold-hp/20 hp-glow-gold" : "border-cyan-hp/60 bg-midnight"}`} />
-        <div className="w-px h-full bg-gradient-to-b from-cyan-hp/30 to-transparent mt-2 -mb-8" />
+      <div className="relative z-10 flex flex-col items-center shrink-0 mt-2 w-8 self-stretch">
+        <SnitchNode isImportant={isImportant} />
+        <WandLine isImportant={isImportant} />
       </div>
 
       {/* Content */}
@@ -201,7 +258,7 @@ export default function TimelinePage() {
               </motion.div>
 
               {/* Day Events list */}
-              <div className="ml-0 sm:ml-4 border-l border-cyan-hp/20 pl-4 sm:pl-8 relative">
+              <div className="ml-0 sm:ml-4 pl-0 sm:pl-4 relative">
                 {dayData.events.map((ev, evIndex) => (
                   <EventCard key={evIndex} event={ev} index={evIndex} />
                 ))}
