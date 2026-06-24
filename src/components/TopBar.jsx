@@ -11,8 +11,10 @@ import UserMenu from "./UserMenu";
 export default function TopBar() {
   const [open, setOpen] = useState(false);
 
-  // Available routes first, "soon" ones last (stable within each group).
-  const nav = [...SITEMAP].sort((a, b) => (a.soon ? 1 : 0) - (b.soon ? 1 : 0));
+  // Red (the standout heart) first, then available routes, then "soon" ones
+  // last. Stable within each group, so SITEMAP order is otherwise preserved.
+  const rank = (s) => (s.red ? 0 : s.soon ? 2 : 1);
+  const nav = [...SITEMAP].sort((a, b) => rank(a) - rank(b));
 
   // Close on Escape
   useEffect(() => {
