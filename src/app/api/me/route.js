@@ -24,6 +24,7 @@ export async function GET() {
         username: u.username,
         role: u.role,
         gdgVerified: !!u.gdg_verified,
+        avatarUrl: u.avatar_url ?? null,
       },
     },
     { headers: { "Cache-Control": "no-store" } },

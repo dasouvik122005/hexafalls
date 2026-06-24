@@ -229,8 +229,15 @@ export default async function TeamProfilePage({ params }) {
                       <span className="font-display text-[9px] uppercase tracking-[0.35em] text-gold-hp/80 rounded-full border border-gold-hp/50 bg-gold-hp/10 px-2 py-0.5">
                         {m.role}
                       </span>
-                      <span className="font-mono text-sm text-silver-hp truncate">
-                        {m.username ? `@${m.username}` : m.display_name ?? "(pending)"}
+                      <span className="flex min-w-0 flex-col">
+                        <span className="font-display text-sm text-silver-hp truncate">
+                          {m.display_name ?? (m.username ? `@${m.username}` : "(pending)")}
+                        </span>
+                        {m.display_name && m.username && (
+                          <span className="font-mono text-[11px] text-silver-hp/55 truncate">
+                            @{m.username}
+                          </span>
+                        )}
                       </span>
                     </span>
                     <span className="font-mono text-xs text-silver-hp/55 shrink-0">

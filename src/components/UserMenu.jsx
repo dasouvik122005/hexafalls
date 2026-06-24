@@ -14,6 +14,30 @@ function initialOf(user) {
   return s.trim().charAt(0).toUpperCase();
 }
 
+// Avatar: Elixpo profile picture when available, else a lettered fallback.
+function Avatar({ user, size = 28, text = "12px" }) {
+  const cls =
+    "shrink-0 grid place-items-center rounded-full bg-cyan-hp/15 font-display text-cyan-hp ring-1 ring-cyan-hp/40 overflow-hidden";
+  const style = { height: size, width: size, fontSize: text };
+  if (user?.avatarUrl) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={user.avatarUrl}
+        alt=""
+        referrerPolicy="no-referrer"
+        className={cls}
+        style={style}
+      />
+    );
+  }
+  return (
+    <span className={cls} style={style} aria-hidden="true">
+      {initialOf(user)}
+    </span>
+  );
+}
+
 export default function UserMenu() {
   const [user, setUser] = useState(undefined); // undefined = loading, null = signed out
   const [open, setOpen] = useState(false);
@@ -80,12 +104,7 @@ export default function UserMenu() {
         aria-expanded={open}
         className="group inline-flex items-center gap-2.5 rounded-full border border-cyan-hp/30 bg-slate-hp/40 py-1 pl-1 pr-2.5 sm:pr-3 backdrop-blur-sm transition hover:border-cyan-hp/55 hover:bg-slate-hp/60"
       >
-        <span
-          className="grid h-7 w-7 place-items-center rounded-full bg-cyan-hp/15 font-display text-[12px] text-cyan-hp ring-1 ring-cyan-hp/40"
-          aria-hidden="true"
-        >
-          {initialOf(user)}
-        </span>
+        <Avatar user={user} size={28} text="12px" />
         <span className="hidden sm:flex flex-col items-start leading-tight max-w-[12rem]">
           <span className="font-display text-[11px] tracking-[0.06em] text-silver-hp truncate w-full">
             {name}
@@ -119,9 +138,7 @@ export default function UserMenu() {
           >
             {/* header */}
             <div className="flex items-center gap-3 border-b border-silver-hp/10 px-4 py-3">
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-cyan-hp/15 font-display text-sm text-cyan-hp ring-1 ring-cyan-hp/40">
-                {initialOf(user)}
-              </span>
+              <Avatar user={user} size={36} text="14px" />
               <div className="min-w-0">
                 <p className="font-display text-[12px] text-silver-hp truncate">{name}</p>
                 <p className="font-mono text-[10px] text-silver-hp/55 truncate">{user.email}</p>

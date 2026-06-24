@@ -21,7 +21,7 @@ export async function getSessionUser() {
   const row = await db
     .prepare(
       `SELECT id, elixpo_id, email, display_name, username, role,
-              gdg_verified, email_verified
+              gdg_verified, email_verified, avatar_url
          FROM users WHERE id = ?`,
     )
     .bind(session.userId)

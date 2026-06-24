@@ -80,13 +80,18 @@ export async function GET(req) {
     Date.now() + (tokens.expires_in ?? 900) * 1000,
   ).toISOString();
 
+  // Elixpo profile picture — field name isn't pinned in the docs, so read the
+  // common variants.
+  const avatarUrl =
+    me.avatarUrl ?? me.avatar ?? me.picture ?? me.image ?? me.photo ?? null;
+
   let userId;
   if (existing) {
     userId = existing.id;
     await db
       .prepare(
         `UPDATE users
-            SET email = ?, display_name = ?, email_verified = ?,
+            SET email = ?, display_name = ?, avatar_url = ?, email_verified = ?,
                 access_token = ?, refresh_token = ?, token_expires_at = ?,
                 updated_at = datetime('now')
           WHERE id = ?`,
@@ -94,6 +99,7 @@ export async function GET(req) {
       .bind(
         me.email,
         me.displayName ?? null,
+        avatarUrl,
         me.emailVerified ? 1 : 0,
         tokens.access_token,
         tokens.refresh_token,
@@ -110,15 +116,16 @@ export async function GET(req) {
     await db
       .prepare(
         `INSERT INTO users
-           (id, elixpo_id, email, display_name, role, email_verified,
+           (id, elixpo_id, email, display_name, avatar_url, role, email_verified,
             access_token, refresh_token, token_expires_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
       .bind(
         userId,
         me.id,
         me.email,
         me.displayName ?? null,
+        avatarUrl,
         role,
         me.emailVerified ? 1 : 0,
         tokens.access_token,

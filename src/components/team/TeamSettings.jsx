@@ -35,7 +35,9 @@ const ERRORS = {
 
 function label(m) {
   if (!m) return "(pending)";
-  return m.username ? `@${m.username}` : m.display_name ?? "(pending)";
+  // Prefer the person's display name; fall back to their @handle.
+  if (m.display_name) return m.username ? `${m.display_name} · @${m.username}` : m.display_name;
+  return m.username ? `@${m.username}` : "(pending)";
 }
 
 export default function TeamSettings({

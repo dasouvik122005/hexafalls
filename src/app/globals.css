@@ -76,24 +76,16 @@ html, body {
   100% { background-position: 200% 200%; }
 }
 
-/* Glowing text */
+/* Accent text — a soft, matte halo (toned down from the old triple bloom so
+   headings read crisp/professional while keeping the colour theme). */
 .hp-glow {
-  text-shadow:
-    0 0 10px rgba(102, 252, 241, 0.70),
-    0 0 28px rgba(102, 252, 241, 0.45),
-    0 0 56px rgba(102, 252, 241, 0.22);
+  text-shadow: 0 0 6px rgba(102, 252, 241, 0.28);
 }
 .hp-glow-gold {
-  text-shadow:
-    0 0 10px rgba(212, 175, 55, 0.70),
-    0 0 28px rgba(212, 175, 55, 0.45),
-    0 0 56px rgba(212, 175, 55, 0.20);
+  text-shadow: 0 0 6px rgba(212, 175, 55, 0.28);
 }
 .hp-glow-red {
-  text-shadow:
-    0 0 10px rgba(239, 68, 68, 0.70),
-    0 0 28px rgba(239, 68, 68, 0.45),
-    0 0 56px rgba(239, 68, 68, 0.20);
+  text-shadow: 0 0 6px rgba(239, 68, 68, 0.28);
 }
 
 /* Magical underline used on CTAs */

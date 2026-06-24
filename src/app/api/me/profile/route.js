@@ -45,7 +45,7 @@ export async function PATCH(req) {
   if (cBio !== undefined)      updates.bio = cBio;
   if (cCollege !== undefined)  updates.college = cCollege;
   if (cYear !== undefined) {
-    if (cYear < 1 || cYear > 6) {
+    if (cYear < 1 || cYear > 4) {
       return NextResponse.json({ error: "invalid_year" }, { status: 400 });
     }
     updates.year = cYear;
