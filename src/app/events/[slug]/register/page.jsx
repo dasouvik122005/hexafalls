@@ -128,10 +128,22 @@ export default async function EventRegisterPage({ params, searchParams }) {
       {!user && <SignInPanel returnTo={returnTo} />}
       {user && !user.gdg_verified && <GdgGate returnTo={returnTo} />}
       {user && user.gdg_verified && existingSquadId && (
-        <AlreadyInSquad href={teamUrl(regKey, existingSquadId)} />
+        <DonePanel
+          eyebrow="You're on a team"
+          title="Already signed on"
+          lede={`Your ${cfg.label} squad is locked in. Manage members, fees and status from your team scroll.`}
+          primaryHref={teamUrl(regKey, existingSquadId)}
+          primaryLabel="VISIT MY TEAM ↗"
+        />
       )}
       {user && user.gdg_verified && existingSoloReg && (
-        <AlreadyRegisteredSolo href={`/u/${user.elixpo_id}`} />
+        <DonePanel
+          eyebrow="You're registered"
+          title="Already registered"
+          lede={`Your ${cfg.label} entry is in. Track its status and your details from your profile.`}
+          primaryHref={`/u/${user.elixpo_id}`}
+          primaryLabel="VIEW YOUR SCROLL ↗"
+        />
       )}
       {user && user.gdg_verified && !existingSquadId && !existingSoloReg &&
         (isSquadEvent(regKey) ? (
@@ -277,60 +289,80 @@ function SignInPanel({ returnTo }) {
   );
 }
 
-function AlreadyInSquad({ href }) {
+// Confirmation state — already on a team / already registered. Mirrors the
+// SignInPanel composition (animated sigil + copy) so the page never reads as an
+// empty bordered box.
+function DonePanel({ eyebrow, title, lede, primaryHref, primaryLabel }) {
   return (
-    <RoughFrame
-      seed={59}
-      stroke="#D4AF37"
-      mistColor="#D4AF37"
-      padding={22}
-      className="w-full bg-slate-hp/35 backdrop-blur-sm"
-      inner="flex flex-col gap-4 items-center text-center"
-    >
-      <h2 className="font-display tracking-[0.3em] uppercase text-sm text-gold-hp hp-glow-gold">
-        Already signed on
-      </h2>
-      <RoughButton
-        as="link"
-        href={href}
-        color="#D4AF37"
-        glow="rgba(212,175,55,0.40)"
-        fill={false}
-        shimmer
-        seed={21}
-        className="px-10 sm:px-12 py-4 leading-none text-[13px] sm:text-[14px] tracking-[0.4em]"
-      >
-        VISIT MY TEAM ↗
-      </RoughButton>
-    </RoughFrame>
-  );
-}
+    <div className="relative mx-auto flex w-full max-w-xl flex-col items-center gap-7 px-4 py-6 text-center">
+      <RoughStar size={22} color="#D4AF37" className="absolute -left-1 top-3 hp-float opacity-70" style={{ animationDelay: "0.3s" }} />
+      <RoughStar size={15} color="#66FCF1" className="absolute right-4 top-10 hp-float opacity-60" style={{ animationDelay: "1.2s" }} />
+      <RoughStar size={18} color="#A78BFA" className="absolute left-8 bottom-6 hp-float opacity-50" style={{ animationDelay: "0.8s" }} />
 
-function AlreadyRegisteredSolo({ href }) {
-  return (
-    <RoughFrame
-      seed={61}
-      stroke="#D4AF37"
-      mistColor="#D4AF37"
-      padding={22}
-      className="w-full bg-slate-hp/35 backdrop-blur-sm"
-      inner="flex flex-col gap-4 items-center text-center"
-    >
-      <h2 className="font-display tracking-[0.3em] uppercase text-sm text-gold-hp hp-glow-gold">
-        Already registered
-      </h2>
-      <RoughButton
-        as="link"
-        href={href}
-        color="#D4AF37"
-        glow="rgba(212,175,55,0.40)"
-        fill={false}
-        shimmer
-        seed={23}
-        className="px-10 sm:px-12 py-4 leading-none text-[13px] sm:text-[14px] tracking-[0.4em]"
-      >
-        VIEW YOUR SCROLL ↗
-      </RoughButton>
-    </RoughFrame>
+      {/* success sigil — a sealed check in a pulsing aura */}
+      <div className="relative grid place-items-center">
+        <span
+          aria-hidden="true"
+          className="absolute h-28 w-28 rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(74,222,128,0.18), transparent 70%)" }}
+        />
+        <span
+          aria-hidden="true"
+          className="absolute h-20 w-20 rounded-full border border-emerald-400/40 animate-ping"
+          style={{ animationDuration: "2.8s" }}
+        />
+        <div className="relative grid h-20 w-20 place-items-center rounded-full border border-emerald-400/50 bg-midnight/60 backdrop-blur-sm hp-float">
+          <svg
+            viewBox="0 0 24 24"
+            className="h-8 w-8 text-emerald-300"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ filter: "drop-shadow(0 0 8px rgba(74,222,128,0.5))" }}
+          >
+            <path d="M20 6 L9 17 l-5 -5" />
+          </svg>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <span className="font-display text-[10px] uppercase tracking-[0.45em] text-cyan-hp/70">
+          {eyebrow}
+        </span>
+        <h2 className="font-display tracking-[0.28em] uppercase text-base sm:text-lg text-gold-hp hp-glow-gold">
+          {title}
+        </h2>
+        <p className="mx-auto max-w-md font-wizard text-silver-hp/80 text-sm sm:text-base leading-relaxed">
+          {lede}
+        </p>
+      </div>
+
+      <div className="flex flex-col sm:flex-row items-center gap-3">
+        <RoughButton
+          as="link"
+          href={primaryHref}
+          color="#D4AF37"
+          glow="rgba(212,175,55,0.35)"
+          fill={false}
+          shimmer
+          seed={21}
+          className="px-9 sm:px-11 py-3.5 leading-none text-[12px] sm:text-[13px] tracking-[0.35em]"
+        >
+          {primaryLabel}
+        </RoughButton>
+        <RoughButton
+          as="link"
+          href="/events"
+          color="#C5C6C7"
+          fill={false}
+          seed={29}
+          className="px-7 py-3 leading-none text-[11px] tracking-[0.3em]"
+        >
+          ← OTHER EVENTS
+        </RoughButton>
+      </div>
+    </div>
   );
 }
