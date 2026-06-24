@@ -31,7 +31,7 @@ export const REGISTRATION_EVENTS = {
     squadKind: "hardware_competition_squad",
     parentEvent: "hardware",
     minMembers: 2,
-    maxMembers: 5,
+    maxMembers: 4,
     gated: true, // approval-based
     pricePerPerson: 100, // ₹, charged only after approval
     fields: ["category"],
