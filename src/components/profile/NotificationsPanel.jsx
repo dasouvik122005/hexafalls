@@ -5,18 +5,23 @@
 //   <NotificationsPanel />                       // self-fetches on mount
 //   <NotificationsPanel initial={notifications} />  // hydrate from the server
 //
-// `initial` is the array returned by listNotifications() / the GET
-// /api/notifications `notifications` field: [{ id, kind, title, body, link,
-// read, created_at }]. Newest first. Unread items get a gold left accent and
-// the header shows an unread badge. "Mark all read" POSTs /api/notifications.
+// `initial` is the array from GET /api/notifications `notifications`:
+// [{ id, kind, title, body, link, read, created_at }]. Newest first. Matte
+// card; unread items get a gold left accent + an unread count in the header.
 
 import { useEffect, useState } from "react";
-import RoughButton from "@/components/RoughButton";
-import RoughFrame from "@/components/RoughFrame";
+
+function EnvelopeIcon({ className = "" }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="M3.5 6.5 L12 13 L20.5 6.5" />
+    </svg>
+  );
+}
 
 function relativeTime(value) {
   if (!value) return "";
-  // created_at is SQLite "YYYY-MM-DD HH:MM:SS" (UTC). Normalise to ISO.
   const iso = typeof value === "string" && value.includes(" ") ? value.replace(" ", "T") + "Z" : value;
   const then = new Date(iso).getTime();
   if (Number.isNaN(then)) return "";
@@ -62,7 +67,6 @@ export default function NotificationsPanel({ initial }) {
   async function markAllRead() {
     if (busy || unread === 0) return;
     setBusy(true);
-    // optimistic
     setItems((prev) => prev.map((x) => ({ ...x, read: 1 })));
     try {
       await fetch("/api/notifications", {
@@ -78,18 +82,12 @@ export default function NotificationsPanel({ initial }) {
   }
 
   return (
-    <RoughFrame
-      seed={211}
-      stroke="#D4AF37"
-      mistColor="#D4AF37"
-      strokeWidth={1.4}
-      padding={24}
-      className="w-full bg-slate-hp/35 backdrop-blur-sm"
-      inner="flex flex-col gap-4"
-    >
-      <div className="flex items-center justify-between gap-3">
-        <h2 className="flex items-center gap-2 font-display tracking-[0.3em] uppercase text-sm text-gold-hp">
-          Owl Post
+    <section className="w-full rounded-sm border border-gold-hp/25 bg-slate-hp/30 p-5 sm:p-6 flex flex-col gap-4">
+      {/* Header — "Owl Post" stays on one line; controls wrap below on mobile */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h2 className="flex items-center gap-2.5 whitespace-nowrap font-display tracking-[0.3em] uppercase text-sm text-gold-hp">
+          <EnvelopeIcon className="h-5 w-5 text-gold-hp/80 shrink-0" />
+          <span>Owl Post</span>
           {unread > 0 && (
             <span
               aria-label={`${unread} unread`}
@@ -101,25 +99,26 @@ export default function NotificationsPanel({ initial }) {
         </h2>
 
         {unread > 0 && (
-          <RoughButton
+          <button
             type="button"
             onClick={markAllRead}
             disabled={busy}
-            aria-disabled={busy}
-            color="#D4AF37"
-            glow="rgba(212,175,55,0.30)"
-            seed={47}
-            className="px-5 py-2 text-[10px] tracking-[0.35em]"
+            className="rounded-full border border-gold-hp/40 bg-gold-hp/10 px-4 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] text-gold-hp transition hover:bg-gold-hp/20 disabled:opacity-60"
           >
-            {busy ? "MARKING…" : "MARK ALL READ"}
-          </RoughButton>
+            {busy ? "Marking…" : "Mark all read"}
+          </button>
         )}
       </div>
 
       {loading ? (
-        <p className="font-wizard italic text-silver-hp/50 text-sm">Summoning owls…</p>
+        <p className="font-wizard italic text-silver-hp/50 text-sm py-4">Summoning owls…</p>
       ) : items.length === 0 ? (
-        <p className="font-wizard italic text-silver-hp/55 text-sm">No owls yet.</p>
+        <div className="flex flex-col items-center gap-3 py-10 text-center">
+          <EnvelopeIcon className="h-12 w-12 text-silver-hp/20" />
+          <p className="max-w-xs font-wizard italic text-silver-hp/55 text-sm">
+            No owls yet. Join requests, approvals and payment updates will land here.
+          </p>
+        </div>
       ) : (
         <ul className="flex flex-col gap-2.5" aria-live="polite">
           {items.map((n) => {
@@ -127,47 +126,49 @@ export default function NotificationsPanel({ initial }) {
             return (
               <li
                 key={n.id}
-                className={`rounded-sm border bg-midnight/50 px-4 py-3 transition-colors ${
-                  isUnread
-                    ? "border-gold-hp/30 border-l-2 border-l-gold-hp"
-                    : "border-cyan-hp/15"
+                className={`flex gap-3 rounded-sm border bg-midnight/50 px-4 py-3 ${
+                  isUnread ? "border-gold-hp/30 border-l-2 border-l-gold-hp" : "border-cyan-hp/15"
                 }`}
               >
-                <div className="flex items-baseline justify-between gap-3">
-                  <h3
-                    className={`font-display text-[13px] tracking-wide ${
-                      isUnread ? "text-gold-hp" : "text-silver-hp/85"
-                    }`}
-                  >
-                    {n.title}
-                  </h3>
-                  <time
-                    dateTime={n.created_at}
-                    className="shrink-0 font-mono text-[10px] text-silver-hp/40"
-                  >
-                    {relativeTime(n.created_at)}
-                  </time>
+                <span
+                  className={`mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full border ${
+                    isUnread ? "border-gold-hp/40 bg-gold-hp/10 text-gold-hp" : "border-cyan-hp/25 bg-cyan-hp/5 text-cyan-hp/70"
+                  }`}
+                >
+                  <EnvelopeIcon className="h-4 w-4" />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
+                    <h3
+                      className={`font-display text-[13px] tracking-wide wrap-break-word ${
+                        isUnread ? "text-gold-hp" : "text-silver-hp/85"
+                      }`}
+                    >
+                      {n.title}
+                    </h3>
+                    <time dateTime={n.created_at} className="shrink-0 font-mono text-[10px] text-silver-hp/40">
+                      {relativeTime(n.created_at)}
+                    </time>
+                  </div>
+                  {n.body && (
+                    <p className="mt-1 font-wizard text-sm leading-snug text-silver-hp/75 wrap-break-word">
+                      {n.body}
+                    </p>
+                  )}
+                  {n.link && (
+                    <a
+                      href={n.link}
+                      className="mt-1.5 inline-block font-display text-[10px] uppercase tracking-[0.3em] text-cyan-hp/85 underline-offset-4 hover:underline focus:underline focus:outline-none"
+                    >
+                      Open ↗
+                    </a>
+                  )}
                 </div>
-
-                {n.body && (
-                  <p className="mt-1 font-wizard text-sm leading-snug text-silver-hp/75">
-                    {n.body}
-                  </p>
-                )}
-
-                {n.link && (
-                  <a
-                    href={n.link}
-                    className="mt-1.5 inline-block font-display text-[10px] uppercase tracking-[0.3em] text-cyan-hp/85 underline-offset-4 hover:underline focus:underline focus:outline-none"
-                  >
-                    Open ↗
-                  </a>
-                )}
               </li>
             );
           })}
         </ul>
       )}
-    </RoughFrame>
+    </section>
   );
 }
