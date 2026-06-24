@@ -61,16 +61,33 @@ export const REGISTRATION_EVENTS = {
   },
 };
 
-// Deferred — see docs/plan.md "timeline conflict warning". When a real
-// schedule lands, give each event a `{ day, start, end }` slot and check
-// overlap against the user's existing registrations at register time.
-// export const EVENT_SCHEDULE = {
-//   hackathon:              { day: "2026-XX-XX", start: "HH:MM", end: "HH:MM" },
-//   "hardware-competition": { day: "2026-XX-XX", start: "HH:MM", end: "HH:MM" },
-//   "hardware-exhibition":  { day: "2026-XX-XX", start: "HH:MM", end: "HH:MM" },
-//   cp:                     { day: "2026-XX-XX", start: "HH:MM", end: "HH:MM" },
-//   gaming:                 { day: "2026-XX-XX", start: "HH:MM", end: "HH:MM" },
-// };
+// Per-event time slots (from the timeline, src/lib/timelineData.js). Used to
+// warn a user when they register for two events whose times overlap. ISO local
+// strings in the same format compare chronologically as plain strings.
+export const EVENT_SCHEDULE = {
+  hackathon:              { start: "2026-07-25T10:00", end: "2026-07-27T20:00", label: "Jul 25, 10:00 AM → Jul 27" },
+  "hardware-competition": { start: "2026-07-24T11:00", end: "2026-07-25T19:00", label: "Jul 24–25 (Robotic Games)" },
+  "hardware-exhibition":  { start: "2026-07-24T11:00", end: "2026-07-24T18:00", label: "Jul 24, 11:00 AM → 6:00 PM" },
+  gaming:                 { start: "2026-07-25T12:00", end: "2026-07-25T19:15", label: "Jul 25, 12:00 PM → 7:15 PM" },
+  cp:                     { start: "2026-07-26T13:00", end: "2026-07-26T16:00", label: "Jul 26, 1:00 PM → 4:00 PM" },
+};
+
+// True if two events' time slots overlap.
+export function eventsClash(a, b) {
+  if (a === b) return false;
+  const sa = EVENT_SCHEDULE[a];
+  const sb = EVENT_SCHEDULE[b];
+  if (!sa || !sb) return false;
+  return sa.start < sb.end && sb.start < sa.end;
+}
+
+// Given the event being registered for and a list of events the user is already
+// in, return the clashing ones (with their schedule labels).
+export function clashingEvents(eventKey, otherEventKeys = []) {
+  return otherEventKeys
+    .filter((e) => eventsClash(eventKey, e))
+    .map((e) => ({ event: e, label: REGISTRATION_EVENTS[e]?.label ?? e, when: EVENT_SCHEDULE[e]?.label }));
+}
 
 // Fixed roles — assigned manually by admins, never self-registered.
 export const FIXED_ROLES = [

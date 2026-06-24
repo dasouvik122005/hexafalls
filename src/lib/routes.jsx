@@ -66,7 +66,7 @@ export const SITEMAP = [
     ),
   },
   {
-    href: "/events", label: "The Events", soon: true,
+    href: "/events", label: "The Events", soon: false,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
         <path d="M5 4h14a2 2 0 0 1 2 2v3H3V6a2 2 0 0 1 2-2z" />

@@ -26,6 +26,7 @@ import {
   isSoloEvent,
   teamUrl,
   registrationKeyFor,
+  clashingEvents,
 } from "@/lib/registration/events";
 import { getDB } from "@/lib/db";
 
@@ -123,10 +124,35 @@ export default async function EventRegisterPage({ params, searchParams }) {
       .filter((s) => s.members < s.maxMembers);
   }
 
+  // Timeline clash warning: which of the user's OTHER registrations overlap this
+  // event's time slot. Informational only — registration is not blocked.
+  let clashes = [];
+  const showForm =
+    user && user.gdg_verified && !existingSquadId && !existingSoloReg;
+  if (showForm) {
+    const sq = await getDB()
+      .prepare(
+        `SELECT DISTINCT s.event FROM squad_members sm
+           JOIN squads s ON s.id = sm.squad_id WHERE sm.user_id = ?`,
+      )
+      .bind(user.id)
+      .all();
+    const so = await getDB()
+      .prepare(`SELECT DISTINCT event FROM solo_registrations WHERE user_id = ?`)
+      .bind(user.id)
+      .all();
+    const others = [
+      ...(sq.results ?? []).map((r) => r.event),
+      ...(so.results ?? []).map((r) => r.event),
+    ].filter((e) => e !== regKey);
+    clashes = clashingEvents(regKey, [...new Set(others)]);
+  }
+
   return (
     <ShellWrap eyebrow={`Sign on · ${cfg.label}`} accent={cfg.label}>
       {!user && <SignInPanel returnTo={returnTo} />}
       {user && !user.gdg_verified && <GdgGate returnTo={returnTo} />}
+      {showForm && clashes.length > 0 && <ClashWarning eventLabel={cfg.label} clashes={clashes} />}
       {user && user.gdg_verified && existingSquadId && (
         <DonePanel
           eyebrow="You're on a team"
@@ -174,6 +200,36 @@ function ShellWrap({ eyebrow, accent, children }) {
       </RegisterShell>
       <Footer />
     </main>
+  );
+}
+
+function ClashWarning({ eventLabel, clashes }) {
+  return (
+    <RoughFrame
+      seed={71}
+      stroke="#D4AF37"
+      mistColor="#D4AF37"
+      strokeWidth={1.4}
+      padding={20}
+      className="w-full bg-gold-hp/5 backdrop-blur-sm"
+      inner="flex flex-col gap-2"
+    >
+      <span className="flex items-center gap-2 font-display text-[11px] uppercase tracking-[0.3em] text-gold-hp">
+        <span aria-hidden="true">⚠</span> Schedule clash
+      </span>
+      <p className="font-wizard text-silver-hp/85 text-sm leading-relaxed">
+        Heads up — <strong className="text-silver-hp">{eventLabel}</strong> overlaps in time with{" "}
+        {clashes.map((c, i) => (
+          <span key={c.event}>
+            {i > 0 ? (i === clashes.length - 1 ? " and " : ", ") : ""}
+            <strong className="text-silver-hp">{c.label}</strong>
+            {c.when ? ` (${c.when})` : ""}
+          </span>
+        ))}
+        , which you&apos;re already registered for. You can still sign up — just know
+        you may not be able to attend both at once.
+      </p>
+    </RoughFrame>
   );
 }
 
