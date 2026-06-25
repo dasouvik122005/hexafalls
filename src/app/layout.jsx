@@ -166,6 +166,7 @@ export default function RootLayout({ children }) {
             }),
           }}
         />
+        {children}
         {/* Page-wide ambient fog. Fixed to the viewport, sits behind everything. */}
         <div aria-hidden="true" className="hp-fog">
           <span className="hp-fog__cloud hp-fog__cloud--a" />
