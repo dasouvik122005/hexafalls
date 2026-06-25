@@ -203,7 +203,7 @@ export const HACKATHON_TRACKS = [
 export const HARDWARE_TRACKS = [
   {
     name: "Robo Terrence",
-    rune: "🧹",
+    rune: "✇",
     color: "#D4AF37",
     desc: "Race your magical machine through enchanted obstacles.",
     slug: "robo-terrence",
@@ -211,7 +211,7 @@ export const HARDWARE_TRACKS = [
 
   {
     name: "Robo Soccer",
-    rune: "⚽",
+    rune: "⏣",
     color: "#4A90E2",
     desc: "Strategic robotic gameplay inspired by the wizarding world.",
     slug: "robo-soccer",
@@ -219,7 +219,7 @@ export const HARDWARE_TRACKS = [
 
   {
     name: "Robo Sumo",
-    rune: "🐉",
+    rune: "⊗",
     color: "#FF6B35",
     desc: "Push, battle and dominate the magical combat arena.",
     slug: "robo-sumo",
@@ -227,7 +227,7 @@ export const HARDWARE_TRACKS = [
 
   {
     name: "Line Follower",
-    rune: "🪄",
+    rune: "☍",
     color: "#8B5CF6",
     desc: "Follow mystical trails with precision and intelligence.",
     slug: "line-follower",
@@ -235,7 +235,7 @@ export const HARDWARE_TRACKS = [
 
   {
     name: "Exhibition",
-    rune: "📜",
+    rune: "✧",
     color: "#22C55E",
     desc: "Present groundbreaking innovations and magical creations.",
     slug: "exhibition",
@@ -311,7 +311,7 @@ export const LINE_FOLLOWER_RULES = {
   overview: "Put your programming, electronics, and robotics skills to the ultimate test in the Line Follower Challenge. Participants must design and build an autonomous robot capable of accurately following a predefined path while navigating curves, intersections, checkpoints, gaps, and complex track layouts without any human intervention. The competition rewards speed, precision, reliability, and intelligent navigation as robots race to achieve the fastest completion time while successfully handling every challenge on the course.",
   registration: {
     fee: "₹400 per Team",
-    teamSize: "2–5 Members"
+    teamSize: "2–4 Members"
   },
   botSpecs: [
     "Maximum Dimensions: 20 cm × 20 cm × 20 cm",
@@ -333,7 +333,7 @@ export const LINE_FOLLOWER_RULES = {
     "Special challenge sections in final rounds"
   ],
   generalRules: [
-    "Teams may consist of 2–5 participants.",
+    "Teams may consist of 2–4 participants.",
     "All participants must carry a valid College ID card.",
     "Robots must operate completely autonomously throughout the run.",
     "No external control, wireless control, or manual intervention is allowed.",
