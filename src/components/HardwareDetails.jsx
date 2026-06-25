@@ -49,14 +49,14 @@ function TrackCard({ track: t, index: i }) {
       <div className="flex items-center justify-between relative z-10 w-full">
         <div className="flex items-center gap-3">
           <span
-            className="text-2xl select-none transition-transform duration-300 font-mono group-hover:scale-110"
-            style={{ textShadow: `0 0 12px ${t.color}66` }}
+            className="text-2xl select-none font-mono"
+            style={{ color: t.color }}
             aria-hidden="true"
           >
             {t.rune}
           </span>
           <span
-            className="font-mono text-sm tracking-widest uppercase font-bold transition-all duration-300 group-hover:drop-shadow-[0_0_8px_currentColor]"
+            className="font-mono text-sm tracking-widest uppercase font-bold"
             style={{ color: t.color }}
           >
             {t.name}
@@ -85,14 +85,14 @@ function TrackCard({ track: t, index: i }) {
     </>
   );
 
-  const containerClasses = `group relative h-full flex flex-col p-6 backdrop-blur-sm transition-all duration-300 outline-none hover:-translate-y-1 ${
+  const containerClasses = `group relative h-full flex flex-col p-6 rounded-sm transition-colors duration-200 outline-none hover:border-gold-hp/45 ${
     t.slug ? "cursor-pointer" : "cursor-default"
   }`;
 
+  // Matte solid card — no gradient, no backdrop-blur, no glow (cheap to paint).
   const cardStyle = {
-    background: "linear-gradient(180deg, rgba(44,27,15,.95), rgba(20,12,8,.95))",
-    border: "1px solid rgba(212,175,55,.4)",
-    boxShadow: "0 0 20px rgba(212,175,55,.15)",
+    background: "rgba(20,18,16,0.55)",
+    border: "1px solid rgba(212,175,55,.22)",
   };
 
   if (t.slug) {
