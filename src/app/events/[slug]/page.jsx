@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import TopBar from "@/components/TopBar";
 import Footer from "@/components/Footer";
-import ComingSoon from "@/components/ComingSoon";
+import EventComingSoon from "@/components/EventComingSoon";
 import HackathonDetails from "@/components/HackathonDetails";
 import HardwareDetails from "@/components/HardwareDetails";
 import { EVENTS } from "@/lib/routes";
@@ -50,22 +50,7 @@ export default async function EventPage({ params }) {
       ) : isHardware ? (
         <HardwareDetails />
       ) : (
-        <ComingSoon
-          eyebrow={`Track · ${event.name}`}
-          title="The"
-          accent={event.name.replace(/^The\s+/i, "")}
-          lede={`${event.blurb} The full brief is being inked: rules, schedule, judging. Return soon, or peek at the prizes already.`}
-          whisper={`"Every contest is a small spell, and every spell needs its rules."`}
-          accentColor={event.color}
-          accentGlow={event.glow}
-          apply={{
-            open: true,
-            label: "SEE THE PRIZES",
-            href: `/events/${event.slug}/prizes`,
-          }}
-          backHref="/events"
-          backLabel="← ALL EVENTS"
-        />
+        <EventComingSoon event={event} />
       )}
       <Footer />
     </main>

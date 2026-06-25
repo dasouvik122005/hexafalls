@@ -161,18 +161,13 @@ const DOC_PAGES = {
 };
 
 const COLOR_CARDS = [
-  { id: "col-1", name: "Midnight Black", hex: "#0A0A0A", bg: "#0A0A0A", text: "#D4AF37", desc: "Midnight Black background with Ancient Gold logo accent." },
-  { id: "col-2", name: "Dark Stone", hex: "#1C1C1C", bg: "#1C1C1C", text: "#B0B0B0", desc: "Dark Stone background with Silver Gray logo accent." },
-  { id: "col-3", name: "Ancient Gold", hex: "#D4AF37", bg: "#D4AF37", text: "#0A0A0A", desc: "Ancient Gold background with Midnight Black logo accent." },
-  { id: "col-4", name: "Metallic Gold", hex: "#C8A75B", bg: "#C8A75B", text: "#0A0A0A", desc: "Metallic Gold background with Midnight Black logo accent." },
-  { id: "col-5", name: "Golden Glow", hex: "#E0C36E", bg: "#E0C36E", text: "#0A0A0A", desc: "Golden Glow background with Midnight Black logo accent." },
-  { id: "col-6", name: "Bronze", hex: "#8B6B3F", bg: "#8B6B3F", text: "#F3E9D2", desc: "Bronze background with Parchment Cream logo accent." },
-  { id: "col-7", name: "Dark Bronze", hex: "#6F5632", bg: "#6F5632", text: "#F3E9D2", desc: "Dark Bronze background with Parchment Cream logo accent." },
-  { id: "col-8", name: "Parchment Cream", hex: "#F3E9D2", bg: "#F3E9D2", text: "#6F5632", desc: "Parchment Cream background with Dark Bronze logo accent." },
-  { id: "col-9", name: "Old Paper", hex: "#EADFC8", bg: "#EADFC8", text: "#8B6B3F", desc: "Old Paper background with Bronze logo accent." },
-  { id: "col-10", name: "Silver Gray", hex: "#B0B0B0", bg: "#B0B0B0", text: "#1C1C1C", desc: "Silver Gray background with Dark Stone logo accent." },
-  { id: "col-11", name: "Dark Red", hex: "#430304", bg: "#430304", text: "#d9b994", desc: "Dark Red background with Pastel Grey Orange logo accent." },
-  { id: "col-12", name: "Pastel Grey Orange", hex: "#d9b994", bg: "#d9b994", text: "#430304", desc: "Pastel Grey Orange background with Dark Red logo accent." },
+  { id: "col-1", name: "Midnight", hex: "#0B0C10", bg: "#0B0C10", text: "#66FCF1", desc: "The deep, dark void background of HexaFalls." },
+  { id: "col-2", name: "Slate", hex: "#1F2833", bg: "#1F2833", text: "#C5C6C7", desc: "Dark grey accent used for borders and elevated surfaces." },
+  { id: "col-3", name: "Cyan", hex: "#66FCF1", bg: "#66FCF1", text: "#0B0C10", desc: "The primary glowing accent of our magic." },
+  { id: "col-4", name: "Silver", hex: "#C5C6C7", bg: "#C5C6C7", text: "#0B0C10", desc: "Standard text color, bright and legible." },
+  { id: "col-5", name: "Gold", hex: "#D4AF37", bg: "#D4AF37", text: "#0B0C10", desc: "Secondary accent used for highlights and special calls to action." },
+  { id: "col-6", name: "Red", hex: "#EF4444", bg: "#EF4444", text: "#0B0C10", desc: "Gryffindor accent, used for errors and specific tracks." },
+  { id: "col-7", name: "Violet", hex: "#A78BFA", bg: "#A78BFA", text: "#0B0C10", desc: "Third accent used for ambient fog and aurora effects." },
 ];
 
 const LOGO_CARDS = [
@@ -248,7 +243,7 @@ function tintImage(url, hexColor) {
 export default function BrandKit() {
   const containerRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
-  const [activeTab, setActiveTab] = useState("Logos"); // 'Logos' | 'Typography'
+  const [activeTab, setActiveTab] = useState("Colors"); // 'Colors' | 'Typography'
   const [copiedText, setCopiedText] = useState(null);
   const [downloadStatus, setDownloadStatus] = useState("idle"); // 'idle' | 'downloading' | 'success' | 'error'
   const [downloadPercent, setDownloadPercent] = useState(0);
@@ -915,7 +910,7 @@ export default function BrandKit() {
           className="md:col-span-3 flex flex-col items-start gap-2 border-l border-silver-hp/10 pl-4 py-1"
         >
           {[
-            { id: "Logos", label: "Logos" },
+            { id: "Colors", label: "Colors" },
             { id: "Typography", label: "Typography" }
           ].map((tab) => {
             const isActive = activeTab === tab.id;
@@ -941,7 +936,7 @@ export default function BrandKit() {
         {/* Right Column (Asset Cards Grid Grid) */}
         <div className="md:col-span-9 w-full">
           <AnimatePresence mode="wait">
-            {activeTab === "Logos" ? (
+            {activeTab === "Colors" ? (
               <motion.div
                 key="colors-grid"
                 initial="hidden"

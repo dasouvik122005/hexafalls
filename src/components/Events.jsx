@@ -169,24 +169,6 @@ export default function Events() {
                   Details
                   <span className="group-hover:translate-x-0.5 transition">→</span>
                 </Link>
-                <Link
-                  href={`/events/${e.slug}/prizes`}
-                  className="group inline-flex items-center gap-1.5 rounded-full border border-silver-hp/25 bg-slate-hp/40 px-3 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] text-silver-hp/85 transition"
-                  style={{
-                    /* hover handled inline via CSS variables */
-                  }}
-                  onMouseEnter={(ev) => {
-                    ev.currentTarget.style.borderColor = `${e.color}aa`;
-                    ev.currentTarget.style.color = e.color;
-                  }}
-                  onMouseLeave={(ev) => {
-                    ev.currentTarget.style.borderColor = "";
-                    ev.currentTarget.style.color = "";
-                  }}
-                >
-                  Prizes
-                  <span className="group-hover:translate-x-0.5 transition">↗</span>
-                </Link>
               </div>
             </RoughFrame>
           </motion.div>
