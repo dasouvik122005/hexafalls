@@ -33,12 +33,6 @@ export default function sitemap() {
       changeFrequency: "weekly",
       priority: 0.7,
     },
-    {
-      url: `${SITE_URL}/events/${e.slug}/prizes`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.6,
-    },
   ]);
 
   // One entry per team sub-order.
