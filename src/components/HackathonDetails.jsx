@@ -70,8 +70,8 @@ function TrackCard({ track: t, index: i }) {
           <span
             className="text-2xl select-none transition-transform duration-300"
             style={{
-              textShadow: `0 0 12px ${t.color}66`,
-              transform: hovered ? "scale(1.15)" : "scale(1)",
+              color: t.color,
+              transform: hovered ? "scale(1.1)" : "scale(1)",
             }}
             aria-hidden="true"
           >
@@ -177,10 +177,9 @@ export default function HackathonDetails() {
           {splitLetters("The")}
           <span style={{ whiteSpace: "pre" }}> </span>
           <span
-            className="hp-glow-gold"
             style={{
               color: GOLD,
-              textShadow: `0 0 8px ${GOLD}b3, 0 0 22px ${GOLD_GLOW}`,
+              textShadow: "0 0 8px rgba(212,175,55,0.22)",
               fontSize: "clamp(2.6rem, 11vw, 6.5rem)",
             }}
           >
