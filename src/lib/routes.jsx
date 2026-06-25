@@ -203,7 +203,7 @@ export const HACKATHON_TRACKS = [
 export const HARDWARE_TRACKS = [
   {
     name: "Robo Terrence",
-    rune: "🧹",
+    rune: "✇",
     color: "#D4AF37",
     desc: "Race your magical machine through enchanted obstacles.",
     slug: "robo-terrence",
@@ -211,7 +211,7 @@ export const HARDWARE_TRACKS = [
 
   {
     name: "Robo Soccer",
-    rune: "⚽",
+    rune: "⏣",
     color: "#4A90E2",
     desc: "Strategic robotic gameplay inspired by the wizarding world.",
     slug: "robo-soccer",
@@ -219,7 +219,7 @@ export const HARDWARE_TRACKS = [
 
   {
     name: "Robo Sumo",
-    rune: "🐉",
+    rune: "⊗",
     color: "#FF6B35",
     desc: "Push, battle and dominate the magical combat arena.",
     slug: "robo-sumo",
@@ -227,7 +227,7 @@ export const HARDWARE_TRACKS = [
 
   {
     name: "Line Follower",
-    rune: "🪄",
+    rune: "☍",
     color: "#8B5CF6",
     desc: "Follow mystical trails with precision and intelligence.",
     slug: "line-follower",
@@ -235,7 +235,7 @@ export const HARDWARE_TRACKS = [
 
   {
     name: "Exhibition",
-    rune: "📜",
+    rune: "✧",
     color: "#22C55E",
     desc: "Present groundbreaking innovations and magical creations.",
     slug: "exhibition",
