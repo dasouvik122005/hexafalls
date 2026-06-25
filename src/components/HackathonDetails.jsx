@@ -11,7 +11,7 @@ import RoughDivider from "./RoughDivider";
 import { HACKATHON_TRACKS, JUDGING } from "@/lib/routes";
 
 const GOLD = "#D4AF37";
-const GOLD_GLOW = "rgba(212,175,55,0.35)";
+const GOLD_GLOW = "rgba(212,175,55,0.22)";
 const CYAN = "#66FCF1";
 
 /* ── reusable section eyebrow ────────────────────────────────────────── */

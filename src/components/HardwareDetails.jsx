@@ -11,7 +11,7 @@ import RoughCorners from "./RoughCorners";
 import { HARDWARE_TRACKS } from "@/lib/routes";
 
 const GOLD = "#D4AF37";
-const GOLD_GLOW = "rgba(212,175,55,0.45)";
+const GOLD_GLOW = "rgba(212,175,55,0.25)";
 
 /* ── reusable section eyebrow ────────────────────────────────────────── */
 function Eyebrow({ children, color = GOLD }) {
@@ -167,56 +167,25 @@ export default function HardwareDetails() {
       ref={sectionRef}
       className="relative isolate overflow-hidden pt-32 pb-24 px-6"
     >
-      {/* Hardware / Blueprint Background */}
+      {/* Matte dark background (no bright radial gradient) */}
       <div
         className="absolute inset-0 -z-40"
-        style={{
-          background: `
-            radial-gradient(circle at top,
-            rgba(212,175,55,.15),
-            transparent 40%),
-            linear-gradient(
-            180deg,
-            #0B1020 0%,
-            #140B08 100%)
-          `,
-        }}
+        style={{ background: "linear-gradient(180deg, #0B0C10 0%, #0e0c0a 100%)" }}
       />
-      <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars pointer-events-none opacity-50" />
-      <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
+      <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars pointer-events-none opacity-25" />
+      <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none opacity-50" />
       <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
-        <Sparkles count={15} />
+        <Sparkles count={8} />
       </div>
 
       {/* ═══ HERO ═══════════════════════════════════════════════════════ */}
       <div className="mx-auto max-w-4xl text-center relative">
-        <div className="absolute top-20 left-20 text-4xl animate-bounce">
-          ⚡
-        </div>
-        <div
-          className="absolute right-20 top-40 text-3xl"
-          style={{
-            animation: "float 6s ease-in-out infinite"
-          }}
-        >
-          ✨
-        </div>
-        <div
-          className="absolute left-1/4 bottom-20 text-4xl"
-          style={{
-            animation: "float 8s ease-in-out infinite"
-          }}
-        >
-          🦉
-        </div>
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <Eyebrow color={GOLD}>
-            Department of Magical Engineering
-          </Eyebrow>
+          <Eyebrow color={GOLD}>Hardware Track</Eyebrow>
         </motion.div>
 
         <h1
@@ -224,48 +193,52 @@ export default function HardwareDetails() {
           style={{
             fontSize: "clamp(2.5rem, 8vw, 6rem)",
             color: GOLD,
-            textShadow: `
-              0 0 10px rgba(212,175,55,.8),
-              0 0 30px rgba(212,175,55,.4)
-            `,
+            textShadow: "0 0 8px rgba(212,175,55,.22)",
           }}
         >
-          ⚡ Wizarding Hardware Trials ⚡
+          Hardware Hack
         </h1>
 
         <Reveal delay={0.15}>
-          <p className="mt-6 font-mono text-silver-hp/90 text-sm sm:text-base leading-relaxed max-w-3xl mx-auto">
-            Where enchanted circuits meet modern engineering.
-            Build magical machines, autonomous creatures,
-            and spell-powered inventions to compete for glory
-            in the grand halls of HexaFalls.
+          <p className="mt-6 font-wizard text-silver-hp/80 text-base leading-relaxed max-w-2xl mx-auto">
+            Build the magic you can hold. Compete as a team of 2–4 in the robotics
+            challenges, or exhibit a hardware project solo (school students).
           </p>
         </Reveal>
 
         {/* CTA */}
-        <Reveal delay={0.25} className="mt-8 flex flex-col items-center gap-3">
+        <Reveal delay={0.25} className="mt-8 flex flex-col items-center gap-4">
           <span
             className="inline-flex items-center gap-2 rounded-full border px-3 py-1 font-display text-[10px] uppercase tracking-[0.4em]"
-            style={{ borderColor: `${GOLD}80`, color: GOLD, backgroundColor: `${GOLD}1a` }}
+            style={{ borderColor: `${GOLD}66`, color: GOLD, backgroundColor: `${GOLD}14` }}
           >
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full rounded-full opacity-70 animate-ping" style={{ backgroundColor: GOLD }} />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full" style={{ backgroundColor: GOLD }} />
-            </span>
-            Registrations Open
+            Registrations open
           </span>
-          <RoughButton
-            as={Link}
-            href="#"
-            color={GOLD}
-            glow={GOLD_GLOW}
-            shimmer
-            seed={23}
-            className="px-12 py-5 tracking-[0.4em]"
-          >
-            <span>ENTER THE TOURNAMENT</span>
-            <span>⚡</span>
-          </RoughButton>
+          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3">
+            <RoughButton
+              as={Link}
+              href="/events/hardware/register?mode=competition"
+              color={GOLD}
+              glow={GOLD_GLOW}
+              fill={false}
+              seed={23}
+              className="px-9 sm:px-11 py-4 leading-none text-[12px] sm:text-[13px] tracking-[0.35em]"
+            >
+              <span>COMPETITION · TEAM 2–4</span>
+              <span aria-hidden="true">↗</span>
+            </RoughButton>
+            <RoughButton
+              as={Link}
+              href="/events/hardware/register?mode=exhibition"
+              color={GOLD}
+              fill={false}
+              seed={29}
+              className="px-8 sm:px-10 py-3.5 leading-none text-[12px] tracking-[0.3em]"
+            >
+              <span>EXHIBITION · SCHOOL SOLO</span>
+              <span aria-hidden="true">↗</span>
+            </RoughButton>
+          </div>
         </Reveal>
       </div>
 
@@ -273,12 +246,11 @@ export default function HardwareDetails() {
       <div className="mx-auto mt-28 max-w-5xl">
         <Reveal>
           <Eyebrow color={GOLD}>Hardware Tracks</Eyebrow>
-          <h2 className="mt-4 text-center font-display font-bold text-2xl sm:text-3xl tracking-tight" style={{ color: GOLD, textShadow: `0 0 14px ${GOLD_GLOW}` }}>
-            Select Your Magical Trial
+          <h2 className="mt-4 text-center font-display font-bold text-2xl sm:text-3xl tracking-tight" style={{ color: GOLD }}>
+            Choose your arena
           </h2>
-          <p className="mt-3 text-center font-mono text-silver-hp/75 text-sm max-w-xl mx-auto">
-            Choose your challenge, showcase your creation,
-            and prove your mastery of magical engineering.
+          <p className="mt-3 text-center font-wizard text-silver-hp/70 text-sm max-w-xl mx-auto">
+            Pick the track that fits your build — or bring a custom project for the exhibition.
           </p>
         </Reveal>
 
@@ -294,48 +266,38 @@ export default function HardwareDetails() {
 
 
       {/* ═══ FOOTER CTAs ═════════════════════════════════════════════════ */}
-      <Reveal delay={0.1} className="mt-28 flex flex-col items-center justify-center">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <p
-            className="italic text-lg"
-            style={{
-              color: GOLD,
-              textShadow: "0 0 10px rgba(212,175,55,.3)",
-            }}
-          >
-            &quot;The finest witches and wizards are not born.
-            They are forged through innovation.&quot;
-          </p>
-
-          <p className="mt-4 text-silver-hp/70">
-            — HexaFalls II
-          </p>
-        </div>
-
-        <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
-          <RoughButton
-            as={Link}
-            href="#"
-            color={GOLD}
-            glow={GOLD_GLOW}
-            shimmer
-            seed={23}
-            className="px-8 py-3 text-[12px]"
-          >
-            <span>REGISTER NOW</span>
-            <span aria-hidden="true">↗</span>
-          </RoughButton>
-          <RoughButton
-            as={Link}
-            href="/events"
-            color="#C5C6C7"
-            fill={false}
-            seed={31}
-            className="px-8 py-3 text-[11px]"
-          >
-            ← ALL EVENTS
-          </RoughButton>
-        </div>
+      <Reveal delay={0.1} className="mt-28 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3">
+        <RoughButton
+          as={Link}
+          href="/events/hardware/register?mode=competition"
+          color={GOLD}
+          glow={GOLD_GLOW}
+          fill={false}
+          seed={23}
+          className="px-8 py-3 leading-none text-[12px]"
+        >
+          <span>COMPETITION ↗</span>
+        </RoughButton>
+        <RoughButton
+          as={Link}
+          href="/events/hardware/register?mode=exhibition"
+          color={GOLD}
+          fill={false}
+          seed={27}
+          className="px-8 py-3 leading-none text-[12px]"
+        >
+          <span>EXHIBITION ↗</span>
+        </RoughButton>
+        <RoughButton
+          as={Link}
+          href="/events"
+          color="#C5C6C7"
+          fill={false}
+          seed={31}
+          className="px-8 py-3 leading-none text-[11px]"
+        >
+          ← ALL EVENTS
+        </RoughButton>
       </Reveal>
     </section>
   );
