@@ -524,7 +524,7 @@ export default function Hero() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-center font-wizard text-silver-hp/75 text-sm sm:text-base leading-relaxed">
-            A 58-hour wizarding hackathon at JIS University, Kolkata — build,
+            A 58-hour wizarding TechFest at JIS University, Kolkata — build,
             ship and conjure across web, AI, hardware and games with hundreds of
             student wizards this July.
           </p>

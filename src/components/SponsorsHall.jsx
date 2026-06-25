@@ -15,6 +15,17 @@ const BROCHURE_PDF = "/brochures/HexaFalls_2_Brochure.pdf";
 
 const TIERS = [
   {
+    label: "Title Partner",
+    sponsors: [
+      {
+        name: "MLH",
+        href: "https://www.mlh.com/",
+        logo: "/sponsors/mlh.png",
+        logoAlt: "MLH LOGO",
+      },
+    ],
+  },
+  {
     label: "Collaborative Partner",
     sponsors: [
       {
@@ -28,17 +39,6 @@ const TIERS = [
         href: "https://owasp.org",
         logo: "/sponsors/owasp-jisu.png",
         logoAlt: "OWASP LOGO",
-      },
-    ],
-  },
-  {
-    label: "Title",
-    sponsors: [
-      {
-        name: "MLH",
-        href: "https://www.mlh.com/",
-        logo: "/sponsors/mlh.png",
-        logoAlt: "MLH LOGO",
       },
     ],
   },

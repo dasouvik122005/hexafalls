@@ -4,7 +4,7 @@ import Organisers from "@/components/Organisers";
 
 const TITLE = "Organising Team · HexaFalls Techfest";
 const DESCRIPTION =
-  "Meet the HexaFalls organising team — the people behind the 58-hour wizarding hackathon at JIS University, Kolkata, run by GDG on Campus · JIS University. Ayushman Bhattacharya, Sourav Singh, Amit Paul, Kritika Chakraborty and Abhishek Gupta.";
+  "Meet the HexaFalls organising team — the people behind the 58-hour wizarding TechFest at JIS University, Kolkata, run by GDG on Campus · JIS University. Ayushman Bhattacharya, Sourav Singh, Amit Paul, Kritika Chakraborty and Abhishek Gupta.";
 
 export const metadata = {
   title: TITLE,
