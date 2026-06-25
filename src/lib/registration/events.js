@@ -22,7 +22,7 @@ export const REGISTRATION_EVENTS = {
     parentEvent: "hackathon",
     minMembers: 2,
     maxMembers: 4,
-    pricePerPerson: 100, // ₹, charged only after approval
+    pricePerPerson: 3, // TESTING: was 100 // ₹, charged only after approval
     fields: ["projectIdea", "track"],
   },
   "hardware-competition": {
@@ -33,7 +33,7 @@ export const REGISTRATION_EVENTS = {
     minMembers: 2,
     maxMembers: 4,
     gated: true, // approval-based
-    pricePerPerson: 100, // ₹, charged only after approval
+    pricePerPerson: 3, // TESTING: was 100 // ₹, charged only after approval
     fields: ["category"],
   },
   "hardware-exhibition": {
@@ -56,7 +56,7 @@ export const REGISTRATION_EVENTS = {
     parentEvent: "gaming",
     minMembers: 2,
     maxMembers: 4,
-    pricePerPerson: 100, // ₹, charged only after approval (gaming is now paid)
+    pricePerPerson: 3, // TESTING: was 100 // ₹, charged only after approval (gaming is now paid)
     fields: ["gameId", "discordHandle"],
   },
 };
