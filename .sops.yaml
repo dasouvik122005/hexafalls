@@ -2,4 +2,8 @@ creation_rules:
   # Matches .env, .env.local, .env.production, .env.development, etc.
   - path_regex: '\.env(\..+)?$'
     age: >-
-      age1zptpgxhs9chnkudu69qut2hn706pmyngasvaz4ppf452un2x7p2ss6j96f
+      age1zptpgxhs9chnkudu69qut2hn706pmyngasvaz4ppf452un2x7p2ss6j96f,
+      age19lksf06sltdl8fgwn0v72jdaz7reekengqvqyth45xahrm298ddqr8kv48
+
+# 1. Ayushman 
+# 2. Amit 
