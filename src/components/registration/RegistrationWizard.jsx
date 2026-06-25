@@ -61,8 +61,7 @@ export default function RegistrationWizard({ track }) {
   const [casterStatus, setCasterStatus] = useState(null);
   useEffect(() => {
     if (track.kind !== "solo") return;
-    if (!form.hexaId) { setCasterStatus(null); return; }
-    setCasterStatus({ kind: "loading" });
+    if (!form.hexaId) return;
     const t = setTimeout(() => {
       const found = lookupHexaId(form.hexaId);
       if (found) {
@@ -75,22 +74,6 @@ export default function RegistrationWizard({ track }) {
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.hexaId]);
-
-  // ── reshape members[] when teamSize changes ──
-  useEffect(() => {
-    if (track.kind === "solo") return;
-    const n = Number(form.teamSize) || 0;
-    if (form.members.length === n) return;
-    const baseFields = { hexaId: "", fullName: "", email: "" };
-    const extra = (track.perMemberFields || []).reduce(
-      (acc, f) => ({ ...acc, [f.name]: "" }), {}
-    );
-    const next = Array.from({ length: n }, (_, i) =>
-      form.members[i] || { ...baseFields, ...extra }
-    );
-    patch({ members: next });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.teamSize, track]);
 
   // step navigation
   const goTo = (i) => { if (i >= 0 && i < steps.length) setStepIdx(i); };
@@ -271,7 +254,14 @@ function IdentityStep({ track, form, patch, casterStatus }) {
           <Field
             label="Your HexaID"
             value={form.hexaId}
-            onChange={(v) => patch({ hexaId: v })}
+            onChange={(v) => {
+              patch({ hexaId: v });
+              if (!v) {
+                setCasterStatus(null);
+              } else {
+                setCasterStatus({ kind: "loading" });
+              }
+            }}
             placeholder="e.g. HXF-001"
             color={track.color}
             uppercase
@@ -323,7 +313,17 @@ function IdentityStep({ track, form, patch, casterStatus }) {
             <SelectField
               label={`${track.teamLabel || "Team"} Size`}
               value={form.teamSize}
-              onChange={(v) => patch({ teamSize: v })}
+              onChange={(v) => {
+                const n = Number(v) || 0;
+                const baseFields = { hexaId: "", fullName: "", email: "" };
+                const extra = (track.perMemberFields || []).reduce(
+                  (acc, f) => ({ ...acc, [f.name]: "" }), {}
+                );
+                const nextMembers = Array.from({ length: n }, (_, i) =>
+                  form.members[i] || { ...baseFields, ...extra }
+                );
+                patch({ teamSize: v, members: nextMembers });
+              }}
               color={track.color}
               required
               options={(track.teamSizes || [2, 3, 4]).map((s) =>
