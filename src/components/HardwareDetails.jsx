@@ -11,7 +11,6 @@ import RoughCorners from "./RoughCorners";
 import { HARDWARE_TRACKS } from "@/lib/routes";
 
 const GOLD = "#D4AF37";
-const MAROON = "#740001";
 const GOLD_GLOW = "rgba(212,175,55,0.45)";
 
 /* ── reusable section eyebrow ────────────────────────────────────────── */
