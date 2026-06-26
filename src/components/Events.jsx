@@ -114,15 +114,14 @@ export default function Events() {
         .carousel-track {
           animation: spin-carousel 40s linear infinite;
           transform-style: preserve-3d;
-        }
-        .carousel-track:hover {
-          animation-play-state: paused;
+          will-change: transform;
         }
         .carousel-container {
           perspective: 1200px;
         }
         .carousel-item {
           transform: rotateY(var(--angle)) translateZ(160px);
+          will-change: transform;
         }
         @media (min-width: 640px) {
           .carousel-item { transform: rotateY(var(--angle)) translateZ(280px); }
@@ -130,12 +129,22 @@ export default function Events() {
         @media (min-width: 1024px) {
           .carousel-item { transform: rotateY(var(--angle)) translateZ(400px); }
         }
-        @keyframes pulse-glow {
-          0%, 100% { box-shadow: 0 0 5px var(--btn-glow), inset 0 0 5px var(--btn-glow); }
-          50% { box-shadow: 0 0 15px var(--btn-glow), inset 0 0 10px var(--btn-glow); }
+        @keyframes pulse-glow-opacity {
+          0%, 100% { opacity: 0.2; }
+          50% { opacity: 1; }
         }
         .btn-pulse {
-          animation: pulse-glow 2.5s infinite ease-in-out;
+          position: relative;
+        }
+        .btn-pulse::after {
+          content: '';
+          position: absolute;
+          inset: -1px;
+          border-radius: inherit;
+          box-shadow: 0 0 15px var(--btn-glow), inset 0 0 8px var(--btn-glow);
+          animation: pulse-glow-opacity 2.5s infinite ease-in-out;
+          pointer-events: none;
+          will-change: opacity;
         }
       `}</style>
 
@@ -155,8 +164,8 @@ export default function Events() {
                   style={{
                     background: `url('${e.image}') center/cover no-repeat`,
                     mixBlendMode: "screen",
-                    WebkitMaskImage: "radial-gradient(ellipse at center, black 45%, transparent 75%)",
-                    maskImage: "radial-gradient(ellipse at center, black 45%, transparent 75%)",
+                    WebkitMaskImage: "radial-gradient(ellipse at center, black 40%, transparent 75%)",
+                    maskImage: "radial-gradient(ellipse at center, black 40%, transparent 75%)",
                   }}
                 />
                 {/* soft radial shadow behind text to maintain legibility without hard edges */}
@@ -167,7 +176,7 @@ export default function Events() {
                   }}
                 />
                 
-                <div className="absolute inset-0 hp-stars opacity-40 mix-blend-screen pointer-events-none" />
+                <div className="absolute inset-0 hp-stars opacity-40 mix-blend-screen pointer-events-none hidden md:block" />
 
                 <div className="relative z-10 p-6 flex flex-col gap-2 transition-transform duration-500 group-hover:-translate-y-2">
                   <div className="flex items-center justify-between">
@@ -179,7 +188,7 @@ export default function Events() {
                       {e.rune}
                     </span>
                     <span
-                      className="rounded-full border px-2 py-0.5 font-display text-[8px] uppercase tracking-[0.3em] backdrop-blur-md"
+                      className="rounded-full border px-2 py-0.5 font-display text-[8px] uppercase tracking-[0.3em] md:backdrop-blur-md"
                       style={{
                         borderColor: `${e.color}55`,
                         color: `${e.color}ee`,
@@ -202,7 +211,7 @@ export default function Events() {
                   <div className="mt-3 flex flex-wrap gap-2 pt-2">
                     <Link
                       href={`/events/${e.slug}`}
-                      className="group/btn btn-pulse inline-flex items-center gap-1.5 rounded-full border px-4 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] transition backdrop-blur-md hover:bg-white/20"
+                      className="group/btn btn-pulse inline-flex items-center gap-1.5 rounded-full border px-4 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] transition md:backdrop-blur-md hover:bg-white/20"
                       style={{
                         "--btn-glow": e.glow,
                         borderColor: `${e.color}90`,
