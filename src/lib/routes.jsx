@@ -129,6 +129,7 @@ export const EVENTS = [
     blurb: "Fifty-eight hours of pure spellwork: full-stack, AI, anything that ships.",
     color: "#D4AF37", // gold
     glow:  "rgba(212,175,55,0.35)",
+    image: "/events/hackathon.png",
   },
   {
     slug: "cp",
@@ -137,6 +138,7 @@ export const EVENTS = [
     blurb: "Duels of logic. Sharpen the wand, race the clock.",
     color: "#3B82F6", // ravenclaw blue
     glow:  "rgba(59,130,246,0.40)",
+    image: "/events/cp.png",
   },
   {
     slug: "gaming",
@@ -145,6 +147,7 @@ export const EVENTS = [
     blurb: "Stadium of charms. Controller in hand, glory on the line.",
     color: "#EF4444", // gryffindor red
     glow:  "rgba(239,68,68,0.40)",
+    image: "/events/gaming.png",
   },
   {
     slug: "hardware",
@@ -153,6 +156,7 @@ export const EVENTS = [
     blurb: "Solder, sparks, sensors. Magic that you can hold.",
     color: "#22C55E", // slytherin green
     glow:  "rgba(34,197,94,0.35)",
+    image: "/events/hardware.png",
   },
 ];
 
