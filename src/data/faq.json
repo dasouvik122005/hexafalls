@@ -28,25 +28,39 @@
     "accentColor": "#22C55E"
   },
   {
-    "q": "What should I bring?",
-    "a": "Your laptop, charger, any hardware components (for the Hardware track), a water bottle, and your best robes (optional but encouraged). We'll provide food, Wi-Fi, workspace, and all the magical ambiance you need.",
+    "q": "What should we bring?",
+    "a": "Bring your laptop, charger, ID card, and anything else you need to survive the storm. For a complete list, check out → What to Carry Into the Falls",
     "rune": "✶",
     "decoration": "corners",
     "accentColor": "#D4AF37"
   },
   {
     "q": "Will food and accommodation be provided?",
-    "a": "Meals and snacks will be provided throughout the 58 hours — no wizard goes hungry in this hall. Sleeping arrangements are informal (bring a sleeping bag if you like), but honestly, most participants don't sleep much.",
+    "a": "Absolutely! Everything is on us—food, beverages, and coffee to keep you powered through the night. Accommodation will be dorm-style, with mattresses in shared spaces—standard hacker temple vibes.",
     "rune": "✧",
     "decoration": "ticks",
     "accentColor": "#EF4444"
   },
   {
+    "q": "Is there a dress code?",
+    "a": "Nope! Come comfy, come casual. Bonus points if you dress like someone straight out of Gravity Falls—or bring something eerie.",
+    "rune": "✦",
+    "decoration": "tape",
+    "accentColor": "#A78BFA"
+  },
+  {
     "q": "What are the judging criteria?",
     "a": "Innovation, technical complexity, design & UX, real-world impact, and presentation. The council of judges values bold ideas over polished demos. A beautifully broken prototype beats a boring working one.",
     "rune": "❖",
-    "decoration": "tape",
-    "accentColor": "#A78BFA"
+    "decoration": "ticks",
+    "accentColor": "#3B82F6"
+  },
+  {
+    "q": "I want to change a team member. Is that possible?",
+    "a": "No. Once the team has been submitted and finalized, no alterations are allowed. Please make sure your team details are accurate at the time of submission.",
+    "rune": "✶",
+    "decoration": "corners",
+    "accentColor": "#EF4444"
   },
   {
     "q": "Can I participate in multiple tracks?",
@@ -63,8 +77,8 @@
     "accentColor": "#D4AF37"
   },
   {
-    "q": "How do I contact the organisers?",
-    "a": "Send an owl to our social channels (linked in the footer), or visit the Teams page and reach out to the Core Team directly. For urgent matters, the Keeper's office is always open.",
+    "q": "I have more questions. Where can I reach out?",
+    "a": "Reach out via the HexaFalls Discord Server — just go to the server and raise a ticket, and our team of watchers will guide you through the void. Or email us at 📩 support@hexafalls.org — we're always listening in the shadows... 👁️",
     "rune": "✧",
     "decoration": "tape",
     "accentColor": "#22C55E"
