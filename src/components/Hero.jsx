@@ -562,16 +562,16 @@ export default function Hero() {
               filter: "drop-shadow(0 0 6px rgba(201,168,76,0.25))",
             }}
             onMouseDown={(e) =>
-              (e.currentTarget.style.filter =
-                "drop-shadow(0 0 16px rgba(201,168,76,0.7)) brightness(1.2)")
+            (e.currentTarget.style.filter =
+              "drop-shadow(0 0 16px rgba(201,168,76,0.7)) brightness(1.2)")
             }
             onMouseUp={(e) =>
-              (e.currentTarget.style.filter =
-                "drop-shadow(0 0 6px rgba(201,168,76,0.25))")
+            (e.currentTarget.style.filter =
+              "drop-shadow(0 0 6px rgba(201,168,76,0.25))")
             }
             onMouseLeave={(e) =>
-              (e.currentTarget.style.filter =
-                "drop-shadow(0 0 6px rgba(201,168,76,0.25))")
+            (e.currentTarget.style.filter =
+              "drop-shadow(0 0 6px rgba(201,168,76,0.25))")
             }
           >
             THE PROPHECY
@@ -587,7 +587,7 @@ export default function Hero() {
             className="px-8 py-3 text-[12px] tracking-[0.3em]"
           >
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-4 w-4">
-              <path d="M20.317 4.369A19.79 19.79 0 0 0 16.21 3.05a.07.07 0 0 0-.073.035c-.21.375-.444.864-.608 1.249a18.27 18.27 0 0 0-5.487 0 12.55 12.55 0 0 0-.617-1.25.072.072 0 0 0-.073-.034 19.74 19.74 0 0 0-4.107 1.32.066.066 0 0 0-.03.027C2.05 8.247 1.39 12.005 1.7 15.73a.082.082 0 0 0 .031.056 19.91 19.91 0 0 0 5.993 3.027.073.073 0 0 0 .079-.026 14.2 14.2 0 0 0 1.227-1.994.07.07 0 0 0-.038-.098 13.1 13.1 0 0 1-1.872-.892.07.07 0 0 1-.007-.117c.126-.094.252-.192.371-.291a.07.07 0 0 1 .074-.01c3.927 1.793 8.18 1.793 12.062 0a.07.07 0 0 1 .074.009c.12.099.246.198.372.292a.07.07 0 0 1-.006.117 12.3 12.3 0 0 1-1.873.892.07.07 0 0 0-.038.099 15.92 15.92 0 0 0 1.226 1.993.07.07 0 0 0 .079.027 19.84 19.84 0 0 0 6.002-3.027.07.07 0 0 0 .03-.055c.5-4.318-.838-8.043-3.549-11.336a.056.056 0 0 0-.028-.027zM8.02 13.46c-1.182 0-2.156-1.085-2.156-2.418 0-1.333.955-2.418 2.156-2.418 1.21 0 2.176 1.094 2.156 2.418 0 1.333-.955 2.418-2.156 2.418zm7.974 0c-1.182 0-2.157-1.085-2.157-2.418 0-1.333.955-2.418 2.157-2.418 1.21 0 2.175 1.094 2.156 2.418 0 1.333-.946 2.418-2.156 2.418z"/>
+              <path d="M20.317 4.369A19.79 19.79 0 0 0 16.21 3.05a.07.07 0 0 0-.073.035c-.21.375-.444.864-.608 1.249a18.27 18.27 0 0 0-5.487 0 12.55 12.55 0 0 0-.617-1.25.072.072 0 0 0-.073-.034 19.74 19.74 0 0 0-4.107 1.32.066.066 0 0 0-.03.027C2.05 8.247 1.39 12.005 1.7 15.73a.082.082 0 0 0 .031.056 19.91 19.91 0 0 0 5.993 3.027.073.073 0 0 0 .079-.026 14.2 14.2 0 0 0 1.227-1.994.07.07 0 0 0-.038-.098 13.1 13.1 0 0 1-1.872-.892.07.07 0 0 1-.007-.117c.126-.094.252-.192.371-.291a.07.07 0 0 1 .074-.01c3.927 1.793 8.18 1.793 12.062 0a.07.07 0 0 1 .074.009c.12.099.246.198.372.292a.07.07 0 0 1-.006.117 12.3 12.3 0 0 1-1.873.892.07.07 0 0 0-.038.099 15.92 15.92 0 0 0 1.226 1.993.07.07 0 0 0 .079.027 19.84 19.84 0 0 0 6.002-3.027.07.07 0 0 0 .03-.055c.5-4.318-.838-8.043-3.549-11.336a.056.056 0 0 0-.028-.027zM8.02 13.46c-1.182 0-2.156-1.085-2.156-2.418 0-1.333.955-2.418 2.156-2.418 1.21 0 2.176 1.094 2.156 2.418 0 1.333-.955 2.418-2.156 2.418zm7.974 0c-1.182 0-2.157-1.085-2.157-2.418 0-1.333.955-2.418 2.157-2.418 1.21 0 2.175 1.094 2.156 2.418 0 1.333-.946 2.418-2.156 2.418z" />
             </svg>
             JOIN OUR DISCORD <span>↗</span>
           </RoughButton>
@@ -913,13 +913,13 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* View on Google Maps */}
+        {/* Map CTAs */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.4, ease: "easeOut" }}
-          className="mt-12 flex justify-center"
+          className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6"
         >
           <RoughButton
             as="a"
@@ -946,6 +946,35 @@ export default function Hero() {
               <circle cx="12" cy="9" r="2.5" />
             </svg>
             <span>VIEW ON GOOGLE MAPS</span>
+            <span className="opacity-70 group-hover:translate-x-0.5 transition">
+              ↗
+            </span>
+          </RoughButton>
+
+          <RoughButton
+            as={Link}
+            href="/travel"
+            color="#D4AF37"
+            glow="rgba(212,175,55,0.30)"
+            shimmer
+            seed={88}
+            className="px-6 py-3 text-[12px]"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.7"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              className="h-4 w-4"
+            >
+              <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" />
+              <line x1="9" y1="3" x2="9" y2="18" />
+              <line x1="15" y1="6" x2="15" y2="21" />
+            </svg>
+            <span>TRAVEL GUIDE</span>
             <span className="opacity-70 group-hover:translate-x-0.5 transition">
               ↗
             </span>
