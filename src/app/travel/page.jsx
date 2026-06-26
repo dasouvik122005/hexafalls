@@ -186,6 +186,102 @@ export default function TravelGuidePage() {
             </RoughFrame>
 
           </div>
+
+          {/* Essentials and Provisions */}
+          <div className="w-full mt-24 mb-10 text-center flex flex-col items-center">
+            <RoughDivider width={64} height={20} color="#66FCF1" seed={220} />
+            <h2 className="mt-6 mb-4 font-display font-black text-3xl text-cyan-hp hp-glow tracking-widest uppercase">
+              Survival Guide
+            </h2>
+            <p className="font-wizard text-silver-hp/70 text-lg max-w-2xl">
+              Wandering into the unknown? Don&apos;t forget to pack your essentials. Here is everything you need to survive the storm, and everything we&apos;ll provide to keep you safe.
+            </p>
+          </div>
+
+          <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8" id="essentials">
+            {/* What to Carry */}
+            <RoughFrame seed={210} stroke="#D4AF37" padding={32} className="bg-slate-hp/30 backdrop-blur-sm h-full">
+              <div className="flex items-center gap-4 mb-6">
+                <span className="text-3xl">🎒</span>
+                <h3 className="font-display font-bold text-2xl text-gold-hp">What to Carry</h3>
+              </div>
+              <ul className="font-wizard text-silver-hp/85 space-y-4 text-base sm:text-lg">
+                <li className="flex gap-3">
+                  <span className="shrink-0 text-gold-hp">🪪</span>
+                  <span><strong>Aadhaar or Voter ID is a must.</strong> JIS University enforces strict entry guidelines for all external participants. <span className="text-red-400 font-bold">[No ID = No entry]</span></span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="shrink-0 text-gold-hp">💻</span>
+                  <span><strong>Your laptop</strong> – your most trusted tool in this mystery-solving journey.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="shrink-0 text-gold-hp">🔌</span>
+                  <span><strong>Bring your own extension cords</strong> if you have one! We&apos;ll arrange some shared cords per team, but having your own can save time and stress.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="shrink-0 text-gold-hp">☔</span>
+                  <span><strong>Carry an umbrella or raincoat.</strong> Rath Yatra is on June 27, and there&apos;s a good chance we&apos;ll have a rainy start on June 28—better safe than soggy!</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="shrink-0 text-gold-hp">❄️</span>
+                  <span><strong>The venue is air-conditioned 24/7</strong> – pack a jacket or hoodie if you get cold easily.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="shrink-0 text-gold-hp">📶</span>
+                  <span><strong>Wi-Fi is covered</strong>, but if you have a personal dongle, carry it for backup. Power can be unpredictable, and mysteries don&apos;t wait.</span>
+                </li>
+                <li className="flex gap-3 opacity-80">
+                  <span className="shrink-0 text-gold-hp">🍼</span>
+                  <span><strong>[Optional]</strong> A water bottle for your journey to the Falls.</span>
+                </li>
+                <li className="flex gap-3 opacity-80">
+                  <span className="shrink-0 text-gold-hp">🧴</span>
+                  <span><strong>[Optional]</strong> Skincare essentials if you use anything special.</span>
+                </li>
+                <li className="flex gap-3 opacity-80">
+                  <span className="shrink-0 text-gold-hp">🏥</span>
+                  <span><strong>[Optional]</strong> Any personal medical items (inhalers, sugar monitors). Please let us know at the check-in desk so we can keep an eye out.</span>
+                </li>
+              </ul>
+            </RoughFrame>
+
+            {/* What we Provide */}
+            <RoughFrame seed={211} stroke="#3B82F6" padding={32} className="bg-slate-hp/30 backdrop-blur-sm h-full">
+              <div className="flex items-center gap-4 mb-6">
+                <span className="text-3xl">🔵</span>
+                <h3 className="font-display font-bold text-2xl text-blue-400">What We Provide</h3>
+              </div>
+              <p className="font-wizard text-silver-hp/70 text-lg mb-6">
+                We&apos;ve got you covered so you can focus on solving mysteries, not logistics...
+              </p>
+              <ul className="font-wizard text-silver-hp/85 space-y-5 text-base sm:text-lg">
+                <li className="flex gap-3">
+                  <span className="shrink-0 text-blue-400">📅</span>
+                  <span><strong>Action-packed timeline</strong> you won&apos;t want to miss.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="shrink-0 text-blue-400">🍽️</span>
+                  <span><strong>Food, water, and tea – totally on us.</strong> Eat, drink, and keep hacking.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="shrink-0 text-blue-400">🛏️</span>
+                  <span><strong>Rest areas for both boys and girls</strong> – comfy spaces to recharge between intense brainstorming sessions.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="shrink-0 text-blue-400">📡</span>
+                  <span><strong>Dedicated Wi-Fi</strong> for uninterrupted tech magic.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="shrink-0 text-blue-400">👮</span>
+                  <span><strong>24/7 security staff</strong> will be there, so you can focus on code without worry.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="shrink-0 text-blue-400">🚑</span>
+                  <span><strong>Emergency medical services</strong> and an ambulance will be available on standby for your safety.</span>
+                </li>
+              </ul>
+            </RoughFrame>
+          </div>
         </div>
       </section>
 
