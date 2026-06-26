@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useAnimationFrame } from "framer-motion";
 import gsap from "gsap";
 import Sparkles from "./Sparkles";
 import FloatingArtifacts from "./FloatingArtifacts";
@@ -14,6 +14,25 @@ import { EVENTS } from "@/lib/routes";
 
 export default function Events() {
   const sectionRef = useRef(null);
+  const rotation = useMotionValue(0);
+  const isDragging = useRef(false);
+
+  useAnimationFrame((time, delta) => {
+    if (!isDragging.current) {
+      // Auto spin slowly when not being dragged
+      rotation.set(rotation.get() - 0.2 * (delta / 16));
+    }
+  });
+
+  const handlePan = (e, info) => {
+    isDragging.current = true;
+    // Map the horizontal drag movement to rotation degrees
+    rotation.set(rotation.get() + info.delta.x * 0.5);
+  };
+
+  const handlePanEnd = () => {
+    isDragging.current = false;
+  };
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -75,10 +94,12 @@ export default function Events() {
     >
       <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars pointer-events-none" />
       <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
-      <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
+      <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none hidden md:block">
         <Sparkles count={24} />
       </div>
-      <FloatingArtifacts stars={14} runes={12} seed={8} />
+      <div className="hidden md:block">
+        <FloatingArtifacts stars={14} runes={12} seed={8} />
+      </div>
 
       <div className="text-center">
         <h1
@@ -107,12 +128,7 @@ export default function Events() {
 
       {/* Event cards — 3D Carousel */}
       <style>{`
-        @keyframes spin-carousel {
-          from { transform: rotateY(0deg); }
-          to { transform: rotateY(-360deg); }
-        }
         .carousel-track {
-          animation: spin-carousel 40s linear infinite;
           transform-style: preserve-3d;
           will-change: transform;
         }
@@ -149,7 +165,14 @@ export default function Events() {
       `}</style>
 
       <div className="carousel-container mx-auto mt-12 mb-24 h-[340px] w-[230px] sm:h-[450px] sm:w-[320px] md:h-[500px] md:w-[380px] relative">
-        <div className="carousel-track absolute inset-0 w-full h-full">
+        <motion.div 
+          className="carousel-track absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing touch-none"
+          style={{ rotateY: rotation }}
+          onPan={handlePan}
+          onPanEnd={handlePanEnd}
+          onPointerDown={() => isDragging.current = true}
+          onPointerUp={() => isDragging.current = false}
+        >
           {EVENTS.map((e, i) => {
             const angle = i * 90;
             return (
@@ -227,7 +250,7 @@ export default function Events() {
               </div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
 
       {/* Back */}

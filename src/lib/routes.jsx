@@ -211,6 +211,7 @@ export const HARDWARE_TRACKS = [
     color: "#D4AF37",
     desc: "Race your magical machine through enchanted obstacles.",
     slug: "robo-terrence",
+    image: "/tracks/robo-terrence.png",
   },
 
   {
@@ -219,6 +220,7 @@ export const HARDWARE_TRACKS = [
     color: "#4A90E2",
     desc: "Strategic robotic gameplay inspired by the wizarding world.",
     slug: "robo-soccer",
+    image: "/tracks/robo-soccer.png",
   },
 
   {
@@ -227,6 +229,7 @@ export const HARDWARE_TRACKS = [
     color: "#FF6B35",
     desc: "Push, battle and dominate the magical combat arena.",
     slug: "robo-sumo",
+    image: "/tracks/robo-sumo.png",
   },
 
   {
@@ -235,6 +238,7 @@ export const HARDWARE_TRACKS = [
     color: "#8B5CF6",
     desc: "Follow mystical trails with precision and intelligence.",
     slug: "line-follower",
+    image: "/tracks/line-follower.png",
   },
 
   {
@@ -243,6 +247,7 @@ export const HARDWARE_TRACKS = [
     color: "#22C55E",
     desc: "Present groundbreaking innovations and magical creations.",
     slug: "exhibition",
+    image: "/tracks/exhibition.png",
   },
 ];
 
