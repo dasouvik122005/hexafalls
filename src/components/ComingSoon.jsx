@@ -43,7 +43,7 @@ export default function ComingSoon({
   const titleAccentStyle = themed
     ? {
         color: accentColor,
-        textShadow: `0 0 8px ${accentColor}b3, 0 0 22px ${accentGlow || accentColor + "55"}`,
+        textShadow: `0 0 8px ${accentColor}33`,
         letterSpacing: "0.02em",
       }
     : undefined;

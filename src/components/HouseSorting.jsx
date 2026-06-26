@@ -13,6 +13,7 @@ import {
   downloadScroll,
   MagicalParticles,
 } from "./SortingCeremony";
+import Sparkles from "./Sparkles";
 
 const STORAGE_KEY = "hexafalls_house_v1";
 
@@ -69,30 +70,46 @@ function houseByKey(key) {
   return HOUSES.find((h) => h.key === key) || HOUSES[0];
 }
 
-// ── The hat itself — a small sketched sorting hat that breathes ──────────────
+// ── The hat itself — a realistic cinematic sorting hat ──────────────
 function SortingHat({ size = 130, glow = "#D4AF37" }) {
   return (
-    <svg
-      viewBox="0 0 120 120"
-      width={size}
-      height={size}
-      aria-hidden="true"
-      style={{ filter: `drop-shadow(0 0 14px ${glow}66)` }}
+    <motion.div 
+      className="relative flex items-center justify-center"
+      animate={{ y: [-8, 8, -8] }}
+      transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
     >
-      <path
-        d="M60 8 C66 28 72 40 96 64 C74 70 44 70 24 64 C50 42 54 28 60 8 Z"
-        fill="rgba(40,30,16,0.85)"
-        stroke={glow}
-        strokeWidth="1.5"
-        strokeLinejoin="round"
+      <div 
+        className="absolute inset-0 rounded-full blur-[40px] pointer-events-none hp-pulse"
+        style={{ background: `radial-gradient(circle, ${glow}55 0%, transparent 70%)` }}
       />
-      <path d="M70 30 C76 34 80 44 78 52" fill="none" stroke={glow} strokeWidth="1.1" strokeLinecap="round" opacity="0.7" />
-      <ellipse cx="60" cy="70" rx="46" ry="12" fill="rgba(40,30,16,0.85)" stroke={glow} strokeWidth="1.5" />
-      {/* creased mouth + eyes */}
-      <path d="M44 60 q6 6 14 4" fill="none" stroke={glow} strokeWidth="1.1" strokeLinecap="round" />
-      <path d="M40 52 q3 -3 6 0" fill="none" stroke={glow} strokeWidth="1.1" strokeLinecap="round" />
-      <path d="M58 52 q3 -3 6 0" fill="none" stroke={glow} strokeWidth="1.1" strokeLinecap="round" />
-    </svg>
+      {/* Magical rotating aura */}
+      <motion.div 
+        className="absolute w-[150%] h-[150%] rounded-full border border-dashed opacity-30 pointer-events-none"
+        style={{ borderColor: glow }}
+        animate={{ rotate: 360 }}
+        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+      />
+      <motion.div 
+        className="absolute w-[125%] h-[125%] rounded-full border border-dotted opacity-20 pointer-events-none"
+        style={{ borderColor: glow }}
+        animate={{ rotate: -360 }}
+        transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+      />
+      
+      <div 
+        style={{
+          width: size,
+          height: size,
+          filter: `drop-shadow(0 0 15px ${glow}66) drop-shadow(0 0 35px ${glow}33) contrast(1.15) brightness(1.1)`,
+          background: `url('/assets/realistic_sorting_hat.png') center/contain no-repeat`,
+          mixBlendMode: 'screen',
+          transform: 'scale(1.3)', // Scale up to compensate for image padding + mask
+          WebkitMaskImage: 'radial-gradient(circle at center, black 45%, transparent 68%)',
+          maskImage: 'radial-gradient(circle at center, black 45%, transparent 68%)',
+        }}
+        aria-hidden="true"
+      />
+    </motion.div>
   );
 }
 
@@ -197,7 +214,7 @@ export default function HouseSorting() {
       </div>
       <FloatingArtifacts stars={14} runes={12} seed={9} />
 
-      <div className="mx-auto mb-2 flex max-w-3xl items-center justify-center gap-3 text-[11px] uppercase tracking-[0.5em] text-cyan-hp/70 font-display text-center">
+      <div className="mx-auto mb-10 sm:mb-14 flex max-w-3xl items-center justify-center gap-3 text-[11px] uppercase tracking-[0.5em] text-cyan-hp/70 font-display text-center">
         <RoughDivider width={48} height={20} color="#66FCF1" seed={3} />
         The Sorting
         <RoughDivider width={48} height={20} color="#66FCF1" seed={5} />
@@ -225,8 +242,11 @@ export default function HouseSorting() {
               animate={{ scale: 1, rotate: 0, opacity: 1 }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             >
-              <SortingHat size={190} />
+              <SortingHat size={220} />
             </motion.div>
+            <div className="absolute inset-0 pointer-events-none -z-10">
+              <Sparkles count={20} />
+            </div>
             <h1
               aria-label="The Sorting Hat"
               className="mt-7 whitespace-nowrap font-display font-black tracking-tight leading-[1.05]"
@@ -503,8 +523,13 @@ export default function HouseSorting() {
               playsInline
               onEnded={() => setPhase("result")}
               onError={() => setPhase("result")}
-              className="absolute inset-0 h-full w-full object-cover"
-              style={{ filter: "sepia(0.7) saturate(1.2) contrast(1.05) brightness(0.86)" }}
+              className="absolute inset-0 h-full w-full object-contain pb-24 px-2 sm:pb-12 sm:px-12 md:p-24 lg:p-32 xl:p-48"
+              style={{ 
+                mixBlendMode: "screen",
+                filter: "sepia(0.5) saturate(1.2) contrast(1.1) brightness(0.9)",
+                WebkitMaskImage: "radial-gradient(ellipse at center, black 45%, transparent 80%)",
+                maskImage: "radial-gradient(ellipse at center, black 45%, transparent 80%)"
+              }}
             />
             {/* Brownish dark wash across the whole video */}
             <div

@@ -83,7 +83,7 @@ export default function RoughDivider({
           style={{
             color,
             fontSize: ornamentSize,
-            textShadow: `0 0 12px ${color}66, 0 0 24px ${color}33`,
+            textShadow: `0 0 8px ${color}33`,
           }}
         >
           {ornament}

@@ -339,7 +339,7 @@ export default function Hero() {
           className="pointer-events-none fixed top-0 left-0 z-10 h-150 w-150 rounded-full"
           style={{
             background:
-              "radial-gradient(circle at center, rgba(102,252,241,0.22) 0%, rgba(102,252,241,0.10) 18%, rgba(212,175,55,0.05) 38%, transparent 68%)",
+              "radial-gradient(circle at center, rgba(102,252,241,0.10) 0%, rgba(102,252,241,0.05) 18%, rgba(212,175,55,0.03) 38%, transparent 68%)",
             filter: "blur(28px)",
             willChange: "transform, opacity",
           }}
@@ -524,7 +524,7 @@ export default function Hero() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-center font-wizard text-silver-hp/75 text-sm sm:text-base leading-relaxed">
-            A 58-hour wizarding hackathon at JIS University, Kolkata — build,
+            A 58-hour wizarding TechFest at JIS University, Kolkata — build,
             ship and conjure across web, AI, hardware and games with hundreds of
             student wizards this July.
           </p>
@@ -655,7 +655,7 @@ export default function Hero() {
                 fontSize: "clamp(1.6rem, 4vw, 2.8rem)",
                 color: "#D4AF37",
                 textShadow:
-                  "0 0 30px rgba(212,175,55,0.5), 0 0 60px rgba(212,175,55,0.25), 0 2px 4px rgba(0,0,0,0.8)",
+                  "0 0 8px rgba(212,175,55,0.22), 0 2px 4px rgba(0,0,0,0.8)",
                 letterSpacing: "0.2em",
               }}
             >
@@ -905,8 +905,7 @@ export default function Hero() {
                 alt="HexaFalls mascot"
                 className="relative h-full w-full object-contain select-none"
                 style={{
-                  filter:
-                    "drop-shadow(0 0 18px rgba(102,252,241,0.45)) drop-shadow(0 8px 24px rgba(0,0,0,0.55)) drop-shadow(0 0 36px rgba(212,175,55,0.18))",
+                  filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.55))",
                 }}
                 draggable={false}
               />

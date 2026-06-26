@@ -5,7 +5,7 @@ import Prophecy from "@/components/Prophecy";
 export const metadata = {
   title: "The Prophecy · HexaFalls Techfest",
   description:
-    "The story behind HexaFalls. A 58-hour wizarding hackathon at JIS University where code, chaos and conjuring meet. Read the prophecy.",
+    "The story behind HexaFalls. A 58-hour wizarding TechFest at JIS University where code, chaos and conjuring meet. Read the prophecy.",
 };
 
 export default function AboutPage() {
