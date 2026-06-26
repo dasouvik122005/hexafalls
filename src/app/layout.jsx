@@ -51,7 +51,7 @@ const montserrat = Montserrat({
 const SITE_NAME = "HexaFalls Techfest";
 const SITE_TAGLINE = "A Wizarding Hackathon";
 const SITE_DESCRIPTION =
-  "HexaFalls is a 58-hour wizarding-themed hackathon at JIS University, Kolkata. Build, ship and conjure with hundreds of student wizards from across India. Pack your wand, sharpen your code.";
+  "HexaFalls is a 58-hour wizarding hackathon at JIS University, Kolkata. Build, ship, and conjure with student wizards from across India.";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://hexafalls.org";
@@ -62,6 +62,9 @@ const OG_IMAGE = "/banners/og-banner.png";
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: "/",
+  },
   title: {
     default: `${SITE_NAME} · ${SITE_TAGLINE}`,
     template: `%s · ${SITE_NAME}`,
