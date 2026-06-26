@@ -39,7 +39,7 @@ export default function TravelGuidePage() {
           </div>
 
           <p className="font-wizard text-center text-silver-hp/70 mb-12 max-w-2xl text-lg">
-            We’ve crafted a guide to help you navigate your way to the venue with ease. Uncover the paths below.
+            We&apos;ve crafted a guide to help you navigate your way to the venue with ease. Uncover the paths below.
           </p>
 
           {/* Intro Card */}
@@ -55,17 +55,17 @@ export default function TravelGuidePage() {
             >
               <div className="font-wizard space-y-6 text-silver-hp/90 leading-relaxed text-base sm:text-lg">
                 <p>
-                  🎉 <strong className="text-gold-hp font-display tracking-wide">Congratulations, Hacker!</strong> You've been chosen to step into the anomalies of <strong className="text-cyan-hp">HexaFalls 2</strong> — a 58-hour offline hackathon at <strong className="text-silver-hp">JIS University, Kolkata</strong>.
+                  🎉 <strong className="text-gold-hp font-display tracking-wide">Congratulations, Hacker!</strong> You&apos;ve been chosen to step into the anomalies of <strong className="text-cyan-hp">HexaFalls 2</strong> — a 58-hour offline hackathon at <strong className="text-silver-hp">JIS University, Kolkata</strong>.
                 </p>
                 
                 <div className="p-4 rounded border border-red-400/30 bg-red-900/10 shadow-[inset_0_0_20px_rgba(248,113,113,0.05)]">
                   <p className="text-red-300">
-                    🚨 <strong>Mandatory:</strong> Don’t forget to carry your original or photocopy of Aadhar card or Voter ID, as it is mandatory for campus entry.
+                    🚨 <strong>Mandatory:</strong> Don&apos;t forget to carry your original or photocopy of Aadhar card or Voter ID, as it is mandatory for campus entry.
                   </p>
                 </div>
 
                 <p>
-                  We’re beyond excited to see the magic you build in the rift. Get ready for mysteries, mayhem, and memories. See you soon! ✨
+                  We&apos;re beyond excited to see the magic you build in the rift. Get ready for mysteries, mayhem, and memories. See you soon! ✨
                 </p>
               </div>
             </RoughFrame>
@@ -130,7 +130,7 @@ export default function TravelGuidePage() {
                 <h3 className="font-display font-bold text-2xl text-cyan-hp">By Train</h3>
               </div>
               <div className="font-wizard text-silver-hp/80 space-y-6 text-lg">
-                <p>If you’re coming from outside Kolkata or nearby districts, a train is your best option.</p>
+                <p>If you&apos;re coming from outside Kolkata or nearby districts, a train is your best option.</p>
                 
                 <div className="pl-4 border-l-2 border-cyan-hp/30 space-y-3">
                   <h4 className="font-display font-bold text-gold-hp">Via Sealdah:</h4>
@@ -168,7 +168,7 @@ export default function TravelGuidePage() {
                 <h3 className="font-display font-bold text-2xl text-gold-hp">By Metro</h3>
               </div>
               <div className="font-wizard text-silver-hp/80 space-y-4 text-lg">
-                <p>If you’re coming from <strong>South Kolkata</strong>, take the <strong>Metro to Dakshineswar</strong>.</p>
+                <p>If you&apos;re coming from <strong>South Kolkata</strong>, take the <strong>Metro to Dakshineswar</strong>.</p>
                 <p>➡️ Get off at <strong>Baranagar Station</strong>.</p>
                 <p>From there, hop into an <strong>auto</strong> and ask for <strong>Narula Institute of Technology</strong> — <strong>JIS University</strong> is just next to it.</p>
               </div>
