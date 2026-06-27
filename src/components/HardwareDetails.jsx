@@ -243,7 +243,7 @@ export default function HardwareDetails() {
       {/* Dark textured magical background */}
       <div
         className="absolute inset-0 -z-40 opacity-40 bg-cover bg-center"
-        style={{ backgroundImage: "url('/bg-stone.png')", mixBlendMode: "luminosity" }}
+        style={{ backgroundImage: "url('/textures/bg-stone.png')", mixBlendMode: "luminosity" }}
       />
       <div className="absolute inset-0 -z-50 bg-[#0B0C10]" />
       <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars pointer-events-none opacity-25" />

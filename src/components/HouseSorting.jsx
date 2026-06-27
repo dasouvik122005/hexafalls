@@ -651,7 +651,6 @@ export default function HouseSorting() {
                     width: "85%",
                     height: "85%",
                     background: `radial-gradient(ellipse, ${house.labelColor}38 0%, transparent 70%)`,
-                    filter: "blur(55px)",
                   }}
                 />
               </div>

@@ -340,7 +340,6 @@ export default function Hero() {
           style={{
             background:
               "radial-gradient(circle at center, rgba(102,252,241,0.10) 0%, rgba(102,252,241,0.05) 18%, rgba(212,175,55,0.03) 38%, transparent 68%)",
-            filter: "blur(28px)",
             willChange: "transform, opacity",
           }}
         />
@@ -492,7 +491,6 @@ export default function Hero() {
                 height: "40%",
                 background:
                   "radial-gradient(ellipse, rgba(212,175,55,0.10) 0%, transparent 70%)",
-                filter: "blur(40px)",
               }}
             />
           </div>

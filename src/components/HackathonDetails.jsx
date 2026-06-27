@@ -13,15 +13,16 @@ import { HACKATHON_TRACKS, JUDGING } from "@/lib/routes";
 const GOLD = "#D4AF37";
 const GOLD_GLOW = "rgba(212,175,55,0.22)";
 const CYAN = "#66FCF1";
+const BLUE = "#3B82F6";
 
 /* ── reusable section eyebrow ────────────────────────────────────────── */
 function Eyebrow({ children, color = GOLD }) {
   return (
     <div className="flex items-center justify-center gap-3 text-[11px] uppercase tracking-[0.5em] font-display text-center"
          style={{ color: `${color}cc` }}>
-      <RoughDivider width={48} height={20} color={color} seed={3} />
+      <div className="w-12 h-[2px] rounded-full opacity-60 shadow-[0_0_5px_currentColor]" style={{ background: `linear-gradient(to right, transparent, ${color})` }} />
       {children}
-      <RoughDivider width={48} height={20} color={color} seed={5} />
+      <div className="w-12 h-[2px] rounded-full opacity-60 shadow-[0_0_5px_currentColor]" style={{ background: `linear-gradient(to left, transparent, ${color})` }} />
     </div>
   );
 }
@@ -41,7 +42,7 @@ function Reveal({ children, delay = 0, className = "" }) {
   );
 }
 
-/* ── interactive track card with hover description reveal ────────────── */
+/* ── interactive track card with realistic parchment texture ─────────── */
 function TrackCard({ track: t, index: i }) {
   const [hovered, setHovered] = useState(false);
 
@@ -54,54 +55,65 @@ function TrackCard({ track: t, index: i }) {
       tabIndex={0}
       role="group"
       aria-label={`${t.name} track`}
+      className="h-full group"
     >
-      <RoughFrame
-        seed={80 + i * 7}
-        stroke={t.color}
-        mistColor={t.color}
-        strokeWidth={1.3}
-        roughness={1.6}
-        bowing={1.2}
-        padding={18}
-        className={`h-full bg-slate-hp/30 backdrop-blur-sm cursor-default transition-colors duration-300 ${hovered ? "bg-slate-hp/50" : ""}`}
-        inner="flex flex-col gap-2"
+      <div 
+        className={`relative h-full w-full rounded-xl overflow-hidden shadow-2xl transition-all duration-300 ${hovered ? "scale-[1.03] shadow-[0_20px_40px_rgba(0,0,0,0.7)]" : "shadow-[0_10px_20px_rgba(0,0,0,0.5)]"}`}
       >
-        <div className="flex items-center gap-3">
-          <span
-            className="text-2xl select-none transition-transform duration-300"
-            style={{
-              color: t.color,
-              transform: hovered ? "scale(1.1)" : "scale(1)",
-            }}
-            aria-hidden="true"
-          >
-            {t.rune}
-          </span>
-          <span
-            className="font-display text-sm tracking-wide"
-            style={{ color: t.color }}
-          >
-            {t.name}
-          </span>
-        </div>
-        {/* description — smoothly revealed on hover/focus */}
-        <div
-          className="grid transition-all duration-300 ease-out"
-          style={{ gridTemplateRows: hovered ? "1fr" : "0fr" }}
-        >
-          <div className="overflow-hidden">
-            <p
-              className="font-wizard text-xs leading-relaxed pt-1 transition-opacity duration-300"
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-90 transition-opacity duration-300"
+          style={{ backgroundImage: "url('/textures/realistic_card_bg.png')" }} 
+        />
+        {/* Dark overlay for legibility */}
+        <div className="absolute inset-0 bg-black/55 group-hover:bg-black/40 transition-colors duration-300" />
+        
+        {/* Magical glow tint overlay on hover */}
+        <div 
+          className="absolute inset-0 opacity-0 transition-opacity duration-500 mix-blend-overlay"
+          style={{ backgroundImage: `radial-gradient(circle at center, ${t.color} 0%, transparent 80%)`, opacity: hovered ? 0.4 : 0 }} 
+        />
+        
+        <div className="relative z-10 p-6 flex flex-col h-full border border-white/10 rounded-xl">
+          <div className="flex items-center gap-4">
+            <span
+              className="text-4xl select-none transition-transform duration-300 font-wizard drop-shadow-md"
               style={{
-                color: `${t.color}cc`,
-                opacity: hovered ? 1 : 0,
+                color: t.color,
+                transform: hovered ? "scale(1.15)" : "scale(1)",
+              }}
+              aria-hidden="true"
+            >
+              {t.rune}
+            </span>
+            <span
+              className="font-wizard text-[22px] tracking-[0.1em] font-bold"
+              style={{ 
+                color: '#e8e4d6',
+                textShadow: `0 2px 4px rgba(0,0,0,0.9), 0 0 12px ${t.color}aa` 
               }}
             >
-              {t.desc}
-            </p>
+              {t.name}
+            </span>
+          </div>
+          {/* description — smoothly revealed on hover/focus */}
+          <div
+            className="grid transition-all duration-300 ease-out mt-1"
+            style={{ gridTemplateRows: hovered ? "1fr" : "0fr" }}
+          >
+            <div className="overflow-hidden">
+              <p
+                className="font-wizard text-sm leading-relaxed pt-3 transition-opacity duration-300 text-[#e8e4d6]"
+                style={{
+                  opacity: hovered ? 1 : 0,
+                  textShadow: "0 2px 4px rgba(0,0,0,1)"
+                }}
+              >
+                {t.desc}
+              </p>
+            </div>
           </div>
         </div>
-      </RoughFrame>
+      </div>
     </div>
   );
 }
@@ -152,6 +164,13 @@ export default function HackathonDetails() {
       ref={sectionRef}
       className="relative isolate overflow-hidden pt-32 pb-24 px-6"
     >
+      {/* Dark textured magical background */}
+      <div
+        className="absolute inset-0 -z-40 opacity-40 bg-cover bg-center"
+        style={{ backgroundImage: "url('/textures/bg-stone.png')", mixBlendMode: "luminosity" }}
+      />
+      <div className="absolute inset-0 -z-50 bg-[#0B0C10]" />
+      
       {/* parallax stack */}
       <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars pointer-events-none" />
       <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
@@ -205,28 +224,27 @@ export default function HackathonDetails() {
         <Reveal delay={0.25} className="mt-8 flex flex-col items-center gap-3">
           <span
             className="inline-flex items-center gap-2 rounded-full border px-3 py-1 font-display text-[10px] uppercase tracking-[0.4em]"
-            style={{ borderColor: `${GOLD}80`, color: GOLD, backgroundColor: `${GOLD}1a` }}
+            style={{ borderColor: `${BLUE}80`, color: BLUE, backgroundColor: `${BLUE}1a` }}
           >
             <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full rounded-full opacity-70 animate-ping" style={{ backgroundColor: GOLD }} />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full" style={{ backgroundColor: GOLD }} />
+              <span className="absolute inline-flex h-full w-full rounded-full opacity-70 animate-ping" style={{ backgroundColor: BLUE }} />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full" style={{ backgroundColor: BLUE }} />
             </span>
             Registrations Open
           </span>
-          <RoughButton
-            as="a"
+          <a
             href="https://hexafalls2.devfolio.co"
             target="_blank"
             rel="noopener noreferrer"
-            color={GOLD}
-            glow={GOLD_GLOW}
-            shimmer
-            seed={23}
-            className="px-10 sm:px-12 py-4 sm:py-5 text-[13px] sm:text-[14px] tracking-[0.4em]"
+            className="group relative inline-flex items-center justify-center gap-2 px-10 sm:px-12 py-4 sm:py-5 text-[13px] sm:text-[14px] font-display uppercase tracking-[0.4em] font-bold rounded-lg overflow-hidden transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.6)] hover:shadow-[0_15px_30px_rgba(59,130,246,0.4)] hover:-translate-y-1"
+            style={{ color: '#e8e4d6', textShadow: "0 2px 4px rgba(0,0,0,1)" }}
           >
-            <span>REGISTER ON DEVFOLIO</span>
-            <span aria-hidden="true">↗</span>
-          </RoughButton>
+            <div className="absolute inset-0 bg-cover bg-center opacity-90 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundImage: "url('/textures/realistic_card_bg.png')" }} />
+            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300" />
+            <div className="absolute inset-0 border-[2px] rounded-lg transition-colors duration-300" style={{ borderColor: `${BLUE}80` }} />
+            <span className="relative z-10">REGISTER ON DEVFOLIO</span>
+            <span aria-hidden="true" className="relative z-10 drop-shadow-md transition-colors duration-300" style={{ color: BLUE }}>↗</span>
+          </a>
         </Reveal>
       </div>
 
@@ -264,20 +282,19 @@ export default function HackathonDetails() {
         </Reveal>
 
         <Reveal delay={0.1} className="mt-8">
-          <RoughFrame
-            seed={41}
-            stroke={CYAN}
-            mistColor={CYAN}
-            strokeWidth={1.3}
-            roughness={1.5}
-            bowing={1.1}
-            padding={0}
-            className="w-full bg-slate-hp/25 backdrop-blur-sm overflow-hidden"
-          >
+          <div className="relative w-full rounded-xl border border-cyan-hp/30 shadow-[0_10px_30px_rgba(0,0,0,0.5)] overflow-hidden transition-all duration-300 hover:shadow-[0_15px_40px_rgba(0,0,0,0.6)] hover:border-cyan-hp/50 group">
+            {/* Realistic background image */}
+            <div 
+              className="absolute inset-0 bg-cover bg-center opacity-70 group-hover:opacity-90 transition-opacity duration-500"
+              style={{ backgroundImage: "url('/textures/table_bg_cyan.png')" }} 
+            />
+            {/* Dark overlay for readability */}
+            <div className="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors duration-500" />
+            
             {/* table-style layout */}
-            <div className="divide-y divide-cyan-hp/15">
+            <div className="relative z-10 divide-y divide-cyan-hp/20">
               {/* header */}
-              <div className="grid grid-cols-[2.5rem_1fr_1fr] sm:grid-cols-[3rem_1.4fr_1fr] gap-x-3 px-4 sm:px-6 py-3 text-[10px] uppercase tracking-[0.3em] font-display text-cyan-hp/60">
+              <div className="grid grid-cols-[2.5rem_1fr_1fr] sm:grid-cols-[3rem_1.4fr_1fr] gap-x-3 px-4 sm:px-6 py-4 text-[10px] uppercase tracking-[0.3em] font-display text-cyan-hp bg-cyan-hp/5 shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
                 <span>#</span>
                 <span>Requirement</span>
                 <span>Rationale</span>
@@ -285,15 +302,15 @@ export default function HackathonDetails() {
               {JUDGING.eligibility.map((r) => (
                 <div
                   key={r.id}
-                  className="grid grid-cols-[2.5rem_1fr_1fr] sm:grid-cols-[3rem_1.4fr_1fr] gap-x-3 px-4 sm:px-6 py-4 items-start hover:bg-cyan-hp/5 transition-colors"
+                  className="grid grid-cols-[2.5rem_1fr_1fr] sm:grid-cols-[3rem_1.4fr_1fr] gap-x-3 px-4 sm:px-6 py-5 items-start hover:bg-cyan-hp/10 transition-colors"
                 >
-                  <span className="font-display text-cyan-hp/50 text-sm">{r.id}</span>
-                  <span className="font-wizard text-silver-hp/90 text-sm leading-relaxed">{r.req}</span>
-                  <span className="font-wizard text-silver-hp/60 text-xs leading-relaxed italic">{r.rationale}</span>
+                  <span className="font-display text-cyan-hp/80 text-sm md:text-base font-bold" style={{ textShadow: "0 0 8px rgba(102,252,241,0.5)" }}>{r.id}</span>
+                  <span className="font-wizard text-[#e8e4d6] text-sm md:text-base lg:text-lg leading-relaxed" style={{ textShadow: "0 2px 4px rgba(0,0,0,1)" }}>{r.req}</span>
+                  <span className="font-wizard text-[#e8e4d6]/60 text-xs md:text-sm lg:text-base leading-relaxed italic" style={{ textShadow: "0 2px 4px rgba(0,0,0,1)" }}>{r.rationale}</span>
                 </div>
               ))}
             </div>
-          </RoughFrame>
+          </div>
         </Reveal>
 
         <Reveal delay={0.15} className="mt-5">
@@ -321,48 +338,46 @@ export default function HackathonDetails() {
         <div className="mt-10 grid gap-5 sm:grid-cols-2">
           {JUDGING.criteria.map((c, i) => (
             <Reveal key={c.id} delay={i * 0.05}>
-              <RoughFrame
-                seed={50 + i * 11}
-                stroke={GOLD}
-                mistColor={GOLD}
-                strokeWidth={1.2}
-                roughness={1.5}
-                bowing={1.2}
-                padding={20}
-                className="h-full bg-slate-hp/30 backdrop-blur-sm"
-                inner="flex flex-col gap-3 h-full"
-              >
-                {/* header row */}
-                <div className="flex items-center justify-between">
-                  <span className="font-display text-[10px] uppercase tracking-[0.3em] text-gold-hp/60">
-                    Criterion {c.id}
-                  </span>
-                  <span
-                    className="inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 font-display text-[11px] font-bold tracking-wide"
-                    style={{ borderColor: `${GOLD}60`, color: GOLD, backgroundColor: `${GOLD}15` }}
-                  >
-                    {c.weight}
-                    <span className="text-[8px] tracking-[0.2em] text-gold-hp/60">PTS</span>
-                  </span>
+              <div className="relative h-full w-full rounded-xl overflow-hidden shadow-[0_10px_20px_rgba(0,0,0,0.5)] border border-gold-hp/20 group hover:shadow-[0_15px_30px_rgba(0,0,0,0.7)] transition-all duration-300">
+                <div 
+                  className="absolute inset-0 bg-cover bg-center opacity-90 transition-opacity duration-300 group-hover:opacity-100"
+                  style={{ backgroundImage: "url('/textures/realistic_card_bg.png')" }} 
+                />
+                <div className="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-colors duration-300" />
+                
+                <div className="relative z-10 p-6 flex flex-col gap-4 h-full">
+                  {/* header row */}
+                  <div className="flex items-center justify-between">
+                    <span className="font-display text-[10px] uppercase tracking-[0.3em] text-[#e8e4d6]/60 drop-shadow-md">
+                      Criterion {c.id}
+                    </span>
+                    <span
+                      className="inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 font-display text-[11px] font-bold tracking-wide shadow-[0_2px_10px_rgba(0,0,0,0.5)]"
+                      style={{ borderColor: `${GOLD}60`, color: GOLD, backgroundColor: `${GOLD}33` }}
+                    >
+                      {c.weight}
+                      <span className="text-[8px] tracking-[0.2em] text-[#e8e4d6]/80">PTS</span>
+                    </span>
+                  </div>
+                  {/* weight bar */}
+                  <div className="w-full h-1.5 rounded-full bg-black/60 shadow-inner overflow-hidden border border-gold-hp/20">
+                    <motion.div
+                      className="h-full rounded-full shadow-[0_0_10px_rgba(212,175,55,0.8)]"
+                      style={{ backgroundColor: GOLD }}
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${(c.weight / 30) * 100}%` }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.8, delay: 0.2 + i * 0.05, ease: "easeOut" }}
+                    />
+                  </div>
+                  <h3 className="font-display text-base sm:text-lg tracking-tight text-[#e8e4d6]" style={{ textShadow: `0 2px 4px rgba(0,0,0,0.9), 0 0 14px ${GOLD_GLOW}` }}>
+                    {c.name}
+                  </h3>
+                  <p className="font-wizard text-[#e8e4d6]/80 text-sm leading-relaxed mt-auto drop-shadow-md" style={{ textShadow: "0 2px 4px rgba(0,0,0,1)" }}>
+                    {c.desc}
+                  </p>
                 </div>
-                {/* weight bar */}
-                <div className="w-full h-1.5 rounded-full bg-slate-hp/60 overflow-hidden">
-                  <motion.div
-                    className="h-full rounded-full"
-                    style={{ backgroundColor: GOLD }}
-                    initial={{ width: 0 }}
-                    whileInView={{ width: `${(c.weight / 30) * 100}%` }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, delay: 0.2 + i * 0.05, ease: "easeOut" }}
-                  />
-                </div>
-                <h3 className="font-display text-base sm:text-lg tracking-tight text-gold-hp" style={{ textShadow: `0 0 14px ${GOLD_GLOW}` }}>
-                  {c.name}
-                </h3>
-                <p className="font-wizard text-silver-hp/80 text-sm leading-relaxed mt-auto">
-                  {c.desc}
-                </p>
-              </RoughFrame>
+              </div>
             </Reveal>
           ))}
         </div>
@@ -384,18 +399,15 @@ export default function HackathonDetails() {
         </Reveal>
 
         <Reveal delay={0.1} className="mt-6">
-          <RoughFrame
-            seed={62}
-            stroke={CYAN}
-            mistColor={CYAN}
-            strokeWidth={1.2}
-            roughness={1.5}
-            bowing={1.1}
-            padding={0}
-            className="w-full bg-slate-hp/25 backdrop-blur-sm overflow-hidden"
-          >
-            <div className="divide-y divide-cyan-hp/15">
-              <div className="grid grid-cols-[3.5rem_5rem_1fr] gap-x-3 px-4 sm:px-6 py-3 text-[10px] uppercase tracking-[0.3em] font-display text-cyan-hp/60">
+          <div className="relative w-full rounded-xl border border-cyan-hp/30 shadow-[0_10px_30px_rgba(0,0,0,0.5)] overflow-hidden transition-all duration-300 hover:shadow-[0_15px_40px_rgba(0,0,0,0.6)] hover:border-cyan-hp/50 group">
+            <div 
+              className="absolute inset-0 bg-cover bg-center opacity-70 group-hover:opacity-90 transition-opacity duration-500"
+              style={{ backgroundImage: "url('/textures/table_bg_cyan.png')" }} 
+            />
+            <div className="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors duration-500" />
+            
+            <div className="relative z-10 divide-y divide-cyan-hp/20">
+              <div className="grid grid-cols-[3.5rem_5rem_1fr] gap-x-3 px-4 sm:px-6 py-4 text-[10px] uppercase tracking-[0.3em] font-display text-cyan-hp bg-cyan-hp/5 shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
                 <span>Score</span>
                 <span>Band</span>
                 <span>Meaning</span>
@@ -403,15 +415,15 @@ export default function HackathonDetails() {
               {JUDGING.scale.map((s) => (
                 <div
                   key={s.score}
-                  className="grid grid-cols-[3.5rem_5rem_1fr] gap-x-3 px-4 sm:px-6 py-3 items-center hover:bg-cyan-hp/5 transition-colors"
+                  className="grid grid-cols-[3.5rem_5rem_1fr] gap-x-3 px-4 sm:px-6 py-4 items-center hover:bg-cyan-hp/10 transition-colors"
                 >
-                  <span className="font-display text-cyan-hp text-sm font-bold">{s.score}</span>
-                  <span className="font-display text-silver-hp/90 text-sm">{s.band}</span>
-                  <span className="font-wizard text-silver-hp/70 text-sm">{s.meaning}</span>
+                  <span className="font-display text-cyan-hp text-sm md:text-base font-bold" style={{ textShadow: "0 0 8px rgba(102,252,241,0.5)" }}>{s.score}</span>
+                  <span className="font-display text-[#e8e4d6] text-xs md:text-sm" style={{ textShadow: "0 2px 4px rgba(0,0,0,1)" }}>{s.band}</span>
+                  <span className="font-wizard text-[#e8e4d6]/80 text-xs md:text-sm" style={{ textShadow: "0 2px 4px rgba(0,0,0,1)" }}>{s.meaning}</span>
                 </div>
               ))}
             </div>
-          </RoughFrame>
+          </div>
         </Reveal>
       </div>
 
@@ -430,28 +442,26 @@ export default function HackathonDetails() {
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {JUDGING.bonus.map((b, i) => (
             <Reveal key={b.item} delay={i * 0.04}>
-              <RoughFrame
-                seed={70 + i * 5}
-                stroke={GOLD}
-                mistColor={GOLD}
-                strokeWidth={1.1}
-                roughness={1.6}
-                bowing={1.2}
-                padding={16}
-                className="h-full bg-slate-hp/25 backdrop-blur-sm"
-                inner="flex flex-col gap-2 h-full"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="font-display text-sm text-gold-hp tracking-tight">{b.item}</span>
-                  <span
-                    className="rounded-full border px-2 py-0.5 font-display text-[11px] font-bold"
-                    style={{ borderColor: `${GOLD}55`, color: GOLD, backgroundColor: `${GOLD}15` }}
-                  >
-                    {b.pts}
-                  </span>
+              <div className="relative h-full w-full rounded-xl overflow-hidden shadow-[0_10px_20px_rgba(0,0,0,0.5)] border border-gold-hp/20 group hover:shadow-[0_15px_30px_rgba(0,0,0,0.7)] transition-all duration-300">
+                <div 
+                  className="absolute inset-0 bg-cover bg-center opacity-90 transition-opacity duration-300 group-hover:opacity-100"
+                  style={{ backgroundImage: "url('/textures/realistic_card_bg.png')" }} 
+                />
+                <div className="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-colors duration-300" />
+                
+                <div className="relative z-10 p-5 flex flex-col gap-3 h-full">
+                  <div className="flex items-center justify-between">
+                    <span className="font-display text-sm text-[#e8e4d6] tracking-tight" style={{ textShadow: "0 2px 4px rgba(0,0,0,1)" }}>{b.item}</span>
+                    <span
+                      className="rounded-full border px-2 py-0.5 font-display text-[11px] font-bold shadow-md"
+                      style={{ borderColor: `${GOLD}55`, color: GOLD, backgroundColor: `${GOLD}33` }}
+                    >
+                      {b.pts}
+                    </span>
+                  </div>
+                  <p className="font-wizard text-[#e8e4d6]/80 text-xs leading-relaxed" style={{ textShadow: "0 2px 4px rgba(0,0,0,1)" }}>{b.note}</p>
                 </div>
-                <p className="font-wizard text-silver-hp/70 text-xs leading-relaxed">{b.note}</p>
-              </RoughFrame>
+              </div>
             </Reveal>
           ))}
         </div>
@@ -467,32 +477,29 @@ export default function HackathonDetails() {
         </Reveal>
 
         <Reveal delay={0.1} className="mt-6">
-          <RoughFrame
-            seed={90}
-            stroke="#EF4444"
-            mistColor="#EF4444"
-            strokeWidth={1.2}
-            roughness={1.6}
-            bowing={1.1}
-            padding={0}
-            className="w-full bg-slate-hp/25 backdrop-blur-sm overflow-hidden"
-          >
-            <div className="divide-y divide-red-500/15">
-              <div className="grid grid-cols-[1fr_auto] gap-x-4 px-4 sm:px-6 py-3 text-[10px] uppercase tracking-[0.3em] font-display" style={{ color: "rgba(239,68,68,0.6)" }}>
+          <div className="relative w-full rounded-xl border border-[#EF4444]/40 shadow-[0_10px_30px_rgba(0,0,0,0.5)] overflow-hidden transition-all duration-300 hover:shadow-[0_15px_40px_rgba(0,0,0,0.6)] hover:border-[#EF4444]/60 group">
+            <div 
+              className="absolute inset-0 bg-cover bg-center opacity-70 group-hover:opacity-90 transition-opacity duration-500"
+              style={{ backgroundImage: "url('/textures/table_bg_red.png')" }} 
+            />
+            <div className="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors duration-500" />
+            
+            <div className="relative z-10 divide-y divide-[#EF4444]/20">
+              <div className="grid grid-cols-[1fr_auto] gap-x-4 px-4 sm:px-6 py-4 text-[10px] uppercase tracking-[0.3em] font-display bg-[#EF4444]/10 shadow-[0_2px_10px_rgba(0,0,0,0.5)]" style={{ color: "rgba(239,68,68,0.9)", textShadow: "0 0 8px rgba(239,68,68,0.4)" }}>
                 <span>Issue</span>
                 <span>Penalty</span>
               </div>
               {JUDGING.penalties.map((p) => (
                 <div
                   key={p.issue}
-                  className="grid grid-cols-[1fr_auto] gap-x-4 px-4 sm:px-6 py-4 items-center hover:bg-red-500/5 transition-colors"
+                  className="grid grid-cols-[1fr_auto] gap-x-4 px-4 sm:px-6 py-5 items-center hover:bg-[#EF4444]/10 transition-colors"
                 >
-                  <span className="font-wizard text-silver-hp/85 text-sm leading-relaxed">{p.issue}</span>
-                  <span className="font-display text-sm font-bold whitespace-nowrap" style={{ color: "#EF4444" }}>{p.penalty}</span>
+                  <span className="font-wizard text-[#e8e4d6]/90 text-sm md:text-base lg:text-lg leading-relaxed" style={{ textShadow: "0 2px 4px rgba(0,0,0,1)" }}>{p.issue}</span>
+                  <span className="font-display text-sm md:text-base lg:text-lg font-bold whitespace-nowrap" style={{ color: "#EF4444", textShadow: "0 0 10px rgba(239,68,68,0.6)" }}>{p.penalty}</span>
                 </div>
               ))}
             </div>
-          </RoughFrame>
+          </div>
         </Reveal>
       </div>
 
@@ -509,31 +516,28 @@ export default function HackathonDetails() {
         </Reveal>
 
         <Reveal delay={0.1} className="mt-6">
-          <RoughFrame
-            seed={95}
-            stroke={CYAN}
-            mistColor={CYAN}
-            strokeWidth={1.2}
-            roughness={1.5}
-            bowing={1.1}
-            padding={20}
-            className="w-full bg-slate-hp/25 backdrop-blur-sm"
-            inner="flex flex-col gap-0"
-          >
-            <ol className="list-none space-y-3">
-              {JUDGING.tiebreakers.map((t, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <span
-                    className="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full border font-display text-[11px] font-bold"
-                    style={{ borderColor: `${CYAN}55`, color: CYAN, backgroundColor: `${CYAN}15` }}
-                  >
-                    {i + 1}
-                  </span>
-                  <span className="font-wizard text-silver-hp/85 text-sm leading-relaxed pt-0.5">{t}</span>
-                </li>
-              ))}
-            </ol>
-          </RoughFrame>
+          <div className="relative w-full rounded-xl overflow-hidden shadow-[0_15px_30px_rgba(0,0,0,0.6)] border border-cyan-hp/30">
+            <div 
+              className="absolute inset-0 bg-cover bg-center opacity-100"
+              style={{ backgroundImage: "url('/textures/realistic_card_bg.png')" }} 
+            />
+            <div className="absolute inset-0 bg-black/60" />
+            <div className="relative z-10 p-8">
+              <ol className="list-none space-y-4">
+                {JUDGING.tiebreakers.map((t, i) => (
+                  <li key={i} className="flex items-start gap-4">
+                    <span
+                      className="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full border font-display text-[12px] font-bold shadow-md"
+                      style={{ borderColor: `${CYAN}77`, color: CYAN, backgroundColor: `${CYAN}22` }}
+                    >
+                      {i + 1}
+                    </span>
+                    <span className="font-wizard text-[#e8e4d6]/95 text-base leading-relaxed pt-0.5 drop-shadow-md" style={{ textShadow: "0 2px 4px rgba(0,0,0,1)" }}>{t}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
         </Reveal>
       </div>
 
@@ -547,67 +551,64 @@ export default function HackathonDetails() {
         </Reveal>
 
         <Reveal delay={0.1} className="mt-6">
-          <RoughFrame
-            seed={100}
-            stroke={GOLD}
-            mistColor={GOLD}
-            strokeWidth={1.2}
-            roughness={1.5}
-            bowing={1.2}
-            padding={24}
-            className="w-full bg-slate-hp/25 backdrop-blur-sm"
-            inner="flex flex-col gap-4 text-center"
-          >
-            <p className="font-wizard text-gold-hp text-base sm:text-lg font-semibold italic">
-              &quot;Awards are limited; respect is for everyone.&quot;
-            </p>
-            <div className="space-y-3 font-wizard text-silver-hp/80 text-sm leading-relaxed">
-              <p>
-                Every team that submits receives <span className="text-gold-hp">written judge feedback</span>, not only a rank.
+          <div className="relative w-full rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.6)] border border-gold-hp/30 group">
+            <div 
+              className="absolute inset-0 bg-cover bg-center opacity-100 transition-opacity duration-500"
+              style={{ backgroundImage: "url('/textures/realistic_card_bg.png')" }} 
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/80 group-hover:from-black/50 group-hover:to-black/70 transition-colors duration-500" />
+            
+            <div className="relative z-10 p-8 sm:p-10 flex flex-col gap-6 text-center">
+              <p className="font-wizard text-gold-hp text-lg sm:text-xl font-bold italic drop-shadow-md" style={{ textShadow: "0 2px 4px rgba(0,0,0,1)" }}>
+                &quot;Awards are limited; respect is for everyone.&quot;
               </p>
-              <p>
-                A separate <span className="text-gold-hp">Participant Recognition</span> may be given to teams that best embodied open-source practices, helped others, or showed the most growth — independent of placement.
-              </p>
-              <p>
-                First-time participants, solo builders, and ambitious-but-incomplete projects are welcomed and encouraged, not penalised for attempting more.
-              </p>
-              <p className="text-silver-hp/60 italic text-xs">
-                Every team that takes part is acknowledged.
+              <div className="space-y-4 font-wizard text-[#e8e4d6]/90 text-sm sm:text-base leading-relaxed drop-shadow-md" style={{ textShadow: "0 2px 4px rgba(0,0,0,1)" }}>
+                <p>
+                  Every team that submits receives <span className="text-gold-hp font-bold">written judge feedback</span>, not only a rank.
+                </p>
+                <p>
+                  A separate <span className="text-gold-hp font-bold">Participant Recognition</span> may be given to teams that best embodied open-source practices, helped others, or showed the most growth — independent of placement.
+                </p>
+                <p>
+                  First-time participants, solo builders, and ambitious-but-incomplete projects are welcomed and encouraged, not penalised for attempting more.
+                </p>
+                <p className="text-[#e8e4d6]/50 italic text-xs sm:text-sm mt-4 border-t border-gold-hp/20 pt-4">
+                  Every team that takes part is acknowledged.
+                </p>
+              </div>
+              <p className="font-display text-[10px] uppercase tracking-[0.4em] text-gold-hp/50 pt-2 drop-shadow-md">
+                HexaFalls · GDG on Campus · JIS University
               </p>
             </div>
-            <p className="font-display text-[10px] uppercase tracking-[0.4em] text-gold-hp/50 pt-2">
-              HexaFalls · GDG on Campus · JIS University
-            </p>
-          </RoughFrame>
+          </div>
         </Reveal>
       </div>
 
       {/* ═══ FOOTER CTAs ═════════════════════════════════════════════════ */}
       <Reveal delay={0.1} className="mt-20 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
-        <RoughButton
-          as="a"
+        <a
           href="https://hexafalls2.devfolio.co"
           target="_blank"
           rel="noopener noreferrer"
-          color={GOLD}
-          glow={GOLD_GLOW}
-          shimmer
-          seed={23}
-          className="px-8 py-3 text-[12px]"
+          className="group relative inline-flex items-center justify-center gap-2 px-8 py-3 text-[12px] font-display uppercase tracking-[0.4em] font-bold rounded-lg overflow-hidden transition-all duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.6)] hover:shadow-[0_10px_25px_rgba(59,130,246,0.3)] hover:-translate-y-0.5"
+          style={{ color: '#e8e4d6', textShadow: "0 2px 4px rgba(0,0,0,1)" }}
         >
-          <span>REGISTER ON DEVFOLIO</span>
-          <span aria-hidden="true">↗</span>
-        </RoughButton>
-        <RoughButton
-          as={Link}
+          <div className="absolute inset-0 bg-cover bg-center opacity-90 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundImage: "url('/textures/realistic_card_bg.png')" }} />
+          <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300" />
+          <div className="absolute inset-0 border rounded-lg transition-colors duration-300" style={{ borderColor: `${BLUE}80` }} />
+          <span className="relative z-10">REGISTER ON DEVFOLIO</span>
+          <span aria-hidden="true" className="relative z-10 drop-shadow-md transition-colors duration-300" style={{ color: BLUE }}>↗</span>
+        </a>
+        <Link
           href="/events"
-          color="#C5C6C7"
-          fill={false}
-          seed={31}
-          className="px-8 py-3 text-[11px]"
+          className="group relative inline-flex items-center justify-center gap-2 px-8 py-3 text-[11px] font-display uppercase tracking-[0.4em] font-bold rounded-lg overflow-hidden transition-all duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.6)] hover:shadow-[0_10px_25px_rgba(197,198,199,0.2)] hover:-translate-y-0.5"
+          style={{ color: '#C5C6C7', textShadow: "0 2px 4px rgba(0,0,0,1)" }}
         >
-          ← ALL EVENTS
-        </RoughButton>
+          <div className="absolute inset-0 bg-cover bg-center opacity-40 group-hover:opacity-60 transition-opacity duration-300" style={{ backgroundImage: "url('/textures/realistic_card_bg.png')" }} />
+          <div className="absolute inset-0 bg-black/80 group-hover:bg-black/70 transition-colors duration-300" />
+          <div className="absolute inset-0 border border-[#C5C6C7]/30 rounded-lg group-hover:border-[#C5C6C7]/50 transition-colors duration-300" />
+          <span className="relative z-10">← ALL EVENTS</span>
+        </Link>
       </Reveal>
     </section>
   );

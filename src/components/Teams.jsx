@@ -124,7 +124,6 @@ export default function Teams() {
                   className="absolute -inset-1 rounded-md opacity-60 group-hover:opacity-90 transition pointer-events-none"
                   style={{
                     background: `radial-gradient(ellipse at center, ${t.glow}, transparent 70%)`,
-                    filter: "blur(10px)",
                   }}
                 />
               )}
