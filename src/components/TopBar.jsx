@@ -10,8 +10,8 @@ import RoughStar from "./RoughStar";
 export default function TopBar() {
   const [open, setOpen] = useState(false);
 
-  // Available routes first, "soon" ones last (stable within each group).
-  const nav = [...SITEMAP].sort((a, b) => (a.soon ? 1 : 0) - (b.soon ? 1 : 0));
+  // Use the exact order defined in SITEMAP
+  const nav = SITEMAP;
 
   // Close on Escape
   useEffect(() => {
