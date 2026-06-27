@@ -20,6 +20,8 @@ const CONTACTS = [
   { name: "Ayushman Bhattacharya", role: "GDGoC JISU", tel: "+918617755083", display: "+91 86177 55083" },
 ];
 
+const INCIDENT_REPORT_URL = " "; //tally or g from link will be added in future
+
 const SOCIALS = [
   {
     name: "LinkedIn",
@@ -196,6 +198,25 @@ export default function Footer() {
               {copied ? "✓ copied" : "click to copy"}
             </span>
           </button>
+          <a
+            href={INCIDENT_REPORT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Send a report owl to the incident form in a new tab"
+            className="group mt-3 inline-flex items-center gap-2 rounded-full border border-silver-hp/25 bg-slate-hp/50 px-4 py-2 text-sm text-silver-hp/85 hover:border-rose-400 hover:text-rose-200 hover:shadow-[0_0_18px_rgba(248,113,113,0.28)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400/40 focus-visible:ring-offset-2 focus-visible:ring-offset-midnight transition"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="h-4 w-4 text-rose-200">
+              <path d="M12 3L6 7v4c0 5 2.5 8 6 8s6-3 6-8V7l-6-4z" />
+              <path d="M12 9v3" />
+              <path d="M12 15h.01" />
+            </svg>
+            <span className="font-display uppercase tracking-[0.3em] text-rose-200">
+              Report an Incident
+            </span>
+          </a>
+          <p className="max-w-[22rem] text-[11px] leading-snug text-silver-hp/60">
+            Owl-post note: send your concern quietly to the Ministry and we will answer by owl.
+          </p>
         </motion.div>
 
         {/* MIDDLE — sitemap (icon row) */}

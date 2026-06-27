@@ -594,14 +594,14 @@ export default function Hero() {
         </motion.div>
 
         {/* Sepia partner marquee — renders only when partners are listed */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.7 }}
           className="mt-12 flex w-full flex-col items-center gap-3"
         >
           <PartnerMarquee />
-        </motion.div>
+        </motion.div> */}
       </section>
 
       <div className="relative w-full overflow-hidden">
