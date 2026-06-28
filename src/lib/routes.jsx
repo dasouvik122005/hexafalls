@@ -7,7 +7,7 @@ export const CORE_TEAM_FORM_URL = "https://forms.gle/VrZB4PVeDMzMRscz5";
 // Order here is the desired nav order; TopBar keeps "soon" items grouped last.
 export const SITEMAP = [
   {
-    href: "/events", label: "Events", soon: true,
+    href: "/events", label: "Events", soon: false,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
         <path d="M5 4h14a2 2 0 0 1 2 2v3H3V6a2 2 0 0 1 2-2z" />
@@ -63,14 +63,6 @@ export const SITEMAP = [
         <circle cx="11.5" cy="7.5" r="1" fill="currentColor" />
         <circle cx="16.5" cy="9.5" r="1" fill="currentColor" />
         <circle cx="15.5" cy="14.5" r="1" fill="currentColor" />
-      </svg>
-    ),
-  },
-  {
-    href: "/sponsors", label: "Sponsors", red: true,
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-        <path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10z" />
       </svg>
     ),
   },
