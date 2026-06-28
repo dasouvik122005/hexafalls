@@ -62,7 +62,7 @@ const STATUS_COLOR = {
 
 const SQUAD_SELECT = `SELECT id, event, name, tagline, description, leader_id,
               invite_token, min_members, max_members, status, paid,
-              submitted_at, reviewed_at, review_notes, created_at
+              details_json, submitted_at, reviewed_at, review_notes, created_at
          FROM squads WHERE id = ?`;
 
 export default async function TeamProfilePage({ params, searchParams }) {
@@ -109,6 +109,16 @@ export default async function TeamProfilePage({ params, searchParams }) {
   const cfg         = REGISTRATION_EVENTS[squad.event];
   const paidEvent   = isPaidEvent(squad.event);
   const pricePerPerson = cfg?.pricePerPerson ?? 0;
+
+  // CP (team-of-1) carries the coder's platform handles in details_json.
+  let cpHandles = null;
+  if (squad.event === "cp" && squad.details_json) {
+    try {
+      cpHandles = JSON.parse(squad.details_json)?.platformHandles ?? null;
+    } catch {
+      cpHandles = null;
+    }
+  }
 
   const totalMembers = memberRows.length;
   // Team-pays model: the squad's fee is settled once the leader has paid.
@@ -224,6 +234,24 @@ export default async function TeamProfilePage({ params, searchParams }) {
             </ul>
           </section>
 
+          {/* CP handles — the team-of-1's competitive-programming profiles. */}
+          {cpHandles && (
+            <section className="mt-12">
+              <SectionHeading>Handles</SectionHeading>
+              <ul className="flex flex-col gap-2">
+                {cpHandles.codeforces && (
+                  <HandleRow label="Codeforces" href={`https://codeforces.com/profile/${cpHandles.codeforces}`} handle={cpHandles.codeforces} />
+                )}
+                {cpHandles.leetcode && (
+                  <HandleRow label="LeetCode" href={`https://leetcode.com/u/${cpHandles.leetcode}`} handle={cpHandles.leetcode} />
+                )}
+                {cpHandles.codechef && (
+                  <HandleRow label="CodeChef" href={`https://www.codechef.com/users/${cpHandles.codechef}`} handle={cpHandles.codechef} />
+                )}
+              </ul>
+            </section>
+          )}
+
           {/* About — plain, only when there's a description. */}
           {squad.description && (
             <section className="mt-12">
@@ -292,6 +320,24 @@ export default async function TeamProfilePage({ params, searchParams }) {
       </RegisterShell>
       <Footer />
     </main>
+  );
+}
+
+function HandleRow({ label, href, handle }) {
+  return (
+    <li className="flex items-center justify-between gap-3 rounded-sm border border-cyan-hp/15 bg-slate-hp/20 px-4 py-3">
+      <span className="font-display text-[10px] uppercase tracking-[0.35em] text-cyan-hp/80">
+        {label}
+      </span>
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="font-mono text-sm text-silver-hp hover:text-cyan-hp"
+      >
+        @{handle} ↗
+      </a>
+    </li>
   );
 }
 

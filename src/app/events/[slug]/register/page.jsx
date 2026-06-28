@@ -181,6 +181,7 @@ export default async function EventRegisterPage({ params, searchParams }) {
             eventLabel={cfg.label}
             hasUsername={Boolean(user.username)}
             openSquads={openSquads}
+            maxMembers={cfg.maxMembers}
           />
         ) : (
           <SoloRegisterForm

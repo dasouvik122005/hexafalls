@@ -48,8 +48,15 @@ export const REGISTRATION_EVENTS = {
   },
   cp: {
     label: "Competitive Programming",
-    mode: "solo",
+    // CP is solo in spirit, but modelled as a SQUAD of exactly 1 so it reuses the
+    // whole team flow (create → review → leader pays → approved). One coder = one
+    // "team" they lead; their platform handles ride along in details_json.
+    mode: "squad",
+    squadKind: "cp_squad",
     parentEvent: "cp",
+    minMembers: 1,
+    maxMembers: 1,
+    pricePerPerson: 70, // ₹, charged only after approval (shortlisted → pay → approved)
     fields: ["platformHandles"],
   },
   gaming: {

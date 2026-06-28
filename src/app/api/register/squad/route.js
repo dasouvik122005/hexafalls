@@ -18,6 +18,7 @@ import {
 import { grantEventRole } from "@/lib/roles";
 import { hasHardwareConflict } from "@/lib/registration/conflicts";
 import { validateSquadName } from "@/lib/registration/squadName";
+import { cleanCpHandles, verifyCpHandles } from "@/lib/registration/cpHandles";
 import { sendTeamCreated } from "@/lib/mail/triggers";
 
 
@@ -49,9 +50,22 @@ export async function POST(req) {
   }
   const cleanName = squadName.trim();
 
-  // Hardware Exhibition (school teams) carries extra details on the squad.
-  // Validate + whitelist them server-side; stored as details_json.
+  // Some squad events carry extra details on the squad (validated + whitelisted
+  // server-side, stored as details_json).
   let detailsJson = null;
+  // CP is a team-of-1: the coder's platform handles ride along on the squad.
+  if (event === "cp") {
+    const cleanHandles = cleanCpHandles(details);
+    if (!cleanHandles.ok) {
+      return NextResponse.json({ error: cleanHandles.error }, { status: 400 });
+    }
+    // Every supplied handle must resolve to a real profile (404 = reject).
+    const bad = await verifyCpHandles(cleanHandles.platformHandles);
+    if (bad) {
+      return NextResponse.json({ error: bad }, { status: 400 });
+    }
+    detailsJson = JSON.stringify({ platformHandles: cleanHandles.platformHandles });
+  }
   if (event === "hardware-exhibition") {
     const d = details ?? {};
     if (d.isHighSchool !== true) {

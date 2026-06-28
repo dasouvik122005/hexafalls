@@ -20,6 +20,7 @@ export const ID_SPECS = {
   hardware_competition_squad:{ prefix: "HW-C-T-",   len: 6 },
   hardware_exhibit_squad:    { prefix: "HW-X-T-",   len: 6 },
   gaming_squad:              { prefix: "GAME-T-",   len: 6 },
+  cp_squad:                  { prefix: "CP-T-",     len: 6 },
   solo_registration:         { prefix: "REG-",      len: 6 },
   payment:                   { prefix: "PAY-",      len: 8 },
   join_request:              { prefix: "JR-",       len: 8 },

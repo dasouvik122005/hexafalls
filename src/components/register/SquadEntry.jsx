@@ -169,21 +169,25 @@ function BrowseSquads({ eventLabel, openSquads, onCreate }) {
   );
 }
 
-export default function SquadEntry({ event, eventLabel, hasUsername, openSquads = [] }) {
+export default function SquadEntry({ event, eventLabel, hasUsername, openSquads = [], maxMembers = 4 }) {
   const [tab, setTab] = useState("create");
+  // A team of one (e.g. CP) can never be joined — no "Join a squad" tab.
+  const solo = maxMembers <= 1;
 
   return (
     <div className="mt-6 sm:mt-8 flex flex-col gap-6">
-      <div className="mx-auto inline-flex rounded-full border border-cyan-hp/25 bg-slate-hp/40 p-1 backdrop-blur-sm">
-        <TabButton active={tab === "create"} onClick={() => setTab("create")}>
-          Create a squad
-        </TabButton>
-        <TabButton active={tab === "join"} onClick={() => setTab("join")}>
-          Join a squad
-        </TabButton>
-      </div>
+      {!solo && (
+        <div className="mx-auto inline-flex rounded-full border border-cyan-hp/25 bg-slate-hp/40 p-1 backdrop-blur-sm">
+          <TabButton active={tab === "create"} onClick={() => setTab("create")}>
+            Create a squad
+          </TabButton>
+          <TabButton active={tab === "join"} onClick={() => setTab("join")}>
+            Join a squad
+          </TabButton>
+        </div>
+      )}
 
-      {tab === "create" ? (
+      {solo || tab === "create" ? (
         <SquadCreateForm event={event} eventLabel={eventLabel} hasUsername={hasUsername} />
       ) : (
         <BrowseSquads
