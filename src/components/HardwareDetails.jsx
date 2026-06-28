@@ -221,7 +221,7 @@ export default function HardwareDetails({ registered = null }) {
                   seed={29}
                   className="px-8 sm:px-10 py-3 sm:py-4 leading-none text-[12px] sm:text-[13px] tracking-[0.35em]"
                 >
-                  <span>EXHIBITION · SCHOOL SOLO</span>
+                  <span>EXHIBITION · SCHOOL TEAM 1–4</span>
                   <span aria-hidden="true">↗</span>
                 </RoughButton>
               </div>

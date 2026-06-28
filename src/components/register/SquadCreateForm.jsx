@@ -12,6 +12,8 @@ const ERRORS = {
   username_taken:    "That handle is taken — try another.",
   already_in_squad:  "You are already in a squad for this event.",
   hardware_other_mode: "You can only enter one Hardware track — you're already in the other.",
+  high_school_required: "Confirm your team are school students to continue.",
+  missing_fields:    "Fill in the school name and exhibit title.",
   gdg_required:      "Join the GDG chapter first.",
   unauthorized:      "Sign in to continue.",
   event_not_squad:   "This event is not a team event.",
