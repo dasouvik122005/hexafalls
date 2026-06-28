@@ -9,7 +9,6 @@ export default function Home() {
       <TopBar />
       {/* Hero already includes the "Call for…" scrolls + the location map. */}
       <Hero />
-      <SneakPeek />
       <Footer />
     </main>
   );

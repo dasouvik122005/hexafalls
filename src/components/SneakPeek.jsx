@@ -7,12 +7,6 @@ import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
 import { EVENTS } from "@/lib/routes";
 
-const SUMMARY = {
-  hackathon: "58 hours, squads of 2–4, every track from AI to blockchain.",
-  cp: "Solo duels of logic — sharpen the wand, race the clock.",
-  gaming: "Squads of 2–4 — controller in hand, glory on the line.",
-  hardware: "Build what you can hold — compete as a team or exhibit solo.",
-};
 
 export default function SneakPeek() {
   return (
