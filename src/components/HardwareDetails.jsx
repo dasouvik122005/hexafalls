@@ -178,8 +178,8 @@ export default function HardwareDetails({ registered = null }) {
 
         <Reveal delay={0.15}>
           <p className="mt-6 font-wizard text-silver-hp/80 text-base leading-relaxed max-w-2xl mx-auto">
-            Build the magic you can hold. Compete as a team of 2–4 in the robotics
-            challenges, or exhibit a hardware project solo (school students).
+            Build the magic you can hold. Compete as a team of 1–4 in the robotics
+            challenges, or exhibit a hardware project as a school team of 1–4.
           </p>
         </Reveal>
 

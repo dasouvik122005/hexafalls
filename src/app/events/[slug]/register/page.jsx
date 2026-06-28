@@ -241,7 +241,7 @@ function HardwareModeChooser() {
     {
       mode: "exhibition",
       label: "Exhibition",
-      note: "High-school students · solo entry",
+      note: "School students · team of 1–4",
     },
     {
       mode: "competition",
