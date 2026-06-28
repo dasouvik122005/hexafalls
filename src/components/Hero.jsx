@@ -15,8 +15,6 @@ import RoughTape from "./RoughTape";
 import { CALLS } from "@/lib/routes";
 import MysticalTicker from "./MysticalTicker";
 import PartnerMarquee from "./PartnerMarquee";
-import RoughButton from "./RoughButton";
-import RoughDivider from "./RoughDivider";
 import { EVENTS } from "@/lib/routes";
 
 const SUMMARY = {
@@ -1046,7 +1044,7 @@ export default function Hero() {
 
          <div aria-hidden="true" className="absolute inset-0 -z-10 hp-scrim pointer-events-none opacity-60" />
       <div className="mx-auto max-w-6xl">
-        <div className="mb-10 flex flex-col items-center gap-3 text-center">
+        <div className="mb-10  mt-10 flex flex-col items-center gap-3 text-center">
           <div className="flex items-center gap-3">
             <RoughDivider width={48} height={20} color="#D4AF37" seed={7} />
             <span className="font-display text-[11px] uppercase tracking-[0.5em] text-gold-hp/90">
