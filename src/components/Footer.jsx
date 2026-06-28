@@ -210,7 +210,7 @@ export default function Footer() {
               <path d="M12 9v3" />
               <path d="M12 15h.01" />
             </svg>
-            <span className="font-display text-[11px] uppercase tracking-[0.3em] text-rose-200">
+            <span className="font-display uppercase tracking-[0.3em] text-rose-200">
               Report an Incident
             </span>
           </a>

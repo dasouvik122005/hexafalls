@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
 import Link from "next/link";
 import Sparkles from "./Sparkles";
@@ -85,6 +85,92 @@ function RunePattern({ color }) {
 }
 
 // Scroll roller top/bottom cap
+const MOBILE_SORTING_BACKGROUNDS = [
+  "/backgrounds/sorting-hat-card-bg-mobile-v2.png",
+  "/backgrounds/sorting-hat-card-bg-mobile-v3.png",
+  "/backgrounds/sorting-hat-card-bg-mobile-v4.png",
+];
+const DESKTOP_SORTING_BACKGROUNDS = [
+  "/backgrounds/sorting-hat-card-bg-desktop-v2.png",
+  "/backgrounds/sorting-hat-card-bg-desktop-v3.png",
+  "/backgrounds/sorting-hat-card-bg-desktop-v4.png",
+];
+
+function getShuffledIndices() {
+  const indices = [0, 1, 2, 3];
+  for (let i = indices.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]];
+  }
+  return indices;
+}
+
+function SortingBackgroundSlideshow({ isDesktop, currentIndex }) {
+  const backgrounds = isDesktop ? DESKTOP_SORTING_BACKGROUNDS : MOBILE_SORTING_BACKGROUNDS;
+  const image = backgrounds[currentIndex];
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={image}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 1.2, ease: "easeInOut" }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${image})` }}
+      />
+    </AnimatePresence>
+  );
+}
+
+function useSortingCardBackground() {
+  const [isDesktop, setIsDesktop] = useState(false);
+  const [slideIndex, setSlideIndex] = useState(0);
+  const shuffled = useMemo(getShuffledIndices, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return undefined;
+    const media = window.matchMedia("(min-width: 900px)");
+    const update = () => setIsDesktop(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    const preload = (urls) => urls.forEach((src) => { const img = new Image(); img.src = src; });
+    preload(isDesktop ? DESKTOP_SORTING_BACKGROUNDS : MOBILE_SORTING_BACKGROUNDS);
+  }, [isDesktop]);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setSlideIndex((current) => (current + 1) % shuffled.length);
+    }, 7000);
+    return () => window.clearInterval(interval);
+  }, [shuffled.length]);
+
+  return { isDesktop, currentIndex: shuffled[slideIndex] };
+}
+
+function SortingCardBackgroundWrapper() {
+  const { isDesktop, currentIndex } = useSortingCardBackground();
+
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      <SortingBackgroundSlideshow isDesktop={isDesktop} currentIndex={currentIndex} />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.06),transparent_40%)]"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(1,6,15,0.04)_0%,rgba(2,5,12,0.75)_90%)]"
+      />
+    </div>
+  );
+}
+
 function ScrollRoller({ position = "top", color }) {
   return (
     <div
@@ -735,7 +821,7 @@ export default function Hero() {
                       >
                         {/* Inner golden border trim */}
                         <div
-                          className="absolute inset-[3px] pointer-events-none z-10"
+                          className="absolute inset-0.75 pointer-events-none z-10"
                           style={{
                             border: `1px solid rgba(212,175,55,0.22)`,
                             borderRadius: "1px",
@@ -995,42 +1081,80 @@ export default function Hero() {
           transition={{ duration: 0.45, ease: "easeOut" }}
           className="mt-28 w-full max-w-3xl"
         >
-          <RoughFrame
-            seed={131}
-            stroke="#D4AF37"
-            mistColor="#D4AF37"
-            strokeWidth={1.5}
-            roughness={1.6}
-            bowing={1.2}
-            padding={28}
-            className="w-full bg-slate-hp/30 backdrop-blur-sm"
-            inner="flex flex-col items-center text-center gap-4"
-          >
-            <span className="font-display text-[11px] uppercase tracking-[0.5em] text-gold-hp/80">
-              The Sorting
-            </span>
-            <h3
-              className="font-display font-black tracking-tight text-silver-hp hp-glow"
-              style={{ fontSize: "clamp(1.5rem, 4vw, 2.4rem)" }}
+          <div className="relative">
+            <div className="absolute inset-0 rounded-3xl overflow-hidden">
+              <SortingCardBackgroundWrapper />
+            </div>
+            <div className="absolute inset-x-0 top-0 flex items-start justify-between px-8 pt-2 pointer-events-none">
+              <span
+                className="block h-24 w-px rounded-full bg-slate-300/30"
+                style={{ transform: "rotate(-8deg)" }}
+              />
+              <span
+                className="block h-24 w-px rounded-full bg-slate-300/30"
+                style={{ transform: "rotate(8deg)" }}
+              />
+            </div>
+            <div className="relative z-10 mx-auto inline-block w-full -rotate-1">
+              <RoughFrame
+                seed={131}
+                stroke="#D4AF37"
+                mistColor="#D4AF37"
+                strokeWidth={1.5}
+                roughness={1.6}
+                bowing={1.2}
+                padding={28}
+                className="relative w-full bg-slate-hp/12 backdrop-blur-[1px]"
+                inner="flex flex-col items-center text-center gap-4"
+              >
+                <span className="font-display text-[11px] uppercase tracking-[0.5em] text-gold-hp/80">
+                  The Sorting
+                </span>
+                <h3
+                className="font-display font-black tracking-tight text-silver-hp hp-glow"
+                style={{ fontSize: "clamp(1.5rem, 4vw, 2.4rem)" }}
+              >
+                Claim your <span className="text-gold-hp hp-glow-gold">House</span>
+              </h3>
+              <p className="max-w-md font-wizard text-silver-hp/70 text-sm sm:text-base leading-relaxed">
+                The hat is waiting. Answer its questions, let it read your wand-hand,
+                and receive the crest you were always meant to carry.
+              </p>
+              <RoughButton
+                as={Link}
+                href="/house"
+                color="#D4AF37"
+                glow="rgba(212,175,55,0.30)"
+                shimmer
+                seed={133}
+                className="mt-1 px-9 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.4em]"
+              >
+                ENTER THE SORTING <span>↗</span>
+              </RoughButton>
+            </RoughFrame>
+
+            <motion.div
+              initial={{ opacity: 0, y: 16, rotate: -6 }}
+              whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.45, ease: "easeOut", delay: 0.15 }}
+              className="absolute -left-40 -bottom-40 z-20 hidden sm:block"
             >
-              Claim your <span className="text-gold-hp hp-glow-gold">House</span>
-            </h3>
-            <p className="max-w-md font-wizard text-silver-hp/70 text-sm sm:text-base leading-relaxed">
-              The hat is waiting. Answer its questions, let it read your wand-hand,
-              and receive the crest you were always meant to carry.
-            </p>
-            <RoughButton
-              as={Link}
-              href="/house"
-              color="#D4AF37"
-              glow="rgba(212,175,55,0.30)"
-              shimmer
-              seed={133}
-              className="mt-1 px-9 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.4em]"
-            >
-              ENTER THE SORTING <span>↗</span>
-            </RoughButton>
-          </RoughFrame>
+              <div className="relative hp-float h-40 w-40 sm:h-56 sm:w-56"
+                style={{ animationDuration: "7s" }}
+              >
+                
+                <img
+                  src="/mascot/cat-mascout.png"
+                  alt="HexaFalls2 cat mascot"
+                  className="relative h-full w-full object-contain select-none rounded-3xl"
+                  style={{ filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.45))" }}
+                  draggable={false}
+                />
+              </div>
+            </motion.div>
+          </div>
+        </div>
         </motion.div>
 
         {/* footnote */}
