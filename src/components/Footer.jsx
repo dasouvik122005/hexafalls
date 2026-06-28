@@ -20,7 +20,8 @@ const CONTACTS = [
   { name: "Ayushman Bhattacharya", role: "GDGoC JISU", tel: "+918617755083", display: "+91 86177 55083" },
 ];
 
-const INCIDENT_REPORT_URL = " "; //tally or g from link will be added in future
+// Until a dedicated form lands, reports go straight to the support inbox.
+const INCIDENT_REPORT_URL = "mailto:support@hexafalls.org?subject=HexaFalls%20%E2%80%94%20Report%20an%20issue";
 
 const SOCIALS = [
   {

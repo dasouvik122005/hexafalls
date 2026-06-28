@@ -1032,25 +1032,6 @@ export default function Hero() {
             </RoughButton>
           </RoughFrame>
         </motion.div>
-
-        {/* footnote */}
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
-          className="mt-24 flex flex-col items-center gap-2 text-center"
-        >
-          <span className="inline-flex items-center gap-3 font-display text-[11px] uppercase tracking-[0.5em] text-cyan-hp/70">
-            <RoughDivider width={48} height={20} color="#66FCF1" seed={3} />
-            more scrolls unfurling soon
-            <RoughDivider width={48} height={20} color="#66FCF1" seed={5} />
-          </span>
-          <span className="font-wizard text-[12px] italic text-silver-hp/45">
-            tracks · prizes · sponsors · the keeper&apos;s lore — revealing in
-            due time
-          </span>
-        </motion.div>
       </section>
     </>
   );
