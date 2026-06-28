@@ -86,7 +86,7 @@ export default function UserMenu() {
     return (
       <a
         href={`/api/auth/login?return_to=${encodeURIComponent(returnTo)}`}
-        className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-gold-hp/40 bg-gold-hp/10 px-4 py-2 font-display text-[11px] uppercase tracking-[0.3em] text-gold-hp transition hover:bg-gold-hp/20"
+        className="inline-flex items-center gap-1.5 rounded-full border border-gold-hp/40 bg-gold-hp/10 px-3 py-1.5 sm:px-4 sm:py-2 font-display text-[10px] sm:text-[11px] uppercase tracking-[0.25em] sm:tracking-[0.3em] text-gold-hp transition hover:bg-gold-hp/20"
       >
         Sign in <span aria-hidden="true">↗</span>
       </a>
