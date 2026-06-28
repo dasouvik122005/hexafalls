@@ -22,7 +22,6 @@ import { notify } from "@/lib/notifications";
 import { teamUrl } from "@/lib/registration/events";
 import { hasHardwareConflict } from "@/lib/registration/conflicts";
 
-export const runtime = "edge";
 
 const EDITABLE = new Set(["forming", "registered"]);
 

@@ -12,7 +12,6 @@ import { createSessionCookie } from "@/lib/auth/session";
 import { getDB } from "@/lib/db";
 import { generateId } from "@/lib/ids";
 
-export const runtime = "edge";
 
 // Gravatar URL from an email (SHA-256 hex of the trimmed, lowercased address).
 // d=identicon → a unique generated avatar when the user has no Gravatar.

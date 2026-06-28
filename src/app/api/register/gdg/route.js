@@ -6,7 +6,6 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/auth/server";
 import { getDB } from "@/lib/db";
 
-export const runtime = "edge";
 
 export async function POST() {
   const user = await getSessionUser();

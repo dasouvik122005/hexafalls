@@ -12,7 +12,6 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/auth/server";
 import { listNotifications, markRead } from "@/lib/notifications";
 
-export const runtime = "edge";
 
 export async function GET() {
   const user = await getSessionUser();

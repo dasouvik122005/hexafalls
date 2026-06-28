@@ -20,7 +20,6 @@ import { hasHardwareConflict } from "@/lib/registration/conflicts";
 import { validateSquadName } from "@/lib/registration/squadName";
 import { sendTeamCreated } from "@/lib/mail/triggers";
 
-export const runtime = "edge";
 
 const USERNAME_RE = /^[a-z][a-z0-9_-]{2,23}$/;
 

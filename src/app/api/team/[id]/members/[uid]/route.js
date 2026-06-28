@@ -14,7 +14,6 @@ import { getDB } from "@/lib/db";
 import { notify } from "@/lib/notifications";
 import { teamUrl } from "@/lib/registration/events";
 
-export const runtime = "edge";
 
 const EDITABLE = new Set(["forming", "registered"]);
 

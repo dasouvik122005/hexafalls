@@ -17,7 +17,6 @@ import { getDB } from "@/lib/db";
 import { notifyMany } from "@/lib/notifications";
 import { sendTeamDeleted } from "@/lib/mail/triggers";
 
-export const runtime = "edge";
 
 export async function POST(req, { params }) {
   const { id: squadId } = await params;

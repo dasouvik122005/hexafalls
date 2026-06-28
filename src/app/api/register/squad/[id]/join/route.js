@@ -17,7 +17,6 @@ import { teamUrl } from "@/lib/registration/events";
 import { hasHardwareConflict } from "@/lib/registration/conflicts";
 import { notify } from "@/lib/notifications";
 
-export const runtime = "edge";
 
 const USERNAME_RE = /^[a-z][a-z0-9_-]{2,23}$/;
 const OPEN = new Set(["forming", "registered"]);

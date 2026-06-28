@@ -16,7 +16,6 @@ import { generateId } from "@/lib/ids";
 import { REGISTRATION_EVENTS, isPaidEvent, isPayableNow, teamUrl } from "@/lib/registration/events";
 import { createCheckoutSession } from "@/lib/pay/elixpo";
 
-export const runtime = "edge";
 
 const CURRENCY = "INR";
 

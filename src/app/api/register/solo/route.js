@@ -17,7 +17,6 @@ import { notify } from "@/lib/notifications";
 import { REGISTRATION_EVENTS, isSoloEvent, soloUrl } from "@/lib/registration/events";
 import { hasHardwareConflict } from "@/lib/registration/conflicts";
 
-export const runtime = "edge";
 
 const USERNAME_RE = /^[a-z][a-z0-9_-]{2,23}$/;
 

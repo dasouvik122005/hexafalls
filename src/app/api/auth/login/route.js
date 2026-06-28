@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 import { buildAuthorizeUrl } from "@/lib/auth/elixpo";
 import { getDB } from "@/lib/db";
 
-export const runtime = "edge";
 
 export async function GET(req) {
   const url = new URL(req.url);

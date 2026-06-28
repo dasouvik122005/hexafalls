@@ -13,7 +13,6 @@ import { NextResponse } from "next/server";
 import { getDB, env } from "@/lib/db";
 import { reconcilePayments } from "@/lib/pay/sync";
 
-export const runtime = "edge";
 
 // Constant-time string compare (no early-out, no length leak beyond equality).
 function safeEqual(a, b) {

@@ -21,7 +21,6 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/auth/server";
 import { getDB } from "@/lib/db";
 
-export const runtime = "edge";
 
 const HANDLE_RE = /^[A-Za-z0-9_-]{0,39}$/;          // GitHub-style cap
 const URL_RE    = /^https?:\/\/.{4,250}$/i;

@@ -17,7 +17,6 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/auth/server";
 import { getDB } from "@/lib/db";
 
-export const runtime = "edge";
 
 // Editable statuses (canonical + legacy synonyms).
 const EDITABLE = new Set(["forming", "registered", "rejected"]);

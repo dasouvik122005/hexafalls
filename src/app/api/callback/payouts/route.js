@@ -14,7 +14,6 @@ import { getDB } from "@/lib/db";
 import { verifyWebhookSignature, parsePayUid } from "@/lib/pay/elixpo";
 import { settleSquadIfComplete, recordMemberPaymentPaid } from "@/lib/pay/settle";
 
-export const runtime = "edge";
 
 export async function POST(req) {
   // 1) Raw body + signature — verify before doing ANYTHING with the contents.

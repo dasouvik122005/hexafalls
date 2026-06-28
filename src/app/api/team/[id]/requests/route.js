@@ -23,7 +23,6 @@ import { notify } from "@/lib/notifications";
 import { grantEventRole } from "@/lib/roles";
 import { teamUrl } from "@/lib/registration/events";
 
-export const runtime = "edge";
 
 const EDITABLE = new Set(["forming", "registered"]);
 

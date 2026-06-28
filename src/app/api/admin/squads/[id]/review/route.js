@@ -12,7 +12,6 @@ import { notifyMany } from "@/lib/notifications";
 import { sendTeamApproved } from "@/lib/mail/triggers";
 import { REGISTRATION_EVENTS, teamUrl, isPaidEvent } from "@/lib/registration/events";
 
-export const runtime = "edge";
 
 const ADMIN_ROLES = new Set(["admin", "organizer"]);
 // Statuses an admin may act on (canonical + legacy synonyms). fees_settled is

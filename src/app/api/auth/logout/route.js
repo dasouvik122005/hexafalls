@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { clearSessionCookie } from "@/lib/auth/session";
 
-export const runtime = "edge";
 
 export async function POST(req) {
   const url = new URL(req.url);
