@@ -30,7 +30,7 @@ export const REGISTRATION_EVENTS = {
     mode: "squad",
     squadKind: "hardware_competition_squad",
     parentEvent: "hardware",
-    minMembers: 2,
+    minMembers: 1,
     maxMembers: 4,
     gated: true, // approval-based
     pricePerPerson: 100, // ₹, charged only after approval
@@ -38,9 +38,12 @@ export const REGISTRATION_EVENTS = {
   },
   "hardware-exhibition": {
     label: "Hardware · Exhibition",
-    mode: "solo",
+    mode: "squad",
+    squadKind: "hardware_exhibit_squad",
     parentEvent: "hardware",
-    highSchoolOnly: true,
+    minMembers: 1,
+    maxMembers: 4,
+    highSchoolOnly: true, // school students; free event
     fields: ["schoolId", "schoolName", "schoolDetails", "exhibitTitle"],
   },
   cp: {

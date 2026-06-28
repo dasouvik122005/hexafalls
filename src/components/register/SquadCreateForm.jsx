@@ -19,10 +19,18 @@ const ERRORS = {
 };
 
 export default function SquadCreateForm({ event, eventLabel, hasUsername }) {
+  const isExhibition = event === "hardware-exhibition";
+
   const [squadName, setSquadName]   = useState("");
   const [tagline, setTagline]       = useState("");
   const [description, setDescription] = useState("");
   const [username, setUsername]     = useState("");
+  // Hardware Exhibition (school teams) — extra fields captured on the squad.
+  const [schoolName, setSchoolName]     = useState("");
+  const [exhibitTitle, setExhibitTitle] = useState("");
+  const [schoolId, setSchoolId]         = useState("");
+  const [schoolDetails, setSchoolDetails] = useState("");
+  const [isHighSchool, setIsHighSchool] = useState(false);
   const [busy, setBusy]             = useState(false);
   const [error, setError]           = useState(null);
 
@@ -31,13 +39,17 @@ export default function SquadCreateForm({ event, eventLabel, hasUsername }) {
   const nameCheck = validateSquadName(trimmedName);
   const nameValid = nameCheck.ok;
   const usernameOk = hasUsername || username.trim().length >= 3;
-  // Forge stays greyed until the WHOLE form is filled (name valid + tagline +
-  // description + username).
+  // Exhibition needs its school fields + the high-school confirmation.
+  const exhibitionOk =
+    !isExhibition ||
+    (schoolName.trim().length > 0 && exhibitTitle.trim().length > 0 && isHighSchool);
+  // Forge stays greyed until the WHOLE form is filled.
   const canForge =
     nameValid &&
     tagline.trim().length > 0 &&
     description.trim().length > 0 &&
     usernameOk &&
+    exhibitionOk &&
     !busy;
 
   async function onSubmit(e) {
@@ -45,6 +57,15 @@ export default function SquadCreateForm({ event, eventLabel, hasUsername }) {
     setBusy(true);
     setError(null);
     try {
+      const details = isExhibition
+        ? {
+            schoolName: schoolName.trim(),
+            exhibitTitle: exhibitTitle.trim(),
+            schoolId: schoolId.trim() || undefined,
+            schoolDetails: schoolDetails.trim() || undefined,
+            isHighSchool,
+          }
+        : undefined;
       const res = await fetch("/api/register/squad", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -54,6 +75,7 @@ export default function SquadCreateForm({ event, eventLabel, hasUsername }) {
           tagline: tagline || undefined,
           description: description || undefined,
           username: hasUsername ? undefined : username,
+          details,
         }),
       });
       const body = await res.json().catch(() => ({}));
@@ -148,6 +170,80 @@ export default function SquadCreateForm({ event, eventLabel, hasUsername }) {
             className="w-full rounded-sm border border-cyan-hp/40 bg-midnight/60 px-4 py-3 text-base text-silver-hp focus:border-cyan-hp focus:outline-none focus:ring-2 focus:ring-cyan-hp/40 resize-y"
           />
         </label>
+
+        {/* Hardware Exhibition (school teams) — extra details on the squad. */}
+        {isExhibition && (
+          <div className="flex flex-col gap-5 rounded-sm border border-gold-hp/25 bg-gold-hp/5 p-4">
+            <p className="font-wizard italic text-silver-hp/65 text-sm">
+              Exhibition is for school teams (1–4). Tell us about your school and exhibit.
+            </p>
+            <label className="flex flex-col gap-1.5">
+              <span className="font-display text-[10px] uppercase tracking-[0.4em] text-cyan-hp/80">
+                School name
+              </span>
+              <input
+                type="text"
+                required
+                value={schoolName}
+                onChange={(e) => setSchoolName(e.target.value)}
+                placeholder="Your school"
+                maxLength={120}
+                className="w-full rounded-sm border border-cyan-hp/40 bg-midnight/60 px-4 py-3 text-base text-silver-hp focus:border-cyan-hp focus:outline-none focus:ring-2 focus:ring-cyan-hp/40"
+              />
+            </label>
+            <label className="flex flex-col gap-1.5">
+              <span className="font-display text-[10px] uppercase tracking-[0.4em] text-cyan-hp/80">
+                Exhibit title
+              </span>
+              <input
+                type="text"
+                required
+                value={exhibitTitle}
+                onChange={(e) => setExhibitTitle(e.target.value)}
+                placeholder="What are you exhibiting?"
+                maxLength={120}
+                className="w-full rounded-sm border border-cyan-hp/40 bg-midnight/60 px-4 py-3 text-base text-silver-hp focus:border-cyan-hp focus:outline-none focus:ring-2 focus:ring-cyan-hp/40"
+              />
+            </label>
+            <label className="flex flex-col gap-1.5">
+              <span className="font-display text-[10px] uppercase tracking-[0.4em] text-cyan-hp/80">
+                School ID (optional)
+              </span>
+              <input
+                type="text"
+                value={schoolId}
+                onChange={(e) => setSchoolId(e.target.value)}
+                placeholder="Roll / ID number"
+                maxLength={120}
+                className="w-full rounded-sm border border-cyan-hp/40 bg-midnight/60 px-4 py-3 text-base text-silver-hp focus:border-cyan-hp focus:outline-none focus:ring-2 focus:ring-cyan-hp/40"
+              />
+            </label>
+            <label className="flex flex-col gap-1.5">
+              <span className="font-display text-[10px] uppercase tracking-[0.4em] text-cyan-hp/80">
+                School details (optional)
+              </span>
+              <textarea
+                value={schoolDetails}
+                onChange={(e) => setSchoolDetails(e.target.value)}
+                rows={3}
+                placeholder="Class, section, address — anything that helps us verify."
+                maxLength={1000}
+                className="w-full rounded-sm border border-cyan-hp/40 bg-midnight/60 px-4 py-3 text-base text-silver-hp focus:border-cyan-hp focus:outline-none focus:ring-2 focus:ring-cyan-hp/40 resize-y"
+              />
+            </label>
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={isHighSchool}
+                onChange={(e) => setIsHighSchool(e.target.checked)}
+                className="mt-1 h-4 w-4 accent-cyan-hp"
+              />
+              <span className="font-wizard text-silver-hp/80 text-sm">
+                I confirm every member of this team is a school student.
+              </span>
+            </label>
+          </div>
+        )}
 
         {error && (
           <p className="font-wizard italic text-red-300 text-sm">{error}</p>

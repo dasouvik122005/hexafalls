@@ -38,7 +38,7 @@ export async function POST(req) {
     return NextResponse.json({ error: "invalid_json" }, { status: 400 });
   }
 
-  const { event, squadName, tagline, description, username } = body ?? {};
+  const { event, squadName, tagline, description, username, details } = body ?? {};
 
   if (!isSquadEvent(event)) {
     return NextResponse.json({ error: "event_not_squad" }, { status: 400 });
@@ -49,6 +49,27 @@ export async function POST(req) {
     return NextResponse.json({ error: nameCheck.error }, { status: 400 });
   }
   const cleanName = squadName.trim();
+
+  // Hardware Exhibition (school teams) carries extra details on the squad.
+  // Validate + whitelist them server-side; stored as details_json.
+  let detailsJson = null;
+  if (event === "hardware-exhibition") {
+    const d = details ?? {};
+    if (d.isHighSchool !== true) {
+      return NextResponse.json({ error: "high_school_required" }, { status: 400 });
+    }
+    const schoolName = typeof d.schoolName === "string" ? d.schoolName.trim().slice(0, 120) : "";
+    const exhibitTitle = typeof d.exhibitTitle === "string" ? d.exhibitTitle.trim().slice(0, 120) : "";
+    if (!schoolName || !exhibitTitle) {
+      return NextResponse.json({ error: "missing_fields" }, { status: 400 });
+    }
+    const cleaned = { schoolName, exhibitTitle, isHighSchool: true };
+    const schoolId = typeof d.schoolId === "string" ? d.schoolId.trim().slice(0, 120) : "";
+    const schoolDetails = typeof d.schoolDetails === "string" ? d.schoolDetails.trim().slice(0, 1000) : "";
+    if (schoolId) cleaned.schoolId = schoolId;
+    if (schoolDetails) cleaned.schoolDetails = schoolDetails;
+    detailsJson = JSON.stringify(cleaned);
+  }
 
   const config = REGISTRATION_EVENTS[event];
   const db = getDB();
@@ -112,8 +133,8 @@ export async function POST(req) {
         .prepare(
           `INSERT INTO squads
              (id, event, name, tagline, description, leader_id,
-              invite_token, min_members, max_members)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+              invite_token, min_members, max_members, details_json)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         )
         .bind(
           squadId,
@@ -125,6 +146,7 @@ export async function POST(req) {
           inviteToken,
           config.minMembers,
           config.maxMembers,
+          detailsJson,
         ),
       db
         .prepare(
