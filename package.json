@@ -1,6 +1,6 @@
 {
   "name": "hexafalls",
-  "version": "1.0.53",
+  "version": "1.0.54",
   "private": true,
   "description": "HexaFalls — a 58-hour wizarding-themed hackathon at JIS University, Kolkata. Next.js + Tailwind app deployed on Cloudflare via OpenNext.",
   "keywords": [
@@ -44,9 +44,9 @@
     "start": "next start",
     "lint": "eslint",
     "optimize:logos": "node scripts/optimize-logos.mjs",
-    "optimize:brochure":  "node scripts/optimize-brochure.mjs",
-    "db:migrate":         "wrangler d1 migrations apply hexafalls --local",
-    "db:migrate:prod":    "wrangler d1 migrations apply hexafalls --remote",
+    "optimize:brochure": "node scripts/optimize-brochure.mjs",
+    "db:migrate": "wrangler d1 migrations apply hexafalls --local",
+    "db:migrate:prod": "wrangler d1 migrations apply hexafalls --remote",
     "db:migrate:preview": "wrangler d1 migrations apply hexafalls-preview --remote --env preview",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
