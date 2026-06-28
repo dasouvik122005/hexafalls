@@ -10,8 +10,8 @@
 // NOTE: `fields` are placeholders pending the event-details handoff. The
 // `mode` and member limits below reflect the confirmed rules:
 //   Software (hackathon)    squad 2–4
-//   Hardware Competition    squad 2–4  (approval-based)
-//   Hardware Exhibition     solo, high-school only (school details)
+//   Hardware Competition    squad 1–4  (approval-based)
+//   Hardware Exhibition     squad 1–4, school teams (school details)
 //   Competitive Programming solo
 //   Gaming                  squad 2–4
 export const REGISTRATION_EVENTS = {

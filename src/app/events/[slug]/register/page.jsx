@@ -246,7 +246,7 @@ function HardwareModeChooser() {
     {
       mode: "competition",
       label: "Competition",
-      note: "Team of 2–4 · approval-based",
+      note: "Team of 1–4 · approval-based",
     },
   ];
   return (
