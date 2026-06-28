@@ -3,8 +3,7 @@ import Footer from "@/components/Footer";
 import RoughFrame from "@/components/RoughFrame";
 import RoughDivider from "@/components/RoughDivider";
 import RoughButton from "@/components/RoughButton";
-import Sparkles from "@/components/Sparkles";
-import HeroVideoBg from "@/components/HeroVideoBg";
+import PageBackdrop from "@/components/PageBackdrop";
 
 // Drop your brochure PDF at this path under /public for the download link.
 const BROCHURE_PATH = "/brochures/HexaFalls_2_Brochure.pdf";
@@ -36,11 +35,11 @@ const BROCHURE_PAGES = [
 export const metadata = {
   title: "Sponsorship Brochure · HexaFalls Techfest",
   description:
-    "The HexaFalls sponsorship brochure: tiers, benefits, audience and reach. Preview in the browser or download the PDF.",
+    "The HexaFalls sponsorship brochure: tiers, benefits, audience and reach. Preview in the browser or download the PDF. Co-developed by Ayushman Bhattacharya.",
   openGraph: {
     title: "Sponsorship Brochure · HexaFalls Techfest",
     description:
-      "Tiers, benefits, audience and reach. Everything you need to back HexaFalls.",
+      "Tiers, benefits, audience and reach. Everything you need to back HexaFalls. Co-developed by Ayushman Bhattacharya.",
   },
 };
 
@@ -53,11 +52,7 @@ export default function SponsorshipBrochurePage() {
       <TopBar />
 
       <section className="relative isolate overflow-hidden min-h-screen pt-28 pb-24 px-6 flex flex-col items-center">
-        <HeroVideoBg />
-        <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
-        <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
-          <Sparkles count={18} />
-        </div>
+        <PageBackdrop />
 
         {/* Eyebrow */}
         <div className="mx-auto mb-6 flex max-w-3xl items-center justify-center gap-3 text-[11px] uppercase tracking-[0.5em] text-cyan-hp/70 font-display text-center">

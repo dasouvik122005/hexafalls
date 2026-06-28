@@ -56,11 +56,43 @@ head_sampling_rate = 1
 pattern        = "preview.hexafalls.org"
 custom_domain  = true
 
-# KV / R2 / D1 bindings can be added here later if you need server-side state.
-# [[kv_namespaces]]
-# binding = "KV"
-# id      = "<id>"
+# ---------------------------------------------------------------------------
+# Registration DB — Cloudflare D1.
 #
-# [[r2_buckets]]
-# binding     = "R2"
-# bucket_name = "<name>"
+# Create the DB once:
+#   wrangler d1 create hexafalls
+#   → copy the `database_id` it prints below.
+#
+# Apply migrations:
+#   wrangler d1 execute hexafalls --local  --file=worker/migrations/0001_init.sql
+#   wrangler d1 execute hexafalls --remote --file=worker/migrations/0001_init.sql
+#
+# Secrets (set per-environment with `wrangler secret put NAME [--env preview]`):
+#   ELIXPO_CLIENT_ID
+#   ELIXPO_CLIENT_SECRET
+#   SESSION_SECRET           -- 32+ random bytes, base64 or hex
+# ---------------------------------------------------------------------------
+[[d1_databases]]
+binding       = "DB"
+database_name = "hexafalls"
+database_id   = "518e68c3-7709-412a-8371-0e693eefc148"
+migrations_dir = "worker/migrations"
+
+[[env.preview.d1_databases]]
+binding       = "DB"
+database_name = "hexafalls-preview"
+database_id   = ""
+migrations_dir = "worker/migrations"
+
+# Non-secret config — secrets go via `wrangler secret put`.
+[vars]
+ELIXPO_REDIRECT_URI = "https://hexafalls.org/api/auth/callback"
+ELIXPO_AUTHORIZE_URL = "https://accounts.elixpo.com/oauth/authorize"
+ELIXPO_TOKEN_URL    = "https://accounts.elixpo.com/api/auth/token"
+ELIXPO_USERINFO_URL = "https://accounts.elixpo.com/api/auth/me"
+
+[env.preview.vars]
+ELIXPO_REDIRECT_URI = "https://preview.hexafalls.org/api/auth/callback"
+ELIXPO_AUTHORIZE_URL = "https://accounts.elixpo.com/oauth/authorize"
+ELIXPO_TOKEN_URL    = "https://accounts.elixpo.com/api/auth/token"
+ELIXPO_USERINFO_URL = "https://accounts.elixpo.com/api/auth/me"

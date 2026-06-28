@@ -5,7 +5,7 @@ import SponsorsHall from "@/components/SponsorsHall";
 export const metadata = {
   title: "Call for Sponsors · HexaFalls Techfest",
   description:
-    "Sponsor HexaFalls 2026. Devfolio joins as Gold with more sponsors being inked. Tiers, benefits and reach inside.",
+    "Sponsor HexaFalls 2026. Devfolio joins as Gold with more sponsors being inked. Tiers, benefits and reach inside. Co-developed by Ayushman Bhattacharya.",
 };
 
 export default function SponsorsPage() {

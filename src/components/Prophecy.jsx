@@ -202,115 +202,33 @@ export default function Prophecy() {
         ))}
       </motion.div>
 
-      {/* The path foretold — wavy timeline placeholder */}
-      <div className="mx-auto mt-24 max-w-5xl">
-        <motion.h2
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="text-center font-display tracking-[0.4em] text-silver-hp/85 uppercase text-sm"
-        >
+      {/* The path foretold — link out to the full timeline */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1 }}
+        className="mx-auto mt-24 max-w-3xl flex flex-col items-center gap-5 text-center"
+      >
+        <h2 className="font-display tracking-[0.4em] text-silver-hp/85 uppercase text-sm">
           The path foretold
-        </motion.h2>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.05 }}
-          transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
-          className="relative mt-12 mx-auto w-full"
+        </h2>
+        <p className="font-wizard italic text-silver-hp/60 text-sm max-w-md">
+          Three days, charted hour by hour — ceremonies, hacking, robotics and the finale.
+        </p>
+        <RoughButton
+          as={Link}
+          href="/timeline"
+          color="#D4AF37"
+          glow="rgba(212,175,55,0.35)"
+          fill={false}
+          shimmer
+          seed={61}
+          className="px-9 sm:px-11 py-3.5 leading-none text-[12px] sm:text-[13px] tracking-[0.35em]"
         >
-          <svg
-            viewBox="0 0 800 200"
-            preserveAspectRatio="none"
-            className="w-full h-40 sm:h-48"
-            aria-label="Timeline coming soon"
-            role="img"
-          >
-            <defs>
-              <linearGradient id="pathGrad" x1="0" x2="1" y1="0" y2="0">
-                <stop offset="0%"  stopColor="#66FCF1" stopOpacity="0.15" />
-                <stop offset="50%" stopColor="#66FCF1" stopOpacity="0.85" />
-                <stop offset="100%" stopColor="#D4AF37" stopOpacity="0.85" />
-              </linearGradient>
-              <filter id="pathGlow" x="-10%" y="-50%" width="120%" height="200%">
-                <feGaussianBlur stdDeviation="3" result="b" />
-                <feMerge>
-                  <feMergeNode in="b" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-            </defs>
-
-            {/* faint background wave */}
-            <path
-              d="M 10 100 C 90 30, 170 170, 250 100 S 410 30, 490 100 S 650 170, 730 100 S 890 30, 970 100"
-              fill="none"
-              stroke="#C5C6C7"
-              strokeOpacity="0.12"
-              strokeWidth="2"
-              strokeDasharray="2 6"
-            />
-
-            {/* main wavy path */}
-            <path
-              d="M 10 100 C 90 30, 170 170, 250 100 S 410 30, 490 100 S 650 170, 730 100 S 890 30, 970 100"
-              fill="none"
-              stroke="url(#pathGrad)"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeDasharray="6 8"
-              filter="url(#pathGlow)"
-            >
-              <animate
-                attributeName="stroke-dashoffset"
-                from="0"
-                to="-56"
-                dur="3.6s"
-                repeatCount="indefinite"
-              />
-            </path>
-
-            {/* milestone dots along the wave */}
-            {[
-              { cx: 10,  cy: 100, c: "#C5C6C7" },
-              { cx: 200, cy: 70,  c: "#66FCF1" },
-              { cx: 400, cy: 100, c: "#66FCF1" },
-              { cx: 600, cy: 130, c: "#66FCF1" },
-              { cx: 790, cy: 100, c: "#D4AF37" },
-            ].map((d, i) => (
-              <g key={i}>
-                <circle cx={d.cx} cy={d.cy} r="3.5" fill={d.c} />
-                <circle
-                  cx={d.cx}
-                  cy={d.cy}
-                  r="6"
-                  fill="none"
-                  stroke={d.c}
-                  strokeWidth="0.8"
-                  opacity="0.6"
-                >
-                  <animate attributeName="r" values="5;11;5" dur="2.8s" begin={`${i * 0.4}s`} repeatCount="indefinite" />
-                  <animate attributeName="opacity" values="0.6;0;0.6" dur="2.8s" begin={`${i * 0.4}s`} repeatCount="indefinite" />
-                </circle>
-              </g>
-            ))}
-          </svg>
-
-          {/* coming soon label, centered over the wave */}
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-            <div className="flex flex-col items-center gap-2 rounded-full border border-gold-hp/40 bg-midnight/70 backdrop-blur-sm px-6 py-3 hp-pulse">
-              <span className="font-display text-[10px] sm:text-xs uppercase tracking-[0.5em] text-gold-hp hp-glow-gold">
-                Timeline · coming soon
-              </span>
-              <span className="font-wizard italic text-[11px] text-silver-hp/55">
-                the scrolls are still being inked
-              </span>
-            </div>
-          </div>
-        </motion.div>
-      </div>
+          VIEW THE TIMELINE ↗
+        </RoughButton>
+      </motion.div>
 
       {/* Closing CTAs */}
       <motion.div
@@ -323,18 +241,17 @@ export default function Prophecy() {
 
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <RoughButton
+            as={Link}
+            href="/events"
             color="#66FCF1"
             glow="rgba(102,252,241,0.25)"
+            fill={false}
             shimmer
-            disabled
-            aria-disabled="true"
             seed={53}
-            className="px-7 py-3 text-[12px] hp-pulse"
+            className="px-9 sm:px-11 py-3.5 leading-none text-[12px] sm:text-[13px] tracking-[0.35em]"
           >
-            <span>REGISTER</span>
-            <span className="text-[10px] tracking-[0.25em] px-2 py-0.5 rounded-full border border-gold-hp/60 bg-gold-hp/10 text-gold-hp hp-glow-gold">
-              COMING SOON
-            </span>
+            <span>REGISTER NOW</span>
+            <span aria-hidden="true">↗</span>
           </RoughButton>
 
           <RoughButton

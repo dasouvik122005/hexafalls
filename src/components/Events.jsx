@@ -2,37 +2,16 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion, useMotionValue, useAnimationFrame } from "framer-motion";
+import { motion } from "framer-motion";
 import gsap from "gsap";
-import Sparkles from "./Sparkles";
-import FloatingArtifacts from "./FloatingArtifacts";
+import PageBackdrop from "@/components/PageBackdrop";
 import RoughFrame from "./RoughFrame";
 import RoughButton from "./RoughButton";
-import RoughDivider from "./RoughDivider";
-import RoughCorners from "./RoughCorners";
 import { EVENTS } from "@/lib/routes";
 
-export default function Events() {
+export default function Events({ registered = [], profileHref = null }) {
   const sectionRef = useRef(null);
-  const rotation = useMotionValue(0);
-  const isDragging = useRef(false);
-
-  useAnimationFrame((time, delta) => {
-    if (!isDragging.current) {
-      // Auto spin slowly when not being dragged
-      rotation.set(rotation.get() - 0.2 * (delta / 16));
-    }
-  });
-
-  const handlePan = (e, info) => {
-    isDragging.current = true;
-    // Map the horizontal drag movement to rotation degrees
-    rotation.set(rotation.get() + info.delta.x * 0.5);
-  };
-
-  const handlePanEnd = () => {
-    isDragging.current = false;
-  };
+  const registeredSet = new Set(registered);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -92,14 +71,7 @@ export default function Events() {
       ref={sectionRef}
       className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6"
     >
-      <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars pointer-events-none" />
-      <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
-      <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none hidden md:block">
-        <Sparkles count={24} />
-      </div>
-      <div className="hidden md:block">
-        <FloatingArtifacts stars={14} runes={12} seed={8} />
-      </div>
+      <PageBackdrop />
 
       <div className="text-center">
         <h1
@@ -126,131 +98,105 @@ export default function Events() {
         Full briefs unfurling soon
       </motion.div>
 
-      {/* Event cards — 3D Carousel */}
-      <style>{`
-        .carousel-track {
-          transform-style: preserve-3d;
-          will-change: transform;
-        }
-        .carousel-container {
-          perspective: 1200px;
-        }
-        .carousel-item {
-          transform: rotateY(var(--angle)) translateZ(160px);
-          will-change: transform;
-        }
-        @media (min-width: 640px) {
-          .carousel-item { transform: rotateY(var(--angle)) translateZ(280px); }
-        }
-        @media (min-width: 1024px) {
-          .carousel-item { transform: rotateY(var(--angle)) translateZ(400px); }
-        }
-        @keyframes pulse-glow-opacity {
-          0%, 100% { opacity: 0.2; }
-          50% { opacity: 1; }
-        }
-        .btn-pulse {
-          position: relative;
-        }
-        .btn-pulse::after {
-          content: '';
-          position: absolute;
-          inset: -1px;
-          border-radius: inherit;
-          box-shadow: 0 0 15px var(--btn-glow), inset 0 0 8px var(--btn-glow);
-          animation: pulse-glow-opacity 2.5s infinite ease-in-out;
-          pointer-events: none;
-          will-change: opacity;
-        }
-      `}</style>
-
-      <div className="carousel-container mx-auto mt-12 mb-24 h-[340px] w-[230px] sm:h-[450px] sm:w-[320px] md:h-[500px] md:w-[380px] relative">
-        <motion.div 
-          className="carousel-track absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing touch-none"
-          style={{ rotateY: rotation }}
-          onPan={handlePan}
-          onPanEnd={handlePanEnd}
-          onPointerDown={() => isDragging.current = true}
-          onPointerUp={() => isDragging.current = false}
-        >
-          {EVENTS.map((e, i) => {
-            const angle = i * 90;
-            return (
-              <div
-                key={e.slug}
-                className="carousel-item absolute inset-0 group flex flex-col justify-end"
-                style={{ "--angle": `${angle}deg` }}
-              >
-                {/* The cinematic image rendered as a floating, borderless hologram */}
-                <div 
-                  className="absolute inset-0 transition-transform duration-[12s] ease-out group-hover:scale-110"
+      {/* Event cards — responsive grid */}
+      <div className="mx-auto mt-16 grid max-w-6xl gap-6 sm:grid-cols-2">
+        {EVENTS.map((e, i) => (
+          <motion.div
+            key={e.slug}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.4, delay: i * 0.08 }}
+            className="h-full"
+          >
+            <RoughFrame
+              seed={51 + i * 9}
+              stroke={e.color}
+              mistColor={e.color}
+              strokeWidth={1.4}
+              roughness={1.5}
+              bowing={1.2}
+              padding={22}
+              className="h-full bg-slate-hp/30 backdrop-blur-sm"
+              inner="flex h-full flex-col gap-3"
+            >
+              <div className="flex items-center justify-between">
+                <span
+                  className="font-display text-3xl"
+                  style={{ color: e.color, textShadow: `0 0 14px ${e.glow}` }}
+                >
+                  {e.rune}
+                </span>
+                <span
+                  className="rounded-full border px-2 py-0.5 font-display text-[8px] uppercase tracking-[0.3em]"
                   style={{
-                    background: `url('${e.image}') center/cover no-repeat`,
-                    mixBlendMode: "screen",
-                    WebkitMaskImage: "radial-gradient(ellipse at center, black 40%, transparent 75%)",
-                    maskImage: "radial-gradient(ellipse at center, black 40%, transparent 75%)",
+                    borderColor: `${e.color}66`,
+                    color: `${e.color}cc`,
+                    backgroundColor: `${e.color}12`,
                   }}
-                />
-                {/* soft radial shadow behind text to maintain legibility without hard edges */}
-                <div 
-                  className="pointer-events-none absolute inset-x-0 bottom-0 h-3/4 opacity-90 transition-opacity duration-500 group-hover:opacity-100" 
-                  style={{
-                    background: "radial-gradient(ellipse at bottom, rgba(11,12,16,0.95) 0%, rgba(11,12,16,0.7) 40%, transparent 80%)"
-                  }}
-                />
-                
-                <div className="absolute inset-0 hp-stars opacity-40 mix-blend-screen pointer-events-none hidden md:block" />
-
-                <div className="relative z-10 p-6 flex flex-col gap-2 transition-transform duration-500 group-hover:-translate-y-2">
-                  <div className="flex items-center justify-between">
-                    <span
-                      className="font-wizard text-3xl"
-                      style={{ color: e.color, textShadow: `0 0 14px ${e.glow}` }}
-                      aria-hidden="true"
-                    >
-                      {e.rune}
-                    </span>
-                    <span
-                      className="rounded-full border px-2 py-0.5 font-display text-[8px] uppercase tracking-[0.3em] md:backdrop-blur-md"
-                      style={{
-                        borderColor: `${e.color}55`,
-                        color: `${e.color}ee`,
-                        backgroundColor: `${e.color}33`,
-                      }}
-                    >
-                      soon
-                    </span>
-                  </div>
-                  <h2
-                    className="font-display tracking-tight text-2xl leading-tight"
-                    style={{ color: e.color, textShadow: `0 0 18px ${e.glow}` }}
-                  >
-                    {e.name}
-                  </h2>
-                  <p className="font-wizard text-silver-hp/90 text-sm leading-relaxed text-balance">
-                    {e.blurb}
-                  </p>
-
-                  <div className="mt-3 flex flex-wrap gap-2 pt-2">
-                    <Link
-                      href={`/events/${e.slug}`}
-                      className="group/btn btn-pulse inline-flex items-center gap-1.5 rounded-full border px-4 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] transition md:backdrop-blur-md hover:bg-white/20"
-                      style={{
-                        "--btn-glow": e.glow,
-                        borderColor: `${e.color}90`,
-                        color: e.color,
-                        backgroundColor: `${e.color}22`,
-                      }}
-                    >
-                      Details
-                      <span className="group-hover/btn:translate-x-0.5 transition">→</span>
-                    </Link>
-                  </div>
-                </div>
+                >
+                  soon
+                </span>
               </div>
-            );
-          })}
-        </motion.div>
+
+              <h2
+                className="font-display text-2xl font-black tracking-tight"
+                style={{ color: e.color, textShadow: `0 0 18px ${e.glow}` }}
+              >
+                {e.name}
+              </h2>
+
+              <p className="font-wizard text-silver-hp/85 text-sm leading-relaxed">
+                {e.blurb}
+              </p>
+
+              <div className="mt-auto flex flex-wrap gap-2 pt-2">
+                {/* Details — outline; full info + prizes live on the detail page */}
+                <Link
+                  href={`/events/${e.slug}`}
+                  className="group inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] transition hover:brightness-110"
+                  style={{
+                    borderColor: `${e.color}66`,
+                    color: `${e.color}cc`,
+                    backgroundColor: `${e.color}12`,
+                  }}
+                >
+                  Details
+                  <span className="group-hover:translate-x-0.5 transition">→</span>
+                </Link>
+                {/* Primary action — once registered, the button becomes a link
+                    to the user's profile instead of "Register". */}
+                {registeredSet.has(e.slug) && profileHref ? (
+                  <Link
+                    href={profileHref}
+                    className="group inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] text-midnight transition hover:brightness-110"
+                    style={{
+                      borderColor: e.color,
+                      backgroundColor: e.color,
+                      boxShadow: `0 0 16px ${e.glow}`,
+                    }}
+                  >
+                    View Profile
+                    <span className="group-hover:translate-x-0.5 transition">↗</span>
+                  </Link>
+                ) : (
+                  <Link
+                    href={`/events/${e.slug}/register`}
+                    className="group inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 font-display text-[10px] uppercase tracking-[0.3em] text-midnight transition hover:brightness-110"
+                    style={{
+                      borderColor: e.color,
+                      backgroundColor: e.color,
+                      boxShadow: `0 0 16px ${e.glow}`,
+                    }}
+                  >
+                    Register
+                    <span className="group-hover:translate-x-0.5 transition">↗</span>
+                  </Link>
+                )}
+              </div>
+            </RoughFrame>
+          </motion.div>
+        ))}
       </div>
 
       {/* Back */}

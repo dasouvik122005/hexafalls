@@ -66,6 +66,52 @@ export const SITEMAP = [
       </svg>
     ),
   },
+  {
+    href: "/sponsors", label: "Sponsors", red: true,
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+        <path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10z" />
+      </svg>
+    ),
+  },
+  {
+    href: "/about", label: "The Prophecy",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+        <path d="M3 5h6a3 3 0 0 1 3 3v12a3 3 0 0 0-3-3H3z" />
+        <path d="M21 5h-6a3 3 0 0 0-3 3v12a3 3 0 0 1 3-3h6z" />
+      </svg>
+    ),
+  },
+  {
+    href: "/faq", label: "FAQ",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+        <line x1="12" y1="17" x2="12.01" y2="17" />
+      </svg>
+    ),
+  },
+  {
+    href: "/timeline", label: "Timeline", soon: false,
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 7v5l3 2" />
+      </svg>
+    ),
+  },
+  {
+    href: "/events", label: "The Events", soon: false,
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+        <path d="M5 4h14a2 2 0 0 1 2 2v3H3V6a2 2 0 0 1 2-2z" />
+        <path d="M3 9v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9" />
+        <path d="M8 2v4M16 2v4" />
+      </svg>
+    ),
+  },
 ];
 
 // Sub-orders inside the /teams hub. All four share the project's cyan
@@ -160,16 +206,17 @@ export const CALLS = [
     label: "Call for Evangelists",
     short: "Evangelists",
     accent: "gold",
-    open: true,
-    blurb: "Open now. Be the voice of the order beyond the walls.",
+    closed: true,
+    blurb: "Entries closed — the order's voices have been chosen.",
   },
   {
-    href: "/judges",
+    href: "https://luma.com/8f43ddm9",
+    external: true,
     label: "Call for Judges & Mentors",
     short: "Judges & Mentors",
     accent: "cyan",
-    soon: true,
-    blurb: "Wise hands. Sharp eyes. Guide the council — soon.",
+    open: true,
+    blurb: "Open now. Wise hands and sharp eyes — guide the council.",
   },
   {
     href: "/teams/team",
@@ -202,7 +249,6 @@ export const HARDWARE_TRACKS = [
     color: "#D4AF37",
     desc: "Race your magical machine through enchanted obstacles.",
     slug: "robo-terrence",
-    image: "/tracks/robo-terrence.png",
   },
 
   {
@@ -211,7 +257,6 @@ export const HARDWARE_TRACKS = [
     color: "#4A90E2",
     desc: "Strategic robotic gameplay inspired by the wizarding world.",
     slug: "robo-soccer",
-    image: "/tracks/robo-soccer.png",
   },
 
   {
@@ -220,7 +265,6 @@ export const HARDWARE_TRACKS = [
     color: "#FF6B35",
     desc: "Push, battle and dominate the magical combat arena.",
     slug: "robo-sumo",
-    image: "/tracks/robo-sumo.png",
   },
 
   {
@@ -229,7 +273,6 @@ export const HARDWARE_TRACKS = [
     color: "#8B5CF6",
     desc: "Follow mystical trails with precision and intelligence.",
     slug: "line-follower",
-    image: "/tracks/line-follower.png",
   },
 
   {
@@ -238,7 +281,6 @@ export const HARDWARE_TRACKS = [
     color: "#22C55E",
     desc: "Present groundbreaking innovations and magical creations.",
     slug: "exhibition",
-    image: "/tracks/exhibition.png",
   },
 ];
 
@@ -246,7 +288,7 @@ export const EXHIBITION_RULES = {
   overview: "The Project Exhibition is a platform for innovators, makers, researchers, and technology enthusiasts to showcase their ideas, prototypes, and engineering solutions. Participants will demonstrate their projects before a panel of judges, industry experts, and fellow innovators, highlighting creativity, technical excellence, and real-world impact. Whether your project focuses on Artificial Intelligence, IoT, Robotics, Healthcare, Sustainability, Automation, Software Development, or Open Innovation, this event provides an opportunity to present your work, gain valuable feedback, and compete for recognition.",
   registration: {
     fee: "₹400 per Team",
-    teamSize: "2–5 Members"
+    teamSize: "2–4 Members"
   },
   projectCategories: [
     "Artificial Intelligence & Machine Learning",
@@ -264,7 +306,7 @@ export const EXHIBITION_RULES = {
   eligibility: [
     "Open to students from schools, colleges, universities, and technical institutions.",
     "Individual and team participation are allowed.",
-    "Teams can consist of 2–5 members.",
+    "Teams can consist of 2–4 members.",
     "Projects may be hardware-based, software-based, or a combination of both."
   ],
   exhibitionRules: [
@@ -381,7 +423,7 @@ export const ROBO_TERRENCE_RULES = {
   overview: "Robo Terrence is an off-road robotic challenge designed to test the endurance, stability, and maneuverability of robots across a variety of challenging terrains. Participants must build and control robots capable of overcoming obstacles such as sand pits, bumpers, water sections, net bridges, and complex pathways while maintaining speed and precision. The competition evaluates a robot's ability to adapt to difficult environments, complete mandatory tasks, and navigate unpredictable terrain efficiently.",
   registration: {
     fee: "₹400 per Team",
-    teamSize: "2–5 Members"
+    teamSize: "2–4 Members"
   },
   botSpecs: [
     "Maximum Dimensions: 25 cm (Width) × 30 cm (Length)",
@@ -451,7 +493,7 @@ export const ROBO_SOCCER_RULES = {
   overview: "Experience the excitement of robotic football where innovation, strategy, and precision come together on the arena floor. Robo Soccer challenges teams to design and control robots capable of dribbling, defending, and scoring goals against their opponents in an intense battle of engineering and teamwork. Compete in preliminary rounds, knockout stages, and the grand finale to prove your robot's speed, control, and tactical superiority.",
   registration: {
     fee: "₹400 per Team",
-    teamSize: "2–5 Members"
+    teamSize: "2–4 Members"
   },
   botSpecs: [
     "Maximum Dimensions: 30 cm × 30 cm (including wheels).",
@@ -466,7 +508,7 @@ export const ROBO_SOCCER_RULES = {
   generalRules: [
     "Participants are not allowed to enter the arena.",
     "Teams without a robot may use a wired robot provided by the organizers.",
-    "Each team must consist of 2–5 members.",
+    "Each team must consist of 2–4 members.",
     "A participant cannot join multiple teams.",
     "One robot cannot be shared between multiple teams.",
     "Team members may belong to different institutions.",
@@ -517,7 +559,7 @@ export const ROBO_SUMO_RULES = {
   overview: "Enter the ultimate robotic battleground where engineering meets strategy. Robo Sumo challenges participants to design and build powerful combat robots capable of pushing, lifting, pinning, or immobilizing their opponents inside the arena. Victory belongs to the team that demonstrates superior control, aggression, durability, and tactical excellence. Whether you're a robotics enthusiast or a competitive builder, Robo Sumo offers an electrifying platform to showcase your engineering skills and battle against the best.",
   registration: {
     fee: "₹400 per Team",
-    teamSize: "2–5 Members"
+    teamSize: "2–4 Members"
   },
   botSpecs: [
     "Maximum robot weight: 3 kg (100 g margin allowed).",
@@ -536,7 +578,7 @@ export const ROBO_SUMO_RULES = {
     "Battery replacement during a match is not allowed."
   ],
   teamRules: [
-    "Each team must consist of 2–5 members.",
+    "Each team must consist of 2–4 members.",
     "Team members may belong to the same or different institutions.",
     "Every team must register with a unique team name.",
     "Each team must appoint a team leader as the official representative.",

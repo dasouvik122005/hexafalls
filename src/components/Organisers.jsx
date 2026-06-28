@@ -2,8 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import HeroVideoBg from "./HeroVideoBg";
-import Sparkles from "./Sparkles";
+import PageBackdrop from "@/components/PageBackdrop";
 import RoughDivider from "./RoughDivider";
 import RoughCorners from "./RoughCorners";
 import RoughButton from "./RoughButton";
@@ -20,11 +19,7 @@ const ORGS = [
 export default function Organisers() {
   return (
     <section className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6 flex flex-col items-center">
-      <HeroVideoBg />
-      <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim opacity-60 pointer-events-none" />
-      <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
-        <Sparkles count={20} />
-      </div>
+      <PageBackdrop />
 
       {/* Eyebrow */}
       <motion.div

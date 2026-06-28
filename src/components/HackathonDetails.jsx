@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import gsap from "gsap";
@@ -14,6 +14,30 @@ const GOLD = "#D4AF37";
 const GOLD_GLOW = "rgba(212,175,55,0.22)";
 const CYAN = "#66FCF1";
 const BLUE = "#3B82F6";
+
+/* ── "already registered" badge — shown in place of the register CTA when
+      the signed-in viewer is already in this event. ──────────────────── */
+function RegisteredBadge({ href, label = "VIEW MY TEAM" }) {
+  return (
+    <>
+      <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/50 bg-emerald-400/10 px-3 py-1 font-display text-[10px] uppercase tracking-[0.4em] text-emerald-300">
+        <span aria-hidden="true">✓</span> You&apos;re registered
+      </span>
+      <RoughButton
+        as={Link}
+        href={href}
+        color="#4ade80"
+        glow="rgba(74,222,128,0.3)"
+        fill={false}
+        seed={23}
+        className="px-10 sm:px-12 py-4 leading-none text-[13px] sm:text-[14px] tracking-[0.4em]"
+      >
+        <span>{label}</span>
+        <span aria-hidden="true">↗</span>
+      </RoughButton>
+    </>
+  );
+}
 
 /* ── reusable section eyebrow ────────────────────────────────────────── */
 function Eyebrow({ children, color = GOLD }) {
@@ -42,84 +66,31 @@ function Reveal({ children, delay = 0, className = "" }) {
   );
 }
 
-/* ── interactive track card with realistic parchment texture ─────────── */
-function TrackCard({ track: t, index: i }) {
-  const [hovered, setHovered] = useState(false);
-
+/* ── track card — matte, shows rune + name + description ─────────────── */
+function TrackCard({ track: t }) {
   return (
     <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onFocus={() => setHovered(true)}
-      onBlur={() => setHovered(false)}
       tabIndex={0}
       role="group"
       aria-label={`${t.name} track`}
-      className="h-full group"
+      className="group flex h-full flex-col rounded-sm border p-5 outline-none transition-colors duration-200"
+      style={{ background: "rgba(20,18,16,0.55)", borderColor: `${t.color}33` }}
     >
-      <div 
-        className={`relative h-full w-full rounded-xl overflow-hidden shadow-2xl transition-all duration-300 ${hovered ? "scale-[1.03] shadow-[0_20px_40px_rgba(0,0,0,0.7)]" : "shadow-[0_10px_20px_rgba(0,0,0,0.5)]"}`}
-      >
-        <div 
-          className="absolute inset-0 bg-cover bg-center opacity-90 transition-opacity duration-300"
-          style={{ backgroundImage: "url('/textures/realistic_card_bg.png')" }} 
-        />
-        {/* Dark overlay for legibility */}
-        <div className="absolute inset-0 bg-black/55 group-hover:bg-black/40 transition-colors duration-300" />
-        
-        {/* Magical glow tint overlay on hover */}
-        <div 
-          className="absolute inset-0 opacity-0 transition-opacity duration-500 mix-blend-overlay"
-          style={{ backgroundImage: `radial-gradient(circle at center, ${t.color} 0%, transparent 80%)`, opacity: hovered ? 0.4 : 0 }} 
-        />
-        
-        <div className="relative z-10 p-6 flex flex-col h-full border border-white/10 rounded-xl">
-          <div className="flex items-center gap-4">
-            <span
-              className="text-4xl select-none transition-transform duration-300 font-wizard drop-shadow-md"
-              style={{
-                color: t.color,
-                transform: hovered ? "scale(1.15)" : "scale(1)",
-              }}
-              aria-hidden="true"
-            >
-              {t.rune}
-            </span>
-            <span
-              className="font-wizard text-[22px] tracking-[0.1em] font-bold"
-              style={{ 
-                color: '#e8e4d6',
-                textShadow: `0 2px 4px rgba(0,0,0,0.9), 0 0 12px ${t.color}aa` 
-              }}
-            >
-              {t.name}
-            </span>
-          </div>
-          {/* description — smoothly revealed on hover/focus */}
-          <div
-            className="grid transition-all duration-300 ease-out mt-1"
-            style={{ gridTemplateRows: hovered ? "1fr" : "0fr" }}
-          >
-            <div className="overflow-hidden">
-              <p
-                className="font-wizard text-sm leading-relaxed pt-3 transition-opacity duration-300 text-[#e8e4d6]"
-                style={{
-                  opacity: hovered ? 1 : 0,
-                  textShadow: "0 2px 4px rgba(0,0,0,1)"
-                }}
-              >
-                {t.desc}
-              </p>
-            </div>
-          </div>
-        </div>
+      <div className="flex items-center gap-3">
+        <span className="text-2xl select-none" style={{ color: t.color }} aria-hidden="true">
+          {t.rune}
+        </span>
+        <span className="font-display text-sm font-bold uppercase tracking-wide" style={{ color: t.color }}>
+          {t.name}
+        </span>
       </div>
+      <p className="mt-3 font-wizard text-sm leading-relaxed text-silver-hp/80">{t.desc}</p>
     </div>
   );
 }
 
 /* ══════════════════════════════════════════════════════════════════════ */
-export default function HackathonDetails() {
+export default function HackathonDetails({ registered = null }) {
   const sectionRef = useRef(null);
 
   /* GSAP letter-stagger on the hero headline */
@@ -222,29 +193,35 @@ export default function HackathonDetails() {
 
         {/* CTA */}
         <Reveal delay={0.25} className="mt-8 flex flex-col items-center gap-3">
-          <span
-            className="inline-flex items-center gap-2 rounded-full border px-3 py-1 font-display text-[10px] uppercase tracking-[0.4em]"
-            style={{ borderColor: `${BLUE}80`, color: BLUE, backgroundColor: `${BLUE}1a` }}
-          >
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full rounded-full opacity-70 animate-ping" style={{ backgroundColor: BLUE }} />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full" style={{ backgroundColor: BLUE }} />
-            </span>
-            Registrations Open
-          </span>
-          <a
-            href="https://hexafalls2.devfolio.co"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative inline-flex items-center justify-center gap-2 px-10 sm:px-12 py-4 sm:py-5 text-[13px] sm:text-[14px] font-display uppercase tracking-[0.4em] font-bold rounded-lg overflow-hidden transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.6)] hover:shadow-[0_15px_30px_rgba(59,130,246,0.4)] hover:-translate-y-1"
-            style={{ color: '#e8e4d6', textShadow: "0 2px 4px rgba(0,0,0,1)" }}
-          >
-            <div className="absolute inset-0 bg-cover bg-center opacity-90 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundImage: "url('/textures/realistic_card_bg.png')" }} />
-            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300" />
-            <div className="absolute inset-0 border-[2px] rounded-lg transition-colors duration-300" style={{ borderColor: `${BLUE}80` }} />
-            <span className="relative z-10">REGISTER ON DEVFOLIO</span>
-            <span aria-hidden="true" className="relative z-10 drop-shadow-md transition-colors duration-300" style={{ color: BLUE }}>↗</span>
-          </a>
+          {registered ? (
+            <RegisteredBadge href={registered.href} label={registered.label} />
+          ) : (
+            <>
+              <span
+                className="inline-flex items-center gap-2 rounded-full border px-3 py-1 font-display text-[10px] uppercase tracking-[0.4em]"
+                style={{ borderColor: `${GOLD}80`, color: GOLD, backgroundColor: `${GOLD}1a` }}
+              >
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full rounded-full opacity-70 animate-ping" style={{ backgroundColor: GOLD }} />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full" style={{ backgroundColor: GOLD }} />
+                </span>
+                Registrations Open
+              </span>
+              <RoughButton
+                as={Link}
+                href="/events/hackathon/register"
+                color={GOLD}
+                glow={GOLD_GLOW}
+                fill={false}
+                shimmer
+                seed={23}
+                className="px-10 sm:px-12 py-4 sm:py-5 leading-none text-[13px] sm:text-[14px] tracking-[0.4em]"
+              >
+                <span>REGISTER · HACKATHON</span>
+                <span aria-hidden="true">↗</span>
+              </RoughButton>
+            </>
+          )}
         </Reveal>
       </div>
 
@@ -586,20 +563,36 @@ export default function HackathonDetails() {
 
       {/* ═══ FOOTER CTAs ═════════════════════════════════════════════════ */}
       <Reveal delay={0.1} className="mt-20 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
-        <a
-          href="https://hexafalls2.devfolio.co"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group relative inline-flex items-center justify-center gap-2 px-8 py-3 text-[12px] font-display uppercase tracking-[0.4em] font-bold rounded-lg overflow-hidden transition-all duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.6)] hover:shadow-[0_10px_25px_rgba(59,130,246,0.3)] hover:-translate-y-0.5"
-          style={{ color: '#e8e4d6', textShadow: "0 2px 4px rgba(0,0,0,1)" }}
-        >
-          <div className="absolute inset-0 bg-cover bg-center opacity-90 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundImage: "url('/textures/realistic_card_bg.png')" }} />
-          <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300" />
-          <div className="absolute inset-0 border rounded-lg transition-colors duration-300" style={{ borderColor: `${BLUE}80` }} />
-          <span className="relative z-10">REGISTER ON DEVFOLIO</span>
-          <span aria-hidden="true" className="relative z-10 drop-shadow-md transition-colors duration-300" style={{ color: BLUE }}>↗</span>
-        </a>
-        <Link
+        {registered ? (
+          <RoughButton
+            as={Link}
+            href={registered.href}
+            color="#4ade80"
+            glow="rgba(74,222,128,0.3)"
+            fill={false}
+            seed={23}
+            className="px-8 py-3 leading-none text-[12px]"
+          >
+            <span>{registered.label ?? "VIEW MY TEAM"}</span>
+            <span aria-hidden="true">↗</span>
+          </RoughButton>
+        ) : (
+          <RoughButton
+            as={Link}
+            href="/events/hackathon/register"
+            color={GOLD}
+            glow={GOLD_GLOW}
+            fill={false}
+            shimmer
+            seed={23}
+            className="px-8 py-3 leading-none text-[12px]"
+          >
+            <span>REGISTER · HACKATHON</span>
+            <span aria-hidden="true">↗</span>
+          </RoughButton>
+        )}
+        <RoughButton
+          as={Link}
           href="/events"
           className="group relative inline-flex items-center justify-center gap-2 px-8 py-3 text-[11px] font-display uppercase tracking-[0.4em] font-bold rounded-lg overflow-hidden transition-all duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.6)] hover:shadow-[0_10px_25px_rgba(197,198,199,0.2)] hover:-translate-y-0.5"
           style={{ color: '#C5C6C7', textShadow: "0 2px 4px rgba(0,0,0,1)" }}
@@ -608,7 +601,7 @@ export default function HackathonDetails() {
           <div className="absolute inset-0 bg-black/80 group-hover:bg-black/70 transition-colors duration-300" />
           <div className="absolute inset-0 border border-[#C5C6C7]/30 rounded-lg group-hover:border-[#C5C6C7]/50 transition-colors duration-300" />
           <span className="relative z-10">← ALL EVENTS</span>
-        </Link>
+        </RoughButton>
       </Reveal>
     </section>
   );

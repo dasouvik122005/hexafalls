@@ -4,8 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import Link from "next/link";
-import Sparkles from "./Sparkles";
-import HeroVideoBg from "./HeroVideoBg";
+import PageBackdrop from "@/components/PageBackdrop";
 import RoughFrame from "./RoughFrame";
 import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
@@ -256,16 +255,38 @@ export default function FAQ() {
     return () => ctx.revert();
   }, []);
 
-  const splitLetters = (text) =>
-    [...text].map((ch, i) => (
-      <span
-        key={i}
-        className="ror-letter inline-block"
-        style={{ whiteSpace: ch === " " ? "pre" : "normal" }}
-      >
-        {ch}
-      </span>
-    ));
+  const splitLetters = (text) => {
+    // Split on whitespace runs but keep the spaces as their own
+    // tokens so we can preserve word spacing.
+    const parts = text.split(/(\s+)/);
+    return parts.map((part, wi) => {
+      if (/^\s+$/.test(part)) {
+        return (
+          <span key={`w${wi}`} style={{ whiteSpace: "pre" }}>
+            {part}
+          </span>
+        );
+      }
+      // Each word is an atomic inline-block (nowrap), so the
+      // browser will only ever line-break BETWEEN words.
+      return (
+        <span
+          key={`w${wi}`}
+          className="inline-block"
+          style={{ whiteSpace: "nowrap" }}
+        >
+          {[...part].map((ch, ci) => (
+            <span
+              key={`${wi}-${ci}`}
+              className="ror-letter inline-block"
+            >
+              {ch}
+            </span>
+          ))}
+        </span>
+      );
+    });
+  };
 
   const handleToggle = (index) => {
     setOpenIndex((prev) => (prev === index ? null : index));
@@ -276,12 +297,8 @@ export default function FAQ() {
       ref={sectionRef}
       className="relative isolate overflow-hidden min-h-screen pt-32 pb-24 px-6"
     >
-      {/* ── Parallax background stack ────────────────────────────────────── */}
-      <HeroVideoBg />
-      <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
-      <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
-        <Sparkles count={20} />
-      </div>
+      {/* ── Shared page backdrop ─────────────────────────────────────────── */}
+      <PageBackdrop />
 
       {/* Scattered decorative stars */}
       <RoughStar
@@ -320,7 +337,7 @@ export default function FAQ() {
       </motion.div>
 
       {/* ── Headline ────────────────────────────────────────────────────── */}
-      <div className="text-center">
+      <div className="text-center mb-10">
         <h1
           aria-label="Frequently Asked Questions"
           className="font-display font-black tracking-tight text-silver-hp leading-[1.05] text-balance text-[12vw] sm:text-[8vw] md:text-[6.5vw] hp-glow"
@@ -355,7 +372,7 @@ export default function FAQ() {
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <RoughButton
             as={Link}
-            href="/events/hackathon"
+            href="/events"
             color="#D4AF37"
             glow="rgba(212,175,55,0.30)"
             shimmer

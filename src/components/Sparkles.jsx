@@ -2,9 +2,9 @@
 // No framer-motion, no useEffect, no per-frame JS. Deterministic positions
 // so SSR & client match (no hydration mismatch). Honours prefers-reduced-
 // motion via the `hp-spark` keyframe gating in globals.css.
-export default function Sparkles({ count = 24 }) {
+export default function Sparkles({ count = 24, seedOffset = 0 }) {
   const seeded = (i) => {
-    const s = Math.sin(i * 9301 + 49297) * 233280;
+    const s = Math.sin((i + seedOffset) * 9301 + 49297) * 233280;
     return s - Math.floor(s);
   };
   const sparks = Array.from({ length: count }, (_, i) => ({

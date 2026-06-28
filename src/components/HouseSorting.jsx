@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import PageBackdrop from "@/components/PageBackdrop";
 import RoughFrame from "./RoughFrame";
 import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
@@ -207,8 +208,7 @@ export default function HouseSorting() {
       ref={sectionRef}
       className="relative isolate overflow-hidden min-h-screen pt-28 pb-24 px-6 flex flex-col items-center"
     >
-      <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars opacity-50 pointer-events-none" />
-      <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none" />
+      <PageBackdrop />
       <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
         <MagicalParticles />
       </div>

@@ -1,0 +1,50 @@
+name: Sync Payments
+
+# Reconciliation safety net for Elixpo Pay. The inbound webhook
+# (/api/callback/payouts) is the primary path; this cron catches any payment
+# whose webhook was missed by pinging the protected reconcile endpoint, which
+# pulls the truth from Elixpo Pay's /v1/sync and settles teams.
+#
+# Required repo secret:
+#   ELIXPO_PAY_API_KEY — also used as the bearer to authenticate to the endpoint
+# Endpoint URL is hardcoded below (production).
+
+on:
+  schedule:
+    # Every 15 minutes.
+    - cron: "*/15 * * * *"
+  # Allow a manual run from the Actions tab.
+  workflow_dispatch:
+
+concurrency:
+  group: sync-payments
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Reconcile payments
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Call reconcile endpoint
+        env:
+          ELIXPO_PAY_API_KEY: ${{ secrets.ELIXPO_PAY_API_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${ELIXPO_PAY_API_KEY:-}" ]; then
+            echo "::error::ELIXPO_PAY_API_KEY repo secret is not set"; exit 1
+          fi
+          URL="https://hexafalls.org/api/cron/sync-payments"
+          echo "POST $URL"
+          # Capture body + status; fail the job on a non-2xx so a broken sync is visible.
+          HTTP_CODE=$(curl -sS -o /tmp/sync_body.json -w "%{http_code}" \
+            -X POST "$URL" \
+            -H "Authorization: Bearer ${ELIXPO_PAY_API_KEY}" \
+            -H "Content-Type: application/json" \
+            --max-time 120)
+          echo "Status: $HTTP_CODE"
+          echo "Response:"; cat /tmp/sync_body.json || true; echo
+          case "$HTTP_CODE" in
+            2*) echo "Sync OK" ;;
+            *) echo "::error::Sync failed with HTTP $HTTP_CODE"; exit 1 ;;
+          esac

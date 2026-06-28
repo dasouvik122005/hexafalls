@@ -1,0 +1,173 @@
+"use client";
+
+import { useState } from "react";
+import RoughButton from "@/components/RoughButton";
+import RoughFrame from "@/components/RoughFrame";
+import UsernameField from "./UsernameField";
+import { toast } from "@/lib/toast";
+import { validateSquadName, SQUAD_NAME_ERRORS } from "@/lib/registration/squadName";
+
+const ERRORS = {
+  invalid_username:  "Pick a username that matches the format.",
+  username_taken:    "That handle is taken — try another.",
+  already_in_squad:  "You are already in a squad for this event.",
+  hardware_other_mode: "You can only enter one Hardware track — you're already in the other.",
+  gdg_required:      "Join the GDG chapter first.",
+  unauthorized:      "Sign in to continue.",
+  event_not_squad:   "This event is not a team event.",
+  ...SQUAD_NAME_ERRORS,
+};
+
+export default function SquadCreateForm({ event, eventLabel, hasUsername }) {
+  const [squadName, setSquadName]   = useState("");
+  const [tagline, setTagline]       = useState("");
+  const [description, setDescription] = useState("");
+  const [username, setUsername]     = useState("");
+  const [busy, setBusy]             = useState(false);
+  const [error, setError]           = useState(null);
+
+  // Live name validation drives the inline hint + the greyed forge button.
+  const trimmedName = squadName.trim();
+  const nameCheck = validateSquadName(trimmedName);
+  const nameValid = nameCheck.ok;
+  const usernameOk = hasUsername || username.trim().length >= 3;
+  // Forge stays greyed until the WHOLE form is filled (name valid + tagline +
+  // description + username).
+  const canForge =
+    nameValid &&
+    tagline.trim().length > 0 &&
+    description.trim().length > 0 &&
+    usernameOk &&
+    !busy;
+
+  async function onSubmit(e) {
+    e.preventDefault();
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/register/squad", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          event,
+          squadName,
+          tagline: tagline || undefined,
+          description: description || undefined,
+          username: hasUsername ? undefined : username,
+        }),
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const msg = ERRORS[body.error] || body.error || `HTTP ${res.status}`;
+        setError(msg);
+        toast.error(msg);
+        setBusy(false);
+        return;
+      }
+      toast.success("Squad created — invite your members!");
+      window.location.href = `${body.teamUrl}?just_created=1`;
+    } catch (err) {
+      setError(err.message);
+      toast.error(err.message);
+      setBusy(false);
+    }
+  }
+
+  return (
+    <RoughFrame
+      seed={101}
+      stroke="#D4AF37"
+      mistColor="#D4AF37"
+      strokeWidth={1.5}
+      padding={26}
+      className="w-full bg-slate-hp/35 backdrop-blur-sm"
+      inner="flex flex-col gap-5"
+    >
+      <h2 className="font-display tracking-[0.3em] uppercase text-sm text-gold-hp hp-glow-gold">
+        Form your squad · {eventLabel}
+      </h2>
+
+      <form onSubmit={onSubmit} className="flex flex-col gap-5">
+        {!hasUsername && (
+          <UsernameField value={username} onChange={setUsername} />
+        )}
+
+        <label className="flex flex-col gap-1.5">
+          <span className="font-display text-[10px] uppercase tracking-[0.4em] text-cyan-hp/80">
+            Squad name <span className="text-silver-hp/45 normal-case tracking-normal">· display name (max 10)</span>
+          </span>
+          <input
+            type="text"
+            required
+            value={squadName}
+            onChange={(e) => setSquadName(e.target.value)}
+            placeholder="e.g. Phoenix"
+            maxLength={10}
+            minLength={2}
+            className="w-full rounded-sm border border-cyan-hp/40 bg-midnight/60 px-4 py-3 text-base text-silver-hp focus:border-cyan-hp focus:outline-none focus:ring-2 focus:ring-cyan-hp/40"
+          />
+          {trimmedName.length > 0 && !nameValid ? (
+            <span className="font-wizard italic text-red-300/85 text-xs">
+              {SQUAD_NAME_ERRORS[nameCheck.error]}
+            </span>
+          ) : (
+            <span className="font-wizard text-silver-hp/45 text-xs">
+              This is your squad&apos;s display name — and its unique handle. It&apos;s
+              always unique: we check it against every other squad in the database
+              before sealing. No spaces · 2–10 chars · starts &amp; ends with a letter.
+            </span>
+          )}
+        </label>
+
+        <label className="flex flex-col gap-1.5">
+          <span className="font-display text-[10px] uppercase tracking-[0.4em] text-cyan-hp/80">
+            One-line tagline
+          </span>
+          <input
+            type="text"
+            required
+            value={tagline}
+            onChange={(e) => setTagline(e.target.value)}
+            placeholder="What is your squad about in 8 words"
+            maxLength={120}
+            className="w-full rounded-sm border border-cyan-hp/40 bg-midnight/60 px-4 py-3 text-base text-silver-hp focus:border-cyan-hp focus:outline-none focus:ring-2 focus:ring-cyan-hp/40"
+          />
+        </label>
+
+        <label className="flex flex-col gap-1.5">
+          <span className="font-display text-[10px] uppercase tracking-[0.4em] text-cyan-hp/80">
+            Description
+          </span>
+          <textarea
+            required
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={4}
+            placeholder="What do you want to build? Skills, vibe, anything that helps a teammate decide."
+            maxLength={800}
+            className="w-full rounded-sm border border-cyan-hp/40 bg-midnight/60 px-4 py-3 text-base text-silver-hp focus:border-cyan-hp focus:outline-none focus:ring-2 focus:ring-cyan-hp/40 resize-y"
+          />
+        </label>
+
+        {error && (
+          <p className="font-wizard italic text-red-300 text-sm">{error}</p>
+        )}
+
+        <RoughButton
+          type="submit"
+          disabled={!canForge}
+          aria-disabled={!canForge}
+          color={canForge ? "#D4AF37" : "#5B5F66"}
+          glow={canForge ? "rgba(212,175,55,0.40)" : "transparent"}
+          shimmer={canForge}
+          seed={29}
+          className={`self-start px-10 sm:px-12 py-4 text-[13px] sm:text-[14px] tracking-[0.4em] ${
+            canForge ? "" : "opacity-60"
+          }`}
+        >
+          {busy ? "CONJURING…" : "FORGE THE SQUAD ↗"}
+        </RoughButton>
+      </form>
+    </RoughFrame>
+  );
+}

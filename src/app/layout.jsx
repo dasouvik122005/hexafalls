@@ -1,6 +1,7 @@
 import { Cinzel, MedievalSharp, Inter, Crimson_Pro, Cormorant_Garamond, Great_Vibes, Montserrat } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+import Toaster from "@/components/Toaster";
 
 const display = Cinzel({
   variable: "--font-display",
@@ -51,7 +52,7 @@ const montserrat = Montserrat({
 const SITE_NAME = "HexaFalls Techfest";
 const SITE_TAGLINE = "A Wizarding Hackathon";
 const SITE_DESCRIPTION =
-  "HexaFalls is a 58-hour wizarding-themed hackathon at JIS University, Kolkata. Build, ship and conjure with hundreds of student wizards from across India. Pack your wand, sharpen your code.";
+  "HexaFalls is a 58-hour wizarding hackathon at JIS University, Kolkata. Build, ship, and conjure with student wizards from across India. Developed by Ayushman Bhattacharya (elixpo), GDG on Campus · JIS University 2025–26.";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://hexafalls.org";
@@ -62,11 +63,17 @@ const OG_IMAGE = "/banners/og-banner.png";
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: "/",
+  },
   title: {
     default: `${SITE_NAME} · ${SITE_TAGLINE}`,
     template: `%s · ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
+  verification: {
+    google: "KjszCmOSawc24LwSXJtADpy7xIsjwPXp9KbElMxUxGs",
+  },
   applicationName: SITE_NAME,
   keywords: [
     "HexaFalls",
@@ -77,9 +84,12 @@ export const metadata = {
     "Kolkata",
     "wizarding hackathon",
   ],
-  authors: [{ name: "GDG on Campus · JIS University" }],
-  creator: "GDG on Campus · JIS University",
-  publisher: "HexaFalls",
+  authors: [
+    { name: "Ayushman Bhattacharya (elixpo) — GDG on Campus, JIS University 2025–26", url: "https://elixpo.com" },
+    { name: "GDG on Campus · JIS University" },
+  ],
+  creator: "Ayushman Bhattacharya (elixpo) — GDGoC JIS University 2025–26",
+  publisher: "Ayushman Bhattacharya (elixpo)",
   icons: {
     icon: "/logos/main_logo.png",
     shortcut: "/logos/main_logo.png",
@@ -128,6 +138,41 @@ export default function RootLayout({ children }) {
       className={`${display.variable} ${wizard.variable} ${body.variable} ${crimson.variable} ${cormorant.variable} ${belinaFallback.variable} ${montserrat.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-midnight text-silver-hp">
+        {/* Structured data — declares authorship + ownership of the site
+            (machine-readable for search engines). */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: SITE_NAME,
+              url: SITE_URL,
+              description: SITE_DESCRIPTION,
+              author: {
+                "@type": "Person",
+                name: "Ayushman Bhattacharya",
+                alternateName: "elixpo",
+                url: "https://accounts.elixpo.com",
+                jobTitle: "GDG on Campus JIS University Organiser, 2025–26",
+              },
+              creator: {
+                "@type": "Person",
+                name: "Ayushman Bhattacharya",
+                alternateName: "elixpo",
+              },
+              copyrightHolder: {
+                "@type": "Person",
+                name: "Ayushman Bhattacharya",
+                alternateName: "elixpo",
+              },
+              copyrightYear: 2026,
+            }),
+          }}
+        />
+        {children}
+        {/* Global toast viewport. */}
+        <Toaster />
         {/* Page-wide ambient fog. Fixed to the viewport, sits behind everything. */}
         <div aria-hidden="true" className="hp-fog">
           <span className="hp-fog__cloud hp-fog__cloud--a" />
@@ -135,14 +180,6 @@ export default function RootLayout({ children }) {
           <span className="hp-fog__cloud hp-fog__cloud--c" />
           <span className="hp-fog__cloud hp-fog__cloud--d" />
         </div>
-        {children}
-        {/* Devfolio Apply-with-Devfolio SDK. Loaded site-wide via the layout
-            so the <script> tag is in the SSR HTML — Devfolio's verifier
-            scans the raw response and checks for apply.devfolio.co. */}
-        <Script
-          src="https://apply.devfolio.co/v2/sdk.js"
-          strategy="afterInteractive"
-        />
       </body>
     </html>
   );

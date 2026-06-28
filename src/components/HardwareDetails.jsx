@@ -1,17 +1,43 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import Sparkles from "./Sparkles";
 import RoughButton from "./RoughButton";
 import RoughDivider from "./RoughDivider";
-import RoughCorners from "./RoughCorners";
 import { HARDWARE_TRACKS } from "@/lib/routes";
 
 const GOLD = "#D4AF37";
 const GOLD_GLOW = "rgba(212,175,55,0.25)";
+// Hardware house colour (green) — used for the registration CTAs.
+const GREEN = "#22C55E";
+const GREEN_GLOW = "rgba(34,197,94,0.25)";
+
+/* ── "already registered" badge — shown when the viewer is already in a
+      hardware squad/entry. ───────────────────────────────────────────── */
+function RegisteredBadge({ href, label = "VIEW MY REGISTRATION" }) {
+  return (
+    <>
+      <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/50 bg-emerald-400/10 px-3 py-1 font-display text-[10px] uppercase tracking-[0.4em] text-emerald-300">
+        <span aria-hidden="true">✓</span> You&apos;re registered
+      </span>
+      <RoughButton
+        as={Link}
+        href={href}
+        color="#4ade80"
+        glow="rgba(74,222,128,0.3)"
+        fill={false}
+        seed={23}
+        className="px-10 sm:px-12 py-4 leading-none text-[12px] sm:text-[13px] tracking-[0.35em]"
+      >
+        <span>{label}</span>
+        <span aria-hidden="true">↗</span>
+      </RoughButton>
+    </>
+  );
+}
 
 /* ── reusable section eyebrow ────────────────────────────────────────── */
 function Eyebrow({ children, color = GOLD }) {
@@ -40,155 +66,40 @@ function Reveal({ children, delay = 0, className = "" }) {
   );
 }
 
-/* ── magical ribbon SVG that flows around a card ────────────────────── */
-function MagicRibbon({ color, index }) {
-  /* Each card gets a unique flowing path so the ribbons feel hand-drawn
-     and organic rather than identical. We offset them using the index. */
-  const paths = [
-    // top-left swirl → along top → top-right curl
-    "M -20,30 C 10,10 40,-8 100,-6 C 200,-10 350,-4 500,0 C 650,4 780,-10 820,20",
-    // bottom-right swirl → along bottom → bottom-left curl  
-    "M 820,250 C 790,270 760,288 700,286 C 550,290 400,284 250,280 C 100,276 30,290 -20,260",
-    // left side flowing down
-    "M -10,50 C -18,100 -14,160 -10,230",
-    // right side flowing down
-    "M 810,30 C 818,90 814,170 810,240",
-  ];
-
-  const id = `ribbon-${index}`;
-
-  return (
-    <svg
-      className="pointer-events-none absolute -inset-4 w-[calc(100%+32px)] h-[calc(100%+32px)]"
-      viewBox="-30 -20 860 310"
-      preserveAspectRatio="none"
-      fill="none"
-      aria-hidden="true"
-    >
-      {paths.map((d, pi) => (
-        <g key={pi}>
-          {/* Outer glow layer (Fake blur using thick stroke for 60FPS mobile performance) */}
-          <path
-            d={d}
-            stroke={color}
-            strokeWidth="8"
-            strokeLinecap="round"
-            opacity="0.12"
-          />
-          {/* Core ribbon stroke with animated dash */}
-          <path
-            d={d}
-            stroke={color}
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            opacity="0.6"
-            strokeDasharray="12 8 4 8"
-            style={{
-              animation: `ribbon-flow ${6 + pi * 1.5}s linear infinite${pi % 2 === 1 ? " reverse" : ""}`,
-            }}
-          />
-          {/* Bright inner highlight */}
-          <path
-            d={d}
-            stroke="#fff"
-            strokeWidth="0.5"
-            strokeLinecap="round"
-            opacity="0.15"
-            strokeDasharray="4 20"
-            style={{
-              animation: `ribbon-flow ${8 + pi}s linear infinite`,
-            }}
-          />
-        </g>
-      ))}
-
-      {/* Corner ornament dots */}
-      {[[-10, -4], [808, -4], [-10, 268], [808, 268]].map(([cx, cy], ci) => (
-        <circle key={ci} cx={cx} cy={cy} r="3" fill={color} opacity="0.5">
-          <animate attributeName="opacity" values="0.3;0.8;0.3" dur={`${2 + ci * 0.5}s`} repeatCount="indefinite" />
-        </circle>
-      ))}
-    </svg>
-  );
-}
-
-/* ── interactive track card with realistic scroll texture ────────────── */
-function TrackCard({ track: t, index: i }) {
+/* ── interactive track card with permanently visible description ────────────── */
+function TrackCard({ track: t }) {
   const cardContent = (
     <>
-      <div 
-        className="absolute inset-0 bg-cover bg-center rounded-xl opacity-90 transition-opacity duration-500 group-hover:opacity-100"
-        style={{ backgroundImage: `url('${t.image}')` }} 
-      />
-      {/* Dark gradient overlay to ensure text legibility over the scroll */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent rounded-xl transition-opacity duration-500 group-hover:opacity-80" />
-      
-      {/* Content wrapper */}
-      <div className="relative z-10 p-6 md:p-8 flex flex-col h-full justify-center w-full max-w-2xl">
-        <div className="flex items-center gap-4">
-          <span
-            className="text-4xl md:text-5xl select-none font-wizard drop-shadow-lg"
-            style={{ color: t.color }}
-            aria-hidden="true"
-          >
-            {t.rune}
-          </span>
-          <h3
-            className="font-display text-2xl md:text-3xl tracking-wide uppercase font-bold"
-            style={{ 
-              color: '#f8f4e6', 
-              textShadow: `0 2px 4px rgba(0,0,0,0.9), 0 0 15px ${t.color}` 
-            }}
-          >
-            {t.name}
-          </h3>
-        </div>
-        
-        {/* description */}
-        <div className="mt-4 md:mt-6 ml-0 md:ml-16">
-          <p
-            className="font-wizard text-sm md:text-base leading-relaxed text-[#e8e4d6] drop-shadow-md"
-            style={{ textShadow: "0 2px 5px rgba(0,0,0,1)" }}
-          >
-            {t.desc}
-          </p>
-        </div>
-
-        {t.slug && (
-          <div className="mt-6 md:mt-8 ml-0 md:ml-16 flex items-center">
-             <span 
-               className="font-display text-[10px] md:text-xs uppercase tracking-widest px-5 py-2 rounded-full border bg-black/50 backdrop-blur-md transition-all duration-300 group-hover:bg-white/10 group-hover:scale-105"
-               style={{ color: t.color, borderColor: `${t.color}66` }}
-             >
-               View Details <span aria-hidden="true" className="ml-1 inline-block transition-transform group-hover:translate-x-1">→</span>
-             </span>
-          </div>
-        )}
+      <div className="flex items-center gap-3">
+        <span className="text-2xl select-none" style={{ color: t.color }} aria-hidden="true">{t.rune}</span>
+        <span className="font-display text-sm font-bold uppercase tracking-wide" style={{ color: t.color }}>{t.name}</span>
       </div>
+      <p className="mt-3 font-wizard text-sm leading-relaxed text-silver-hp/80">{t.desc}</p>
+      {t.slug && (
+        <span className="mt-3 font-display text-[10px] uppercase tracking-widest opacity-70 transition-opacity group-hover:opacity-100" style={{ color: t.color }}>
+          View details ↗
+        </span>
+      )}
     </>
   );
-
-  const containerClasses = `group relative w-full min-h-[220px] md:min-h-[280px] flex flex-col rounded-xl overflow-hidden transition-all duration-500 hover:-translate-y-2 shadow-2xl hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)] ${
-    t.slug ? "cursor-pointer" : "cursor-default"
-  }`;
-
+  const cls = `group relative flex h-full flex-col rounded-sm border p-5 outline-none transition-colors duration-200 ${t.slug ? "cursor-pointer" : "cursor-default"}`;
+  const style = { background: "rgba(20,18,16,0.55)", borderColor: `${t.color}33` };
   if (t.slug) {
     return (
-      <Link href={`/events/hardware/${t.slug}`} className={containerClasses} aria-label={`View details for ${t.name} track`}>
+      <Link href={`/events/hardware/${t.slug}`} className={cls} style={style} aria-label={`View details for ${t.name} track`}>
         {cardContent}
       </Link>
     );
   }
-
   return (
-    <div tabIndex={0} role="group" aria-label={`${t.name} track`} className={containerClasses}>
+    <div tabIndex={0} role="group" aria-label={`${t.name} track`} className={cls} style={style}>
       {cardContent}
     </div>
   );
 }
 
 /* ══════════════════════════════════════════════════════════════════════ */
-export default function HardwareDetails() {
+export default function HardwareDetails({ registered = null }) {
   const sectionRef = useRef(null);
 
   /* GSAP letter-stagger on the hero headline */
@@ -233,19 +144,11 @@ export default function HardwareDetails() {
       ref={sectionRef}
       className="relative isolate overflow-hidden pt-32 pb-24 px-6"
     >
-      {/* Ribbon flow animation */}
-      <style>{`
-        @keyframes ribbon-flow {
-          from { stroke-dashoffset: 0; }
-          to { stroke-dashoffset: -64; }
-        }
-      `}</style>
-      {/* Dark textured magical background */}
+      {/* Matte dark background (no bright radial gradient) */}
       <div
-        className="absolute inset-0 -z-40 opacity-40 bg-cover bg-center"
-        style={{ backgroundImage: "url('/textures/bg-stone.png')", mixBlendMode: "luminosity" }}
+        className="absolute inset-0 -z-40"
+        style={{ background: "linear-gradient(180deg, #0B0C10 0%, #0e0c0a 100%)" }}
       />
-      <div className="absolute inset-0 -z-50 bg-[#0B0C10]" />
       <div aria-hidden="true" className="absolute inset-0 -z-30 hp-stars pointer-events-none opacity-25" />
       <div aria-hidden="true" className="absolute inset-0 -z-20 hp-scrim pointer-events-none opacity-50" />
       <div aria-hidden="true" className="absolute inset-0 -z-10 pointer-events-none">
@@ -281,38 +184,49 @@ export default function HardwareDetails() {
         </Reveal>
 
         {/* CTA */}
-        <Reveal delay={0.25} className="mt-8 flex flex-col items-center gap-4">
-          <span
-            className="inline-flex items-center gap-2 rounded-full border px-3 py-1 font-display text-[10px] uppercase tracking-[0.4em]"
-            style={{ borderColor: `${GOLD}66`, color: GOLD, backgroundColor: `${GOLD}14` }}
-          >
-            Registrations open
-          </span>
-          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3">
-            <RoughButton
-              as={Link}
-              href="/events/hardware/register?mode=competition"
-              color={GOLD}
-              glow={GOLD_GLOW}
-              fill={false}
-              seed={23}
-              className="px-9 sm:px-11 py-4 leading-none text-[12px] sm:text-[13px] tracking-[0.35em]"
-            >
-              <span>COMPETITION · TEAM 2–4</span>
-              <span aria-hidden="true">↗</span>
-            </RoughButton>
-            <RoughButton
-              as={Link}
-              href="/events/hardware/register?mode=exhibition"
-              color={GOLD}
-              fill={false}
-              seed={29}
-              className="px-8 sm:px-10 py-3.5 leading-none text-[12px] tracking-[0.3em]"
-            >
-              <span>EXHIBITION · SCHOOL SOLO</span>
-              <span aria-hidden="true">↗</span>
-            </RoughButton>
-          </div>
+        <Reveal delay={0.25} className="mt-8 flex flex-col items-center gap-3">
+          {registered ? (
+            <RegisteredBadge href={registered.href} label={registered.label} />
+          ) : (
+            <>
+              <span
+                className="inline-flex items-center gap-2 rounded-full border px-3 py-1 font-display text-[10px] uppercase tracking-[0.4em]"
+                style={{ borderColor: `${GREEN}80`, color: GREEN, backgroundColor: `${GREEN}1a` }}
+              >
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full rounded-full opacity-70 animate-ping" style={{ backgroundColor: GREEN }} />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full" style={{ backgroundColor: GREEN }} />
+                </span>
+                Registrations Open
+              </span>
+              <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
+                <RoughButton
+                  as={Link}
+                  href="/events/hardware/register?mode=competition"
+                  color={GREEN}
+                  glow={GREEN_GLOW}
+                  fill={false}
+                  shimmer
+                  seed={23}
+                  className="px-10 sm:px-12 py-4 sm:py-5 leading-none text-[13px] sm:text-[14px] tracking-[0.4em]"
+                >
+                  <span>COMPETITION · TEAM 2–4</span>
+                  <span aria-hidden="true">↗</span>
+                </RoughButton>
+                <RoughButton
+                  as={Link}
+                  href="/events/hardware/register?mode=exhibition"
+                  color={GREEN}
+                  fill={false}
+                  seed={29}
+                  className="px-8 sm:px-10 py-3 sm:py-4 leading-none text-[12px] sm:text-[13px] tracking-[0.35em]"
+                >
+                  <span>EXHIBITION · SCHOOL SOLO</span>
+                  <span aria-hidden="true">↗</span>
+                </RoughButton>
+              </div>
+            </>
+          )}
         </Reveal>
       </div>
 
@@ -328,13 +242,10 @@ export default function HardwareDetails() {
           </p>
         </Reveal>
 
-        <div className="mt-16 flex flex-col gap-14">
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {HARDWARE_TRACKS.map((t, i) => (
-            <Reveal key={t.name} delay={i * 0.15} className="w-full">
-              <div className="relative">
-                <MagicRibbon color={t.color} index={i} />
-                <TrackCard track={t} index={i} />
-              </div>
+            <Reveal key={t.name} delay={i * 0.04}>
+              <TrackCard track={t} />
             </Reveal>
           ))}
         </div>
@@ -343,28 +254,45 @@ export default function HardwareDetails() {
 
 
       {/* ═══ FOOTER CTAs ═════════════════════════════════════════════════ */}
-      <Reveal delay={0.1} className="mt-28 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3">
-        <RoughButton
-          as={Link}
-          href="/events/hardware/register?mode=competition"
-          color={GOLD}
-          glow={GOLD_GLOW}
-          fill={false}
-          seed={23}
-          className="px-8 py-3 leading-none text-[12px]"
-        >
-          <span>COMPETITION ↗</span>
-        </RoughButton>
-        <RoughButton
-          as={Link}
-          href="/events/hardware/register?mode=exhibition"
-          color={GOLD}
-          fill={false}
-          seed={27}
-          className="px-8 py-3 leading-none text-[12px]"
-        >
-          <span>EXHIBITION ↗</span>
-        </RoughButton>
+      <Reveal delay={0.1} className="mt-28 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
+        {registered ? (
+          <RoughButton
+            as={Link}
+            href={registered.href}
+            color="#4ade80"
+            glow="rgba(74,222,128,0.3)"
+            fill={false}
+            seed={23}
+            className="px-8 py-3 leading-none text-[12px]"
+          >
+            <span>{registered.label ?? "VIEW MY REGISTRATION"} ↗</span>
+          </RoughButton>
+        ) : (
+          <>
+            <RoughButton
+              as={Link}
+              href="/events/hardware/register?mode=competition"
+              color={GREEN}
+              glow={GREEN_GLOW}
+              fill={false}
+              shimmer
+              seed={23}
+              className="px-8 py-3 leading-none text-[12px]"
+            >
+              <span>COMPETITION ↗</span>
+            </RoughButton>
+            <RoughButton
+              as={Link}
+              href="/events/hardware/register?mode=exhibition"
+              color={GREEN}
+              fill={false}
+              seed={29}
+              className="px-8 py-3 leading-none text-[12px]"
+            >
+              <span>EXHIBITION ↗</span>
+            </RoughButton>
+          </>
+        )}
         <RoughButton
           as={Link}
           href="/events"

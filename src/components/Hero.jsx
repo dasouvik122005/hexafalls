@@ -16,6 +16,7 @@ import { CALLS } from "@/lib/routes";
 import MysticalTicker from "./MysticalTicker";
 import PartnerMarquee from "./PartnerMarquee";
 
+// Per-scroll colour themes (one per CALLS card, cycling on index).
 const SCROLL_THEMES = {
   0: {
     bg: "linear-gradient(160deg, #2f6b4c 0%, #1a4329 60%, #133523 100%)",
@@ -65,26 +66,8 @@ function RunePattern({ color }) {
       preserveAspectRatio="xMidYMid slice"
     >
       {[
-        "ᚠ",
-        "ᚢ",
-        "ᚦ",
-        "ᚨ",
-        "ᚱ",
-        "ᚲ",
-        "ᚷ",
-        "ᚹ",
-        "ᚺ",
-        "ᚾ",
-        "ᛁ",
-        "ᛃ",
-        "ᛇ",
-        "ᛈ",
-        "ᛉ",
-        "ᛊ",
-        "ᛏ",
-        "ᛒ",
-        "ᛖ",
-        "ᛗ",
+        "ᚠ", "ᚢ", "ᚦ", "ᚨ", "ᚱ", "ᚲ", "ᚷ", "ᚹ", "ᚺ", "ᚾ",
+        "ᛁ", "ᛃ", "ᛇ", "ᛈ", "ᛉ", "ᛊ", "ᛏ", "ᛒ", "ᛖ", "ᛗ",
       ].map((r, i) => (
         <text
           key={i}
@@ -136,30 +119,35 @@ export default function Hero() {
       "(prefers-reduced-motion: reduce)",
     ).matches;
     const ctx = gsap.context(() => {
+      // Only animate targets that actually exist (stripRef may be unattached) —
+      // passing a null target makes GSAP warn "target null not found".
+      const letters = sectionRef.current?.querySelectorAll(".hp-letter") ?? [];
       if (reduce) {
-        gsap.set([".hp-letter", stripRef.current], {
-          opacity: 1,
-          y: 0,
-        });
+        const reduceTargets = [...letters, stripRef.current].filter(Boolean);
+        if (reduceTargets.length) gsap.set(reduceTargets, { opacity: 1, y: 0 });
         return;
       }
-      gsap.set(".hp-letter", { opacity: 0, y: 28, rotateX: -60 });
-      gsap.to(".hp-letter", {
-        opacity: 1,
-        y: 0,
-        rotateX: 0,
-        duration: 0.4,
-        ease: "power3.out",
-        stagger: { each: 0.045, from: "start" },
-        delay: 0.2,
-      });
-      gsap.from(stripRef.current, {
-        opacity: 0,
-        y: 18,
-        duration: 0.4,
-        delay: 0.4,
-        ease: "power2.out",
-      });
+      if (letters.length) {
+        gsap.set(letters, { opacity: 0, y: 28, rotateX: -60 });
+        gsap.to(letters, {
+          opacity: 1,
+          y: 0,
+          rotateX: 0,
+          duration: 0.4,
+          ease: "power3.out",
+          stagger: { each: 0.045, from: "start" },
+          delay: 0.2,
+        });
+      }
+      if (stripRef.current) {
+        gsap.from(stripRef.current, {
+          opacity: 0,
+          y: 18,
+          duration: 0.4,
+          delay: 0.4,
+          ease: "power2.out",
+        });
+      }
     }, sectionRef);
     return () => ctx.revert();
   }, []);
@@ -340,6 +328,7 @@ export default function Hero() {
           style={{
             background:
               "radial-gradient(circle at center, rgba(102,252,241,0.10) 0%, rgba(102,252,241,0.05) 18%, rgba(212,175,55,0.03) 38%, transparent 68%)",
+            filter: "blur(28px)",
             willChange: "transform, opacity",
           }}
         />
@@ -439,7 +428,8 @@ export default function Hero() {
         >
           {[
             { id: "jisu", label: "", logo: "/logos/jisu.png", url: "https://www.jisuniversity.ac.in/" },
-            { id: "cse", label: "", logo: "/logos/cse_jisu.png", url: "https://www.jisuniversity.ac.in/faculty-of-engineering-and-technology.php" },
+            { id: "gdg", label: "", logo: "/logos/gdg_jisu.png", url: "https://gdg.community.dev/gdg-on-campus-jis-university-kolkata-india/" },
+            { id: "cse", label: "", logo: "/logos/cse_jisu.png", url: "https://www.jisuniversity.ac.in/faculty-of-engineering-and-technology.php"},
           ].map((l, i, arr) => (
             <div key={l.id} className="flex items-center gap-3">
               <a
@@ -538,18 +528,18 @@ export default function Hero() {
           {/* Register — routes to /events/hackathon which then sends to Devfolio */}
           <RoughButton
             as={Link}
-            href="/events/hackathon"
+            href="/events"
             color="#D4AF37"
             glow="rgba(212,175,55,0.30)"
             shimmer
             seed={7}
             className="px-8 py-3 text-[12px]"
           >
-            REGISTER NOW <span>↗</span>
+            View Events<span>↗</span>
           </RoughButton>
           <RoughButton
             as={Link}
-            href="/about"
+            href="/timeline"
             color="#C9A84C"
             fill={false}
             seed={11}
@@ -560,19 +550,33 @@ export default function Hero() {
               filter: "drop-shadow(0 0 6px rgba(201,168,76,0.25))",
             }}
             onMouseDown={(e) =>
-              (e.currentTarget.style.filter =
-                "drop-shadow(0 0 16px rgba(201,168,76,0.7)) brightness(1.2)")
+            (e.currentTarget.style.filter =
+              "drop-shadow(0 0 16px rgba(201,168,76,0.7)) brightness(1.2)")
             }
             onMouseUp={(e) =>
-              (e.currentTarget.style.filter =
-                "drop-shadow(0 0 6px rgba(201,168,76,0.25))")
+            (e.currentTarget.style.filter =
+              "drop-shadow(0 0 6px rgba(201,168,76,0.25))")
             }
             onMouseLeave={(e) =>
-              (e.currentTarget.style.filter =
-                "drop-shadow(0 0 6px rgba(201,168,76,0.25))")
+            (e.currentTarget.style.filter =
+              "drop-shadow(0 0 6px rgba(201,168,76,0.25))")
             }
           >
-            THE PROPHECY
+            The Timeline
+          </RoughButton>
+          {/* Sorting Hat — sends visitors to the house-sorting ceremony. */}
+          <RoughButton
+            as={Link}
+            href="/house"
+            color="#A78BFA"
+            glow="rgba(167,139,250,0.30)"
+            seed={17}
+            className="px-8 py-3 text-[12px] tracking-[0.3em]"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-4 w-4">
+              <path d="M12 2c-1.1 0-2 .9-2 2 0 .2.03.4.08.58C6.9 5.6 4.5 8.3 4.5 11.5c0 .3.02.6.06.88-.9.2-1.56 1-1.56 1.95 0 1.1.9 2 2 2 .35 0 .68-.09.97-.25 1.2 1.46 3.07 2.42 5.18 2.42.62 0 1.22-.08 1.79-.24l5.2 2.06c.6.24 1.2-.32 1.02-.94l-1.3-4.5c.86-.83 1.39-1.95 1.39-3.2 0-1.04-.36-2-.97-2.77.05-.25.07-.5.07-.76 0-2.9-2.1-5.4-4.94-6.06.05-.18.08-.38.08-.57 0-1.1-.9-2-2-2zm-2.5 9c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm5 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1z"/>
+            </svg>
+            FACE THE SORTING HAT
           </RoughButton>
           <RoughButton
             as="a"
@@ -585,7 +589,7 @@ export default function Hero() {
             className="px-8 py-3 text-[12px] tracking-[0.3em]"
           >
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-4 w-4">
-              <path d="M20.317 4.369A19.79 19.79 0 0 0 16.21 3.05a.07.07 0 0 0-.073.035c-.21.375-.444.864-.608 1.249a18.27 18.27 0 0 0-5.487 0 12.55 12.55 0 0 0-.617-1.25.072.072 0 0 0-.073-.034 19.74 19.74 0 0 0-4.107 1.32.066.066 0 0 0-.03.027C2.05 8.247 1.39 12.005 1.7 15.73a.082.082 0 0 0 .031.056 19.91 19.91 0 0 0 5.993 3.027.073.073 0 0 0 .079-.026 14.2 14.2 0 0 0 1.227-1.994.07.07 0 0 0-.038-.098 13.1 13.1 0 0 1-1.872-.892.07.07 0 0 1-.007-.117c.126-.094.252-.192.371-.291a.07.07 0 0 1 .074-.01c3.927 1.793 8.18 1.793 12.062 0a.07.07 0 0 1 .074.009c.12.099.246.198.372.292a.07.07 0 0 1-.006.117 12.3 12.3 0 0 1-1.873.892.07.07 0 0 0-.038.099 15.92 15.92 0 0 0 1.226 1.993.07.07 0 0 0 .079.027 19.84 19.84 0 0 0 6.002-3.027.07.07 0 0 0 .03-.055c.5-4.318-.838-8.043-3.549-11.336a.056.056 0 0 0-.028-.027zM8.02 13.46c-1.182 0-2.156-1.085-2.156-2.418 0-1.333.955-2.418 2.156-2.418 1.21 0 2.176 1.094 2.156 2.418 0 1.333-.955 2.418-2.156 2.418zm7.974 0c-1.182 0-2.157-1.085-2.157-2.418 0-1.333.955-2.418 2.157-2.418 1.21 0 2.175 1.094 2.156 2.418 0 1.333-.946 2.418-2.156 2.418z"/>
+              <path d="M20.317 4.369A19.79 19.79 0 0 0 16.21 3.05a.07.07 0 0 0-.073.035c-.21.375-.444.864-.608 1.249a18.27 18.27 0 0 0-5.487 0 12.55 12.55 0 0 0-.617-1.25.072.072 0 0 0-.073-.034 19.74 19.74 0 0 0-4.107 1.32.066.066 0 0 0-.03.027C2.05 8.247 1.39 12.005 1.7 15.73a.082.082 0 0 0 .031.056 19.91 19.91 0 0 0 5.993 3.027.073.073 0 0 0 .079-.026 14.2 14.2 0 0 0 1.227-1.994.07.07 0 0 0-.038-.098 13.1 13.1 0 0 1-1.872-.892.07.07 0 0 1-.007-.117c.126-.094.252-.192.371-.291a.07.07 0 0 1 .074-.01c3.927 1.793 8.18 1.793 12.062 0a.07.07 0 0 1 .074.009c.12.099.246.198.372.292a.07.07 0 0 1-.006.117 12.3 12.3 0 0 1-1.873.892.07.07 0 0 0-.038.099 15.92 15.92 0 0 0 1.226 1.993.07.07 0 0 0 .079.027 19.84 19.84 0 0 0 6.002-3.027.07.07 0 0 0 .03-.055c.5-4.318-.838-8.043-3.549-11.336a.056.056 0 0 0-.028-.027zM8.02 13.46c-1.182 0-2.156-1.085-2.156-2.418 0-1.333.955-2.418 2.156-2.418 1.21 0 2.176 1.094 2.156 2.418 0 1.333-.955 2.418-2.156 2.418zm7.974 0c-1.182 0-2.157-1.085-2.157-2.418 0-1.333.955-2.418 2.157-2.418 1.21 0 2.175 1.094 2.156 2.418 0 1.333-.946 2.418-2.156 2.418z" />
             </svg>
             JOIN OUR DISCORD <span>↗</span>
           </RoughButton>
@@ -691,10 +695,14 @@ export default function Hero() {
               alternates so the row reads as a fan, not a column. */}
           {/* Scroll cards — tilt/scale only on hover-capable devices (desktop)
               so touchscreens skip the transform compositing work. */}
-          <div className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4 pt-2 pb-4">
+          <div className="flex flex-wrap justify-center gap-5 sm:gap-6 pt-2 pb-4">
             {CALLS.map((c, i) => {
               const theme = SCROLL_THEMES[i] ?? SCROLL_THEMES[3];
               const tiltDeg = [-2, 1.5, -1.5, 2][i % 4];
+              const Wrapper = c.external ? "a" : Link;
+              const wrapperProps = c.external
+                ? { href: c.href, target: "_blank", rel: "noopener noreferrer" }
+                : { href: c.href };
               return (
                 <motion.div
                   key={c.href}
@@ -706,10 +714,10 @@ export default function Hero() {
                     delay: i * 0.03,
                     ease: [0.22, 1, 0.36, 1],
                   }}
-                  className="hover:transform-[rotate(0deg)_translateY(-4px)] transition-transform duration-300"
+                  className="w-full sm:w-[19rem] lg:w-[20rem] hover:transform-[rotate(0deg)_translateY(-4px)] transition-transform duration-300"
                   style={{ transformOrigin: "center center", willChange: "transform" }}
                 >
-                  <Link href={c.href} className="group block h-full">
+                  <Wrapper {...wrapperProps} className="group block h-full">
                     <div className="relative pt-2 pb-2">
                       <ScrollRoller position="top" color={theme.border} />
 
@@ -849,7 +857,7 @@ export default function Hero() {
                       {/* Bottom roller */}
                       <ScrollRoller position="bottom" color={theme.border} />
                     </div>
-                  </Link>
+                  </Wrapper>
                 </motion.div>
               );
             })}
@@ -911,13 +919,13 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* View on Google Maps */}
+        {/* Map CTAs */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.4, ease: "easeOut" }}
-          className="mt-12 flex justify-center"
+          className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6"
         >
           <RoughButton
             as="a"
@@ -944,6 +952,35 @@ export default function Hero() {
               <circle cx="12" cy="9" r="2.5" />
             </svg>
             <span>VIEW ON GOOGLE MAPS</span>
+            <span className="opacity-70 group-hover:translate-x-0.5 transition">
+              ↗
+            </span>
+          </RoughButton>
+
+          <RoughButton
+            as={Link}
+            href="/travel"
+            color="#D4AF37"
+            glow="rgba(212,175,55,0.30)"
+            shimmer
+            seed={88}
+            className="px-6 py-3 text-[12px]"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.7"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              className="h-4 w-4"
+            >
+              <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" />
+              <line x1="9" y1="3" x2="9" y2="18" />
+              <line x1="15" y1="6" x2="15" y2="21" />
+            </svg>
+            <span>TRAVEL GUIDE</span>
             <span className="opacity-70 group-hover:translate-x-0.5 transition">
               ↗
             </span>
