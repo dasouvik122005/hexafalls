@@ -210,7 +210,7 @@ export default function HardwareDetails({ registered = null }) {
                   seed={23}
                   className="px-10 sm:px-12 py-4 sm:py-5 leading-none text-[13px] sm:text-[14px] tracking-[0.4em]"
                 >
-                  <span>COMPETITION · TEAM 2–4</span>
+                  <span>COMPETITION · TEAM 1–4</span>
                   <span aria-hidden="true">↗</span>
                 </RoughButton>
                 <RoughButton
