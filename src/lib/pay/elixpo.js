@@ -18,9 +18,11 @@ import { env } from "@/lib/db";
 
 const PAY_BASE = "https://payouts.elixpo.com";
 
-// We sell a single catalog tier for every paid event. The buyer is namespaced
-// per (user, event) via the `uid` we send, so one tier covers all events while
-// each fee stays a distinct entitlement. See payouts.catalog.json.
+// Default catalog tier for a standard ₹100 seat. Most paid events share it; an
+// event with a different price (e.g. CP at ₹70) passes its own `tier` so Pay
+// resolves the right amount from the catalog. The buyer is namespaced per
+// (user, event) via `uid`, so each fee stays a distinct entitlement regardless
+// of tier. See payouts.catalog.json.
 const TIER = "member";
 
 // Reject webhooks whose timestamp is older than this (replay window).
@@ -88,6 +90,7 @@ export async function createCheckoutSession({
   email,
   currency,
   successUrl,
+  tier = TIER,
 } = {}) {
   const apiKey = env("ELIXPO_PAY_API_KEY");
 
@@ -97,7 +100,7 @@ export async function createCheckoutSession({
   }
 
   const body = JSON.stringify({
-    tier: TIER,
+    tier,
     currency,
     customer: { uid: payUid(userId, event), email: email ?? undefined },
     success_url: successUrl,

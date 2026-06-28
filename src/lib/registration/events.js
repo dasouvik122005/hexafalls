@@ -57,6 +57,9 @@ export const REGISTRATION_EVENTS = {
     minMembers: 1,
     maxMembers: 1,
     pricePerPerson: 70, // ₹, charged only after approval (shortlisted → pay → approved)
+    // CP costs less than the standard ₹100 seat, so it bills against its own
+    // Elixpo Pay catalog tier (price resolves server-side from the tier).
+    payTier: "cp",
     fields: ["platformHandles"],
   },
   gaming: {
@@ -118,6 +121,13 @@ export function teamRoleFor(eventKey) {
 // Whether an event charges an entry fee (drives the payment step + fees_settled).
 export function isPaidEvent(eventKey) {
   return (REGISTRATION_EVENTS[eventKey]?.pricePerPerson ?? 0) > 0;
+}
+
+// Elixpo Pay catalog tier an event bills against. Most seats share the standard
+// "member" tier (₹100); events with a different price get their own tier so Pay
+// resolves the correct amount from the catalog. See payouts.catalog.json.
+export function payTierFor(eventKey) {
+  return REGISTRATION_EVENTS[eventKey]?.payTier ?? "member";
 }
 
 // Team review lifecycle:

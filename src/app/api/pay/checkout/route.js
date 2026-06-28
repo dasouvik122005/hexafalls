@@ -13,7 +13,7 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/auth/server";
 import { getDB } from "@/lib/db";
 import { generateId } from "@/lib/ids";
-import { REGISTRATION_EVENTS, isPaidEvent, isPayableNow, teamUrl } from "@/lib/registration/events";
+import { REGISTRATION_EVENTS, isPaidEvent, isPayableNow, teamUrl, payTierFor } from "@/lib/registration/events";
 import { createCheckoutSession } from "@/lib/pay/elixpo";
 
 
@@ -126,6 +126,7 @@ export async function POST(req) {
     squadId,
     email: user.email,
     currency: CURRENCY,
+    tier: payTierFor(event),
     successUrl: `${origin}${team}?paid=1`,
   });
 

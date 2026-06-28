@@ -18,6 +18,21 @@
           "type": "one_time"
         }
       ]
+    },
+    {
+      "tier": "cp",
+      "name": "HexaFalls Competitive Programming",
+      "description": "Competitive Programming entry fee for HexaFalls 2026. One-time payment.",
+      "prices": [
+        {
+          "nickname": "India",
+          "currency": "INR",
+          "unit_amount": 7000,
+          "interval": "year",
+          "region": "IN",
+          "type": "one_time"
+        }
+      ]
     }
   ]
 }
