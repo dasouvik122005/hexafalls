@@ -1,13 +1,11 @@
 // PATCH /api/me/profile
 //
 // Update the signed-in user's profile. Verification lives here: a user becomes
-// gdg_verified once the profile is COMPLETE (college, year, github, linkedin,
-// bio, gdg_email) — portfolio is optional.
+// gdg_verified once the profile is COMPLETE (college, year, gdg_email).
+// GitHub, LinkedIn, bio and portfolio are optional.
 //
-// On SAVE we also REACHABILITY-CHECK the fields that changed:
-//   - github   → the GitHub profile must exist (api.github.com 404 = reject)
-//   - linkedin → the LinkedIn profile must not 404
-//   - portfolio→ the URL must return 200 OK
+// On SAVE we REACHABILITY-CHECK the optional fields that changed:
+//   - portfolio→ if given, the URL must return 200 OK
 //   - gdg_email→ if it differs from the Elixpo account email, its domain must
 //                be able to receive mail (DNS-over-HTTPS MX/A lookup)
 // Checks run in parallel with short timeouts and fail OPEN on our own network
@@ -36,9 +34,6 @@ function isComplete(p) {
   return Boolean(
     p.college &&
       Number.isInteger(p.year) &&
-      p.github &&
-      p.linkedin &&
-      p.bio &&
       p.gdg_email,
   );
 }
@@ -56,29 +51,6 @@ async function fetchTimeout(url, opts = {}, ms = 5000) {
 
 // Definitive-negative checks: return false ONLY when we're sure it's invalid.
 // Our own errors (timeout, rate-limit, bot-block) fail open → true.
-async function githubExists(handle) {
-  try {
-    const r = await fetchTimeout(`https://api.github.com/users/${encodeURIComponent(handle)}`, {
-      headers: { "User-Agent": "HexaFalls", Accept: "application/vnd.github+json" },
-    });
-    return r.status !== 404; // 200 ok; 403/429 rate-limit → don't block
-  } catch {
-    return true;
-  }
-}
-
-async function linkedinExists(handle) {
-  try {
-    const r = await fetchTimeout(`https://www.linkedin.com/in/${encodeURIComponent(handle)}/`, {
-      headers: { "User-Agent": "Mozilla/5.0 (compatible; HexaFallsBot/1.0)" },
-      redirect: "follow",
-    });
-    return r.status !== 404; // LinkedIn bot-blocks (999/403) → can't disprove
-  } catch {
-    return true;
-  }
-}
-
 async function urlReturns200(url) {
   try {
     const r = await fetchTimeout(url, { method: "GET", redirect: "follow" }, 6000);
@@ -189,10 +161,7 @@ export async function PATCH(req) {
   // given — must return 200, and a custom GDG email's domain must accept mail).
   // Any failure → 400 and the profile is NOT verified/marked complete.
   if (willBeComplete) {
-    const checks = [
-      githubExists(merged.github).then((ok) => (ok ? null : "github_not_found")),
-      linkedinExists(merged.linkedin).then((ok) => (ok ? null : "linkedin_not_found")),
-    ];
+    const checks = [];
     if (merged.portfolio) {
       checks.push(urlReturns200(merged.portfolio).then((ok) => (ok ? null : "portfolio_unreachable")));
     }

@@ -184,7 +184,7 @@ export default function WizardingRulebookLayout({ trackData, rules, chapters }) 
             <span className="font-mono text-[10px] text-silver-hp/70 uppercase tracking-widest mr-2">Team:</span>
             <span className="font-mono text-[13px] tracking-widest text-silver-hp">{rules?.registration?.teamSize}</span>
           </RoughButton>
-          <RoughButton as={Link} href="/register/hardware" color={color} glow={glow} shimmer seed={33} className="px-8 py-3">
+          <RoughButton as={Link} href={`/events/hardware/register?mode=${trackData?.slug === "exhibition" ? "exhibition" : "competition"}`} color={color} glow={glow} shimmer seed={33} className="px-8 py-3">
             <span className="font-mono text-[13px] tracking-[0.4em]">REGISTER NOW</span>
             <span aria-hidden="true">↗</span>
           </RoughButton>

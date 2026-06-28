@@ -59,11 +59,8 @@ export default function ProfileEditor({ user }) {
   // Verification === a complete profile. Drive the chip off the LIVE form state
   // so it always reflects whether the current profile meets the bar.
   const complete = Boolean(
-    bio.trim() &&
-      college.trim() &&
+    college.trim() &&
       String(year).trim() &&
-      github.trim() &&
-      linkedin.trim() &&
       EMAIL_RE.test(gdgEmail.trim()),
   );
 
@@ -144,8 +141,8 @@ export default function ProfileEditor({ user }) {
       </div>
 
       <p className="font-wizard text-silver-hp/70 text-sm leading-relaxed">
-        Complete every field below to get <span className="text-cyan-hp">verified</span> and
-        unlock registration. Only your portfolio is optional.
+        Add your <span className="text-cyan-hp">college, year and GDG email</span> to get
+        verified and unlock registration. GitHub, LinkedIn, bio and portfolio are optional.
       </p>
 
       <form onSubmit={onSubmit} className="grid sm:grid-cols-2 gap-4">
@@ -167,20 +164,18 @@ export default function ProfileEditor({ user }) {
           required
         />
         <PrefixField
-          label="GitHub"
+          label="GitHub (optional)"
           prefix="github.com/"
           value={github}
           onChange={setGithub}
           placeholder="your-handle"
-          required
         />
         <PrefixField
-          label="LinkedIn"
+          label="LinkedIn (optional)"
           prefix="linkedin.com/in/"
           value={linkedin}
           onChange={setLinkedin}
           placeholder="your-handle"
-          required
         />
         <PrefixField
           label="Portfolio (optional)"
@@ -239,7 +234,7 @@ export default function ProfileEditor({ user }) {
 
         <label className="sm:col-span-2 flex flex-col gap-1.5">
           <span className="font-display text-[10px] uppercase tracking-[0.4em] text-cyan-hp/80">
-            Bio <span className="text-red-300/70">*</span>
+            Bio (optional)
           </span>
           <textarea
             rows={3}
