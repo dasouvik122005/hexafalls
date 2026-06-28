@@ -83,9 +83,17 @@ export default async function UserTeamsPage({ params }) {
           </Link>
 
           {empty && (
-            <p className="font-wizard italic text-silver-hp/65 text-center text-sm py-6">
-              No teams or entries yet. Pick an event to sign on.
-            </p>
+            <div className="flex flex-col items-center gap-5 py-10 text-center">
+              <p className="font-wizard italic text-silver-hp/65 text-sm">
+                No teams or entries yet. Pick an event to sign on.
+              </p>
+              <Link
+                href="/events"
+                className="inline-flex items-center gap-2 rounded-full border border-gold-hp/40 bg-gold-hp/10 px-5 py-2.5 font-display text-[11px] uppercase tracking-[0.3em] text-gold-hp transition hover:bg-gold-hp/20"
+              >
+                Browse events <span aria-hidden="true">→</span>
+              </Link>
+            </div>
           )}
 
           {squadRows.length > 0 && (
