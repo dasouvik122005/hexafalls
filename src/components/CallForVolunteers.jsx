@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
 import Sparkles from "./Sparkles";
@@ -152,12 +153,12 @@ export default function CallForVolunteers() {
           inner="flex flex-col gap-5"
         >
           <div className="relative w-full aspect-21/9 sm:aspect-21/8 overflow-hidden rounded-sm bg-midnight/70 flex items-center justify-center">
-            <img
+            <Image
               src={BANNER_SRC}
               alt="Call for Volunteers"
-            loading="lazy"
-            decoding="async"
-              className="block max-h-full max-w-full object-contain"
+              fill
+              className="object-contain"
+              sizes="(max-width: 768px) 100vw, 80vw"
               style={{
                 WebkitMaskImage:
                   "radial-gradient(ellipse at center, #000 55%, transparent 95%)",

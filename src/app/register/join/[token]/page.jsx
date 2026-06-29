@@ -15,7 +15,6 @@ import Footer from "@/components/Footer";
 import RoughFrame from "@/components/RoughFrame";
 import RoughButton from "@/components/RoughButton";
 import PageBackdrop from "@/components/PageBackdrop";
-import ProfileGate from "@/components/register/ProfileGate";
 import JoinSquadForm from "@/components/register/JoinSquadForm";
 import { getDB } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth/server";
@@ -172,16 +171,13 @@ export default async function JoinPage({ params }) {
                   />
                 </Notice>
               )}
-              {me && !me.gdg_verified && <ProfileGate elixpoId={me.elixpo_id} />}
-              {me && me.gdg_verified && (
-                <JoinSquadForm
-                  squadId={squad.id}
-                  inviteToken={token}
-                  squadName={squad.name}
-                  eventLabel={eventLabel}
-                  hasUsername={Boolean(me.username)}
-                />
-              )}
+              {me && <JoinSquadForm
+                squadId={squad.id}
+                inviteToken={token}
+                squadName={squad.name}
+                eventLabel={eventLabel}
+                hasUsername={Boolean(me.username)}
+              />}
             </>
           )}
           </div>

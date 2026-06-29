@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { loadRough } from "@/lib/loadRough";
+import Image from "next/image";
 import RoughFrame from "./RoughFrame";
 import RoughButton from "./RoughButton";
 import RoughTicks from "./RoughTicks";
@@ -118,14 +119,12 @@ export default function LocationMap() {
         inner="block"
       >
         <div className="relative w-full aspect-21/9 sm:aspect-21/8 overflow-hidden rounded-sm bg-midnight/70 flex items-center justify-center">
-          <img
+          <Image
             src="/banners/hexafalls_map.webp"
             alt="HexaFalls map — JIS University, Agarpara, Kolkata"
-            width={1600}
-            height={686}
-            loading="lazy"
-            decoding="async"
-            className="block h-full w-full object-cover"
+            fill
+            sizes="(max-width: 768px) 100vw, 80vw"
+            className="object-cover"
             style={{ filter: "saturate(0.85) brightness(0.97) contrast(1.04)" }}
             draggable={false}
           />

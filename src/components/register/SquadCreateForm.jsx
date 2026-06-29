@@ -59,8 +59,8 @@ export default function SquadCreateForm({ event, eventLabel, hasUsername }) {
   // CP needs at least one platform handle.
   const cpHasHandle = Boolean(codeforces.trim() || leetcode.trim() || codechef.trim());
   const cpOk = !isCp || cpHasHandle;
-  // CP skips tagline/description; team events still require them.
-  const teamCopyOk = isCp || (tagline.trim().length > 0 && description.trim().length > 0);
+  // CP skips tagline/description; for team events both are now optional.
+  const teamCopyOk = true;
   // Forge stays greyed until the WHOLE form is filled.
   const canForge =
     nameValid &&
@@ -178,14 +178,14 @@ export default function SquadCreateForm({ event, eventLabel, hasUsername }) {
           <>
             <label className="flex flex-col gap-1.5">
               <span className="font-display text-[10px] uppercase tracking-[0.4em] text-cyan-hp/80">
-                One-line tagline
+                One-line tagline{" "}
+                <span className="normal-case tracking-normal text-silver-hp/40 font-wizard">· optional</span>
               </span>
               <input
                 type="text"
-                required
                 value={tagline}
                 onChange={(e) => setTagline(e.target.value)}
-                placeholder="What is your squad about in 8 words"
+                placeholder="What is your squad about in 8 words (optional)"
                 maxLength={120}
                 className="w-full rounded-sm border border-cyan-hp/40 bg-midnight/60 px-4 py-3 text-base text-silver-hp focus:border-cyan-hp focus:outline-none focus:ring-2 focus:ring-cyan-hp/40"
               />
@@ -193,14 +193,14 @@ export default function SquadCreateForm({ event, eventLabel, hasUsername }) {
 
             <label className="flex flex-col gap-1.5">
               <span className="font-display text-[10px] uppercase tracking-[0.4em] text-cyan-hp/80">
-                Description
+                Description{" "}
+                <span className="normal-case tracking-normal text-silver-hp/40 font-wizard">· optional</span>
               </span>
               <textarea
-                required
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                rows={4}
-                placeholder="What do you want to build? Skills, vibe, anything that helps a teammate decide."
+                rows={3}
+                placeholder="What do you want to build? (optional)"
                 maxLength={800}
                 className="w-full rounded-sm border border-cyan-hp/40 bg-midnight/60 px-4 py-3 text-base text-silver-hp focus:border-cyan-hp focus:outline-none focus:ring-2 focus:ring-cyan-hp/40 resize-y"
               />

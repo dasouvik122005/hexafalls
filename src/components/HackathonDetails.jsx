@@ -138,7 +138,7 @@ export default function HackathonDetails({ registered = null }) {
       {/* Dark textured magical background */}
       <div
         className="absolute inset-0 -z-40 opacity-40 bg-cover bg-center"
-        style={{ backgroundImage: "url('/textures/bg-stone.png')", mixBlendMode: "luminosity" }}
+        style={{ backgroundImage: "url('/textures/bg-stone.webp')", mixBlendMode: "luminosity" }}
       />
       <div className="absolute inset-0 -z-50 bg-[#0B0C10]" />
       
@@ -263,7 +263,7 @@ export default function HackathonDetails({ registered = null }) {
             {/* Realistic background image */}
             <div 
               className="absolute inset-0 bg-cover bg-center opacity-70 group-hover:opacity-90 transition-opacity duration-500"
-              style={{ backgroundImage: "url('/textures/table_bg_cyan.png')" }} 
+              style={{ backgroundImage: "url('/textures/table_bg_cyan.webp')" }} 
             />
             {/* Dark overlay for readability */}
             <div className="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors duration-500" />
@@ -318,7 +318,7 @@ export default function HackathonDetails({ registered = null }) {
               <div className="relative h-full w-full rounded-xl overflow-hidden shadow-[0_10px_20px_rgba(0,0,0,0.5)] border border-gold-hp/20 group hover:shadow-[0_15px_30px_rgba(0,0,0,0.7)] transition-all duration-300">
                 <div 
                   className="absolute inset-0 bg-cover bg-center opacity-90 transition-opacity duration-300 group-hover:opacity-100"
-                  style={{ backgroundImage: "url('/textures/realistic_card_bg.png')" }} 
+                  style={{ backgroundImage: "url('/textures/realistic_card_bg.webp')" }} 
                 />
                 <div className="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-colors duration-300" />
                 
@@ -379,7 +379,7 @@ export default function HackathonDetails({ registered = null }) {
           <div className="relative w-full rounded-xl border border-cyan-hp/30 shadow-[0_10px_30px_rgba(0,0,0,0.5)] overflow-hidden transition-all duration-300 hover:shadow-[0_15px_40px_rgba(0,0,0,0.6)] hover:border-cyan-hp/50 group">
             <div 
               className="absolute inset-0 bg-cover bg-center opacity-70 group-hover:opacity-90 transition-opacity duration-500"
-              style={{ backgroundImage: "url('/textures/table_bg_cyan.png')" }} 
+              style={{ backgroundImage: "url('/textures/table_bg_cyan.webp')" }} 
             />
             <div className="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors duration-500" />
             
@@ -422,7 +422,7 @@ export default function HackathonDetails({ registered = null }) {
               <div className="relative h-full w-full rounded-xl overflow-hidden shadow-[0_10px_20px_rgba(0,0,0,0.5)] border border-gold-hp/20 group hover:shadow-[0_15px_30px_rgba(0,0,0,0.7)] transition-all duration-300">
                 <div 
                   className="absolute inset-0 bg-cover bg-center opacity-90 transition-opacity duration-300 group-hover:opacity-100"
-                  style={{ backgroundImage: "url('/textures/realistic_card_bg.png')" }} 
+                  style={{ backgroundImage: "url('/textures/realistic_card_bg.webp')" }} 
                 />
                 <div className="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-colors duration-300" />
                 
@@ -457,7 +457,7 @@ export default function HackathonDetails({ registered = null }) {
           <div className="relative w-full rounded-xl border border-[#EF4444]/40 shadow-[0_10px_30px_rgba(0,0,0,0.5)] overflow-hidden transition-all duration-300 hover:shadow-[0_15px_40px_rgba(0,0,0,0.6)] hover:border-[#EF4444]/60 group">
             <div 
               className="absolute inset-0 bg-cover bg-center opacity-70 group-hover:opacity-90 transition-opacity duration-500"
-              style={{ backgroundImage: "url('/textures/table_bg_red.png')" }} 
+              style={{ backgroundImage: "url('/textures/table_bg_red.webp')" }} 
             />
             <div className="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors duration-500" />
             
@@ -496,7 +496,7 @@ export default function HackathonDetails({ registered = null }) {
           <div className="relative w-full rounded-xl overflow-hidden shadow-[0_15px_30px_rgba(0,0,0,0.6)] border border-cyan-hp/30">
             <div 
               className="absolute inset-0 bg-cover bg-center opacity-100"
-              style={{ backgroundImage: "url('/textures/realistic_card_bg.png')" }} 
+              style={{ backgroundImage: "url('/textures/realistic_card_bg.webp')" }} 
             />
             <div className="absolute inset-0 bg-black/60" />
             <div className="relative z-10 p-8">
@@ -531,7 +531,7 @@ export default function HackathonDetails({ registered = null }) {
           <div className="relative w-full rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.6)] border border-gold-hp/30 group">
             <div 
               className="absolute inset-0 bg-cover bg-center opacity-100 transition-opacity duration-500"
-              style={{ backgroundImage: "url('/textures/realistic_card_bg.png')" }} 
+              style={{ backgroundImage: "url('/textures/realistic_card_bg.webp')" }} 
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/80 group-hover:from-black/50 group-hover:to-black/70 transition-colors duration-500" />
             
@@ -597,7 +597,7 @@ export default function HackathonDetails({ registered = null }) {
           className="group relative inline-flex items-center justify-center gap-2 px-8 py-3 text-[11px] font-display uppercase tracking-[0.4em] font-bold rounded-lg overflow-hidden transition-all duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.6)] hover:shadow-[0_10px_25px_rgba(197,198,199,0.2)] hover:-translate-y-0.5"
           style={{ color: '#C5C6C7', textShadow: "0 2px 4px rgba(0,0,0,1)" }}
         >
-          <div className="absolute inset-0 bg-cover bg-center opacity-40 group-hover:opacity-60 transition-opacity duration-300" style={{ backgroundImage: "url('/textures/realistic_card_bg.png')" }} />
+          <div className="absolute inset-0 bg-cover bg-center opacity-40 group-hover:opacity-60 transition-opacity duration-300" style={{ backgroundImage: "url('/textures/realistic_card_bg.webp')" }} />
           <div className="absolute inset-0 bg-black/80 group-hover:bg-black/70 transition-colors duration-300" />
           <div className="absolute inset-0 border border-[#C5C6C7]/30 rounded-lg group-hover:border-[#C5C6C7]/50 transition-colors duration-300" />
           <span className="relative z-10">← ALL EVENTS</span>

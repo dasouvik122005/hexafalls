@@ -7,7 +7,7 @@
 // - Squad events render <SquadCreateForm />; solo events a placeholder until
 //   the solo flow lands.
 
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import TopBar from "@/components/TopBar";
 import Footer from "@/components/Footer";
@@ -17,7 +17,6 @@ import RoughStar from "@/components/RoughStar";
 import RegisterShell from "@/components/register/RegisterShell";
 import SquadEntry from "@/components/register/SquadEntry";
 import SoloRegisterForm from "@/components/register/SoloRegisterForm";
-import ProfileGate from "@/components/register/ProfileGate";
 import { getSessionUser } from "@/lib/auth/server";
 import { EVENTS } from "@/lib/routes";
 import {
@@ -70,6 +69,10 @@ export default async function EventRegisterPage({ params, searchParams }) {
 
   const returnTo = `/events/${slug}/register${mode ? `?mode=${mode}` : ""}`;
   const user = await getSessionUser();
+
+  if (!user) {
+    redirect(`/api/auth/login?return_to=${encodeURIComponent(returnTo)}`);
+  }
 
   // If a squad event and the caller is already in one, jump straight to it.
   let existingSquadId = null;
@@ -131,7 +134,7 @@ export default async function EventRegisterPage({ params, searchParams }) {
   // event's time slot. Informational only — registration is not blocked.
   let clashes = [];
   const showForm =
-    user && user.gdg_verified && !existingSquadId && !existingSoloReg;
+    user && !existingSquadId && !existingSoloReg;
   if (showForm) {
     const sq = await getDB()
       .prepare(
@@ -153,10 +156,9 @@ export default async function EventRegisterPage({ params, searchParams }) {
 
   return (
     <ShellWrap eyebrow={`Sign on · ${cfg.label}`} accent={cfg.label}>
-      {!user && <SignInPanel returnTo={returnTo} />}
-      {user && !user.gdg_verified && <ProfileGate elixpoId={user.elixpo_id} />}
+      {user && !user.gdg_verified && <GdgOptionalNotice elixpoId={user.elixpo_id} />}
       {showForm && clashes.length > 0 && <ClashWarning eventLabel={cfg.label} clashes={clashes} />}
-      {user && user.gdg_verified && existingSquadId && (
+      {user && existingSquadId && (
         <DonePanel
           eyebrow="You're on a team"
           title="Already signed on"
@@ -165,7 +167,7 @@ export default async function EventRegisterPage({ params, searchParams }) {
           primaryLabel="VISIT MY TEAM ↗"
         />
       )}
-      {user && user.gdg_verified && existingSoloReg && (
+      {user && existingSoloReg && (
         <DonePanel
           eyebrow="You're registered"
           title="Already registered"
@@ -174,7 +176,7 @@ export default async function EventRegisterPage({ params, searchParams }) {
           primaryLabel="VIEW YOUR ENTRY ↗"
         />
       )}
-      {user && user.gdg_verified && !existingSquadId && !existingSoloReg &&
+      {user && !existingSquadId && !existingSoloReg &&
         (isSquadEvent(regKey) ? (
           <SquadEntry
             event={regKey}
@@ -278,73 +280,36 @@ function HardwareModeChooser() {
   );
 }
 
-function SignInPanel({ returnTo }) {
+// Soft GDG notice — shown when the user is signed in but not GDG-verified.
+// Does NOT block registration; the user can dismiss and proceed.
+function GdgOptionalNotice({ elixpoId }) {
   return (
-    <div className="relative mx-auto flex w-full max-w-xl flex-col items-center gap-7 px-4 py-6 text-center">
-      {/* floating hand-drawn artifacts */}
-      <RoughStar size={26} color="#66FCF1" className="absolute -left-1 top-3 hp-float opacity-70" style={{ animationDelay: "0.3s" }} />
-      <RoughStar size={16} color="#D4AF37" className="absolute right-4 top-10 hp-float opacity-60" style={{ animationDelay: "1.2s" }} />
-      <RoughStar size={20} color="#A78BFA" className="absolute left-8 bottom-6 hp-float opacity-50" style={{ animationDelay: "0.8s" }} />
-      <RoughStar size={14} color="#66FCF1" className="absolute right-1 bottom-10 hp-float opacity-50" style={{ animationDelay: "1.7s" }} />
-
-      {/* animated sigil — a glowing key in a pulsing aura */}
-      <div className="relative grid place-items-center">
-        <span
-          aria-hidden="true"
-          className="absolute h-28 w-28 rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(212,175,55,0.22), transparent 70%)" }}
-        />
-        <span
-          aria-hidden="true"
-          className="absolute h-20 w-20 rounded-full border border-gold-hp/40 animate-ping"
-          style={{ animationDuration: "2.8s" }}
-        />
-        <div className="relative grid h-20 w-20 place-items-center rounded-full border border-gold-hp/50 bg-midnight/60 backdrop-blur-sm hp-float">
-          <svg
-            viewBox="0 0 24 24"
-            className="h-8 w-8 text-gold-hp"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            style={{ filter: "drop-shadow(0 0 8px rgba(212,175,55,0.55))" }}
+    <div className="mb-6 w-full rounded-sm border border-gold-hp/25 bg-gold-hp/5 px-5 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="flex flex-col gap-1">
+        <span className="font-display text-[10px] uppercase tracking-[0.4em] text-gold-hp/90">GDG Chapter</span>
+        <p className="font-wizard text-silver-hp/75 text-sm leading-snug">
+          Joining the{" "}
+          <a
+            href="https://gdg.community.dev/gdg-on-campus-jis-university-kolkata-india/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gold-hp underline underline-offset-4 hover:text-gold-hp/80"
           >
-            <circle cx="9" cy="9" r="5.5" />
-            <path d="M12.8 12.8 L21 21" />
-            <path d="M18.5 18.5 l2.2 -2.2" />
-            <path d="M15.8 15.8 l2.2 -2.2" />
-          </svg>
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-3">
-        <h2 className="font-display tracking-[0.28em] uppercase text-base sm:text-lg text-gold-hp hp-glow-gold">
-          One key, every gate
-        </h2>
-        <p className="mx-auto max-w-md font-wizard text-silver-hp/80 text-sm sm:text-base leading-relaxed">
-          Sign on with Elixpo to register. A single account assembles your team,
-          settles entry fees, and keeps every HexaFalls scroll in one place.
+            GDG on Campus · JIS University
+          </a>{" "}
+          chapter is encouraged but not required to register.
         </p>
       </div>
-
       <RoughButton
-        as="a"
-        href={`/api/auth/login?return_to=${encodeURIComponent(returnTo)}`}
+        as="link"
+        href={elixpoId ? `/u/${elixpoId}/settings` : "/"}
         color="#D4AF37"
-        glow="rgba(212,175,55,0.40)"
         fill={false}
-        shimmer
-        seed={19}
-        className="px-10 sm:px-12 py-4 leading-none text-[13px] sm:text-[14px] tracking-[0.4em]"
+        seed={37}
+        className="shrink-0 px-5 py-2 text-[10px] tracking-[0.3em]"
       >
-        SIGN IN WITH ELIXPO ↗
+        COMPLETE PROFILE
       </RoughButton>
-
-      <span className="inline-flex items-center gap-2 font-display text-[10px] uppercase tracking-[0.35em] text-cyan-hp/55">
-        <span className="h-1.5 w-1.5 rounded-full bg-cyan-hp/80 animate-pulse" />
-        Secure Elixpo SSO · takes a few seconds
-      </span>
     </div>
   );
 }

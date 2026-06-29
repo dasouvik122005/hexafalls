@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
 import Link from "next/link";
+import Image from "next/image";
 import Sparkles from "./Sparkles";
 import LocationMap from "./LocationMap";
 import RoughButton from "./RoughButton";
@@ -287,7 +288,7 @@ export default function Hero() {
     <>
       <section
         ref={sectionRef}
-        className="relative isolate overflow-hidden h-screen flex flex-col items-center justify-start pt-32 pb-24 px-6"
+        className="relative isolate overflow-hidden min-h-[80vh] flex flex-col items-center justify-center pt-28 pb-16 px-6"
       >
         <video
           autoPlay
@@ -300,7 +301,7 @@ export default function Hero() {
           tabIndex={-1}
           disablePictureInPicture
           disableRemotePlayback
-          className="absolute inset-0 -z-40 h-screen w-full object-cover"
+          className="absolute inset-0 -z-40 h-full w-full object-cover"
         >
           <source
             src="https://res.cloudinary.com/dxkje9whm/video/upload/f_auto,q_auto,vc_auto,w_1920/v1779009744/hexa2_hero_background_demo_1-B9c3V5LY3VUM4T_seg1_7c8c3f56-265e-4786-ab86-51d5784526bf_lnbo8r.mp4"
@@ -356,13 +357,13 @@ export default function Hero() {
           style={{ y: yMid }}
           className="absolute inset-0 -z-10 opacity-70"
         >
-          <Sparkles count={44} />
+          <Sparkles count={28} />
         </motion.div>
         <motion.div
           style={{ y: yStars }}
           className="absolute inset-0 -z-10 opacity-50"
         >
-          <Sparkles count={28} />
+          <Sparkles count={16} />
         </motion.div>
 
         <RoughStar
@@ -449,14 +450,17 @@ export default function Hero() {
                 aria-label={l.id.toUpperCase()}
                 className="group relative h-10 w-10 sm:h-12 sm:w-12 shrink-0 overflow-hidden rounded-md border border-silver-hp/25 bg-slate-hp/50 backdrop-blur flex items-center justify-center transition hover:border-cyan-hp/60 hover:shadow-[0_0_18px_rgba(102,252,241,0.25)]"
               >
-                <img
+                <Image
                   src={l.logo}
                   alt={l.id.toUpperCase()}
+                  width={48}
+                  height={48}
                   className="block h-full w-full object-contain p-1.5 transition duration-300 group-hover:scale-105"
                   style={{
                     filter:
                       "brightness(1.05) contrast(1.05) saturate(0.85) drop-shadow(0 0 6px rgba(102,252,241,0.18))",
                   }}
+                  priority
                 />
                 <span
                   aria-hidden="true"
@@ -622,7 +626,7 @@ export default function Hero() {
       {/* ═══════════════════════════════════════════════════════════════════
           SCROLLS SECTION — fully redesigned as parchment scroll cards
       ═══════════════════════════════════════════════════════════════════ */}
-      <section className="relative isolate overflow-hidden flex flex-col items-center justify-start px-6 scrolls-section-bg">
+      <section className="relative isolate overflow-hidden flex flex-col items-center justify-start px-6 scrolls-section-bg cv-section">
         {/* ── "THE SCROLLS GO OUT" heading ── */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -915,14 +919,17 @@ export default function Hero() {
               style={{ animationDuration: "7s" }}
             >
               <RoughCorners color="#66FCF1" length={20} inset={2} seed={67} />
-              <img
+              <Image
                 src="/mascot/mascot.webp"
                 alt="HexaFalls mascot"
+                width={224}
+                height={224}
                 className="relative h-full w-full object-contain select-none"
                 style={{
                   filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.55))",
                 }}
                 draggable={false}
+                loading="lazy"
               />
             </div>
           </motion.div>

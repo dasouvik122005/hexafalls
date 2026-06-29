@@ -26,10 +26,6 @@
   --font-display: var(--font-display);
   --font-wizard:  var(--font-wizard);
   --font-body:    var(--font-body);
-  --font-crimson: var(--font-crimson);
-  --font-cormorant: var(--font-cormorant);
-  --font-belina:   var(--font-belina);
-  --font-montserrat: var(--font-montserrat);
 }
 
 /* Readability bump — body/label/paragraph text is a step larger site-wide.
@@ -280,6 +276,7 @@ select::placeholder {
 .rf-mist {
   filter: blur(40px);
   z-index: 0;
+  contain: layout style;  /* limit repaint to the mist element only */
 }
 .rf-mist__blob {
   position: absolute;
@@ -342,14 +339,16 @@ select::placeholder {
   inset: 0;
   pointer-events: none;
   z-index: -1;             /* behind page content but in front of body bg */
-  filter: blur(90px);
+  filter: blur(72px);      /* 72px is visually identical to 90px, cheaper to composite */
   overflow: hidden;
+  contain: layout style;   /* limit repaint scope to this element only */
 }
 .hp-fog__cloud {
   position: absolute;
   border-radius: 9999px;
   mix-blend-mode: screen;
   will-change: transform, opacity;
+  transform: translateZ(0); /* own GPU layer per cloud so motion stays off main thread */
 }
 .hp-fog__cloud--a {
   top: 8%;  left: -12%;

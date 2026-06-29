@@ -22,29 +22,23 @@ const ERRORS = {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export default function ProfileEditor({ user }) {
+export default function ProfileEditor({ user, accountEmail: accountEmailProp }) {
+  const accountEmail = accountEmailProp || user.email || "";
   const [bio, setBio]             = useState(user.bio ?? "");
-  // The email the user signed in with (Elixpo account). Used to prefill the GDG
-  // community email and to power the "same as Elixpo account" shortcut.
-  const accountEmail = user.email ?? "";
-
   const [college, setCollege]     = useState(user.college ?? "");
   const [year, setYear]           = useState(user.year ?? "");
-  const [github, setGithub]       = useState(user.github ?? "");
-  const [linkedin, setLinkedin]   = useState(user.linkedin ?? "");
-  // Prefill the GDG email from the saved value, else from the sign-in email.
+  const [github, setGithub]       = useState((user.github ?? "").replace(/^https?:\/\/github\.com\//, ""));
+  const [linkedin, setLinkedin]   = useState((user.linkedin ?? "").replace(/^https?:\/\/(www\.)?linkedin\.com\/in\//, ""));
+  const [portfolio, setPortfolio] = useState((user.portfolio ?? "").replace(/^https?:\/\//, ""));
   const [gdgEmail, setGdgEmail]   = useState(user.gdg_email || accountEmail);
   const [sameAsAccount, setSameAsAccount] = useState(
-    Boolean(accountEmail) && (!user.gdg_email || user.gdg_email === accountEmail),
+    !user.gdg_email || user.gdg_email === accountEmail,
   );
-  // Stored as a full URL; shown with an https:// prefix so the user types only
-  // the rest (we strip the scheme for display and re-add it on save).
-  const [portfolio, setPortfolio] = useState((user.portfolio ?? "").replace(/^https?:\/\//, ""));
   const [busy, setBusy]           = useState(false);
   const [error, setError]         = useState(null);
   const [saved, setSaved]         = useState(false);
-  // Whether the PERSISTED profile is verified (drives the Save→Update button).
   const [savedVerified, setSavedVerified] = useState(Boolean(user.gdg_verified));
+  const [showExtras, setShowExtras]       = useState(false);
   // Last-saved snapshot, to detect unsaved changes ("dirty").
   const [snapshot, setSnapshot] = useState({
     bio: user.bio ?? "",
@@ -163,27 +157,63 @@ export default function ProfileEditor({ user }) {
           placeholder="Year of study (1–4)"
           required
         />
-        <PrefixField
-          label="GitHub (optional)"
-          prefix="github.com/"
-          value={github}
-          onChange={setGithub}
-          placeholder="your-handle"
-        />
-        <PrefixField
-          label="LinkedIn (optional)"
-          prefix="linkedin.com/in/"
-          value={linkedin}
-          onChange={setLinkedin}
-          placeholder="your-handle"
-        />
-        <PrefixField
-          label="Portfolio (optional)"
-          prefix="https://"
-          value={portfolio}
-          onChange={setPortfolio}
-          placeholder="your-site.com"
-        />
+
+        {/* ── Optional extras (collapsed by default) ── */}
+        <div className="sm:col-span-2">
+          <button
+            type="button"
+            onClick={() => setShowExtras(v => !v)}
+            className="flex items-center gap-2 font-display text-[10px] uppercase tracking-[0.35em] text-cyan-hp/60 hover:text-cyan-hp/90 transition"
+          >
+            <span
+              className="inline-block transition-transform duration-200"
+              style={{ transform: showExtras ? "rotate(90deg)" : "rotate(0deg)" }}
+            >
+              ▶
+            </span>
+            {showExtras ? "Hide optional fields" : "Add bio, GitHub, LinkedIn… (optional)"}
+          </button>
+        </div>
+
+        {showExtras && (
+          <>
+            <PrefixField
+              label="GitHub (optional)"
+              prefix="github.com/"
+              value={github}
+              onChange={setGithub}
+              placeholder="your-handle"
+            />
+            <PrefixField
+              label="LinkedIn (optional)"
+              prefix="linkedin.com/in/"
+              value={linkedin}
+              onChange={setLinkedin}
+              placeholder="your-handle"
+            />
+            <PrefixField
+              label="Portfolio (optional)"
+              prefix="https://"
+              value={portfolio}
+              onChange={setPortfolio}
+              placeholder="your-site.com"
+            />
+            <label className="sm:col-span-2 flex flex-col gap-1.5">
+              <span className="font-display text-[10px] uppercase tracking-[0.4em] text-cyan-hp/80">
+                Bio
+                <span className="ml-2 normal-case tracking-normal text-silver-hp/40 font-wizard">· optional</span>
+              </span>
+              <textarea
+                rows={3}
+                maxLength={280}
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+                placeholder="One paragraph about you — wand of choice, side quests, anything."
+                className="w-full rounded-sm border border-cyan-hp/40 bg-midnight/60 px-4 py-3 text-base text-silver-hp focus:border-cyan-hp focus:outline-none focus:ring-2 focus:ring-cyan-hp/40 resize-y"
+              />
+            </label>
+          </>
+        )}
 
         {/* GDG community email — the membership check now lives here. */}
         <div className="sm:col-span-2 flex flex-col gap-2 rounded-sm border border-gold-hp/25 bg-gold-hp/5 p-4">
@@ -232,19 +262,6 @@ export default function ProfileEditor({ user }) {
           </p>
         </div>
 
-        <label className="sm:col-span-2 flex flex-col gap-1.5">
-          <span className="font-display text-[10px] uppercase tracking-[0.4em] text-cyan-hp/80">
-            Bio (optional)
-          </span>
-          <textarea
-            rows={3}
-            maxLength={280}
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
-            placeholder="One paragraph about you — wand of choice, side quests, anything."
-            className="w-full rounded-sm border border-cyan-hp/40 bg-midnight/60 px-4 py-3 text-base text-silver-hp focus:border-cyan-hp focus:outline-none focus:ring-2 focus:ring-cyan-hp/40 resize-y"
-          />
-        </label>
 
         {error && (
           <p className="sm:col-span-2 font-wizard italic text-red-300 text-sm">

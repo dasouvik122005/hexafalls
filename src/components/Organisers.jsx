@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import PageBackdrop from "@/components/PageBackdrop";
 import RoughDivider from "./RoughDivider";
@@ -56,13 +57,13 @@ export default function Organisers() {
           >
             {/* Photo holder — sketched corners over a vignetted square */}
             <div className="relative w-full aspect-square overflow-hidden rounded-md bg-midnight/60 shadow-[0_6px_24px_rgba(0,0,0,0.5)]">
-              <img
+              <Image
                 src={o.img}
                 alt={o.name}
-                loading="lazy"
-                decoding="async"
+                fill
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
                 draggable={false}
-                className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.06]"
+                className="object-cover transition duration-500 group-hover:scale-[1.06]"
               />
               <div
                 className="pointer-events-none absolute inset-0"

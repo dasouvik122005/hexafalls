@@ -1,4 +1,4 @@
-import { Cinzel, MedievalSharp, Inter, Crimson_Pro, Cormorant_Garamond, Great_Vibes, Montserrat } from "next/font/google";
+import { Cinzel, MedievalSharp, Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import Toaster from "@/components/Toaster";
@@ -20,34 +20,10 @@ const wizard = MedievalSharp({
 const body = Inter({
   variable: "--font-body",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
-const crimson = Crimson_Pro({
-  variable: "--font-crimson",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
-});
-
-const belinaFallback = Great_Vibes({
-  variable: "--font-belina",
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-});
-
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  subsets: ["latin"],
-  display: "swap",
-});
 
 const SITE_NAME = "HexaFalls Techfest";
 const SITE_TAGLINE = "A Wizarding Hackathon";
@@ -135,7 +111,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${display.variable} ${wizard.variable} ${body.variable} ${crimson.variable} ${cormorant.variable} ${belinaFallback.variable} ${montserrat.variable} h-full antialiased`}
+      className={`${display.variable} ${wizard.variable} ${body.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-midnight text-silver-hp">
         {/* Structured data — declares authorship + ownership of the site

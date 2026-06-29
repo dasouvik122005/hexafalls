@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { SITEMAP } from "@/lib/routes";
 import RoughDivider from "./RoughDivider";
@@ -60,11 +61,14 @@ export default function TopBar() {
               className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-md border border-cyan-hp/40 bg-slate-hp/60 group-hover:border-cyan-hp/80 transition"
               aria-label="Hexafalls logo"
             >
-              <img
+              <Image
                 src="/logos/main_logo.webp"
                 alt="HexaFalls"
+                width={36}
+                height={36}
                 className="h-full w-full object-contain p-1"
                 draggable={false}
+                priority
               />
             </span>
             <span className="font-display tracking-[0.4em] text-sm text-silver-hp/85 group-hover:text-cyan-hp transition">

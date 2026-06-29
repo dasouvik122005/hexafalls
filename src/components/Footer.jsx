@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { SITEMAP } from "@/lib/routes";
 import RoughDivider from "./RoughDivider";
@@ -121,9 +122,11 @@ export default function Footer() {
       >
         <div className="flex items-center gap-3">
           <span className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-md border border-cyan-hp/40 bg-slate-hp/60">
-            <img
+            <Image
               src="/logos/main_logo.webp"
               alt="HexaFalls"
+              width={40}
+              height={40}
               className="h-full w-full object-contain p-1"
               draggable={false}
             />

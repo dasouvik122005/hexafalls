@@ -12,6 +12,7 @@ import Footer from "@/components/Footer";
 import EventComingSoon from "@/components/EventComingSoon";
 import HackathonDetails from "@/components/HackathonDetails";
 import HardwareDetails from "@/components/HardwareDetails";
+import CpDetails from "@/components/CpDetails";
 import { EVENTS } from "@/lib/routes";
 import { getDB } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth/server";
@@ -98,6 +99,7 @@ export default async function EventPage({ params }) {
 
   const isHackathon = event.slug === "hackathon";
   const isHardware = event.slug === "hardware";
+  const isCp = event.slug === "cp";
   const registered = await getRegistration(slug);
 
   return (
@@ -107,6 +109,8 @@ export default async function EventPage({ params }) {
         <HackathonDetails registered={registered} />
       ) : isHardware ? (
         <HardwareDetails registered={registered} />
+      ) : isCp ? (
+        <CpDetails registered={registered} />
       ) : (
         <EventComingSoon event={event} />
       )}
