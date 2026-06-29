@@ -14,7 +14,6 @@ const ERRORS = {
   already_in_squad:  "You are already in a squad for this event.",
   hardware_other_mode: "You can only enter one Hardware track — you're already in the other.",
   already_member:    "You are already a member of this squad.",
-  gdg_required:      "Join the GDG chapter first.",
   unauthorized:      "Sign in to continue.",
 };
 

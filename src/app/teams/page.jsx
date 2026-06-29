@@ -5,7 +5,7 @@ import Teams from "@/components/Teams";
 export const metadata = {
   title: "The Teams · HexaFalls Techfest",
   description:
-    "The four orders behind HexaFalls: organising team, evangelists, core team and volunteers. Apply to join the hall. Co-developed by Ayushman Bhattacharya.",
+    "Meet the four orders behind HexaFalls 2026 at JIS University, Kolkata — the organising team, evangelists, core team and volunteers. Apply to join the hall and help run the TechFest. Designed and engineered by Ayushman Bhattacharya.",
 };
 
 export default function TeamsPage() {

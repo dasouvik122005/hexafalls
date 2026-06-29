@@ -4,7 +4,7 @@ import RoboSoccerDetails from "@/components/RoboSoccerDetails";
 
 export const metadata = {
   title: "Robo Soccer Rulebook · HexaFalls Techfest",
-  description: "Robo Soccer combat rules, bot specifications, registration details, and judging criteria at HexaFalls hardware hackathon. Co-developed by Ayushman Bhattacharya.",
+  description: "Robo Soccer rulebook for the HexaFalls 2026 Hardware Hack at JIS University, Kolkata — match rules, bot specifications, arena format, registration and judging criteria. Designed and engineered by Ayushman Bhattacharya.",
 };
 
 export default function RoboSoccerPage() {

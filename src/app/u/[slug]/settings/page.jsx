@@ -3,8 +3,8 @@
 // The public profile (/u/[slug]) links here behind an "Edit profile" button
 // shown only to the owner. Ownership is re-checked server-side: a non-owner (or
 // signed-out visitor) is sent back to the public profile. The form posts to
-// PATCH /api/me/profile with current values pre-filled. Verification (gdg) now
-// happens here once the profile is complete.
+// PATCH /api/me/profile with current values pre-filled. The profile is optional
+// info — saving it never gates registration.
 //
 // Compact, professional header — no oversized hero title.
 
@@ -34,7 +34,7 @@ export default async function UserSettingsPage({ params }) {
   const user = await db
     .prepare(
       `SELECT id, elixpo_id, email, bio, college, year, github, linkedin,
-              portfolio, gdg_email, gdg_verified
+              portfolio
          FROM users WHERE elixpo_id = ?`,
     )
     .bind(slug)

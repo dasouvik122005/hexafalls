@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 export const metadata = {
   title: "FAQ · HexaFalls Techfest",
   description:
-    "Frequently asked questions about HexaFalls: registration, teams, tracks, food, judging and more. Find your answer in one scroll. Co-developed by Ayushman Bhattacharya.",
+    "Everything you need to know about HexaFalls 2026 at JIS University, Kolkata — registration, team rules, the four tracks, food, stay, judging and prizes, answered in one scroll. Designed and engineered by Ayushman Bhattacharya.",
 };
 
 export default function FaqPage() {

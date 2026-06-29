@@ -20,7 +20,6 @@ const ERRORS = {
   high_school_required:    "Confirm you are a high-school student to continue.",
   missing_fields:          "Fill in the required fields.",
   invalid_details:         "Something looks off with the form — check your inputs.",
-  gdg_required:            "Join the GDG chapter first.",
   unauthorized:            "Sign in to continue.",
 };
 

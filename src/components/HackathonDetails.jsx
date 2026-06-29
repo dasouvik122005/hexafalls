@@ -554,7 +554,7 @@ export default function HackathonDetails({ registered = null }) {
                 </p>
               </div>
               <p className="font-display text-[10px] uppercase tracking-[0.4em] text-gold-hp/50 pt-2 drop-shadow-md">
-                HexaFalls · GDG on Campus · JIS University
+                HexaFalls · JIS University
               </p>
             </div>
           </div>

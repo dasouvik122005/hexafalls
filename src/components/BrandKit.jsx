@@ -172,7 +172,6 @@ const COLOR_CARDS = [
 
 const LOGO_CARDS = [
   { id: "logo-main", name: "HexaFalls Primary", file: "/logos/main_logo.png", desc: "The primary emblem of the HexaFalls 2 hackathon.", bg: "#1F2833" },
-  { id: "logo-gdg", name: "GDG on Campus", file: "/logos/gdg_jisu.png", desc: "GDG on Campus JIS University organizing body logo.", bg: "#0B0C10" },
   { id: "logo-cse", name: "JIS CSE Department", file: "/logos/cse_jisu.png", desc: "JIS University Computer Science & Engineering department logo.", bg: "#0B0C10" },
   { id: "logo-jisu", name: "JIS University", file: "/logos/jisu.png", desc: "Official logo of JIS University, our hackathon host.", bg: "#1F2833" },
 ];

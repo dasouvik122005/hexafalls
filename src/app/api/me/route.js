@@ -22,7 +22,6 @@ export async function GET() {
         displayName: u.display_name,
         username: u.username,
         role: u.role,
-        gdgVerified: !!u.gdg_verified,
         avatarUrl: u.avatar_url ?? null,
       },
     },

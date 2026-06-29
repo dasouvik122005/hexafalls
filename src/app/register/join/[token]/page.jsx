@@ -3,8 +3,7 @@
 //   not signed in        → "sign in to accept" panel (returnTo this URL)
 //   already a member     → "you're already in this squad" + link to the team
 //   in another squad     → "you're already in a squad for this event"
-//   signed in, no GDG    → <GdgGate /> (returns here after)
-//   signed in, GDG ok    → <JoinSquadForm /> with the squad context
+//   signed in            → <JoinSquadForm /> with the squad context
 //
 // The token never leaves the URL; the POST to /api/register/squad/:id/join
 // re-validates it, then the client navigates to the team profile URL.

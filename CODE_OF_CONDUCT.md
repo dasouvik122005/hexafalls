@@ -2,7 +2,7 @@
 
 *Last updated: 2026-05-02*
 
-HexaFalls is a 58-hour wizarding hackathon hosted by GDG on Campus · JIS University. We want every participant — student, mentor, judge, sponsor, organiser, volunteer, and visitor — to have a safe, welcoming, and harassment-free experience.
+HexaFalls is a 58-hour wizarding hackathon hosted at JIS University. We want every participant — student, mentor, judge, sponsor, organiser, volunteer, and visitor — to have a safe, welcoming, and harassment-free experience.
 
 This Code of Conduct applies to everyone, on-site at JIS University and across every digital surface we run for the event (Discord, Slack, GitHub, Devfolio, video calls, social channels). Signing up to the event is your agreement to abide by it.
 

@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "The Events · HexaFalls Techfest",
   description:
-    "Five tracks at HexaFalls: hackathon, competitive programming, gaming, hardware and software. Briefs and prizes coming soon. Co-developed by Ayushman Bhattacharya.",
+    "Explore the four tracks at HexaFalls 2026, JIS University, Kolkata — Hackathon, Competitive Programming, Gaming Arena and Hardware Hack. Briefs, rules and prizes for the 58-hour TechFest. Designed and engineered by Ayushman Bhattacharya.",
 };
 
 // Map a registration-event key (e.g. hardware-competition) onto the /events

@@ -1,7 +1,7 @@
 // POST /api/register/solo
 //   body: { event, username?, details }
 //
-// - Requires session + GDG verification.
+// - Requires a signed-in session.
 // - Sets the user's username (if first time).
 // - Validates event-specific `details` server-side (authoritative), stores a
 //   whitelisted + length-capped object as JSON in solo_registrations.
@@ -141,10 +141,6 @@ function validateDetails(event, details) {
 export async function POST(req) {
   const user = await getSessionUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  if (!user.gdg_verified) {
-    return NextResponse.json({ error: "gdg_required" }, { status: 403 });
-  }
-
   let body;
   try {
     body = await req.json();

@@ -5,7 +5,7 @@ import Prophecy from "@/components/Prophecy";
 export const metadata = {
   title: "The Prophecy · HexaFalls Techfest",
   description:
-    "The story behind HexaFalls. A 58-hour wizarding TechFest at JIS University where code, chaos and conjuring meet. Read the prophecy.",
+    "The origin story of HexaFalls — a 58-hour wizarding TechFest at JIS University, Kolkata where code, chaos and conjuring collide across hackathon, competitive programming, gaming and hardware tracks. Designed and engineered by Ayushman Bhattacharya.",
 };
 
 export default function AboutPage() {

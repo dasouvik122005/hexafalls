@@ -5,7 +5,7 @@ import NotFound from "@/components/NotFound";
 export const metadata = {
   title: "Lost in the Castle · HexaFalls Techfest",
   description:
-    "This corridor of HexaFalls cannot be found. The map shifts. Return to the hall. Co-developed by Ayushman Bhattacharya.",
+    "This corridor of HexaFalls cannot be found — the map shifts beneath your feet. Return to the hall to explore the 58-hour TechFest at JIS University, Kolkata. Designed and engineered by Ayushman Bhattacharya.",
 };
 
 export default function NotFoundPage() {

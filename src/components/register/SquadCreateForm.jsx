@@ -18,7 +18,6 @@ const ERRORS = {
   codeforces_not_found: "That Codeforces handle doesn't exist — check it.",
   leetcode_not_found:   "That LeetCode handle doesn't exist — check it.",
   codechef_not_found:   "That CodeChef handle doesn't exist — check it.",
-  gdg_required:      "Join the GDG chapter first.",
   unauthorized:      "Sign in to continue.",
   event_not_squad:   "This event is not a team event.",
   ...SQUAD_NAME_ERRORS,

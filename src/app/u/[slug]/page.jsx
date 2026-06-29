@@ -41,8 +41,7 @@ export default async function UserProfilePage({ params }) {
   const user = await db
     .prepare(
       `SELECT id, elixpo_id, username, display_name, bio, college, year,
-              github, linkedin, portfolio, role, avatar_url, gdg_email,
-              gdg_verified, created_at
+              github, linkedin, portfolio, role, avatar_url, created_at
          FROM users WHERE elixpo_id = ?`,
     )
     .bind(slug)
@@ -52,17 +51,9 @@ export default async function UserProfilePage({ params }) {
   const isOwner = me?.id === user.id;
   const name = user.display_name ?? (user.username ? `@${user.username}` : "Wizard");
   const hasLinks = user.github || user.linkedin || user.portfolio;
-  // Verified === the profile is actually complete (same rule as the save API).
-  // Derive it here so the chip is always accurate, even for rows whose stale
-  // gdg_verified flag predates the profile-completeness rule. Portfolio optional.
-  const verified = Boolean(
-    user.college &&
-      Number.isInteger(user.year) &&
-      user.github &&
-      user.linkedin &&
-      user.bio &&
-      user.gdg_email,
-  );
+  // A "complete" profile has at least the basics on file (college + year).
+  // Drives the small profile chip — never gates anything.
+  const verified = Boolean(user.college && Number.isInteger(user.year));
 
   // Is this profile an evangelist? Either the legacy users.role flag, or a
   // user_roles row granting the hexafalls_evangelists fixed role.

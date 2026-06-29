@@ -1,7 +1,7 @@
 // POST /api/register/squad
 //   body: { event, squadName, tagline?, description?, username }
 //
-// - Requires session + GDG verification.
+// - Requires a signed-in session.
 // - Sets the user's username (if first time).
 // - Creates the squad, makes the caller the leader, mints invite token.
 // - Returns { squadId, inviteToken, inviteUrl }.
@@ -27,10 +27,6 @@ const USERNAME_RE = /^[a-z][a-z0-9_-]{2,23}$/;
 export async function POST(req) {
   const user = await getSessionUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  if (!user.gdg_verified) {
-    return NextResponse.json({ error: "gdg_required" }, { status: 403 });
-  }
-
   let body;
   try {
     body = await req.json();

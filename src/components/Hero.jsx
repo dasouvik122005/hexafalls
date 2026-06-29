@@ -438,7 +438,6 @@ export default function Hero() {
         >
           {[
             { id: "jisu", label: "", logo: "/logos/jisu.png", url: "https://www.jisuniversity.ac.in/" },
-            { id: "gdg", label: "", logo: "/logos/gdg_jisu.png", url: "https://gdg.community.dev/gdg-on-campus-jis-university-kolkata-india/" },
             { id: "cse", label: "", logo: "/logos/cse_jisu.png", url: "https://www.jisuniversity.ac.in/faculty-of-engineering-and-technology.php"},
           ].map((l, i, arr) => (
             <div key={l.id} className="flex items-center gap-3">

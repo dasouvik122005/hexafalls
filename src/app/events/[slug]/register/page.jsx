@@ -3,7 +3,7 @@
 // - [slug] is the user-facing /events slug (hackathon | hardware | cp | gaming).
 // - Hardware splits into two modes via ?mode=exhibition|competition; with no
 //   mode it renders a chooser.
-// - Gates on session + GDG (server-side, via the auth helpers).
+// - Requires a signed-in session (server-side, via the auth helpers).
 // - Squad events render <SquadCreateForm />; solo events a placeholder until
 //   the solo flow lands.
 
@@ -92,7 +92,7 @@ export default async function EventRegisterPage({ params, searchParams }) {
   // scroll instead of the form.
   let existingSoloReg = false;
   let existingSoloId = null;
-  if (user && user.gdg_verified && isSoloEvent(regKey)) {
+  if (user && isSoloEvent(regKey)) {
     const row = await getDB()
       .prepare(
         `SELECT id FROM solo_registrations
@@ -107,7 +107,7 @@ export default async function EventRegisterPage({ params, searchParams }) {
   // Open squads the caller could request to join (squad events, not already in
   // one). Public roster info only — team profiles are public anyway.
   let openSquads = [];
-  if (user && user.gdg_verified && isSquadEvent(regKey) && !existingSquadId) {
+  if (user && isSquadEvent(regKey) && !existingSquadId) {
     const rows = await getDB()
       .prepare(
         `SELECT s.id, s.name, s.tagline, s.max_members AS maxMembers,
@@ -156,7 +156,6 @@ export default async function EventRegisterPage({ params, searchParams }) {
 
   return (
     <ShellWrap eyebrow={`Sign on · ${cfg.label}`} accent={cfg.label}>
-      {user && !user.gdg_verified && <GdgOptionalNotice elixpoId={user.elixpo_id} />}
       {showForm && clashes.length > 0 && <ClashWarning eventLabel={cfg.label} clashes={clashes} />}
       {user && existingSquadId && (
         <DonePanel
@@ -276,40 +275,6 @@ function HardwareModeChooser() {
           </RoughFrame>
         </Link>
       ))}
-    </div>
-  );
-}
-
-// Soft GDG notice — shown when the user is signed in but not GDG-verified.
-// Does NOT block registration; the user can dismiss and proceed.
-function GdgOptionalNotice({ elixpoId }) {
-  return (
-    <div className="mb-6 w-full rounded-sm border border-gold-hp/25 bg-gold-hp/5 px-5 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-      <div className="flex flex-col gap-1">
-        <span className="font-display text-[10px] uppercase tracking-[0.4em] text-gold-hp/90">GDG Chapter</span>
-        <p className="font-wizard text-silver-hp/75 text-sm leading-snug">
-          Joining the{" "}
-          <a
-            href="https://gdg.community.dev/gdg-on-campus-jis-university-kolkata-india/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gold-hp underline underline-offset-4 hover:text-gold-hp/80"
-          >
-            GDG on Campus · JIS University
-          </a>{" "}
-          chapter is encouraged but not required to register.
-        </p>
-      </div>
-      <RoughButton
-        as="link"
-        href={elixpoId ? `/u/${elixpoId}/settings` : "/"}
-        color="#D4AF37"
-        fill={false}
-        seed={37}
-        className="shrink-0 px-5 py-2 text-[10px] tracking-[0.3em]"
-      >
-        COMPLETE PROFILE
-      </RoughButton>
     </div>
   );
 }

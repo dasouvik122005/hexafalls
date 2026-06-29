@@ -1,7 +1,7 @@
 // POST /api/register/squad/[id]/join
 //   body: { inviteToken, username? }
 //
-// Accept a squad invite. Requires session + GDG verification. `id` is the squad
+// Accept a squad invite. Requires a signed-in session. `id` is the squad
 // id; we double-check it matches the token.
 //
 // IMPORTANT: holding the invite link does NOT grant instant membership. Like the
@@ -25,10 +25,6 @@ export async function POST(req, { params }) {
   const { id: squadId } = await params;
   const user = await getSessionUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  if (!user.gdg_verified) {
-    return NextResponse.json({ error: "gdg_required" }, { status: 403 });
-  }
-
   let body;
   try {
     body = await req.json();

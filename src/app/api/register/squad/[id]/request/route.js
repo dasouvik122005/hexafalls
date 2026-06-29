@@ -2,7 +2,7 @@
 //   body: { message? }
 //
 // Approval-based "request to join" path (distinct from the instant invite-link
-// join). A signed-in + GDG-verified user asks to join squad `id`; the squad
+// join). A signed-in user asks to join squad `id`; the squad
 // leader approves/denies via /api/team/[id]/requests.
 //
 // Validations:
@@ -29,10 +29,6 @@ export async function POST(req, { params }) {
   const { id: squadId } = await params;
   const user = await getSessionUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  if (!user.gdg_verified) {
-    return NextResponse.json({ error: "gdg_required" }, { status: 403 });
-  }
-
   let body = {};
   try {
     body = (await req.json()) ?? {};

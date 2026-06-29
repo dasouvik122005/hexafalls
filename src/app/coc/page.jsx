@@ -10,7 +10,7 @@ import CodeOfConductBody from "@/components/CodeOfConductBody";
 export const metadata = {
   title: "Code of Conduct · HexaFalls Techfest",
   description:
-    "Our code of conduct at HexaFalls: the pledge, expected standards, scope, reporting and enforcement. Co-developed by Ayushman Bhattacharya.",
+    "The HexaFalls 2026 code of conduct at JIS University, Kolkata — our pledge, expected standards, scope, reporting channels and enforcement for a safe, welcoming TechFest. Designed and engineered by Ayushman Bhattacharya.",
 };
 
 export const dynamic = "force-static";

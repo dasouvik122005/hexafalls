@@ -1,10 +1,9 @@
 // Server-side helpers used by route handlers + server components.
 //
 //   const user = await requireSession();        // throws Redirect to /login
-//   const user = await requireGdg();             // additionally requires gdg_verified=1
 //   const user = await getSessionUser();         // null if not signed in
 //
-// All three pull from the signed cookie + look the user up in D1.
+// Both pull from the signed cookie + look the user up in D1.
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -21,7 +20,7 @@ export async function getSessionUser() {
   const row = await db
     .prepare(
       `SELECT id, elixpo_id, email, display_name, username, role,
-              gdg_verified, email_verified, avatar_url
+              email_verified, avatar_url
          FROM users WHERE id = ?`,
     )
     .bind(session.userId)
@@ -34,14 +33,6 @@ export async function requireSession(returnTo = "/register") {
   if (!user) {
     const dest = `/api/auth/login?return_to=${encodeURIComponent(returnTo)}`;
     redirect(dest);
-  }
-  return user;
-}
-
-export async function requireGdg(returnTo = "/register") {
-  const user = await requireSession(returnTo);
-  if (!user.gdg_verified) {
-    redirect(`/register?step=gdg&return_to=${encodeURIComponent(returnTo)}`);
   }
   return user;
 }

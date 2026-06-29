@@ -26,9 +26,9 @@ const body = Inter({
 
 
 const SITE_NAME = "HexaFalls Techfest";
-const SITE_TAGLINE = "A Wizarding Hackathon";
+const SITE_TAGLINE = "A Wizarding Techfest";
 const SITE_DESCRIPTION =
-  "HexaFalls is a 58-hour wizarding hackathon at JIS University, Kolkata. Build, ship, and conjure with student wizards from across India. Developed by Ayushman Bhattacharya (elixpo), GDG on Campus · JIS University 2025–26.";
+  "HexaFalls is a 58-hour Wizarding Techfest at JIS University, Kolkata — built, designed, and engineered by Ayushman Bhattacharya (elixpo). Build, ship, and conjure with student wizards from across India across hackathon, competitive programming, gaming, and hardware tracks.";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://hexafalls.org";
@@ -56,15 +56,15 @@ export const metadata = {
     "hackathon",
     "techfest",
     "JIS University",
-    "GDG",
     "Kolkata",
-    "wizarding hackathon",
+    "Wizarding Techfest",
+    "Ayushman Bhattacharya",
+    "hackathon Kolkata",
   ],
   authors: [
-    { name: "Ayushman Bhattacharya (elixpo) — GDG on Campus, JIS University 2025–26", url: "https://elixpo.com" },
-    { name: "GDG on Campus · JIS University" },
+    { name: "Ayushman Bhattacharya (elixpo)", url: "https://elixpo.com" },
   ],
-  creator: "Ayushman Bhattacharya (elixpo) — GDGoC JIS University 2025–26",
+  creator: "Ayushman Bhattacharya (elixpo)",
   publisher: "Ayushman Bhattacharya (elixpo)",
   icons: {
     icon: "/logos/main_logo.png",
@@ -130,7 +130,7 @@ export default function RootLayout({ children }) {
                 name: "Ayushman Bhattacharya",
                 alternateName: "elixpo",
                 url: "https://accounts.elixpo.com",
-                jobTitle: "GDG on Campus JIS University Organiser, 2025–26",
+                jobTitle: "Creator & Lead Engineer, HexaFalls",
               },
               creator: {
                 "@type": "Person",

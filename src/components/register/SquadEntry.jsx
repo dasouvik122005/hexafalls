@@ -16,7 +16,6 @@ const REQ_ERRORS = {
   squad_full: "This squad is full.",
   squad_locked: "This squad is no longer open to new members.",
   request_pending: "You've already requested to join this squad.",
-  gdg_required: "Join the GDG chapter first.",
   unauthorized: "Sign in to continue.",
   not_found: "This squad no longer exists.",
 };

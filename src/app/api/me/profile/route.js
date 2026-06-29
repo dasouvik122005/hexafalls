@@ -1,19 +1,16 @@
 // PATCH /api/me/profile
 //
-// Update the signed-in user's profile. Verification lives here: a user becomes
-// gdg_verified once the profile is COMPLETE (college, year, gdg_email).
-// GitHub, LinkedIn, bio and portfolio are optional.
+// Update the signed-in user's profile. Saving is never gated — any signed-in
+// user can register; the profile is just personal info (college, year, GitHub,
+// LinkedIn, bio, portfolio).
 //
-// On SAVE we REACHABILITY-CHECK the optional fields that changed:
-//   - portfolio→ if given, the URL must return 200 OK
-//   - gdg_email→ if it differs from the Elixpo account email, its domain must
-//                be able to receive mail (DNS-over-HTTPS MX/A lookup)
-// Checks run in parallel with short timeouts and fail OPEN on our own network
-// errors (so a flaky check never blocks a legitimate save); only a DEFINITIVE
-// negative (404 / non-200 / no mail records) rejects.
+// On SAVE we reachability-check the portfolio (if given): the URL must return
+// 200 OK. The check has a short timeout and fails OPEN on our own network
+// errors, so a flaky check never blocks a legitimate save — only a definitive
+// non-200 rejects.
 //
-// body: { bio?, college?, year?, github?, linkedin?, portfolio?, gdg_email? }
-// → { ok: true, gdg_verified: 0|1 }
+// body: { bio?, college?, year?, github?, linkedin?, portfolio? }
+// → { ok: true, complete: boolean }   (complete = college + year on file)
 
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/auth/server";
@@ -22,7 +19,6 @@ import { getDB } from "@/lib/db";
 
 const HANDLE_RE = /^[A-Za-z0-9_-]{0,39}$/;          // GitHub-style cap
 const URL_RE    = /^https?:\/\/.{4,250}$/i;
-const EMAIL_RE  = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function clean(v, max = 280) {
   if (typeof v !== "string") return undefined;
@@ -30,16 +26,8 @@ function clean(v, max = 280) {
   return t.length === 0 ? null : t.slice(0, max);
 }
 
-function isComplete(p) {
-  return Boolean(
-    p.college &&
-      Number.isInteger(p.year) &&
-      p.gdg_email,
-  );
-}
-
 // fetch with an abort timeout — never hangs the request handler.
-async function fetchTimeout(url, opts = {}, ms = 5000) {
+async function fetchTimeout(url, opts = {}, ms = 6000) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), ms);
   try {
@@ -49,40 +37,14 @@ async function fetchTimeout(url, opts = {}, ms = 5000) {
   }
 }
 
-// Definitive-negative checks: return false ONLY when we're sure it's invalid.
-// Our own errors (timeout, rate-limit, bot-block) fail open → true.
+// True unless the URL definitively fails to return 200.
 async function urlReturns200(url) {
   try {
     const r = await fetchTimeout(url, { method: "GET", redirect: "follow" }, 6000);
     return r.ok; // 200–299
   } catch {
-    return false; // unreachable → the user asked us to require 200
+    return false; // unreachable → reject
   }
-}
-
-async function emailDomainReal(email) {
-  const domain = email.split("@")[1];
-  if (!domain) return false;
-  const doh = async (type) => {
-    try {
-      const r = await fetchTimeout(
-        `https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(domain)}&type=${type}`,
-        { headers: { Accept: "application/dns-json" } },
-        4000,
-      );
-      if (!r.ok) return null; // ambiguous
-      const j = await r.json();
-      return Array.isArray(j.Answer) ? j.Answer : [];
-    } catch {
-      return null; // ambiguous
-    }
-  };
-  const mx = await doh("MX");
-  if (mx === null) return true; // couldn't check → fail open
-  if (mx.length > 0) return true;
-  const a = await doh("A");
-  if (a === null) return true;
-  return a.length > 0; // some domains accept mail with just an A record
 }
 
 export async function PATCH(req) {
@@ -102,7 +64,6 @@ export async function PATCH(req) {
   const cGithub    = clean(body.github, 40);
   const cLinkedin  = clean(body.linkedin, 100);
   const cPortfolio = clean(body.portfolio, 250);
-  const cGdgEmail  = clean(body.gdg_email, 200);
   const cYear      = Number.isInteger(body.year) ? body.year : undefined;
 
   if (cBio !== undefined)      updates.bio = cBio;
@@ -131,51 +92,29 @@ export async function PATCH(req) {
     }
     updates.portfolio = cPortfolio;
   }
-  if (cGdgEmail !== undefined) {
-    if (cGdgEmail && !EMAIL_RE.test(cGdgEmail)) {
-      return NextResponse.json({ error: "invalid_gdg_email" }, { status: 400 });
-    }
-    updates.gdg_email = cGdgEmail;
+
+  if (Object.keys(updates).length === 0) {
+    return NextResponse.json({ error: "no_fields" }, { status: 400 });
   }
 
   const db = getDB();
 
-  // Current row — to merge for completeness AND to know which fields changed
-  // (so we only pay for reachability checks on changed values).
+  // Merge incoming changes over the current row to evaluate completeness and to
+  // know which fields actually changed (so we only check a new portfolio link).
   const current = await db
-    .prepare(
-      `SELECT email, college, year, github, linkedin, bio, gdg_email
-         FROM users WHERE id = ?`,
-    )
+    .prepare(`SELECT college, year, portfolio FROM users WHERE id = ?`)
     .bind(user.id)
     .first();
   const cur = current ?? {};
-
-  // Merge the incoming changes over the current row to evaluate verification.
   const merged = { ...cur, ...updates };
-  const willBeComplete = isComplete(merged);
 
-  // VERIFICATION GATE: a profile becomes verified ONLY when it's complete AND
-  // every link resolves. So when this save would complete the profile, we
-  // reachability-check ALL links (github + linkedin must exist, portfolio — if
-  // given — must return 200, and a custom GDG email's domain must accept mail).
-  // Any failure → 400 and the profile is NOT verified/marked complete.
-  if (willBeComplete) {
-    const checks = [];
-    if (merged.portfolio) {
-      checks.push(urlReturns200(merged.portfolio).then((ok) => (ok ? null : "portfolio_unreachable")));
-    }
-    if (merged.gdg_email && merged.gdg_email !== cur.email) {
-      checks.push(emailDomainReal(merged.gdg_email).then((ok) => (ok ? null : "gdg_email_unreal")));
-    }
-    const firstError = (await Promise.all(checks)).find(Boolean);
-    if (firstError) {
-      return NextResponse.json({ error: firstError, gdg_verified: 0 }, { status: 400 });
+  // Reachability-check the portfolio only when it's newly set/changed.
+  if (merged.portfolio && merged.portfolio !== cur.portfolio) {
+    const ok = await urlReturns200(merged.portfolio);
+    if (!ok) {
+      return NextResponse.json({ error: "portfolio_unreachable" }, { status: 400 });
     }
   }
-
-  const verified = willBeComplete ? 1 : 0;
-  updates.gdg_verified = verified;
 
   const cols = Object.keys(updates);
   const sql = `UPDATE users SET ${cols.map((c) => `${c} = ?`).join(", ")},
@@ -188,5 +127,7 @@ export async function PATCH(req) {
   if (!r.success) {
     return NextResponse.json({ error: "db_failure" }, { status: 500 });
   }
-  return NextResponse.json({ ok: true, gdg_verified: verified });
+
+  const complete = Boolean(merged.college && Number.isInteger(merged.year));
+  return NextResponse.json({ ok: true, complete });
 }

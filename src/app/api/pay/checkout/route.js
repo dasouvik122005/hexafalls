@@ -2,7 +2,7 @@
 //   body: { event, squadId? }
 //
 // Starts (or resumes) the fee payment for the caller's seat in a paid event.
-// - Requires session + GDG verification.
+// - Requires a signed-in session.
 // - Rejects free events (400 event_not_paid).
 // - Authz: the caller must actually be a member of `squadId` for that event.
 // - Idempotent: a 'paid' row → 409 already_paid; a 'pending' row is reused.
@@ -22,10 +22,6 @@ const CURRENCY = "INR";
 export async function POST(req) {
   const user = await getSessionUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  if (!user.gdg_verified) {
-    return NextResponse.json({ error: "gdg_required" }, { status: 403 });
-  }
-
   let body;
   try {
     body = await req.json();

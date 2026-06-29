@@ -18,7 +18,7 @@ const DISCORD_INVITE = "https://discord.com/invite/FdgCkrmrG";
 const CONTACTS = [
   { name: "Abhishek Kumar Gupta",  role: "SPOC",       tel: "+919831710167", display: "+91 98317 10167" },
   { name: "Kritika Chakraborty",   role: "SPOC",       tel: "+917562047877", display: "+91 75620 47877" },
-  { name: "Ayushman Bhattacharya", role: "GDGoC JISU", tel: "+918617755083", display: "+91 86177 55083" },
+  { name: "Ayushman Bhattacharya", role: "Lead Organiser", tel: "+918617755083", display: "+91 86177 55083" },
 ];
 
 // Until a dedicated form lands, reports go straight to the support inbox.
@@ -173,7 +173,7 @@ export default function Footer() {
       </motion.div>
 
       <div className="relative mx-auto max-w-7xl px-6 pb-5 grid gap-6 md:grid-cols-3 items-start">
-        {/* LEFT — The Order (GDG) + email */}
+        {/* LEFT — The Order + email */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}

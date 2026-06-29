@@ -9,7 +9,7 @@
 
   *Owls have been dispatched. Robes pressed, wands tuned.*
 
-  GDG JIS University · JIS University, Agarpara, Kolkata
+  JIS University, Agarpara, Kolkata · Created by Ayushman Bhattacharya
 
 </div>
 
@@ -23,7 +23,7 @@
 
 When the moon hangs low above Agarpara and the owls grow restless, six falls of light shall meet — code, chaos, conjuring, courage, craft and curiosity. For fifty-eight hours the veil thins, and what is built there will travel far beyond the hall.
 
-HexaFalls is a 58-hour techfest hosted by **GDG on Campus · JIS University**, where students from across the country gather to build, compete, and conjure something memorable.
+HexaFalls is a 58-hour techfest hosted at **JIS University, Kolkata** — created by **Ayushman Bhattacharya** — where students from across the country gather to build, compete, and conjure something memorable.
 
 ---
 
@@ -45,7 +45,7 @@ Full briefs and prize pools unfurl soon at [hexafalls.org/events](https://hexafa
 ## When & Where
 
 - **Where** — JIS University · Agarpara · Kolkata
-- **Hosted by** — GDG on Campus · JIS University
+- **Hosted at** — JIS University, Kolkata · created by Ayushman Bhattacharya
 - **Length** — 58 hours, on-site
 
 ---
@@ -68,7 +68,6 @@ There are several scrolls to choose from:
 - **Instagram** — [@hexafalls_](https://www.instagram.com/hexafalls_/)
 - **LinkedIn** — [hexafalls](https://www.linkedin.com/in/hexafalls/)
 - **X / Twitter** — [@hexafalls](https://x.com/hexafalls)
-- **The Order** — [GDG on Campus · JIS University](https://gdg.community.dev/gdg-on-campus-jis-university-kolkata-india/)
 
 ---
 

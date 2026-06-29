@@ -7,7 +7,7 @@ import Sparkles from "@/components/Sparkles";
 
 export const metadata = {
   title: "Travel Guide · HexaFalls Techfest",
-  description: "Navigate your way to HexaFalls at JIS University. Detailed travel instructions via air, train, metro, and bus.",
+  description: "Plan your journey to HexaFalls 2026 at JIS University, Kolkata. Step-by-step travel directions by air, train, metro, bus and road, plus nearby stays for the 58-hour TechFest. Designed and engineered by Ayushman Bhattacharya.",
   alternates: {
     canonical: "/travel",
   },

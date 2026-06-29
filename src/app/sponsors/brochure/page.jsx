@@ -35,11 +35,11 @@ const BROCHURE_PAGES = [
 export const metadata = {
   title: "Sponsorship Brochure · HexaFalls Techfest",
   description:
-    "The HexaFalls sponsorship brochure: tiers, benefits, audience and reach. Preview in the browser or download the PDF. Co-developed by Ayushman Bhattacharya.",
+    "The official HexaFalls 2026 sponsorship brochure for the 58-hour TechFest at JIS University, Kolkata — sponsorship tiers, partner benefits, audience and reach. Preview in-browser or download the PDF. Designed and engineered by Ayushman Bhattacharya.",
   openGraph: {
     title: "Sponsorship Brochure · HexaFalls Techfest",
     description:
-      "Tiers, benefits, audience and reach. Everything you need to back HexaFalls. Co-developed by Ayushman Bhattacharya.",
+      "Sponsorship tiers, partner benefits, audience and reach for HexaFalls 2026 at JIS University, Kolkata — everything you need to back the TechFest. Designed and engineered by Ayushman Bhattacharya.",
   },
 };
 

@@ -133,7 +133,7 @@ export default function Prophecy() {
       >
         <p className="font-wizard text-silver-hp/80 text-base sm:text-lg leading-relaxed">
           We are planning a fifty-eight-hour techfest alongside our peers —
-          powered by GDG on Campus · JIS University, with the university itself
+          powered by JIS University, with the university itself
           as our venue. The owls take wing this July.
         </p>
         <p className="mt-4 font-wizard italic text-silver-hp/55 text-sm">

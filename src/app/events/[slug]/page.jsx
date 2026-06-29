@@ -76,19 +76,19 @@ export async function generateMetadata({ params }) {
     return {
       title: "Software Hackathon — Judging Rubric · HexaFalls Techfest",
       description:
-        "58-hour software hackathon judging rubric, scoring criteria, hackathon tracks, bonus points, and submission requirements at HexaFalls. Co-developed by Ayushman Bhattacharya.",
+        "The 58-hour Software Hackathon at HexaFalls 2026, JIS University, Kolkata — judging rubric, scoring criteria, bonus points and submission requirements for squads of 2–4. Designed and engineered by Ayushman Bhattacharya.",
     };
   }
   if (event.slug === "hardware") {
     return {
       title: "Hardware Hack — Tracks · HexaFalls Techfest",
       description:
-        "Hardware hackathon tracks including Exhibition, Robo Sumo, Robo Soccer, Robo Terrence, and Line Follower at HexaFalls. Co-developed by Ayushman Bhattacharya.",
+        "The Hardware Hack at HexaFalls 2026, JIS University, Kolkata — build the magic you can hold across Exhibition, Robo Sumo, Robo Soccer, Robo Terrence and Line Follower. Designed and engineered by Ayushman Bhattacharya.",
     };
   }
   return {
     title: `${event.name} · HexaFalls Techfest`,
-    description: `${event.name} at HexaFalls 2026, JIS University. ${CONTEXT[slug] ?? ""} Register now. Co-developed by Ayushman Bhattacharya.`,
+    description: `${event.name} at HexaFalls 2026, the 58-hour TechFest at JIS University, Kolkata. ${CONTEXT[slug] ?? ""} Register now to compete. Designed and engineered by Ayushman Bhattacharya.`,
   };
 }
 
